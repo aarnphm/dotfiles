@@ -1,11 +1,9 @@
+filetype plugin on
 "first thing first, to be or not to be
 let usingNeovim=has('nvim')
 let usingVim=!usingNeovim
 " use vim settings instead of vi
 set nocompatible
-
-" security
-set modelines=0
 
 "hide buffers instead of closing
 set hidden
@@ -88,4 +86,3 @@ set wrap
 
 " set command height to 2
 set cmdheight=2
-set hidden

@@ -1,0 +1,79 @@
+add_newline = false
+
+[character]
+symbol = '➜'
+error_symbol = "✗"
+vicmd_symbol = '←'
+
+[aws]
+symbol = " "
+
+[battery]
+full_symbol = ""
+charging_symbol = ""
+discharging_symbol = ""
+
+[conda]
+symbol = " "
+
+[docker]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[git_branch]
+symbol = " "
+
+[git_status]
+deleted = "✘ "
+renamed = "» "
+
+[golang]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[memory_usage]
+symbol = " "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = " "
+
+[package]
+symbol = " "
+
+[php]
+symbol = " "
+
+[python]
+symbol = " "
+pyenv_version_name = true 
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = " "
+
+[username]
+disabled = true
+show_always = true
+
+

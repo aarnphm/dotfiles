@@ -1,5 +1,0 @@
-{
-  "diagnostic.displayByAle": true,
-  "python.setInterpreter": "/usr/bin/python3.8",
-  "python.jediEnabled": false
-}

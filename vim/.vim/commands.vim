@@ -6,17 +6,6 @@ endfunction
 command! J :call JSONify()
 nnoremap <silent> <leader>j <esc>:call JSONify()<cr><esc>
 
-" make inline more readable
-function! UnMinify( )
-    %s/{\ze[^\r\n]/{\r/g
-    %s/){/) {/g
-    %s/};\?\ze[^\r\n]/\0\r/g
-    %s/;\ze[^\r\n]/;\r/g
-    %s/[^\s]\zs[=&|]\+\ze[^\s]/ \0 /g
-    normal ggVG=
-endfunction
-command! UnMinify :call UnMinify()
-nnoremap <silent> <leader>u <esc>:call UnMinify()<cr><esc>
 
 " remove highlighting
 nnoremap <silent> <esc><esc> <esc>:nohlsearch<cr><esc>
