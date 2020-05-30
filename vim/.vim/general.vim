@@ -1,4 +1,4 @@
-"first thing first, determine nvim or not
+"first thing first, to be or not to be
 let usingNeovim=has('nvim')
 let usingVim=!usingNeovim
 " use vim settings instead of vi
@@ -85,3 +85,7 @@ set tm=500
 set ai
 set si
 set wrap
+
+" set command height to 2
+set cmdheight=2
+set hidden

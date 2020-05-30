@@ -3,7 +3,7 @@ function! JSONify()
   %!python -mjson.tool
   set syntax=json
 endfunction
-command J :call JSONify()
+command! J :call JSONify()
 nnoremap <silent> <leader>j <esc>:call JSONify()<cr><esc>
 
 " make inline more readable
@@ -15,30 +15,30 @@ function! UnMinify( )
     %s/[^\s]\zs[=&|]\+\ze[^\s]/ \0 /g
     normal ggVG=
 endfunction
-command UnMinify :call UnMinify()
+command! UnMinify :call UnMinify()
 nnoremap <silent> <leader>u <esc>:call UnMinify()<cr><esc>
 
 " remove highlighting
 nnoremap <silent> <esc><esc> <esc>:nohlsearch<cr><esc>
 
 " remove trailing white space
-command Nows :%s/\s\+$//
+command! Nows :%s/\s\+$//
 
 " remove blank lines
-command Nobl :g/^\s*$/d
+command! Nobl :g/^\s*$/d
 
 " toggle spellcheck
-command Spell :setlocal spell! spell?
+command! Spell :setlocal spell! spell?
 nnoremap <silent> <leader>s :setlocal spell! spell?
 
 " make current buffer executable
-command Chmodx :!chmod a+x %
+command! Chmodx :!chmod a+x %
 
 " fix syntax highlighting
-command FixSyntax :syntax sync fromstart
+command! FixSyntax :syntax sync fromstart
 
 " pseudo tail functionality
-command Tail :set autoread | au CursorHold * checktime | call feedkeys("G")
+command! Tail :set autoread | au CursorHold * checktime | call feedkeys("G")
 
 " zoom
 function! Zoom() abort
@@ -56,7 +56,7 @@ function! Zoom() abort
     execute "silent !tmux resize-pane -Z"
   endif
 endfunction
-command Zoom call s:Zoom()
+command! Zoom call s:Zoom()
 nnoremap <leader>z :call Zoom()<cr>
 inoremap <leader>z <ESC>:call Zoom()<cr>a
 
@@ -67,7 +67,7 @@ function! AsciiMode()
   set virtualedit=all
   set colorcolumn=80
 endfunction
-command Ascii :call AsciiMode()
+command! Ascii :call AsciiMode()
 
 "epic PASTE mode
 function! HasPaste()
@@ -75,4 +75,27 @@ if &paste
     return 'PASTE MODE '
 endif
 return ''
+endfunction
+
+"for calling cmdline quickly
+function! CmdLine(str)
+    call feedkeys(":" . a:str)
+endfunction 
+
+"useful when in visual mode
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
 endfunction
