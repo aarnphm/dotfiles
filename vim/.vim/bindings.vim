@@ -1,5 +1,5 @@
 " source vimrc in file 
-nnoremap <Leader>r :source $MYVIMRC<CR>
+nnoremap <Leader>r :source ~/.vimrc<CR>
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 map <C-space> ?

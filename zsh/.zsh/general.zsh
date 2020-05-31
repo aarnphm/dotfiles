@@ -1,11 +1,8 @@
 # force dircolors if have one 
 if [[ -f ~/.dircolors ]];
- then 
-    dircolors -b ~/.dircolors
- elif [[ -f /etc/DIR_COLORS ]]; 
- then 
-    dircolors -b /etc/DIR_COLORS
- fi
+then 
+	eval "$(dircolors -b ~/.dircolors)"
+fi
 
 HISTFILE=~/.histfile
 HISTSIZE=2500

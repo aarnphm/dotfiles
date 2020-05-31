@@ -5,7 +5,6 @@ let configs = [
             \ "plugins",
             \ "plugins-settings",
             \ "bindings",
-            \ "users",
             \ ]
 
 for file in configs
