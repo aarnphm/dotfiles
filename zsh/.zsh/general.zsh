@@ -1,3 +1,6 @@
+# support for autocompletion
+fpath=(~/.zsh/completion $fpath)
+autoload -Uz compinit && compinit -i
 # force dircolors if have one 
 if [[ -f ~/.dircolors ]];
 then 
@@ -38,7 +41,6 @@ zinit light-mode for \
     zinit-zsh/z-a-bin-gem-node
 
 zinit load zdharma/history-search-multi-word
-zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma/fast-syntax-highlighting
 
 ### End of Zinit's installer chunk

@@ -4,12 +4,10 @@ nnoremap <Leader>r :source ~/.vimrc<CR>
 map <space> /
 map <C-space> ?
 
-" When you press gv you Ack after the selected text
-vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
 " =========================== tabs management =========================== 
 " Disable highlight when <leader><cr> is pressed
-map <silent> <leader>\ :noh<cr>
+map <silent> \ :noh<cr>
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -32,8 +30,8 @@ au TabLeave * let g:lasttab = tabpagenr()
 map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 "switch tabs
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
+nnoremap <leader>h :tabprevious<CR>
+nnoremap <leader>l :tabnext<CR>
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>

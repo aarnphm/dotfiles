@@ -1,5 +1,6 @@
 " use vim settings instead of vi
 set nocompatible
+filetype off
 
 " Enable filetype plugins
 filetype plugin on
@@ -20,7 +21,9 @@ set noswapfile
 "fuzzy find
 set path+=**
 " lazy file name completion with mouse support
-set mouse=a
+if has('mouse')
+	set mouse=a
+endif
 
 set wildmenu
 set wildignorecase
@@ -51,6 +54,9 @@ set whichwrap+=<,>,h,l
 set hlsearch
 set incsearch
 
+" disable folding
+set nofoldenable
+
 "indent of 4 spaces
 set shiftwidth=4
 
@@ -69,29 +75,14 @@ augroup end
 " set leader key to comma
 let mapleader=","
 
-" Don't redraw while executing macros (good performance config)
-set lazyredraw 
-
-" For regular expressions turn magic on
-set magic
-
 " Show matching brackets when text indicator is over them
 set showmatch 
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
-" How many tenths of a second to blink when matching brackets
-set mat=2
-
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-
 " autoindent and smartindent
-set ai
-set si
+set autoindent
+set smartindent
 set wrap
 
 " set command height to 2

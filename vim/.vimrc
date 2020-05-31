@@ -1,10 +1,10 @@
 let configs = [
             \ "general",
             \ "ui",
-            \ "commands",
+            \ "bindings",
             \ "plugins",
             \ "plugins-settings",
-            \ "bindings",
+            \ "commands",
             \ ]
 
 for file in configs

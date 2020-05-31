@@ -18,6 +18,13 @@ call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'tpope/vim-git'
+Plug 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
+Plug 'cespare/vim-toml'
+Plug 'leafgarland/typescript-vim'
+Plug 'stephpy/vim-yaml'
+Plug 'elzr/vim-json'
+Plug 'zinit-zsh/zinit-vim-syntax'
+Plug 'plasticboy/vim-markdown'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 "programming
@@ -38,10 +45,11 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 
 "utilities
+Plug 'rking/ag.vim'
+Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
-Plug 'mileszs/ack.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Goyo' }
 Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
