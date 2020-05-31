@@ -11,3 +11,5 @@ for config in $HOME/.zsh/*.zsh; do
 done;
 unset config;
 
+# init pyenv
+eval "$(pyenv init -)"
