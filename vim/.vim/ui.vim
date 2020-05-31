@@ -1,13 +1,8 @@
-" show matching brackets
-set showmatch
-
-"disable startup message
-set shortmess+=I
-
 "syntax higlighting
 syntax on
-set synmaxcol=512
-filetype plugin on
+
+" disable startup message
+set shortmess+=I
 
 "show line numbers
 set number
@@ -17,6 +12,12 @@ set nowrap
 
 "hilight cursor
 set cursorline
+
+" Disable scrollbars (real hackers don't use scrollbars for navigation!)
+set guioptions-=r
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
 
 " show invisibles
 set list

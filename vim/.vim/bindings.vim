@@ -1,4 +1,3 @@
-filetype plugin on
 " source vimrc in file 
 nnoremap <Leader>r :source $MYVIMRC<CR>
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)

@@ -1,12 +1,16 @@
-filetype plugin on
-"first thing first, to be or not to be
-let usingNeovim=has('nvim')
-let usingVim=!usingNeovim
 " use vim settings instead of vi
 set nocompatible
 
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
+
 "hide buffers instead of closing
 set hidden
+
+" Set to auto read when a file is changed from the outside
+set autoread
+au FocusGained,BufEnter * checktime
 
 "maintain undo history
 set undofile
@@ -17,7 +21,7 @@ set noswapfile
 set path+=**
 " lazy file name completion with mouse support
 set mouse=a
-set wildmode=longest,list,full
+
 set wildmenu
 set wildignorecase
 " ignore files vim doesnt use
@@ -41,13 +45,11 @@ set infercase
 
 "backspace behavior
 set backspace=indent,eol,start
+set whichwrap+=<,>,h,l
 
 " searching
 set hlsearch
 set incsearch
-if usingNeovim
-    set inccommand=split
-endif
 
 "indent of 4 spaces
 set shiftwidth=4
@@ -58,9 +60,6 @@ set noexpandtab
 "identation every four columns
 set tabstop=4
 
-"enable auto indentation
-set autoindent
-
 "remove trailing whitespaces and ^M chars
 augroup ws
   au!
@@ -69,6 +68,17 @@ augroup end
 
 " set leader key to comma
 let mapleader=","
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+
+" For regular expressions turn magic on
+set magic
+
+" Show matching brackets when text indicator is over them
+set showmatch 
+" How many tenths of a second to blink when matching brackets
+set mat=2
 
 " How many tenths of a second to blink when matching brackets
 set mat=2

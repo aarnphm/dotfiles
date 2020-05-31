@@ -1,4 +1,5 @@
 colorscheme gruvbox
+set background=dark
 
 "ale setup
 let g:ale_sign_error = '>>'
@@ -159,8 +160,3 @@ augroup goyoactions
   autocmd! User GoyoEnter nested call <SID>goyo_enter()
   autocmd! User GoyoLeave nested call <SID>goyo_leave()
 augroup end
-
-augroup filetypedetect
-  autocmd!
-  autocmd BufRead,BufNewFile *.m,*.oct setlocal filetype=octave
-augroup END

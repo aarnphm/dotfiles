@@ -19,7 +19,6 @@ Plug 'morhetz/gruvbox'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'tpope/vim-git'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'https://github.com/McSinyx/vim-octave.git', {'for': 'octave'}
 
 "programming
 Plug 'dense-analysis/ale'
@@ -36,7 +35,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'ryanoasis/vim-devicons'
-Plug 'chrisbra/colorizer'
 Plug 'preservim/nerdtree'
 
 "utilities
@@ -48,6 +46,5 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Goyo' }
 Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
 Plug 'junegunn/gv.vim', { 'on': 'GV' }
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 
 call plug#end()
