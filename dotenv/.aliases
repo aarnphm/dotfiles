@@ -10,6 +10,7 @@ alias -- -="cd -"
 
 # added aliases for time shell run
 alias timeshell="time $(which $SHELL) -i -c exit"
+alias dockerclean="sh $HOME/docker_clean.sh"
 
 # don't use vi 
 # alias vi="vim"

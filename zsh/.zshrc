@@ -10,7 +10,19 @@ for config in $HOME/.zsh/*.zsh; do
 	source $config;
 done;
 unset config;
-
 # init pyenv
-eval "$(pyenv init -)"
-
+if command -v pyenv &>/dev/null;
+then
+	eval "$(pyenv init -)"
+fi;
+# check link for zpreztorc
+if [ ! -f $HOME/.zpreztorc ]; then
+	echo "requires zpreztorc, checking whether installed prezto or not..."
+	if [ ! -d $HOME/.zprezto ]; then
+		echo "prezto is not installed, should be already tho"
+		exit
+	fi
+	for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+		ln "$rcfile" "$HOME/dotfiles/zsh/.${rcfile:t}"
+	done;
+fi;

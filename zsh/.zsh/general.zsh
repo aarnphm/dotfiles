@@ -11,6 +11,7 @@ HISTFILE=~/.histfile
 HISTSIZE=2500
 SAVEHIST=2500
 bindkey -v
+
 # added tmux to zsh when startup
 if [ -z "$TMUX" ]
 then

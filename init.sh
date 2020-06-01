@@ -1,7 +1,24 @@
-sudo apt-get update && sudo apt-get install git curl wget
-git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-curl -fsSL https://starship.rs/install.sh | bash
-curl https://pyenv.run | bash
+#!/bin/bash
+. helpers.sh
+. package.sh 
 
+# install essentials
+_install core
+_update system
+
+# prezto
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+# zinit
+curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh
+# tpm
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# install starship if wanted
+if  [[ "$OSTYPE" == "darwin" ]]; then
+	curl -fsSL https://starship.rs/install.sh | bash
+fi
+# pyenv
+curl https://pyenv.run | bash
+# yarn because npm sucks
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update && sudo apt install yarn
