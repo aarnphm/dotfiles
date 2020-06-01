@@ -48,9 +48,11 @@ zinit load zdharma/history-search-multi-word
 zinit light zdharma/fast-syntax-highlighting
 
 # dark version
-zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
-
+# zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
 ### End of Zinit's installer chunk
+
+# some slight modification 
+source ~/.zsh-theme-gruvbox-material-*
 
 # if command -v starship &>/dev/null; then
 # 	eval "$(starship init zsh)"
