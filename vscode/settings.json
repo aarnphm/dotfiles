@@ -1,0 +1,16 @@
+{
+    "go.useLanguageServer":true,
+    "go.lintFlags": ["--enable-all", "--new"],
+    "explorer.confirmDelete": false,
+    "workbench.startupEditor": "newUntitledFile",
+    "explorer.confirmDragAndDrop": false,
+    "workbench.iconTheme": "file-icons",
+    "workbench.colorTheme": "Gruvbox Material Dark",
+    "window.menuBarVisibility": "toggle",
+    "vim.vimrc.enable":true,
+    "vim.vimrc.path": "~/.vimrc",
+    "files.exclude": {
+        "**/__pycache__": true
+    },
+    "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'"
+}

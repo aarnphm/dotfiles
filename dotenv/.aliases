@@ -84,7 +84,7 @@ done
 if [[ "$OSTYPE" == "darwin" ]]; then
 	alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
-	alias afk="eval '$(grep '^Exec' gluqlo.desktop | tail -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g') &'"
+	alias afk="eval '$(grep '^Exec' /usr/share/applications/screensavers/gluqlo.desktop | tail -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g') &'"
 fi
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"
