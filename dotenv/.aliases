@@ -12,11 +12,10 @@ alias -- -="cd -"
 alias timeshell="time $(which $SHELL) -i -c exit"
 
 # don't use vi 
-alias vi="vim"
-alias nvi="nvim"
+# alias vi="vim"
+alias vi="nvim"
 
 # Shortcuts
-alias d="cd ~/Documents/Dropbox"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias g="git"

@@ -20,6 +20,9 @@ fi
 # source zprezto
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
@@ -42,15 +45,11 @@ zinit light-mode for \
 
 zinit load zdharma/history-search-multi-word
 zinit light zdharma/fast-syntax-highlighting
-zinit light romkatv/powerlevel10k
 
 # dark version
 zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
 
 ### End of Zinit's installer chunk
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # if command -v starship &>/dev/null; then
 # 	eval "$(starship init zsh)"
