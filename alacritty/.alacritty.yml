@@ -1,0 +1,84 @@
+# Font configuration (changes require restart)
+font:
+  # The normal (roman) font face to use.
+  # Style can be specified to pick a specific face.
+  normal:
+    family: "Fira Code Nerd Font"
+    # family: "Source Code Pro"
+    # style: Retina
+
+  # The bold font face
+  bold:
+    family: "Fira Code Nerd Font"
+    # family: "Fira Code"
+    # family: "Source Code Pro"
+
+  # The italic font face
+  italic:
+    family: "Fira Code Nerd Font"
+    # family: "Fira Code"
+    # family: "Source Code Pro"
+    # style: "Medium Italic"
+
+  # Point size of the font
+  size: 10.0
+
+  # Offset is the extra space around each character. offset.y can be thought of
+  # as modifying the linespacing, and offset.x as modifying the letter spacing.
+  offset:
+    x: 0
+    y: 0
+
+  # Glyph offset determines the locations of the glyphs within their cells with
+  # the default being at the bottom. Increase the x offset to move the glyph to
+  # the right, increase the y offset to move the glyph upward.
+  glyph_offset:
+    x: 0
+    y: 0
+
+  # Thin stroke font rendering (macOS only)
+  #
+  # Thin strokes are suitable for retina displays, but for non-retina you
+  # probably want this set to false.
+  #
+  # macOS >= 10.14.x:
+  #
+  # If the font quality on non-retina display looks bad then set
+  # `use_thin_strokes` to `true` and enable font smoothing by running the
+  # following command:
+  #   `defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO`
+  #
+  # This is a global setting and will require a log out or restart to take
+  # effect.
+  # use_thin_strokes: true
+
+# When true, bold text is drawn using the bright variant of colors.
+draw_bold_text_with_bright_colors: false
+colors:
+  primary:
+    background: '0x282828'
+    foreground: '0xdfbf8e'
+
+  normal:
+    black:   '0x665c54'
+    red:     '0xea6962'
+    green:   '0xa9b665'
+    yellow:  '0xe78a4e'
+    blue:    '0x7daea3'
+    magenta: '0xd3869b'
+    cyan:    '0x89b482'
+    white:   '0xdfbf8e'
+
+  bright:
+    black:   '0x928374'
+    red:     '0xea6962'
+    green:   '0xa9b665'
+    yellow:  '0xe3a84e'
+    blue:    '0x7daea3'
+    magenta: '0xd3869b'
+    cyan:    '0x89b482'
+    white:   '0xdfbf8e'
+
+# Live config reload (changes require restart)
+live_config_reload: true
+

@@ -4,7 +4,6 @@ nnoremap <Leader>r :source ~/.vimrc<CR>
 map <space> /
 map <C-space> ?
 
-
 " =========================== tabs management =========================== 
 " Disable highlight when <leader><cr> is pressed
 map <silent> \ :noh<cr>
@@ -30,8 +29,16 @@ au TabLeave * let g:lasttab = tabpagenr()
 map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 "switch tabs
-nnoremap <leader>h :tabprevious<CR>
-nnoremap <leader>l :tabnext<CR>
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>0 :tablast<cr>
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>

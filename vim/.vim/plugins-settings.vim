@@ -1,13 +1,22 @@
-colorscheme gruvbox
+" Important!!
+if has('termguicolors')
+  set termguicolors
+endif
 set background=dark
+" options: soft, medium, hard
+let g:gruvbox_material_background = 'soft'
+colorscheme gruvbox-material
 let g:vim_json_syntax_conceal = 0
 let g:indentLine_concealcursor=""
 let g:indentLine_enabled = 0
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:go_fmt_command = "goimports"
+let g:go_auto_type_info = 1
+
 
 "lightline config
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'gruvbox_material',
       \ 'active': {
       \   'left': [ ['mode', 'paste'],
       \             ['fugitive', 'readonly', 'filename', 'modified'] ],

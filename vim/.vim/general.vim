@@ -66,12 +66,6 @@ set noexpandtab
 "identation every four columns
 set tabstop=4
 
-"remove trailing whitespaces and ^M chars
-augroup ws
-  au!
-  autocmd FileType c,cpp,java,php,js,json,css,scss,sass,py,rb,coffee,python,twig,xml,yml,ts autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-augroup end
-
 " set leader key to comma
 let mapleader=","
 

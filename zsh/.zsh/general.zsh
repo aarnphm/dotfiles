@@ -42,13 +42,23 @@ zinit light-mode for \
 
 zinit load zdharma/history-search-multi-word
 zinit light zdharma/fast-syntax-highlighting
+zinit light romkatv/powerlevel10k
+
+# dark version
+zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
 
 ### End of Zinit's installer chunk
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-if command -v starship &>/dev/null; then
-	eval "$(starship init zsh)"
-fi;
+# if command -v starship &>/dev/null; then
+# 	eval "$(starship init zsh)"
+# fi;
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/aar0npham/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aar0npham/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/aar0npham/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aar0npham/google-cloud-sdk/completion.zsh.inc'; fi

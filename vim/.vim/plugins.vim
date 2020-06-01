@@ -13,16 +13,17 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-"colors related with syntax hilighting for language (also included language
-"pack as well)
+"colors related
 Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
+
+"included language pack
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'tpope/vim-git'
 Plug 'ericpruitt/tmux.vim', {'rtp': 'vim/'}
 Plug 'cespare/vim-toml'
 Plug 'leafgarland/typescript-vim'
 Plug 'stephpy/vim-yaml'
-Plug 'elzr/vim-json'
 Plug 'zinit-zsh/zinit-vim-syntax'
 Plug 'plasticboy/vim-markdown'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -46,6 +47,7 @@ Plug 'preservim/nerdtree'
 
 "utilities
 Plug 'rking/ag.vim'
+Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
