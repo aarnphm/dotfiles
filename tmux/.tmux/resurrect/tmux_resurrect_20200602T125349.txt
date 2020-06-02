@@ -1,0 +1,9 @@
+pane	TMUX	1	:nvim	0	:	0	:/mnt/Centralized/documents/cs/lightly-ocr/ingress	1	nvim	:nvim db/db.go
+pane	TMUX	2	:zsh	0	:	0	:/mnt/Centralized/documents/cs/lightly-ocr/ingress/db	1	zsh	:
+pane	TMUX	3	:zsh	0	:-	0	:/mnt/Centralized/documents/cs/coding-practices/learngo	1	zsh	:
+pane	TMUX	4	:zsh	1	:*	0	:/home/aar0npham	1	zsh	:
+window	TMUX	1	0	:	c1fd,141x74,0,0,0
+window	TMUX	2	0	:	c1fe,141x74,0,0,1
+window	TMUX	3	0	:-	c1ff,141x74,0,0,2
+window	TMUX	4	1	:*	c200,141x74,0,0,3
+state	TMUX	

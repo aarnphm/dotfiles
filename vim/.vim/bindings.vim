@@ -3,6 +3,9 @@ nnoremap <Leader>r :source ~/.vimrc<CR>
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 map <C-space> ?
+" map <C-r> for PlugInstall and <C-d> for PlugClean
+map <leader><C-d> :PlugClean<cr>
+map <leader><C-r> :PlugInstall<cr>
 
 " =========================== tabs management =========================== 
 " Disable highlight when <leader><cr> is pressed
@@ -13,6 +16,10 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+
+" added yank to clipboard shortcut
+noremap <leader>y "+y
+noremap <leader>p "+p
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -27,6 +34,9 @@ au TabLeave * let g:lasttab = tabpagenr()
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
+
+" Tagbar toggle
+nmap <F4> :TagbarToggle<CR>
 
 "switch tabs
 noremap <leader>1 1gt

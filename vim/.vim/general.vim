@@ -13,6 +13,9 @@ set hidden
 set autoread
 au FocusGained,BufEnter * checktime
 
+" remove --INSERT--, etc tag since already included in airline
+set noshowmode
+
 "maintain undo history
 set undofile
 set undodir=~/.vim/undo
