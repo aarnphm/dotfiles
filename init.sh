@@ -6,6 +6,9 @@
 _install core
 _update system
 
+# link vscode settings
+ln -s vscode/settings.json $HOME/.config/Code/User/
+
 # prezto
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 # zinit

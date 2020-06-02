@@ -1,6 +1,9 @@
 "syntax higlighting
 syntax on
 
+" set command height to 2
+set cmdheight=2
+
 " disable startup message
 set shortmess+=I
 

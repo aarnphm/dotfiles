@@ -12,9 +12,15 @@ alias -- -="cd -"
 alias timeshell="time $(which $SHELL) -i -c exit"
 alias dockerclean="sh $HOME/docker_clean.sh"
 
-# don't use vi 
-# alias vi="vim"
-alias vi="nvim"
+# don't use vi, if has nvim else use vim (color doesn't work as well)
+# alias vi="vim", added vmu for multiple file open at one
+if command -v nvim &>/dev/null; then
+	alias vi="nvim"
+	alias vmu="nvim -p"
+else
+	alias vi="vim"
+	alias vmu="vim -p"
+fi
 
 # Shortcuts
 alias dl="cd ~/Downloads"

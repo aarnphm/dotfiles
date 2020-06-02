@@ -40,7 +40,6 @@ set wildignore+=*.doc,*.pdf,*.cbr,*.cbz
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz,*.kgb
 set wildignore+=*.swp,.lock,.DS_Store,._*
 
-
 "case insenstivie search
 set ignorecase
 set smartcase 
@@ -79,5 +78,3 @@ set autoindent
 set smartindent
 set wrap
 
-" set command height to 2
-set cmdheight=2

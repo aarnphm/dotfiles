@@ -11,8 +11,7 @@ for config in $HOME/.zsh/*.zsh; do
 done;
 unset config;
 # init pyenv
-if command -v pyenv &>/dev/null;
-then
+if command -v pyenv &>/dev/null;then
 	eval "$(pyenv init -)"
 fi;
 # check link for zpreztorc
