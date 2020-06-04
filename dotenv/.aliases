@@ -8,6 +8,9 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
+# install faster
+alias install="apt-get install -y -qq"
+
 # added aliases for time shell run
 alias timeshell="time $(which $SHELL) -i -c exit"
 alias dockerclean="sh $HOME/docker_clean.sh"
