@@ -60,7 +60,7 @@ source ~/.zsh-theme-gruvbox-material-*
 
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/aar0npham/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aar0npham/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/home/aar0npham/dotfiles/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aar0npham/dotfiles/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/home/aar0npham/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aar0npham/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/home/aar0npham/dotfiles/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aar0npham/dotfiles/google-cloud-sdk/completion.zsh.inc'; fi
