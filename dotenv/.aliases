@@ -22,6 +22,12 @@ else
 	alias vmu="vim -p"
 fi
 
+# alias python with python3
+if [[ "$OSTYPE"=="linux-gnu"* ]]; then
+	alias python=python3
+	alias pip=pip3
+fi
+
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"

@@ -14,6 +14,17 @@ let g:go_fmt_command = "goimports"
 let g:go_auto_type_info = 1
 
 
+" ale config
+let g:ale_linters = {
+      \   'python': ['flake8', 'pylint'],
+      \   'ruby': ['standardrb', 'rubocop'],
+      \   'javascript': ['eslint'],
+      \}
+let g:ale_fixers = {
+      \    'python': ['yapf'],
+      \}
+let g:ale_fix_on_save = 1
+
 "lightline config
 let g:lightline = {
       \ 'colorscheme': 'gruvbox_material',
@@ -55,6 +66,9 @@ let g:lightline#ale#indicator_warnings = "\uf071 "
 let g:lightline#ale#indicator_errors = "\uf05e "
 let g:lightline#ale#indicator_ok = "\uf00c "
 
+" added livedown
+nnoremap gm :LivedownToggle<CR>
+nnoremap gk :LivedownKill<CR>
 
 " NERDTree settings
 let NERDTreeShowHidden = 1

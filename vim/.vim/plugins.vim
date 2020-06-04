@@ -43,6 +43,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
+Plug 'shime/vim-livedown'
 
 "utilities
 Plug 'rking/ag.vim'
