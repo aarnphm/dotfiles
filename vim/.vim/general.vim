@@ -11,7 +11,6 @@ set hidden
 
 " Set to auto read when a file is changed from the outside
 set autoread
-au FocusGained,BufEnter * checktime
 
 " remove --INSERT--, etc tag since already included in airline
 set noshowmode

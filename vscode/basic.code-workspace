@@ -2,19 +2,23 @@
 	"folders": [
 		{
 			"name": "lightly-ocr",
-			"path": "../../Documents/cs/lightly-ocr"
+			"path": "Documents/cs/lightly-ocr"
 		},
 		{
 			"name": "coding-practices",
-			"path": "../../Documents/cs/coding-practices"
+			"path": "Documents/cs/coding-practices"
 		},
 		{
 			"name": "detr-keras",
-			"path": "../../Documents/cs/detr-keras"
+			"path": "Documents/cs/detr-keras"
 		},
 		{
 			"name": "lightly",
-			"path": "../../Documents/cs/lightly"
+			"path": "Documents/cs/lightly"
+		},
+		{
+			"name": "lightly-app",
+			"path": "Documents/cs/lightly-app"
 		}
 	]
 }
