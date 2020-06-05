@@ -44,6 +44,7 @@ Plug 'maximbaz/lightline-ale'
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 Plug 'shime/vim-livedown'
+Plug 'majutsushi/tagbar'
 
 "utilities
 Plug 'rking/ag.vim'

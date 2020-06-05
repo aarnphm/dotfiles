@@ -36,7 +36,7 @@ au TabLeave * let g:lasttab = tabpagenr()
 map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 " Tagbar toggle
-nmap <F4> :TagbarToggle<CR>
+nmap <F4> :Tagbar<CR>
 
 "switch tabs
 noremap <leader>1 1gt
