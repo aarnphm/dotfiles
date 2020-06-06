@@ -7,7 +7,9 @@ _install core
 _update system
 
 # link vscode settings
-ln -s vscode/settings.json $HOME/.config/Code/User/
+if [[ "$OSTYPE"=="linux-gnu"* ]]; then
+	ln -s vscode/settings.json $HOME/.config/Code/User/
+fi
 
 # prezto
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
@@ -22,9 +24,9 @@ fi
 # pyenv
 curl https://pyenv.run | bash
 # yarn because npm sucks
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt update && sudo apt install yarn
+#curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+#echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+#sudo apt update && sudo apt install yarn
 
 # install gcp
 curl https://sdk.cloud.google.com | bash
