@@ -2,12 +2,16 @@
 
 export PKG=(
 	tmux
+	npm
+	stow
+	cmake
+	g++
+	python3
 	ctags
 	neofetch
 	obs-studio
 	octave
 	pulseaudio
-	pulseaudio-bluetooth
 	sqlitebrowser
 	wmctrl
 	alacritty
