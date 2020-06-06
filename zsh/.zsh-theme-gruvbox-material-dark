@@ -64,7 +64,7 @@ fi
   fi
 
   if (( ${PURE_POWER_USE_P10K_EXTENSIONS:-1} )); then
-    typeset -g POWERLEVEL9K_SHOW_RULER=true
+    typeset -g POWERLEVEL9K_SHOW_RULER=false
     typeset -g POWERLEVEL9K_RULER_CHAR=$(_pp_s '-' '─')
     typeset -g POWERLEVEL9K_RULER_BACKGROUND=none
     if [[ "$DESERT_NIGHT_PURE_POWER_TRUE_COLOR" == "true" ]]; then
@@ -140,7 +140,7 @@ fi
     typeset -g POWERLEVEL9K_VCS_COMMIT_ICON=' '
     typeset -g POWERLEVEL9K_VCS_STAGED_ICON=' '
     typeset -g POWERLEVEL9K_VCS_UNSTAGED_ICON=' '
-    typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON='✩ '
+    typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON='! '
     typeset -g POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='⇣ '
     typeset -g POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON='⇡ '
     typeset -g POWERLEVEL9K_VCS_STASH_ICON='* '

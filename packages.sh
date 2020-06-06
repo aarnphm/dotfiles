@@ -2,7 +2,7 @@
 
 export PKG=(
 	tmux
-	npm
+	silversearcher-ag
 	stow
 	cmake
 	g++
