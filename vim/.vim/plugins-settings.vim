@@ -15,7 +15,6 @@ let g:go_auto_type_info = 1
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
-
 " ale config
 let g:ale_linters = {
       \   'python': ['flake8', 'pylint'],

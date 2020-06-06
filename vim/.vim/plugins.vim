@@ -35,9 +35,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
-"language-related settings
-
-
 "stylish
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
