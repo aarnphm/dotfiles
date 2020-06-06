@@ -54,9 +54,9 @@ zinit light zdharma/fast-syntax-highlighting
 # some slight modification 
 source ~/.zsh-theme-gruvbox-material-*
 
-# if command -v starship &>/dev/null; then
-# 	eval "$(starship init zsh)"
-# fi;
+if command -v starship &>/dev/null; then
+	eval "$(starship init zsh)"
+fi;
 
 
 # The next line updates PATH for the Google Cloud SDK.
