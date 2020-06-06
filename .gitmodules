@@ -1,0 +1,3 @@
+[submodule "skim"]
+ path = skim/.skim
+ url = https://github.com/lotabout/skim

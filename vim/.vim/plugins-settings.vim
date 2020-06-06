@@ -15,6 +15,9 @@ let g:go_auto_type_info = 1
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
+" added bind for sk
+map <C-f> :SK<cr>
+
 " ale config
 let g:ale_linters = {
       \   'python': ['flake8', 'pylint'],
@@ -204,3 +207,4 @@ augroup goyoactions
   autocmd! User GoyoEnter nested call <SID>goyo_enter()
   autocmd! User GoyoLeave nested call <SID>goyo_leave()
 augroup end
+nnoremap <leader>G :Goyo<CR>

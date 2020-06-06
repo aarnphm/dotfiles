@@ -8,6 +8,16 @@ DIR="$(dirname "$0")"
 _install core
 _update system
 
+# updates gitmodules
+for x in $(find . -type d) ; do
+    if [ -d "${x}/.git" ] ; then
+        cd "${x}"
+        origin="$(git config --get remote.origin.url)"
+        cd - 1>/dev/null
+        git submodule add "${origin}" "${x}"
+    fi
+done
+
 if [[ -d "~/.zsh" ]]; then
 	for d in $HOME/dotfiles/*/; do
 		stow $d
