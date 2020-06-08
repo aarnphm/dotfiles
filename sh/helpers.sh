@@ -1,4 +1,5 @@
 #!/bin/bash
+
 function echo_error() {
   printf '\n\033[31mERROR:\033[0m %s\n' "$1"
 }
@@ -16,12 +17,12 @@ function echo_info() {
 }
 
 function _update() {
-  if [[ $1 != "system" ]]; then
+  if [[ $1 == "system" ]]; then
     echo_info "Updating system packages..."
     sudo "$PKGMN" "$PKGU" "${PKGOPT[@]}"
   else
-    echo_info "Updating ${1}..."
-    sudo "$PKGMN" "$PKGI" "$1"
+    echo_info "Ugrading ${1}..."
+    sudo "$PKGMN" "$PKGU" "$1"
   fi
 }
 

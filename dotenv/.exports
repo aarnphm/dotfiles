@@ -9,7 +9,7 @@ export STARSHIP_CONFIG=~/dotfiles/starship/.starship.toml
 # path here
 export GOROOT="/usr/local/go"
 export GOBIN="$HOME/go/bin"
-export PATH="$HOME/.local/bin/:$PYENV_ROOT/bin:$GOROOT/bin:$GOBIN:$PATH"
+export PATH="$HOME/.local/bin/:$PYENV_ROOT/bin:$HOME/.skim/bin:$GOROOT/bin:$GOBIN:$PATH"
 export PATH=$(echo $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print}')
 
 # Enable persistent REPL history for `node`.

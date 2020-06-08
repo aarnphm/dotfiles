@@ -2,6 +2,8 @@
 
 export PKG=(
 	tmux
+	silversearcher-ag
+	stow
 	cmake
 	g++
 	cmatrix
