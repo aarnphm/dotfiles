@@ -1,9 +1,9 @@
 #!/bin/bash
 . helpers.sh
 . package.sh 
+. install.sh
 
 # install essentials
-_install core
 _update system
 
 # link vscode settings

@@ -4,4 +4,4 @@
 . packages.sh
 . helpers.sh
 
-_update system
+_install core

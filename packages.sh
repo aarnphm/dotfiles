@@ -2,10 +2,9 @@
 
 export PKG=(
 	tmux
-	npm
-	stow
 	cmake
 	g++
+	cmatrix
 	python3
 	ctags
 	neofetch

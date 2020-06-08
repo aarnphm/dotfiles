@@ -4,7 +4,12 @@
 # PURE_POWER_MODE=modern    use nerdfont characters in the prompt
 # PURE_POWER_MODE=fancy     use unicode characters in the prompt
 # PURE_POWER_MODE=portable  use only ascii characters in the prompt
-PURE_POWER_MODE=modern
+wsl=$(uname -r | cut -c10-18)
+if [ $wsl = "microsoft" ]; then
+	PURE_POWER_MODE=fancy
+else
+	PURE_POWER_MODE=modern
+fi
 
 if autoload -U is-at-least && is-at-least 5.7 && [[ $COLORTERM == (24bit|truecolor) || ${terminfo[colors]} -eq 16777216 ]]; then
     DESERT_NIGHT_PURE_POWER_TRUE_COLOR=true
