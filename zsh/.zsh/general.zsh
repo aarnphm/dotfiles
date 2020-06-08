@@ -57,7 +57,6 @@ if command -v starship &>/dev/null; then
 	eval "$(starship init zsh)"
 fi;
 
-
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/aar0npham/dotfiles/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aar0npham/dotfiles/google-cloud-sdk/path.zsh.inc'; fi
 

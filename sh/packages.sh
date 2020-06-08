@@ -6,6 +6,7 @@ export PKG=(
 	stow
 	cmake
 	g++
+	cmatrix
 	python3
 	ctags
 	neofetch
