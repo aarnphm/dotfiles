@@ -31,5 +31,3 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh  ||  ! -f ~/.zsh-theme-gruvbox-material* ]] || source ~/.p10k.zsh

@@ -22,9 +22,12 @@ fi
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 
 # some slight modification 
-source ~/.zsh-theme-gruvbox-material-*
+if [[ "$OSTYPE"=="linux-gnu"* ]];then
+	source ~/.zsh-theme-gruvbox-material-*
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+elif [[ "$OSTYPE"=="win32" ]];then 
+	source ~/.p10k.zsh
+fi
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
