@@ -3,9 +3,11 @@ nnoremap <leader>r :source ~/.vimrc<CR>
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 map <C-space> ?
-" map <C-r> for PlugInstall and <C-d> for PlugClean
-map <leader><C-d> :PlugClean<cr>
-map <leader><C-r> :PlugInstall<cr>
+" map <M-r> for PlugInstall and <M-d> for PlugClean
+map <M-d> :PlugClean<cr>
+map <M-r> :PlugInstall<cr>
+" map <M-q> for write quit
+map <M-q> :wq<cr>
 
 " =========================== tabs management =========================== 
 " Disable highlight when <leader><cr> is pressed
