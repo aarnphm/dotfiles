@@ -13,7 +13,7 @@ SAVEHIST=2500
 bindkey -v
 
 # added tmux to zsh when startup
-if [ -z "$TMUX" -a ! $(uname -r | cut -c10-18) = "microsoft" ]
+if [ -z "$TMUX" ]
 then
     tmux attach -t TMUX || tmux new -s TMUX
 fi
