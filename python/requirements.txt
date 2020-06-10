@@ -1,3 +1,5 @@
+jupyter
+jupyter_contrib_nbextensions
 tensorflow-gpu
 keras
 pymongo
