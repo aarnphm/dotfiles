@@ -7,6 +7,8 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
+# cd to docs on wsl
+alias cdocs="cd /mnt/d/documents"
 
 # install faster
 alias install="apt-get install -y -qq"
@@ -95,11 +97,14 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 	alias "${method}"="lwp-request -m '${method}'"
 done
 
+wsl=$(uname -r | cut -c10-18)
 # Lock the screen (when going AFK)
 if [[ "$OSTYPE" == "darwin" ]]; then
 	alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-elif [[ "$OSTYPE" == "linux-gnu" ]]; then
-	alias afk="eval '$(grep '^Exec' /usr/share/applications/screensavers/gluqlo.desktop | tail -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g') &'"
+elif [[ "$OSTYPE" = "linux-gnu"* ]]; then
+	if [ ! $wsl = "microsoft" ]; then
+		alias afk="eval '$(grep '^Exec' /usr/share/applications/screensavers/gluqlo.desktop | tail -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g') &'"
+	fi
 fi
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"

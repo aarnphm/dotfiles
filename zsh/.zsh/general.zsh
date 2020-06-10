@@ -25,7 +25,7 @@ source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 if [[ "$OSTYPE"=="linux-gnu"* ]];then
 	source ~/.zsh-theme-gruvbox-material-*
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-elif [[ "$OSTYPE"=="win32" ]];then 
+elif [ $(uname -r | cut -c10-18) = "microsoft" ];then 
 	source ~/.zsh/.p10k.zsh
 fi
 
