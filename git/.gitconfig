@@ -3,3 +3,5 @@
 	name = aar0npham
 [submodule]
 	recurse = true
+[credential]
+	helper = store

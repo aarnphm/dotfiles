@@ -11,6 +11,8 @@ for config in $HOME/.zsh/*.zsh; do
 done;
 unset config;
 
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/aar0npham/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aar0npham/google-cloud-sdk/path.zsh.inc'; fi
 

@@ -16,7 +16,8 @@ alias install="apt-get install -y -qq"
 # added aliases for time shell run
 alias timeshell="time $(which $SHELL) -i -c exit"
 alias dockerclean="sh $HOME/docker_clean.sh"
-
+alias confmonitor="xrandr --output $(xrandr |grep DP-0| cut -d " " -f1) --rotate right"
+alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # don't use vi, if has nvim else use vim (color doesn't work as well)
 # alias vi="vim", added vmu for multiple file open at one
 if command -v nvim &>/dev/null; then
@@ -28,16 +29,17 @@ else
 fi
 
 # alias python with python3
-if [[ "$OSTYPE"=="linux-gnu"* ]]; then
-	alias python=python3
-	alias pip=pip3
-fi
+# if [[ "$OSTYPE"=="linux-gnu"* ]]; then
+# 	alias python=python3
+# 	alias pip=pip3
+# fi
 
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias g="git"
-
+# https://stackoverflow.com/a/44247040/8643197
+# git config --global --add url."git@github.com:".insteadOf "https://github.com/"
 alias svim="sudo -E vim"
 alias snvim="sudo -E nvim"
 
