@@ -38,6 +38,7 @@ fi
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias g="git"
+alias 8080="sudo lsof -iTCP:8080 -sTCP:LISTEN"
 # https://stackoverflow.com/a/44247040/8643197
 # git config --global --add url."git@github.com:".insteadOf "https://github.com/"
 alias svim="sudo -E vim"
