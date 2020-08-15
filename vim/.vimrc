@@ -31,6 +31,9 @@ call plug#end()
 
 " General settings
 syntax on
+if has('termguicolors')
+  set termguicolors
+endif
 colorscheme one                           
 set nowrap showmatch number
 set nocompatible autoread hidden 
@@ -83,8 +86,10 @@ map <C-l> <C-W>l
 map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 " added yank to clipboard shortcut
-noremap <leader>y "+Y
-noremap <leader>p "+P
+noremap <M-y> "*y
+noremap <M-p> "*p
+noremap <M-Y> "+y
+noremap <M-P> "+p
 
 " map <M-r> for PlugInstall and <M-d> for PlugClean
 map <M-d> :PlugClean<cr>
@@ -99,4 +104,21 @@ let g:go_auto_type_info=1
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 let g:ale_fix_on_save=1
+
+" NERDTree settings
+let NERDTreeShowHidden = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:NERDTreeWinPos = "right"
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let g:NERDTreeWinSize=35
+map <F3> :NERDTreeToggle<cr>
+augroup finalcountdown
+  au!
+  "autocmd WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw" || &buftype == 'quickfix' |q|endif
+  autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) || &buftype == 'quickfix' | q | endif
+  "nmap - :Lexplore<cr>
+  nmap - :NERDTreeToggle<cr>
+augroup END
 

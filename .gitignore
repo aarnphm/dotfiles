@@ -1,3 +1,5 @@
+.ipython/nbextenstions/
+.ipython/extensions/
 vscode/
 .uuid
 google-cloud-sdk

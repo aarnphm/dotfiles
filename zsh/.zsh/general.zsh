@@ -1,17 +1,14 @@
 # support for autocompletion
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
-# force dircolors if have one 
-if [[ -f ~/.dircolors ]];
-then 
-	eval "$(dircolors -b ~/.dircolors)"
-fi
-
+# quick hack to remove green background
+eval "$(dircolors -p | \
+    sed 's/ 4[0-9];/ 01;/; s/;4[0-9];/;01;/g; s/;4[0-9] /;01 /' | \
+    dircolors /dev/stdin)"
 HISTFILE=~/.histfile
 HISTSIZE=2500
 SAVEHIST=2500
 bindkey -v
-
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
@@ -42,3 +39,7 @@ if command -v starship &>/dev/null; then
 	eval "$(starship init zsh)"
 fi;
 
+source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
