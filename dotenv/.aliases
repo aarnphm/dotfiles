@@ -28,6 +28,7 @@ else
 	alias vmu="vim -p"
 fi
 
+alias swagger="docker run --rm -it -e GOPATH=$HOME/go:/go -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger"
 # alias python with python3
 # if [[ "$OSTYPE"=="linux-gnu"* ]]; then
 # 	alias python=python3
