@@ -8,19 +8,11 @@ vicmd_symbol = '←'
 [aws]
 symbol = " "
 
-[battery]
-full_symbol = ""
-charging_symbol = ""
-discharging_symbol = ""
-
 [conda]
 symbol = " "
 
 [docker]
 symbol = " "
-
-[elixir]
-symbol = " "
 
 [elm]
 symbol = " "
@@ -29,11 +21,12 @@ symbol = " "
 symbol = " "
 
 [git_status]
-deleted = "✘ "
-renamed = "» "
+deleted = "✘"
+renamed = "»"
 
 [golang]
 symbol = " "
+style = "bold cyan"
 
 [haskell]
 symbol = " "

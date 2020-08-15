@@ -62,7 +62,7 @@ window:
   #
   # Override the variant of the GTK theme. Commonly supported values are `dark` and `light`.
   # Set this to `None` to use the default theme variant.
-  #gtk_theme_variant: None
+  gtk_theme_variant: dark
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -79,7 +79,7 @@ font:
   normal:
     family: "Fira Code Nerd Font"
     # family: "Source Code Pro"
-    # style: Retina
+    style: Mono
 
   # The bold font face
   bold:
@@ -95,7 +95,7 @@ font:
     # style: "Medium Italic"
 
   # Point size of the font
-  size: 10.0
+  size: 11.3
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
@@ -127,31 +127,31 @@ font:
   # use_thin_strokes: true
 
 # When true, bold text is drawn using the bright variant of colors.
-draw_bold_text_with_bright_colors: false
-colors:
-  primary:
-    background: '0x282828'
-    foreground: '0xdfbf8e'
+# draw_bold_text_with_bright_colors: false
+# colors:
+#   primary:
+#     background: '0x282828'
+#     foreground: '0xdfbf8e'
 
-  normal:
-    black:   '0x665c54'
-    red:     '0xea6962'
-    green:   '0xa9b665'
-    yellow:  '0xe78a4e'
-    blue:    '0x7daea3'
-    magenta: '0xd3869b'
-    cyan:    '0x89b482'
-    white:   '0xdfbf8e'
+#   normal:
+#     black:   '0x665c54'
+#     red:     '0xea6962'
+#     green:   '0xa9b665'
+#     yellow:  '0xe78a4e'
+#     blue:    '0x7daea3'
+#     magenta: '0xd3869b'
+#     cyan:    '0x89b482'
+#     white:   '0xdfbf8e'
 
-  bright:
-    black:   '0x928374'
-    red:     '0xea6962'
-    green:   '0xa9b665'
-    yellow:  '0xe3a84e'
-    blue:    '0x7daea3'
-    magenta: '0xd3869b'
-    cyan:    '0x89b482'
-    white:   '0xdfbf8e'
+#   bright:
+#     black:   '0x928374'
+#     red:     '0xea6962'
+#     green:   '0xa9b665'
+#     yellow:  '0xe3a84e'
+#     blue:    '0x7daea3'
+#     magenta: '0xd3869b'
+#     cyan:    '0x89b482'
+#     white:   '0xdfbf8e'
 
 # Live config reload (changes require restart)
 live_config_reload: true

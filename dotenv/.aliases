@@ -7,43 +7,25 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
-# cd to docs on wsl
-alias cdocs="cd /mnt/d/documents"
 
-# install faster
-alias install="apt-get install -y -qq"
+alias vi="/usr/bin/vi"
+alias vim="/usr/bin/vim"
 
 # added aliases for time shell run
 alias timeshell="time $(which $SHELL) -i -c exit"
 alias dockerclean="sh $HOME/docker_clean.sh"
+# v-h monitor setup
 alias confmonitor="xrandr --output $(xrandr |grep DP-0| cut -d " " -f1) --rotate right"
+# only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
-# don't use vi, if has nvim else use vim (color doesn't work as well)
-# alias vi="vim", added vmu for multiple file open at one
-if command -v nvim &>/dev/null; then
-	alias vi="nvim"
-	alias vmu="nvim -p"
-else
-	alias vi="vim"
-	alias vmu="vim -p"
-fi
 
 alias swagger="docker run --rm -it -e GOPATH=$HOME/go:/go -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger"
-# alias python with python3
-# if [[ "$OSTYPE"=="linux-gnu"* ]]; then
-# 	alias python=python3
-# 	alias pip=pip3
-# fi
 
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias g="git"
 alias 8080="sudo lsof -iTCP:8080 -sTCP:LISTEN"
-# https://stackoverflow.com/a/44247040/8643197
-# git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-alias svim="sudo -E vim"
-alias snvim="sudo -E nvim"
 
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
@@ -74,16 +56,11 @@ alias week='date +%V'
 # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
 # alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
 
+# remove annoying yes confirmation
+alias install='install -y -qq'
+
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
-
-# Show active network interfaces
-alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
-
-# Trim new lines and copy to clipboard
-alias c="tr -d '\n' | pbcopy"
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
@@ -105,10 +82,6 @@ wsl=$(uname -r | cut -c10-18)
 # Lock the screen (when going AFK)
 if [[ "$OSTYPE" == "darwin" ]]; then
 	alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-elif [[ "$OSTYPE" = "linux-gnu"* ]]; then
-	if [ ! $wsl = "microsoft" ]; then
-		alias afk="eval '$(grep '^Exec' /usr/share/applications/screensavers/gluqlo.desktop | tail -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g') &'"
-	fi
 fi
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"
