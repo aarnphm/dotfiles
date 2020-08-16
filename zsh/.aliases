@@ -8,22 +8,17 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
-alias vi="/usr/bin/vi"
-alias vim="/usr/bin/vim"
-alias zshconfig="source $HOME/.zshrc" 
 # added aliases for time shell run
 alias timeshell="time $(which $SHELL) -i -c exit"
-alias dockerclean="sh $HOME/docker_clean.sh"
 # v-h monitor setup
 alias confmonitor="xrandr --output $(xrandr |grep DP-0.1 | cut -d " " -f1) --rotate left"
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
-
+# swag like crazy
 alias swagger="docker run --rm -it -e GOPATH=$HOME/go:/go -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger"
 
 # Shortcuts
 alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
 alias g="git"
 alias 8080="sudo lsof -iTCP:8080 -sTCP:LISTEN"
 
@@ -41,17 +36,8 @@ alias sudo='nocorrect sudo'
 # Get week number
 alias week='date +%V'
 
-# Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-# alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
-
-# remove annoying yes confirmation
-alias install='install -y -qq'
-
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-
-# Recursively delete `.DS_Store` files
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
