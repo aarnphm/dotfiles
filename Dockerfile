@@ -1,28 +1,24 @@
-FROM ubuntu:20.04
+FROM debian:latest
 
-ARG USER_NAME="testing"
-ARG USER_PASSWORD="passw0rd"
-ENV USER_NAME $USER_NAME
-ENV USER_PASSWORD $USER_PASSWORD
+ARG USERNAME=anotheruser
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
-RUN apt-get update && apt-get -y upgrade
-RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && \
-	export DEBIAN_FRONTEND=noninteractive &&\
-	apt-get install -y tzdata && \
-	dpkg-reconfigure --frontend noninteractive tzdata
-RUN apt-get -y install tmux zsh stow curl wget git npm fonts-powerline locales sudo
-RUN locale-gen en_US.UTF-8 
-RUN adduser --quiet --disabled-password --shell /bin/zsh --home /home/$USER_NAME --gecos "User" $USER_NAME && \
-	echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd && usermod -aG sudo $USER_NAME && \
-	echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-USER $USER_NAME
-ENV TERM xterm
-ENV TERM xterm
-ENV ZSH_THEME powerlevel10k
-
-WORKDIR /home/testing/dotfiles
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo make stow zsh git curl wget tmux\
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME \
+    #
+    # Clean up
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+USER root
+WORKDIR /dotfiles
 COPY . .
+RUN sudo make install
+RUN cd pkg/ && for dir in "alacritty fonts git python starship tmux vim zsh"; do sudo stow $dir -t /root;done
 
-RUN for dir in "dircolors dotenv zsh vim tmux sh"; do stow $dir; done 
 CMD ["zsh"]

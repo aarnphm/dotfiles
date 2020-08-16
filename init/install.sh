@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. distro.sh
-. packages.sh
-. helpers.sh
+. init/distro.sh
+. init/packages.sh
+. init/helpers.sh
 
 _install core

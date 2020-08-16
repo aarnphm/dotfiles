@@ -1,18 +1,14 @@
-# YADF
+# aarn's dotfiles
 _yet another dotfile repo_
 
+just a tiny collection of my development environment
 
-# instruction
+- I have included a Docker version of my dotfiles if you want to try it out.
+- Make sure you have `docker` installed. then do `make build` the followed by `make run`
 
-- clone the repo with `git clone --recursive https://github.com/aar0npham/yadf.git $HOME/dotfiles`
-- run `sh/init.sh` for the magic to happen
-- to update all submodule do `git config --global submodule.recurse true`
+# Folder structures
+- `stow` is used for symlink manager
+- `init`: contains scripts to run for first time setup. do `make install`
+    - inside `init/init.sh` contains some of `curl` commands to setup [alacritty](https://github.com/alacritty/alacritty).
+- `pkg` contains all necessary folders. enjoy !
 
-powerfull command : 
-```bash
-for x in $(find . -type d) ; do if [ -d "${x}/.git" ] ; then cd "${x}" ; origin="$(git config --get remote.origin.url)" ; cd - 1>/dev/null; git submodule add "${origin}" "${x}" ; fi ; done
-```
-
-# todo.
-* [x] added config for setup macOS
-* [x] finish more binding for vim

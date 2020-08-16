@@ -12,9 +12,9 @@ function listen(){
 
 function dockerclean() {
     # remove first none images
-    docker rmi -f $(docker images -a | grep "^<none>" | awk '{print $3}') 2> /dev/null || echo "No untagged images were deleted";
+    docker rmi -f $(docker images -a | grep "^<none>" | awk '{print $3}') 2> /dev/null;
     # now remove none container
-    docker rmi -f $(docker ps -a -f status=exited -q) 2> /dev/null | echo "No containers were removed";
+    docker rmi -f $(docker ps -a -f status=exited -q) 2> /dev/null;
 }
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression

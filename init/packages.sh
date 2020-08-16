@@ -2,20 +2,20 @@
 
 export PKG=(
 	tmux
+    git
 	silversearcher-ag
 	stow
 	cmake
 	g++
 	cmatrix
 	python3
+    pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev
 	ctags
 	neofetch
 	obs-studio
 	octave
-	pulseaudio
 	sqlitebrowser
 	wmctrl
-	alacritty
 	neovim
 	# python3 support for neovim
 	python3-neovim
