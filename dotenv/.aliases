@@ -10,12 +10,12 @@ alias -- -="cd -"
 
 alias vi="/usr/bin/vi"
 alias vim="/usr/bin/vim"
-
+alias zshconfig="source $HOME/.zshrc" 
 # added aliases for time shell run
 alias timeshell="time $(which $SHELL) -i -c exit"
 alias dockerclean="sh $HOME/docker_clean.sh"
 # v-h monitor setup
-alias confmonitor="xrandr --output $(xrandr |grep DP-0| cut -d " " -f1) --rotate right"
+alias confmonitor="xrandr --output $(xrandr |grep DP-0.1 | cut -d " " -f1) --rotate left"
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 
