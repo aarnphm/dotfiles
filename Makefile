@@ -1,9 +1,11 @@
 .PHONY: install
 
+stow: init
+	cd pkg && . ../init/stow.sh
 init:
-	chmod +x init/*.sh && ./init/init.sh
-install:
-	chmod +x init/*.sh && ./init/install.sh
+	chmod +x init/*.sh
+install: init
+	./init/install.sh
 build:
 	docker build -t aar0npham/dotfiles:latest .
 run:
