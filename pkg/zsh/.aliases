@@ -10,8 +10,6 @@ alias -- -="cd -"
 
 # added aliases for time shell run
 alias timeshell="time $(which $SHELL) -i -c exit"
-# v-h monitor setup
-alias confmonitor="xrandr --output $(xrandr |grep DP-0.1 | cut -d " " -f1) --rotate left"
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # swag like crazy
@@ -55,9 +53,25 @@ done
 #Lock the screen (when going AFK)
 if [[ "$OSTYPE" == "darwin" ]]; then
 	alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+else 
+    alias afk="gnome-screensaver-command -l"
 fi
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"
+alias rrload="source $HOME/.zshrc"
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
+
+# Safe ops. Ask the user before doing anything destructive.
+alias rmi="${aliases[rm]:-rm} -i"
+alias mvi="${aliases[mv]:-mv} -i"
+alias cpi="${aliases[cp]:-cp} -i"
+alias lni="${aliases[ln]:-ln} -i"
+
+# File Download
+if (( $+commands[curl] )); then
+  alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
+elif (( $+commands[wget] )); then
+  alias get='wget --continue --progress=bar --timestamping'
+fi

@@ -1,15 +1,16 @@
 # startup
 fpath=($HOME/.zsh/completion $fpath)
-autoload -Uz compinit && compinit -i
 
-# Load the shell dotfiles, and then some:
-# * ~/.path can be used to extend `$PATH`.
-# * ~/.extra can be used for other settings you don’t want to commit.
+for f in $HOME/.zsh/*.zsh; do
+    source $f;
+done;
+
 for file in ~/.{exports,aliases,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
 
+autoload -Uz compinit && compinit -i
 # quick hack to remove green background
 eval "$(dircolors -p | sed 's/ 4[0-9];/ 01;/; s/;4[0-9];/;01;/g; s/;4[0-9] /;01 /' | dircolors /dev/stdin)"
 HISTFILE=~/.histfile
@@ -69,7 +70,11 @@ zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps -
 zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
 
 # geometry
-zinit ice pick"geometry.zsh"
-zinit light geometry-zsh/geometry
+# zinit ice pick"geometry.zsh"
+# zinit light geometry-zsh/geometry
+
+zinit light romkatv/powerlevel10k
+# dark version
+zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
 
 ### End of Zinit's installer chunk

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Displays user owned processes status.
+function psu {
+  ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${(@)argv[2,-1]}"
+}
+
 # Create a new directory and enter it
 function mkd() {
 	mkdir -p "$@" && cd "$_";
