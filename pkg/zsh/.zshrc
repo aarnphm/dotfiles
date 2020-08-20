@@ -1,6 +1,8 @@
 # startup
 fpath=($HOME/.zsh/completion $fpath)
 
+# important
+setopt prompt_subst
 for f in $HOME/.zsh/*.zsh; do
     source $f;
 done;

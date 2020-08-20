@@ -3,6 +3,7 @@ syntax on
 if g:is_termguicolors
     set termguicolors
 endif
+set title
 set nowrap showmatch number
 set nocompatible autoread hidden
 filetype plugin indent on
@@ -15,6 +16,8 @@ if has('vim')
 endif
 set wildmenu wildmode=longest:full,full wildcharm=<Tab>
 set shortmess+=I
+nnoremap <F2> :set invpaste paste?<CR>
+imap <F2> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F2>
 " UI settings
 set listchars=eol:¶,trail:•,tab:▸\
@@ -25,10 +28,10 @@ hi TabLine      ctermfg=NONE  ctermbg=NONE     cterm=NONE
 hi TabLineFill  ctermfg=NONE  ctermbg=NONE     cterm=NONE
 hi TabLineSel   ctermfg=NONE  ctermbg=NONE     cterm=NONE
 set laststatus=0
-set ruler rulerformat=%34(%=%y%m\ ›\ %{getfsize(@%)}B\ ›\ %l:%L:%v%)
+set ruler rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L:%v%)
 se showtabline=2
 " Performance tuning
-set autoindent expandtab lazyredraw nocursorline			 
+set autoindent copyindent expandtab lazyredraw nocursorline			 
 set hlsearch ignorecase incsearch smartcase ttyfast 
 set nobackup noswapfile nowritebackup            
 set undofile undodir=~/.vim/undo undolevels=9999 
@@ -38,7 +41,8 @@ let mapleader=','
 nnoremap <leader>, :let @/=''<CR>:noh<CR>	
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>         
 nnoremap <leader>b :ls<CR>:buffer<space>  
-nnoremap <leader>d :w !diff % -<CR>            
+nnoremap <leader>d :w !diff % -<CR>
+nnoremap <leader>s :so $MYVIMRC<CR>
 nnoremap <silent> <leader>i gg=G``<CR>         
 nnoremap <leader>l :set list! list?<CR>        
 nnoremap <silent> <leader>t :%s/\s\+$//e<CR>    
@@ -61,26 +65,15 @@ noremap <M-p> "*p
 noremap <M-Y> "+y
 noremap <M-P> "+p
 " map <M-r> for PlugInstall and <M-d> for PlugClean
-map <leader>c :PlugClean<cr>
-map <leader>r :PlugInstall<cr>
+map <leader>C :PlugClean<cr>
+map <leader>R :PlugInstall<cr>
 " Cheeky
 cnoreabbrev w!! w !sudo tee > /dev/null %
-" IDE settings?
-au filetype go inoremap <buffer> . .<C-x><C-o>
-set omnifunc=go#complete#Complete
-set completeopt=longest,menuone,popup,preview
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
-  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-n>"
-    endif
+
+"epic PASTE mode
+function! HasPaste()
+if &paste
+    return 'PASTE MODE '
+endif
+return ''
 endfunction
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-p>

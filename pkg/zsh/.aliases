@@ -8,12 +8,29 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
+# hmm if there is only one way to use nvim
+if command -v nvim 1>/dev/null 2>&1;then
+    alias vim="/usr/bin/nvim"
+    alias vi="/usr/bin/nvim"
+else
+    alias vim="/usr/bin/vim"
+    alias vi="/usr/bin/vi"
+fi
+
+# curl shortcut
+alias header='curl -I'
+# shortcut for curl with authentication header : $0->Methods, $1->authkey, $2->addr
+alias curlauth="curl -v -H 'Authorization: $authkey' $1"
+# mcmaster vpn
+alias macvpn="/opt/anyconnect-linux64-4.6.04056/vpn/vpn connect sslvpn.mcmaster.ca"
 # added aliases for time shell run
 alias timeshell="time $(which $SHELL) -i -c exit"
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # swag like crazy
 alias swagger="docker run --rm -it -e GOPATH=$HOME/go:/go -v $HOME:$HOME -w $(pwd) quay.io/goswagger/swagger"
+# remove bytecode
+alias pycclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
 
 # Shortcuts
 alias dl="cd ~/Downloads"

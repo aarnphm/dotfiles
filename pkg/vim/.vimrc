@@ -1,8 +1,6 @@
 let g:is_unix=has('unix')
 let g:is_gui=has('gui_running')
-let g:is_termguicolors = has('termguicolors')
-            \ && !g:is_gui
-            \ && $COLORTERM isnot# 'xterm-256color'
+let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
 let g:has_job = has('job')
 let g:has_term = has('terminal')
 
@@ -23,11 +21,10 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 " quick access vim files
-command! Ev :e! $MYVIMRC
 for s:f in s:cfg_files
-    execute 'command! Ev' . s:f[0] .
-                \' :edit! ' . g:vim_dir . '/config/' . s:f . '.vim'
+    execute 'command! Ev' . s:f[0] . ' :edit! ' . g:vim_dir . '/config/' . s:f . '.vim'
 endfor
+command! Ev :e! $MYVIMRC
 
 " auto source vimrc
 augroup Resource
