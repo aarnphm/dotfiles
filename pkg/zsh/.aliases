@@ -16,6 +16,7 @@ else
     alias vim="/usr/bin/vim"
     alias vi="/usr/bin/vi"
 fi
+alias allvim="$EDITOR -p *"
 
 # curl shortcut
 alias header='curl -I'

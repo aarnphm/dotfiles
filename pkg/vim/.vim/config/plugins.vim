@@ -31,8 +31,6 @@ Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'wakatime/vim-wakatime'
 call plug#end()
-autocmd BufNew,BufEnter *.json,*.md,*.lua execute "silent! CocEnable"
-autocmd BufLeave *.json,*.md,*.lua execute "silent! CocDisable"
 
 highlight! link PlugDeleted Conceal
 " set true color terms

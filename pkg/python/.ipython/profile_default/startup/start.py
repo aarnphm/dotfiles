@@ -1,4 +1,5 @@
 import os, sys
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pandas as pd
@@ -12,6 +13,5 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 # Pandas options
-pd.options.display.max_columns = None
-pd.options.display.max_rows = None
-
+pd.options.display.max_columns = 30
+pd.options.display.max_rows = 30
