@@ -4,6 +4,7 @@ export PKG=(
 	tmux
     git
 	silversearcher-ag
+	arandr
 	stow
 	cmake
 	g++

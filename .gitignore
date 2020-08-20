@@ -1,4 +1,4 @@
-pkg/tmux/.tmux/resurrect
+pkg/tmux/.tmux/resurrect/*
 .ipython/nbextenstions/
 .ipython/extensions/
 vscode/
