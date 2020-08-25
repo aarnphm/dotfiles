@@ -23,6 +23,7 @@ Plug 'majutsushi/tagbar'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+Plug 'Rykka/InstantRst'
 
 " Others
 Plug 'Yggdroot/indentLine'
@@ -52,7 +53,7 @@ if get(g:,'colors_name')=='gruvbox-material'
 elseif get(g:,'colors_name')=='gruvbox'
     let g:gruvbox_contrast_dark = 'hard'
 endif
-
+let g:instant_rst_port=5686
 " syntax settings
 let g:python_highlight_all = 1
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']

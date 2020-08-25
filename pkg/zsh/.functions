@@ -10,6 +10,10 @@ function mkd() {
 	mkdir -p "$@" && cd "$_";
 }
 
+function mkdpy(){
+    mkdir -p "$@" && cd "$_" && touch "__init__.py";
+}
+
 function listen(){
     local port = "{$1}";
     sudo lsof -iTCP:${port} -sTCP:LISTEN;
