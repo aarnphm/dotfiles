@@ -5,6 +5,13 @@ function psu {
   ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${(@)argv[2,-1]}"
 }
 
+function kguni {
+    pid=`ps ax | grep gunicorn | grep 5000 | awk '{split($0,a," "); print a[1]}' | head -n 1`
+    if [ ! -z "$pid"]; then
+        kill $pid
+    fi
+}
+
 # Create a new directory and enter it
 function mkd() {
 	mkdir -p "$@" && cd "$_";
@@ -15,7 +22,7 @@ function mkdpy(){
 }
 
 function listen(){
-    local port = "{$1}";
+    local port = "{$@}";
     sudo lsof -iTCP:${port} -sTCP:LISTEN;
 }
 

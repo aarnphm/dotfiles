@@ -11,11 +11,10 @@ unsetopt CLOBBER            # Do not overwrite existing files with > and >>.
                             # Use >! and >>! to bypass.
 # Dot expansions
 function expand-dot-to-parent-directory-path {
-  if [[ $LBUFFER = *. ]]; then
-    LBUFFER+='..'
+  if [[ $LBUFFER = *.. ]]; then
+    LBUFFER+='/..'
   else
     LBUFFER+='.'
   fi
 }
 zle -N expand-dot-to-parent-directory-path
-bindkey . expand-dot-to-parent-directory-path

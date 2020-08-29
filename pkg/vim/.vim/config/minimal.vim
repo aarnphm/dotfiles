@@ -4,8 +4,12 @@ if g:is_termguicolors
     set termguicolors
 endif
 set title
-set nowrap showmatch number
-set nocompatible autoread hidden
+set nowrap 
+set showmatch 
+set number
+set nocompatible 
+set autoread 
+set hidden
 filetype plugin indent on
 set backspace=indent,eol,start
 set clipboard=unnamed,unnamedplus
@@ -14,7 +18,9 @@ set mouse=a
 if has('vim')
     set term=xterm-256color
 endif
-set wildmenu wildmode=longest:full,full wildcharm=<Tab>
+set wildmenu 
+set wildmode=longest:full,full 
+set wildcharm=<Tab>
 set shortmess+=I
 nnoremap <F2> :set invpaste paste?<CR>
 imap <F2> <C-O>:set invpaste paste?<CR>
@@ -31,11 +37,25 @@ set laststatus=0
 set ruler rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L:%v%)
 se showtabline=2
 " Performance tuning
-set autoindent copyindent expandtab lazyredraw nocursorline			 
-set hlsearch ignorecase incsearch smartcase ttyfast 
-set nobackup noswapfile nowritebackup            
-set undofile undodir=~/.vim/undo undolevels=9999 
-set shiftwidth=4 softtabstop=4 tabstop=4
+set autoindent 
+set copyindent 
+set expandtab 
+set lazyredraw 
+set nocursorline			 
+set hlsearch 
+set ignorecase 
+set incsearch 
+set smartcase 
+set ttyfast 
+set nobackup 
+set noswapfile 
+set nowritebackup            
+set undofile 
+set undodir=~/.vim/undo 
+set undolevels=9999 
+set shiftwidth=4 
+set softtabstop=4 
+set tabstop=4
 " Mapping
 let mapleader=','				
 nnoremap <leader>, :let @/=''<CR>:noh<CR>	
@@ -77,3 +97,6 @@ if &paste
 endif
 return ''
 endfunction
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+

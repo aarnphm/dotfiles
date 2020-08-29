@@ -14,16 +14,18 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " syntax
 Plug 'sheerun/vim-polyglot'
 Plug 'vim-python/python-syntax'
+Plug 'mrk21/yaml-vim'
 
 " UI
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'majutsushi/tagbar'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'Rykka/InstantRst'
+Plug 'ekalinin/Dockerfile.vim'
 
 " Others
 Plug 'Yggdroot/indentLine'
@@ -47,7 +49,6 @@ if g:has_term
     highlight SpellBad cterm=underline ctermbg=black ctermfg=red
 endif
 " options to choose: one and gruvbox-material
-set background=dark
 if get(g:,'colors_name')=='gruvbox-material'
     let g:gruvbox_material_background = 'hard'
 elseif get(g:,'colors_name')=='gruvbox'
