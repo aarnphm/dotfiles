@@ -11,4 +11,5 @@ cache/
 plugged/
 swaps/
 undo/
-pkg/python/.ipython/profile_default/db/*
+**/*.py
+.ipython*

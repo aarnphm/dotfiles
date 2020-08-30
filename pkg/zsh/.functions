@@ -21,9 +21,8 @@ function mkdpy(){
     mkdir -p "$@" && cd "$_" && touch "__init__.py";
 }
 
-function listen(){
-    local port = "{$@}";
-    sudo lsof -iTCP:${port} -sTCP:LISTEN;
+function listen {
+    sudo lsof -iTCP:"$@" -sTCP:LISTEN;
 }
 
 function dockerclean() {
