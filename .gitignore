@@ -11,5 +11,9 @@ cache/
 plugged/
 swaps/
 undo/
-**/*.py
-.ipython*
+pkg/python/.ipython/profile_default/db
+pkg/python/.ipython/profile_default/*.py
+pkg/python/.ipython/profile_default/*.sqlite
+pkg/python/.ipython/profile_default/startup/*
+!pkg/python/.ipython/profile_default/startup/start.py
+
