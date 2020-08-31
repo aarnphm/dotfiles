@@ -6,7 +6,7 @@ let g:has_term = has('terminal')
 
 " get vim and dotfiles directory
 let g:vim_dir = expand('$HOME/.vim')
-let s:cfg_files = ['minimal', 'plugins']
+let s:cfg_files = ['minimal', 'plugins', 'bindings', 'plugins_settings']
 
 " use vim-plug becauseof its minimalistic
 set runtimepath+=~/.vim/
@@ -25,15 +25,6 @@ for s:f in s:cfg_files
     execute 'command! Ev' . s:f[0] . ' :edit! ' . g:vim_dir . '/config/' . s:f . '.vim'
 endfor
 command! Ev :e! $MYVIMRC
-
-" auto source vimrc
-augroup Resource
-    autocmd!
-    execute 'autocmd BufWritePost ' . expand($MYVIMRC) .
-                \ ' source ' . expand($MYVIMRC)
-    execute 'autocmd BufWritePost ' .expand(g:vim_dir) .
-                \ '/config/*.vim source $MYVIMRC'
-augroup END
 
 for s:f in s:cfg_files
     execute 'source ' . g:vim_dir . '/config/' . s:f . '.vim'

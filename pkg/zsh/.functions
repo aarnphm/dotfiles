@@ -5,6 +5,12 @@ function psu {
   ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${(@)argv[2,-1]}"
 }
 
+function lfsetup {
+    cd "$@"
+    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+    sudo apt-get update && sudo apt-get install git-lfs
+}
+
 function kguni {
     pid=`ps ax | grep gunicorn | grep 5000 | awk '{split($0,a," "); print a[1]}' | head -n 1`
     if [ ! -z "$pid"]; then

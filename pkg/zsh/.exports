@@ -9,7 +9,7 @@ export NPM_PACKAGES="${HOME}/.npm-packages"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
 # defined go path
-export GOPATH="$HOME/go"
+export GOPATH="$HOME/go:$HOME/Documents/cs"
 export GOPROXY="https://proxy.golang.org/,direct"
 export SUBPATH="$PATH:$HOME/.poetry/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:/opt/firefox/firefox:$HOME/.local/bin/:$PYENV_ROOT/bin:$HOME/.skim/bin:/usr/local/blender-2.83.3-linux64:$HOME/.cargo/bin"
 export PATH=$(echo $SUBPATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print}')
