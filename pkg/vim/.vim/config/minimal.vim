@@ -2,8 +2,10 @@ if g:is_termguicolors
     set termguicolors
 endif
 set title
+set noshowmode
 set nowrap
 set showmatch
+set autoread
 set number
 set nocompatible
 set hidden

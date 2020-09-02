@@ -20,6 +20,7 @@ let g:ale_set_highlights = 1
 let g:ale_linters = { 'python' : ['pylint']}
 let g:ale_fixers = {'python': ['black','isort']}
 let g:ale_fix_on_save = 1
+let g:ale_python_pylint_options= '--rcfile $HOME/.pylintrc'
 let g:ale_vim_vint_show_style_issues = 0
 
 "lightline
