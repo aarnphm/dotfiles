@@ -19,5 +19,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
+Plug 'Yggdroot/indentLine'
 call plug#end()
 

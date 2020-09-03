@@ -6,7 +6,10 @@ let g:gruvbox_material_background = 'medium'
 let g:instant_rst_port=5686
 " syntax settings
 let g:python_highlight_all = 1
-
+" indent line
+let g:indentLine_concealcursor = 'inc'
+let g:indentLine_conceallevel = 1
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 " ale
 let g:ale_enabled = 1
 nmap <silent> <F5> :ALEToggle<CR>
