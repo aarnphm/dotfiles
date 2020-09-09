@@ -3,13 +3,30 @@
 export EDITOR='nvim';
 export PYENV_ROOT="$HOME/.pyenv"
 export STARSHIP_CONFIG=~/dotfiles/starship/.starship.toml
+# fzf 
+export FZF_DEFAULT_OPTS="
+--layout=reverse
+--info=inline
+--height=80%
+--multi
+--preview-window=:hidden
+--preview '([[ -f {} ]] && (bat --style=numbers {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
+--prompt='∼ ' --pointer='▶' --marker='✓'
+--bind '?:toggle-preview'
+--bind 'ctrl-a:select-all'
+--bind 'ctrl-y:execute-silent(echo {+} | pbcopy)'
+--bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
+--bind 'ctrl-v:execute(code {+})'
+"
+# color options for fzf
+# --color='hl:148,hl+:154,pointer:032,marker:010,bg+:237,gutter:008'
 
 # path here
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
 # defined go path
-export GOPATH="$HOME/Documents/cs:$HOME/go"
+export GOPATH="$HOME/go"
 export GOPROXY="https://proxy.golang.org/,direct"
 export SUBPATH="$PATH:$HOME/.poetry/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:/opt/firefox/firefox:$HOME/.local/bin/:$PYENV_ROOT/bin:$HOME/.skim/bin:/usr/local/blender-2.83.3-linux64:$HOME/.cargo/bin"
 export PATH=$(echo $SUBPATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print}')

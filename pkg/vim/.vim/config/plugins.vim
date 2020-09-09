@@ -6,6 +6,9 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 Plug 'vim-python/python-syntax'
+" Plug 'vim-scripts/dbext.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'mrk21/yaml-vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'itchyny/lightline.vim'
@@ -20,5 +23,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-sensible'
 Plug 'wakatime/vim-wakatime'
 Plug 'Yggdroot/indentLine'
+Plug 'andrewstuart/vim-kubernetes'
 call plug#end()
 

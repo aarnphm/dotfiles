@@ -75,8 +75,11 @@ zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=alw
 # zinit ice pick"geometry.zsh"
 # zinit light geometry-zsh/geometry
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 zinit light romkatv/powerlevel10k
 # dark version
 zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
-
+zinit load 'wfxr/forgit'
 ### End of Zinit's installer chunk
+
