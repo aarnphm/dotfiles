@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/CAr/bin/env bash
 # Make vim the default editor.
 export EDITOR='nvim';
 export PYENV_ROOT="$HOME/.pyenv"
@@ -27,7 +27,7 @@ export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 # defined go path
 export GOPATH="$HOME/go"
 export GOPROXY="https://proxy.golang.org/,direct"
-export SUBPATH="$PATH:$HOME/.poetry/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:/opt/firefox/firefox:$HOME/.local/bin/:$PYENV_ROOT/bin:$HOME/.skim/bin:/usr/local/blender-2.83.3-linux64:$HOME/.cargo/bin"
+export SUBPATH="$PATH:$HOME/.poetry/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:/opt/firefox/firefox:$HOME/.local/bin/:$PYENV_ROOT/bin:$HOME/.skim/bin:/CAr/local/blender-2.83.3-linux64:$HOME/.cargo/bin"
 export PATH=$(echo $SUBPATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print}')
 
 # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
@@ -40,8 +40,8 @@ export HISTFILESIZE="${HISTSIZE}";
 export HISTCONTROL='ignoreboth';
 
 # Prefer US English and use UTF-8.
-export LANG='en_US.UTF-8';
-export LC_ALL='en_US.UTF-8';
+export LANG='en_CA.UTF-8';
+export LC_ALL='en_CA.UTF-8';
 
 # Highlight section titles in manual pages.
 export LESS_TERMCAP_md="${yellow}";

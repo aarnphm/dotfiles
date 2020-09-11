@@ -2,12 +2,11 @@
 
 .DEFAULT: install
 
-stow: init
-	cd pkg && . ../init/stow.sh
 init:
 	chmod +x init/*.sh
+stow: init
+	chmod +x init/stow.sh && cd pkg && . ../init/stow.sh
 install: init
-	cd init/dmenu-5.0 && sudo make clean install
 	./init/install.sh
 build:
 	docker build -t aar0npham/dotfiles:latest .

@@ -1,10 +1,14 @@
-#!/bin/bashs
+#!/bin/bash
 
 export PKG=(
 	lightdm
 	tmux
 	git
 	arandr
+	xmonad
+	dmenu
+	nitrogen
+	picom
 	alacritty
 	stow
 	dunst
@@ -23,10 +27,12 @@ export PKG=(
 	vlc
 	neovim
 	curl
-	xmonadss
 )
 export AUR=(
 	twmn-git
+    nodejs npm
+    neovim
+    lightdm-gtk-greeter
 	zanthura
 	rainbow
 )
