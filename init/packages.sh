@@ -1,11 +1,13 @@
-#!/bin/bash
+#!/bin/bashs
 
 export PKG=(
+	lightdm
 	tmux
 	git
 	arandr
 	alacritty
 	stow
+	dunst
 	cmake
 	gcc cmake clang
 	ripgrep
@@ -18,10 +20,13 @@ export PKG=(
 	octave
 	sqlitebrowser
 	vlc
-	gvim
+	neovim
 	curl
+	xmonadss
 )
 export AUR=(
+	twmn-git
+	zanthura
 	rainbow
 )
 
