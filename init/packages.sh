@@ -2,26 +2,26 @@
 
 export PKG=(
 	tmux
-    git
-	silversearcher-ag
+	git
 	arandr
+	alacritty
 	stow
 	cmake
-	g++
+	gcc cmake clang
+	ripgrep
 	cmatrix
 	python3
-    pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev
+	pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev
 	ctags
 	neofetch
 	obs-studio
 	octave
 	sqlitebrowser
-	wmctrl
-	neovim
-	# python3 support for neovim
-	python3-neovim
+	vlc
+	gvim
 	curl
-	wget
-	zsh
+)
+export AUR=(
+	rainbow
 )
 

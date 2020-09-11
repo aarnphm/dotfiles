@@ -37,5 +37,14 @@ function _install() {
       fi
       echo_done "${pkg} installed!"
     done
+   elif [[ $1 == "aur" ]]; then
+    for aur in "${AUR[@]}"; do
+     echo_info "Installing ${aur} ..."
+     yay -Sy "$aur" --needed --noconfirm
+     echo_done "${aur} isntalled!"
+    done
+   else
+    echo_info "Installing ${1} ..."
+    sudo "$PKGMN" "$PKGI" "$1"
   fi
 }

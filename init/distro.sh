@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export PKGMN=apt
-export PKGOPT=(-y -qq)
-export PKGU=upgrade
-export PKGI=install
-export PKGR=purge
+export PKGMN=pacman
+export PKGOPT=(--needed --noconfirm)
+export PKGU=-Syu
+export PKGI=-Sy
+export PKGR=-Rns
