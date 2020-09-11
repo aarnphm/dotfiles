@@ -19,7 +19,6 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-v:execute(code {+})'
 "
 # color options for fzf
-# --color='hl:148,hl+:154,pointer:032,marker:010,bg+:237,gutter:008'
 
 # path here
 export NPM_PACKAGES="${HOME}/.npm-packages"
