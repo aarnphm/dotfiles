@@ -9,6 +9,7 @@ export PKG=(
 	stow
 	dunst
 	cmake
+	pulseaudio pulseaudio-bluetooth pulseaudio-alsa
 	gcc cmake clang
 	ripgrep
 	cmatrix
