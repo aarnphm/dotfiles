@@ -14,11 +14,11 @@ export PKG=(
 	dunst
 	cmake
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa
+	alsa-utils
 	gcc cmake clang
 	ripgrep
 	cmatrix
 	python3
-	pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev
 	ctags
 	neofetch
 	obs-studio
@@ -30,6 +30,7 @@ export PKG=(
 )
 export AUR=(
 	twmn-git
+	foxitreader
     nodejs npm
     neovim
     lightdm-gtk-greeter
