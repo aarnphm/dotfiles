@@ -1,5 +1,5 @@
 pkg/tmux/.tmux/resurrect/*
-pkg/config/.config/spicetify
+pkg/config/.config/spicetify/*
 !pkg/config/.config/spicetify/config.ini
 .ipython/nbextenstions/
 .ipython/extensions/

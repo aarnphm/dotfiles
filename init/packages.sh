@@ -5,8 +5,9 @@ export PKG=(
 	tmux
 	git
 	arandr
-	xmonad
+	awesome
 	dmenu
+	dolphin
 	nitrogen
 	picom
 	alacritty
@@ -30,6 +31,8 @@ export PKG=(
 )
 export AUR=(
 	twmn-git
+	spicetify-cli
+	materia-gtk-theme
 	vmware-workstation
 	foxitreader
     nodejs npm
