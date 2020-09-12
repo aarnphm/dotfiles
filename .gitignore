@@ -1,6 +1,6 @@
 pkg/tmux/.tmux/resurrect/*
-**/Backup
-**/Extracted
+pkg/config/.config/spicetify
+!pkg/config/.config/spicetify/config.ini
 .ipython/nbextenstions/
 .ipython/extensions/
 vscode/
