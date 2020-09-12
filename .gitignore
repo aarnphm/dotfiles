@@ -1,4 +1,6 @@
 pkg/tmux/.tmux/resurrect/*
+Backup
+Extracted
 .ipython/nbextenstions/
 .ipython/extensions/
 vscode/
