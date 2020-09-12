@@ -30,6 +30,7 @@ export PKG=(
 )
 export AUR=(
 	twmn-git
+	vmware-workstation
 	foxitreader
     nodejs npm
     neovim
