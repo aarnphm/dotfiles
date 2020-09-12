@@ -7,7 +7,7 @@ let g:instant_rst_port=5686
 " syntax settings
 let g:python_highlight_all = 1
 " indent line
-let g:indentLine_concealcursor = 'inc'
+" let g:indentLine_concealcursor = 'inc'
 let g:indentLine_conceallevel = 1
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 " ale

@@ -13,3 +13,5 @@ just a tiny collection of my development environment
     - inside `init/init.sh` contains some of `curl` commands to setup [alacritty](https://github.com/alacritty/alacritty).
 - `pkg` contains all necessary folders. enjoy !
 
+- `screenlayout`holds config for monitor setup generated from `arandr`. remember to put it in `$PATH` for `lightdm` setup
+
