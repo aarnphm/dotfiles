@@ -27,8 +27,8 @@ export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 # defined go path
 export GOPATH="$HOME/go"
 export GOPROXY="https://proxy.golang.org/,direct"
-export SUBPATH="$PATH:$HOME/.poetry/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:/opt/firefox/firefox:$HOME/.local/bin/:$PYENV_ROOT/bin:$HOME/.skim/bin:/CAr/local/blender-2.83.3-linux64:$HOME/.cargo/bin"
-export PATH=$(echo $SUBPATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print}')
+export PATH="$PATH:$HOME/.poetry/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:/opt/firefox/firefox:$HOME/.local/bin/:$PYENV_ROOT/bin:$HOME/.skim/bin:$HOME/.cargo/bin"
+export PATH=$(echo $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print}')
 
 # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
 export PYTHONIOENCODING='UTF-8';
@@ -39,9 +39,11 @@ export HISTFILESIZE="${HISTSIZE}";
 # Omit duplicates and commands that begin with a space from history.
 export HISTCONTROL='ignoreboth';
 
-# Prefer US English and use UTF-8.
+# Prefer CA English and use UTF-8.
+export LANGUAGE='en';
 export LANG='en_CA.UTF-8';
 export LC_ALL='en_CA.UTF-8';
+export HOST='0x6161726E70';
 
 # Highlight section titles in manual pages.
 export LESS_TERMCAP_md="${yellow}";

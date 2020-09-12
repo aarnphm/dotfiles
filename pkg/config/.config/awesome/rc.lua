@@ -316,7 +316,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "m",     function () awful.spawn("spotify") end,
               {description = "run spotify", group = "makec"}),
     -- Firefox
-    awful.key({ modkey },            "b",     function () awful.spawn("firefox-developer-edition") end,
+    awful.key({ modkey },            "b",     function () awful.spawn("firefox") end,
               {description = "run firefox", group = "makec"}),
 
     awful.key({ modkey }, "x",

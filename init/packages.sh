@@ -13,19 +13,20 @@ export PKG=(
 	alacritty
 	stow
 	dunst
-	cmake
+	mesa
+	firefox
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa
 	alsa-utils
 	gcc cmake clang
 	ripgrep
-	cmatrix
 	python3
 	ctags
 	neofetch
 	obs-studio
-	octave
+	redshift
 	sqlitebrowser
 	vlc
+	xorg xorg-xinit
 	neovim
 	curl
 )
@@ -35,9 +36,8 @@ export AUR=(
 	materia-gtk-theme
 	vmware-workstation
 	foxitreader
-    nodejs npm
-    neovim
-    lightdm-gtk-greeter
+	nodejs npm
+	neovim
 	zanthura
 	rainbow
 )
