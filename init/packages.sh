@@ -6,10 +6,10 @@ export PKG=(
 	git
 	arandr
 	awesome
-	dmenu
-	dolphin
+	feh
 	nitrogen
 	picom
+	rofi
 	alacritty
 	stow
 	dunst
@@ -26,6 +26,11 @@ export PKG=(
 	redshift
 	sqlitebrowser
 	vlc
+	xsecurelock
+	imagemagick
+	acpi xfce-power-manager
+	bluez blueman nn-connection-editor xbacklight
+	scrot cmatrix
 	xorg xorg-xinit
 	neovim
 	curl
@@ -35,10 +40,12 @@ export AUR=(
 	spicetify-cli
 	materia-gtk-theme
 	vmware-workstation
-	foxitreader
+	pcmanfm
 	nodejs npm
 	neovim
 	zanthura
+	file-roller lxappearance lxtask
+	foxitreader
 	rainbow
 )
 
