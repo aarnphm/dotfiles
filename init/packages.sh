@@ -9,7 +9,7 @@ export PKG=(
 	feh
 	nitrogen
 	picom
-	rofi
+	rofi-git
 	alacritty
 	stow
 	dunst
@@ -28,11 +28,12 @@ export PKG=(
 	vlc
 	xsecurelock
 	imagemagick
-	acpi xfce-power-manager
+	acpi xfce4-power-manager-settings
 	bluez blueman nn-connection-editor xbacklight
 	scrot cmatrix
 	xorg xorg-xinit
 	neovim
+	docker
 	curl
 )
 export AUR=(
@@ -48,4 +49,3 @@ export AUR=(
 	foxitreader
 	rainbow
 )
-

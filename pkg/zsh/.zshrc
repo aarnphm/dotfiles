@@ -81,3 +81,9 @@ zinit load 'wfxr/forgit'
 
 # [[ $(fgconsole 2>/dev/null) == 1 ]] && exec startx -- vt1 &> /dev/null
 [[ $(fgconsole 2>/dev/null) == 1 ]] && exec k6 -- vt1 &> /dev/null
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/aarnphm/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi

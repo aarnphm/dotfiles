@@ -63,8 +63,6 @@ theme.widget_vol                                = theme.dir .. "/icons/vol.png"
 theme.widget_vol_low                            = theme.dir .. "/icons/vol_low.png"
 theme.widget_vol_no                             = theme.dir .. "/icons/vol_no.png"
 theme.widget_vol_mute                           = theme.dir .. "/icons/vol_mute.png"
-theme.widget_mail                               = theme.dir .. "/icons/mail.png"
-theme.widget_mail_on                            = theme.dir .. "/icons/mail_on.png"
 theme.tasklist_plain_task_name                  = true
 theme.tasklist_disable_icon                     = true
 theme.useless_gap                               = dpi(0)
@@ -108,27 +106,6 @@ theme.cal = lain.widget.cal({
         bg   = theme.bg_normal
     }
 })
-
--- Mail IMAP check
--- local mailicon = wibox.widget.imagebox(theme.widget_mail)
---[[ commented because it needs to be set before use
-mailicon:buttons(my_table.join(awful.button({ }, 1, function () awful.spawn(mail) end)))
-theme.mail = lain.widget.imap({
-    timeout  = 180,
-    server   = "server",
-    mail     = "mail",
-    password = "keyring get mail",
-    settings = function()
-        if mailcount > 0 then
-            widget:set_markup(markup.font(theme.font, " " .. mailcount .. " "))
-            mailicon:set_image(theme.widget_mail_on)
-        else
-            widget:set_text("")
-            mailicon:set_image(theme.widget_mail)
-        end
-    end
-})
---]]
 
 
 -- MEM
@@ -254,12 +231,14 @@ function theme.at_screen_connect(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            --spr,
             s.mytaglist,
-            s.mypromptbox,
             spr,
         },
+        {
+        layout = wibox.layout.fixed.horizontal,
+        s.mypromptbox,
         s.mytasklist, -- Middle widget
+        },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
@@ -268,16 +247,20 @@ function theme.at_screen_connect(s)
             theme.volume.widget,
             memicon,
             mem.widget,
-            wibox.container.background(cpuicon, theme.bg_focus),
-            wibox.container.background(cpu.widget, theme.bg_focus),
+            cpuicon,
+            cpu.widget,
+            -- wibox.container.background(cpuicon, theme.bg_focus),
+            -- wibox.container.background(cpu.widget, theme.bg_focus),
             tempicon,
             temp.widget,
             -- wibox.container.background(fsicon, theme.bg_focus),
             -- wibox.container.background(theme.fs.widget, theme.bg_focus),
             baticon,
             bat.widget,
-            wibox.container.background(neticon, theme.bg_focus),
-            wibox.container.background(net.widget, theme.bg_focus),
+            neticon,
+            net.widget,
+            -- wibox.container.background(neticon, theme.bg_focus),
+            -- wibox.container.background(net.widget, theme.bg_focus),
             clock,
             spr,
             wibox.container.background(s.mylayoutbox, theme.bg_focus),

@@ -16,6 +16,7 @@ function echo_info() {
   printf '\n\033[36m%s\033[0m\n' "$1"
 }
 
+
 function _update() {
   if [[ $1 == "system" ]]; then
     echo_info "Updating system packages..."
@@ -41,7 +42,7 @@ function _install() {
     for aur in "${AUR[@]}"; do
      echo_info "Installing ${aur} ..."
      yay -Sy "$aur" --needed --noconfirm
-     echo_done "${aur} isntalled!"
+     echo_done "${aur} installed!"
     done
    else
     echo_info "Installing ${1} ..."
