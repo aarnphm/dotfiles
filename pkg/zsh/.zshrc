@@ -80,3 +80,4 @@ zinit load 'wfxr/forgit'
 ### End of Zinit's installer chunk
 
 # [[ $(fgconsole 2>/dev/null) == 1 ]] && exec startx -- vt1 &> /dev/null
+[[ $(fgconsole 2>/dev/null) == 1 ]] && exec k6 -- vt1 &> /dev/null
