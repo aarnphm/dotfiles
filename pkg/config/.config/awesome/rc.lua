@@ -50,7 +50,9 @@ local function run_once(cmd_arr)
     end
 end
 
-run_once({ "unclutter -root", "redshift", "nitrogen --restore"}) -- entries must be separated by commas
+run_once({ "unclutter -root", 
+           "nitrogen --set-zoom-fill --restore",
+           "redshift"}) -- entries must be separated by commas
 
 -- }}}
 
@@ -67,6 +69,7 @@ local gui_editor   = os.getenv("GUI_EDITOR") or "code-insiders"
 local browser      = os.getenv("BROWSER") or "firefox"
 local scrlocker    = "xsecurelock"
 local spotify      = "spotify"
+local lrofi        = "rofi -modi drun -i -p -show drun -show-icons"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "lack of positive vibes","web", "media", "terminal", "meetings",  "others" }
@@ -376,26 +379,21 @@ globalkeys = my_table.join(
               {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(gui_editor) end,
               {description = "run gui editor", group = "launcher"}),
-    awful.key({ modkey }, "m", function () awful.spawn(spotify) end,
+    awful.key({ modkey, "Shift"}, "m", function () awful.spawn(spotify) end,
               {description = "run spotify", group = "launcher"}),
-    awful.key({ modkey }, "f", function () awful.spawn("pcmanfm") end,
+    awful.key({ modkey, "Shift" }, "f", function () awful.spawn("pcmanfm") end,
               {description = "run explorer", group = "launcher"}),
     --rofi
-    awful.key({ modkey }, "x", function ()
-            os.execute(string.format("rofi -show %s -theme %s",
-            'run', 'dmenu'))
-        end,
-        {description = "show rofi", group = "launcher"}),
+    awful.key({ modkey }, "space", function () awful.spawn(lrofi) end,
+              {description = "show rofi", group = "launcher"}),
     -- Prompt
-    awful.key({ modkey }, "space", function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"})
 
     --]]
 )
 
 clientkeys = my_table.join(
-    awful.key({ altkey, "Shift"   }, "m",      lain.util.magnify_client,
-              {description = "magnify client", group = "client"}),
     awful.key({ modkey,           }, "f",
         function (c)
             c.fullscreen = not c.fullscreen
@@ -419,7 +417,7 @@ clientkeys = my_table.join(
             c.minimized = true
         end ,
         {description = "minimize", group = "client"}),
-    awful.key({ modkey,           }, "m",
+    awful.key({ modkey }, "m",
         function (c)
             c.maximized = not c.maximized
             c:raise()
@@ -519,7 +517,12 @@ awful.rules.rules = {
                      size_hints_honor = false
      }
     },
-
+    -- Rofi
+    {
+         rule_any = {name = {"rofi"}},
+         properties = {maximized = true, ontop = true}
+    },
+    
     -- Titlebars
     -- { rule_any = { type = { "dialog", "normal" } },
     --   properties = { titlebars_enabled = true } },

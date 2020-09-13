@@ -39,6 +39,7 @@ export PKG=(
 )
 export AUR=(
 	twmn-git
+	python-pip
 	gyazo
 	zoom
 	postgresql

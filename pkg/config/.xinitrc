@@ -34,6 +34,7 @@ fi
 
 nitrogen --restore &
 redshift &
-picom &
-pgadmin &
+# picom &
+# zoom &
+# pgadmin &
 exec awesome

@@ -29,8 +29,6 @@ noremap <M-p> "+p
 " map <M-r> for PlugInstall and <M-d> for PlugClean
 map <leader>C :PlugClean<cr>
 map <leader>R :PlugInstall<cr>
-" Cheeky
-cnoremap w!! execute 'silent! write !sudo tee % >/dev/null'
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab

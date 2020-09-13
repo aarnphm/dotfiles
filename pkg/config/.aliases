@@ -82,8 +82,10 @@ else
 fi
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"
-alias rrload="source $HOME/.zshrc"
-
+alias awesomeconf="$EDITOR $HOME/.config/awesome/rc.lua"
+alias roficonf="$EDITOR -p $HOME/.config/rofi/config.rasi"
+alias tmuxconf="$EDITOR $HOME/.tmux.conf"
+alias zshconf="$EDITOR -p $HOME/.zshrc"
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
 
