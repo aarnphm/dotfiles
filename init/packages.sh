@@ -39,6 +39,10 @@ export PKG=(
 )
 export AUR=(
 	twmn-git
+	gyazo
+	zoom
+	postgresql
+	pgadmin4
 	spicetify-cli
 	materia-gtk-theme
 	vmware-workstation

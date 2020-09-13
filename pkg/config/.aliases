@@ -12,12 +12,15 @@ alias -- -="cd -"
 if command -v nvim 1>/dev/null 2>&1;then
     alias vim="/usr/bin/nvim"
     alias vi="/usr/bin/nvim"
+    alias v="/usr/bin/nvim"
 else
     alias vim="/usr/bin/vim"
-    alias vi="/usr/bin/vi"
+    alias vi="/usr/bin/vim"
+    alias v="/usr/bin/vim"
 fi
 
 alias kubesecret="kubectl get secret regcred --output=yaml"
+alias conwifi="sudo wifi-menu"
 alias allvim="$EDITOR -p *"
 # curl shortcut
 alias header='curl -I'
@@ -32,7 +35,7 @@ alias timeshell="time $(which $SHELL) -i -c exit"
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # remove bytecode
-alias pycclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
+alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
 
 # Shortcuts
 alias dl="cd ~/Downloads"
@@ -75,7 +78,7 @@ alias bat='upower -i /org/freedesktop/UPower/devices/battery_BAT1| grep -E "stat
 if [[ "$OSTYPE" == "darwin" ]]; then
 	alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 else 
-    alias afk="gnome-screensaver-command -l"
+    alias afk="xsecurelock"
 fi
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"

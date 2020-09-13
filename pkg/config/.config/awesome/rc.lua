@@ -69,7 +69,7 @@ local scrlocker    = "xsecurelock"
 local spotify      = "spotify"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { "web", "media", "terminal", "meetings", "others" }
+awful.util.tagnames = { "lack of positive vibes","web", "media", "terminal", "meetings",  "others" }
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
@@ -191,7 +191,7 @@ root.buttons(my_table.join(
 globalkeys = my_table.join(
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
-    awful.key({ modkey }, "p", function() os.execute("screenshot") end,
+    awful.key({ modkey }, "p", function() os.execute("gyazo") end,
               {description = "take a screenshot", group = "hotkeys"}),
 
     -- X screen locker
@@ -210,19 +210,19 @@ globalkeys = my_table.join(
               {description = "go back", group = "tag"}),
 
     -- Non-empty tag browsing
-    awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end,
+    awful.key({ altkey, "Shift" }, "Left", function () lain.util.tag_view_nonempty(-1) end,
               {description = "view  previous nonempty", group = "tag"}),
-    awful.key({ altkey }, "Right", function () lain.util.tag_view_nonempty(1) end,
+    awful.key({ altkey, "Shift"}, "Right", function () lain.util.tag_view_nonempty(1) end,
               {description = "view  previous nonempty", group = "tag"}),
 
     -- Default client focus
-    awful.key({ altkey,           }, "j",
+    awful.key({ altkey, "Shift"  }, "j",
         function ()
             awful.client.focus.byidx( 1)
         end,
         {description = "focus next by index", group = "client"}
     ),
-    awful.key({ altkey,           }, "k",
+    awful.key({ altkey, "Shift"  }, "k",
         function ()
             awful.client.focus.byidx(-1)
         end,
@@ -317,9 +317,9 @@ globalkeys = my_table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
+    awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc( 1)                end,
               {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
+    awful.key({ modkey, altkey   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n",
@@ -336,10 +336,6 @@ globalkeys = my_table.join(
     -- Widgets popups
     awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
               {description = "show calendar", group = "widgets"}),
-    awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
-              {description = "show filesystem", group = "widgets"}),
-    awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
-              {description = "show weather", group = "widgets"}),
 
     -- ALSA volume control
     awful.key({ altkey }, "Up",
@@ -360,7 +356,7 @@ globalkeys = my_table.join(
             beautiful.volume.update()
         end,
         {description = "toggle mute", group = "hotkeys"}),
-    awful.key({ altkey, "Control" }, "m",
+    awful.key({ altkey, "Control" }, "9",
         function ()
             os.execute(string.format("amixer -q set %s 100%%", beautiful.volume.channel))
             beautiful.volume.update()
@@ -382,6 +378,8 @@ globalkeys = my_table.join(
               {description = "run gui editor", group = "launcher"}),
     awful.key({ modkey }, "m", function () awful.spawn(spotify) end,
               {description = "run spotify", group = "launcher"}),
+    awful.key({ modkey }, "f", function () awful.spawn("pcmanfm") end,
+              {description = "run explorer", group = "launcher"}),
     --rofi
     awful.key({ modkey }, "x", function ()
             os.execute(string.format("rofi -show %s -theme %s",
