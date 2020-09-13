@@ -52,27 +52,11 @@ end
 
 run_once({ "unclutter -root", "redshift", "nitrogen --restore"}) -- entries must be separated by commas
 
--- This function implements the XDG autostart specification
---[[
-awful.spawn.with_shell(
-    'if (xrdb -query | grep -q "^awesome\\.started:\\s*true$"); then exit; fi;' ..
-    'xrdb -merge <<< "awesome.started:true";' ..
-    -- list each of your autostart commands, followed by ; inside single quotes, followed by ..
-    'dex --environment Awesome --autostart --search-paths "$XDG_CONFIG_DIRS/autostart:$XDG_CONFIG_HOME/autostart"' -- https://github.com/jceb/dex
-)
---]]
-
 -- }}}
 
 -- {{{ Variable definitions
 
-local themes = {
-    "dremora",         -- 1
-    "holo",            -- 2
-    "powerarrow-dark", -- 3
-}
-
-local chosen_theme = themes[3]
+local chosen_theme = "powerarrow-dark"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "alacritty"
@@ -391,6 +375,8 @@ globalkeys = my_table.join(
 
     -- User programs
     awful.key({ modkey }, "b", function () awful.spawn(browser) end,
+              {description = "run browser", group = "launcher"}),
+    awful.key({ modkey }, "v", function () awful.spawn("pavucontrol") end,
               {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(gui_editor) end,
               {description = "run gui editor", group = "launcher"}),

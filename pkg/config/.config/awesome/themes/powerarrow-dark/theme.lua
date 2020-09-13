@@ -251,8 +251,6 @@ function theme.at_screen_connect(s)
             cpu.widget,
             -- wibox.container.background(cpuicon, theme.bg_focus),
             -- wibox.container.background(cpu.widget, theme.bg_focus),
-            tempicon,
-            temp.widget,
             -- wibox.container.background(fsicon, theme.bg_focus),
             -- wibox.container.background(theme.fs.widget, theme.bg_focus),
             baticon,

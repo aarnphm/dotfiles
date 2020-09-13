@@ -5,6 +5,7 @@ export PKG=(
 	tmux
 	git
 	arandr
+	dialog
 	awesome
 	feh
 	nitrogen
