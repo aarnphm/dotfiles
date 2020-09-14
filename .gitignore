@@ -6,10 +6,9 @@ pkg/config/.config/spicetify/*
 vscode/
 .uuid
 google-cloud-sdk
-autoload/
 backups/
 bundle/
-plugged/
+plugins/
 cache/
 swaps/
 undo/

@@ -19,10 +19,9 @@ set wildcharm=<Tab>
 set shortmess+=I
 set pastetoggle=<F2>
 " UI settings
-hi RulerFormat ctermbg=1
-" set noshowmode
-set noruler
-" set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L%)
+hi LineNr guibg=clear
+set ruler
+set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L%)
 set incsearch
 set showtabline=2
 " Performance tuning

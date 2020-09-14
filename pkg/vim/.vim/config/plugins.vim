@@ -1,5 +1,5 @@
 " define vim-plug here
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/plugins')
 Plug 'sainnhe/gruvbox-material'
 Plug 'dense-analysis/ale'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }

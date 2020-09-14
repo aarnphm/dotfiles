@@ -20,11 +20,11 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   augroup end
 endif
 
+command! Ev :e! $MYVIMRC
 " quick access vim files
 for s:f in s:cfg_files
     execute 'command! Ev' . s:f[0] . ' :edit! ' . g:vim_dir . '/config/' . s:f . '.vim'
 endfor
-command! Ev :e! $MYVIMRC
 
 for s:f in s:cfg_files
     execute 'source ' . g:vim_dir . '/config/' . s:f . '.vim'
