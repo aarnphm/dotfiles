@@ -39,7 +39,9 @@ export PKG=(
 )
 export AUR=(
 	twmn-git
+	autofs
 	python-pip
+	wine winetricks lib32-gnutls samba
 	gyazo
 	zoom
 	postgresql

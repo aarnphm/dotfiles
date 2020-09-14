@@ -18,15 +18,19 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
 --bind 'ctrl-v:execute(code {+})'
 "
-# color options for fzf
+# wine prefix
+export WINEPREFIX="$HOME/.wine32" 
+export WINEARCH=win32
 
-# path here
+# npm config
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
 # defined go path
 export GOPATH="$HOME/go"
 export GOPROXY="https://proxy.golang.org/,direct"
+
+# define PATH
 export PATH="$PATH:$HOME/.poetry/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:/opt/firefox/firefox:$HOME/.local/bin/:$PYENV_ROOT/bin:$HOME/.skim/bin:$HOME/.cargo/bin"
 export PATH=$(echo $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print}')
 

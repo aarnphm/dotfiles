@@ -79,6 +79,10 @@ zinit load 'wfxr/forgit'
 ### End of Zinit's installer chunk
 
 # [[ $(fgconsole 2>/dev/null) == 1 ]] && exec startx -- vt1 &> /dev/null
+# run xinit
+if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+  exec startx
+fi
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/aarnphm/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/path.zsh.inc'; fi

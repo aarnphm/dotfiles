@@ -15,7 +15,7 @@ local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme                                     = {}
-theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
+theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes"
 theme.font                                      = "InconsolataGo Nerd Font 9"
 theme.fg_normal                                 = "#DDDDFF"
 theme.fg_focus                                  = "#EA6F81"
@@ -249,18 +249,13 @@ function theme.at_screen_connect(s)
             mem.widget,
             cpuicon,
             cpu.widget,
-            -- wibox.container.background(cpuicon, theme.bg_focus),
-            -- wibox.container.background(cpu.widget, theme.bg_focus),
-            -- wibox.container.background(fsicon, theme.bg_focus),
-            -- wibox.container.background(theme.fs.widget, theme.bg_focus),
+            fsicon,
             baticon,
             bat.widget,
-            -- neticon,
-            -- net.widget,
-            -- wibox.container.background(neticon, theme.bg_focus),
-            -- wibox.container.background(net.widget, theme.bg_focus),
+            neticon,
+            net.widget,
             clock,
-            spr,
+            -- spr,
             wibox.container.background(s.mylayoutbox, theme.bg_focus),
         },
     }

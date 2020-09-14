@@ -52,7 +52,7 @@ end
 
 run_once({ "unclutter -root", 
            "nitrogen --set-zoom-fill --restore",
-           "redshift",
+           "/usr/bin/redshift -v",
            "picom"}) -- entries must be separated by commas
 
 -- }}}
@@ -69,11 +69,12 @@ local editor       = os.getenv("EDITOR") or "nvim"
 local gui_editor   = os.getenv("GUI_EDITOR") or "code-insiders"
 local browser      = os.getenv("BROWSER") or "firefox"
 local scrlocker    = "xsecurelock"
-local spotify      = "spotify"
+local spotify      = "kdocker -q -o -l -i /usr/share/icons/ePapirus/64x64/apps/spotify.svg spotify"
 local lrofi        = "rofi -modi drun -i -p -show drun -show-icons"
+local fileman = "pcmanfm"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { "lack of positive vibes","web", "media", "terminal", "meetings",  "others" }
+awful.util.tagnames = { "focus","web", "media", "terminal", "meetings",  "others" }
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
@@ -145,7 +146,7 @@ lain.layout.cascade.tile.extra_padding = dpi(5)
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
-beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme))
+beautiful.init(string.format("%s/.config/awesome/themes/theme.lua", os.getenv("HOME"), chosen_theme))
 -- }}}
 
 -- {{{ Menu
@@ -382,7 +383,7 @@ globalkeys = my_table.join(
               {description = "run gui editor", group = "launcher"}),
     awful.key({ modkey, "Shift"}, "m", function () awful.spawn(spotify) end,
               {description = "run spotify", group = "launcher"}),
-    awful.key({ modkey, "Shift" }, "f", function () awful.spawn("pcmanfm") end,
+    awful.key({ modkey, "Shift" }, "f", function () awful.spawn(fileman) end,
               {description = "run explorer", group = "launcher"}),
     --rofi
     awful.key({ modkey }, "space", function () awful.spawn(lrofi) end,
@@ -542,7 +543,7 @@ client.connect_signal("manage", function (c)
 end)
 
 -- set gaps
-beautiful.useless_gap = 5
+-- beautiful.useless_gap = 5
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
