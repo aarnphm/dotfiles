@@ -40,6 +40,8 @@ export PKG=(
 export AUR=(
 	twmn-git
 	autofs
+	dex
+	optimus-manager-qt
 	python-pip
 	wine winetricks lib32-gnutls samba
 	gyazo

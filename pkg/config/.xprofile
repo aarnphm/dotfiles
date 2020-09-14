@@ -1,4 +1,4 @@
 # start application here
 nitrogen --restore &
-redshift &
+/usr/bin/redshift -v &
 picom &

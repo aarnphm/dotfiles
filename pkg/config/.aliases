@@ -88,6 +88,7 @@ alias tmuxconf="$EDITOR $HOME/.tmux.conf"
 alias zshconf="$EDITOR -p $HOME/.zshrc"
 alias vconf="$EDITOR -p $HOME/.vimrc $HOME/.vim/config/*"
 alias ztheme="$EDITOR -p $HOME/.zshtheme $HOME/.p10k.zsh"
+alias inshcon="$EDITOR -p $HOME/dotfiles/init/*"
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
 

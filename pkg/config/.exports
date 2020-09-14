@@ -21,6 +21,9 @@ export FZF_DEFAULT_OPTS="
 # wine prefix
 export WINEPREFIX="$HOME/.wine32" 
 export WINEARCH=win32
+# XDG  config
+export XDG_CONFIG_DIRS="/etc/xdg"
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # npm config
 export NPM_PACKAGES="${HOME}/.npm-packages"

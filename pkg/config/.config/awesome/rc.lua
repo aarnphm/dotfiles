@@ -9,7 +9,6 @@ local wibox         = require("wibox")
 local beautiful     = require("beautiful")
 local naughty       = require("naughty")
 local lain          = require("lain")
---local menubar       = require("menubar")
 local freedesktop   = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
@@ -41,25 +40,8 @@ do
 end
 -- }}}
 
--- {{{ Autostart windowless processes
-
--- This function will run once every time Awesome is started
-local function run_once(cmd_arr)
-    for _, cmd in ipairs(cmd_arr) do
-        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
-    end
-end
-
-run_once({ "unclutter -root", 
-           "nitrogen --set-zoom-fill --restore",
-           "/usr/bin/redshift -v",
-           "picom"}) -- entries must be separated by commas
-
--- }}}
-
 -- {{{ Variable definitions
 
-local chosen_theme = "powerarrow-dark"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "alacritty"
@@ -146,7 +128,7 @@ lain.layout.cascade.tile.extra_padding = dpi(5)
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
-beautiful.init(string.format("%s/.config/awesome/themes/theme.lua", os.getenv("HOME"), chosen_theme))
+beautiful.init(string.format("%s/.config/awesome/themes/theme.lua", os.getenv("HOME")))
 -- }}}
 
 -- {{{ Menu
