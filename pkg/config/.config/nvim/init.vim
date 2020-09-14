@@ -1,1 +1,1 @@
-../../.vimrc
+/home/aarnphm/.vimrc
