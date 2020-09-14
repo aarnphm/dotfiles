@@ -29,7 +29,8 @@ noremap <M-p> "+p
 " map <M-r> for PlugInstall and <M-d> for PlugClean
 map <leader>C :PlugClean<cr>
 map <leader>R :PlugInstall<cr>
-
+" use this when lightline is not in use for minimal
+nnoremap <F2> :set invpaste paste?<CR>
+imap <F2> <C-O>:set invpaste paste?<CR>
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-

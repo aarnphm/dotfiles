@@ -2,9 +2,9 @@ if g:is_termguicolors
     set termguicolors
 endif
 set title
-set noshowmode
 set nowrap
 set showmatch
+set showmode
 set autoread
 set number
 set nocompatible
@@ -17,13 +17,14 @@ endif
 set wildmode=longest:full,full
 set wildcharm=<Tab>
 set shortmess+=I
-nnoremap <F2> :set invpaste paste?<CR>
-imap <F2> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F2>
 " UI settings
-set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L:%v%)
+hi RulerFormat ctermbg=1
+" set noshowmode
+set noruler
+" set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L%)
 set incsearch
-se showtabline=2
+set showtabline=2
 " Performance tuning
 set copyindent
 set expandtab
@@ -47,3 +48,10 @@ augroup project
   autocmd!
   autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
 augroup END
+
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
