@@ -35,8 +35,8 @@ unlet! s:cfg_files s:f
 if g:is_termguicolors
   set termguicolors
 endif
+
 set background=dark
 colorscheme gruvbox-material
 let g:gruvbox_material_background = 'medium'
-
 

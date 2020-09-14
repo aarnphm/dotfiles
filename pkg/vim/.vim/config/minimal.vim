@@ -15,8 +15,7 @@ set wildmode=longest:full,full
 set wildcharm=<Tab>
 set shortmess+=I
 set pastetoggle=<F2>
-" UI settings
-hi LineNr guibg=clear
+" UI setting
 set ruler
 set conceallevel=1
 set concealcursor=ni
@@ -41,7 +40,6 @@ set undolevels=9999
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
-
 augroup project
   autocmd!
   autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
