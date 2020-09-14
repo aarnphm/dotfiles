@@ -1,7 +1,4 @@
-if g:is_termguicolors
-    set termguicolors
-endif
-set title
+set notitle
 set nowrap
 set showmatch
 set showmode
@@ -21,6 +18,8 @@ set pastetoggle=<F2>
 " UI settings
 hi LineNr guibg=clear
 set ruler
+set conceallevel=1
+set concealcursor=ni
 set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L%)
 set incsearch
 set showtabline=2

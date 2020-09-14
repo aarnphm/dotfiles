@@ -1,4 +1,13 @@
-# start application here
+# default apps
 nitrogen --restore &
 /usr/bin/redshift -v &
 picom &
+
+# non default
+# conky --daemonize --pause=5 &
+/usr/bin/discord &
+/usr/bin/skypeforlinux &
+/usr/bin/teams &
+/usr/bin/zoom &
+kdocker -q -i /usr/share/icons/ePapirus/64x64/apps/spotify.svg spotify &
+

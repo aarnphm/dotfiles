@@ -1,8 +1,3 @@
-set termguicolors
-" set true color terms
-set background=dark
-colorscheme gruvbox-material
-let g:gruvbox_material_background = 'medium'
 let g:instant_rst_port=5686
 " show tabline close button
 let g:tablineclosebutton=0
