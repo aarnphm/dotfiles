@@ -1,0 +1,4 @@
+# start application here
+nitrogen --restore &
+redshift &
+picom &

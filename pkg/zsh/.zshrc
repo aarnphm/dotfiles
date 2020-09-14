@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # startup
 fpath=($HOME/.zsh/completion $fpath)
 
@@ -74,7 +81,7 @@ zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=alw
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 zinit light romkatv/powerlevel10k
 # dark version
-zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
+# zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
 zinit load 'wfxr/forgit'
 ### End of Zinit's installer chunk
 
@@ -89,3 +96,7 @@ if [ -f '/home/aarnphm/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aarnphm/g
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.zshtheme ]] || source ~/.zshtheme
