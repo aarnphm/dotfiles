@@ -52,7 +52,8 @@ end
 
 run_once({ "unclutter -root", 
            "nitrogen --set-zoom-fill --restore",
-           "redshift"}) -- entries must be separated by commas
+           "redshift",
+           "picom"}) -- entries must be separated by commas
 
 -- }}}
 
@@ -376,7 +377,7 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "b", function () awful.spawn(browser) end,
               {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "v", function () awful.spawn("pavucontrol") end,
-              {description = "run browser", group = "launcher"}),
+              {description = "run audio control", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(gui_editor) end,
               {description = "run gui editor", group = "launcher"}),
     awful.key({ modkey, "Shift"}, "m", function () awful.spawn(spotify) end,
@@ -522,17 +523,6 @@ awful.rules.rules = {
          rule_any = {name = {"rofi"}},
          properties = {maximized = true, ontop = true}
     },
-    
-    -- Titlebars
-    -- { rule_any = { type = { "dialog", "normal" } },
-    --   properties = { titlebars_enabled = true } },
-
-    -- -- Set Firefox to always map on the first tag on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = awful.util.tagnames[1] } },
-
-    -- { rule = { class = "Gimp", role = "gimp-image-window" },
-    --       properties = { maximized = true } },
 }
 -- }}}
 
@@ -551,53 +541,8 @@ client.connect_signal("manage", function (c)
     end
 end)
 
--- Add a titlebar if titlebars_enabled is set to true in the rules.
--- client.connect_signal("request::titlebars", function(c)
---     -- Custom
---     if beautiful.titlebar_fun then
---         beautiful.titlebar_fun(c)
---         return
---     end
-
---     -- Default
---     -- buttons for the titlebar
---     local buttons = my_table.join(
---         awful.button({ }, 1, function()
---             c:emit_signal("request::activate", "titlebar", {raise = true})
---             awful.mouse.client.move(c)
---         end),
---         awful.button({ }, 2, function() c:kill() end),
---         awful.button({ }, 3, function()
---             c:emit_signal("request::activate", "titlebar", {raise = true})
---             awful.mouse.client.resize(c)
---         end)
---     )
-
---     awful.titlebar(c, {size = dpi(16)}) : setup {
---         { -- Left
---             awful.titlebar.widget.iconwidget(c),
---             buttons = buttons,
---             layout  = wibox.layout.fixed.horizontal
---         },
---         { -- Middle
---             { -- Title
---                 align  = "center",
---                 widget = awful.titlebar.widget.titlewidget(c)
---             },
---             buttons = buttons,
---             layout  = wibox.layout.flex.horizontal
---         },
---         { -- Right
---             awful.titlebar.widget.floatingbutton (c),
---             awful.titlebar.widget.maximizedbutton(c),
---             awful.titlebar.widget.stickybutton   (c),
---             awful.titlebar.widget.ontopbutton    (c),
---             awful.titlebar.widget.closebutton    (c),
---             layout = wibox.layout.fixed.horizontal()
---         },
---         layout = wibox.layout.align.horizontal
---     }
--- end)
+-- set gaps
+beautiful.useless_gap = 5
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
