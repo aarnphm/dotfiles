@@ -1,5 +1,4 @@
 pkg/tmux/.tmux
-pkg/vim/.vim/plugged/python-syntax
 pkg/config/.config/spicetify/*
 !pkg/config/.config/spicetify/config.ini
 .ipython/nbextenstions/
@@ -10,6 +9,7 @@ google-cloud-sdk
 autoload/
 backups/
 bundle/
+plugged/
 cache/
 swaps/
 undo/
