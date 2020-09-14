@@ -36,6 +36,8 @@ alias timeshell="time $(which $SHELL) -i -c exit"
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # remove bytecode
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
+# stow from everywhere
+alias dotstow="lastdir=$(pwd) && cd $HOME/dotfiles && make stow && cd $lastdir"
 
 # Shortcuts
 alias dl="cd ~/Downloads"

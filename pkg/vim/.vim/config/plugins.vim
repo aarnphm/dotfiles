@@ -6,14 +6,11 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 Plug 'vim-python/python-syntax'
-" Plug 'vim-scripts/dbext.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'mrk21/yaml-vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'mkitt/tabline.vim'
-" Plug 'itchyny/lightline.vim'
-" Plug 'maximbaz/lightline-ale'
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'Rykka/InstantRst'

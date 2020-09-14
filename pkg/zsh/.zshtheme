@@ -1,9 +1,7 @@
-# This theme is gruvbox material version of purepower(powerlevel10k)
-# Upstream: https://github.com/romkatv/dotfiles-public/blob/master/.purepower
-
-# PURE_POWER_MODE=modern    use nerdfont characters in the prompt
-# PURE_POWER_MODE=fancy     use unicode characters in the prompt
-# PURE_POWER_MODE=portable  use only ascii characters in the prompt
+# config append .p10k.zsh config
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# modern:nerdfont fancy:unicode portable:none
+# config with .p10k
 PURE_POWER_MODE=modern
 
 if autoload -U is-at-least && is-at-least 5.7 && [[ $COLORTERM == (24bit|truecolor) || ${terminfo[colors]} -eq 16777216 ]]; then
@@ -12,15 +10,8 @@ else
     DESERT_NIGHT_PURE_POWER_TRUE_COLOR=false
 fi
 
-if test -z "${ZSH_VERSION}"; then
-  echo "purepower: unsupported shell; try zsh instead" >&2
-  return 1
-  exit 1
-fi
-
 () {
   emulate -L zsh && setopt no_unset pipe_fail
-
   # `$(_pp_c x y`) evaluates to `y` if the terminal supports >= 256 colors and to `x` otherwise.
   zmodload zsh/terminfo
   if (( terminfo[colors] >= 256 )); then
@@ -30,25 +21,10 @@ fi
     typeset -g POWERLEVEL9K_IGNORE_TERM_COLORS=true
   fi
 
-  # `$(_pp_s x y`) evaluates to `x` in portable mode and to `y` in fancy mode.
-  if [[ ${PURE_POWER_MODE:-fancy} == fancy || $PURE_POWER_MODE == modern ]]; then
-    function _pp_s() { print -nr -- $2 }
-  else
-    if [[ $PURE_POWER_MODE != portable ]]; then
-      echo -En "purepower: invalid mode: ${(qq)PURE_POWER_MODE}; " >&2
-      echo -E  "valid options are 'modern', 'fancy' and 'portable'; falling back to 'portable'" >&2
-    fi
-    function _pp_s() { print -nr -- $1 }
-  fi
+  typeset -ga POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time background_jobs custom_rprompt context)
 
-  typeset -ga POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-      dir vcs)
-
-  typeset -ga POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-      status command_execution_time background_jobs custom_rprompt context)
-
-  local ins=$(_pp_s '>' '❯')
-  local cmd=$(_pp_s '<' '❮')
+  local ins='❯'
+  local cmd='❮'
   if (( ${PURE_POWER_USE_P10K_EXTENSIONS:-1} )); then
     local p="\${\${\${KEYMAP:-0}:#vicmd}:+${${ins//\\/\\\\}//\}/\\\}}}"
     p+="\${\${\$((!\${#\${KEYMAP:-0}:#vicmd})):#0}:+${${cmd//\\/\\\\}//\}/\\\}}}"
@@ -59,22 +35,8 @@ fi
     local ok="%F{#d4be98}${p}%f"
     local err="%F{#ea6962}${p}%f"
   else
-    local ok="%F{$(_pp_s 007 223)}${p}%f"
-    local err="%F{$(_pp_s 001 167)}${p}%f"
-  fi
-
-  if (( ${PURE_POWER_USE_P10K_EXTENSIONS:-1} )); then
-    typeset -g POWERLEVEL9K_SHOW_RULER=false
-    typeset -g POWERLEVEL9K_RULER_CHAR=$(_pp_s '-' '─')
-    typeset -g POWERLEVEL9K_RULER_BACKGROUND=none
-    if [[ "$DESERT_NIGHT_PURE_POWER_TRUE_COLOR" == "true" ]]; then
-      typeset -g POWERLEVEL9K_RULER_FOREGROUND='#665c54'
-    else
-      typeset -g POWERLEVEL9K_RULER_FOREGROUND=$(_pp_c 7 241)
-    fi
-  else
-    typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-    function custom_rprompt() { }
+    local ok="%F{$(223)}${p}%f"
+    local err="%F{$(167)}${p}%f"
   fi
 
   typeset -g POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR=
@@ -132,9 +94,7 @@ fi
   typeset -g POWERLEVEL9K_VCS_LOADING_ACTIONFORMAT_FOREGROUND=$POWERLEVEL9K_VCS_LOADING_FOREGROUND
   if [[ "$PURE_POWER_MODE" == "modern" ]]; then
     typeset -g POWERLEVEL9K_VCS_GIT_ICON=''
-    typeset -g POWERLEVEL9K_VCS_GIT_GITHUB_ICON=''
-    typeset -g POWERLEVEL9K_VCS_GIT_GITLAB_ICON=''
-    typeset -g POWERLEVEL9K_VCS_GIT_BITBUCKET_ICON=''
+    typeset -g POWERLEVEL9K_VCS_GIT_GITHUB_ICON=' '
     typeset -g POWERLEVEL9K_VCS_BRANCH_ICON=' '
     typeset -g POWERLEVEL9K_VCS_REMOTE_BRANCH_ICON=' '
     typeset -g POWERLEVEL9K_VCS_COMMIT_ICON=' '
@@ -144,7 +104,7 @@ fi
     typeset -g POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='⇣ '
     typeset -g POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON='⇡ '
     typeset -g POWERLEVEL9K_VCS_STASH_ICON='* '
-    typeset -g POWERLEVEL9K_VCS_TAG_ICON=' '
+    typeset -g POWERLEVEL9K_VCS_TAG_ICON='  '
   else
     typeset -g POWERLEVEL9K_VCS_{GIT,GIT_GITHUB,GIT_BITBUCKET,GIT_GITLAB,BRANCH}_ICON=
     typeset -g POWERLEVEL9K_VCS_REMOTE_BRANCH_ICON=$'%{\b|%}'
@@ -152,8 +112,8 @@ fi
     typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
     typeset -g POWERLEVEL9K_VCS_UNSTAGED_ICON='!'
     typeset -g POWERLEVEL9K_VCS_STAGED_ICON='+'
-    typeset -g POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON=$(_pp_s '<' '⇣')
-    typeset -g POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON=$(_pp_s '>' '⇡')
+    typeset -g POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='⇣'
+    typeset -g POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON='⇡'
     typeset -g POWERLEVEL9K_VCS_STASH_ICON='*'
     typeset -g POWERLEVEL9K_VCS_TAG_ICON=$'%{\b#%}'
   fi
@@ -188,11 +148,6 @@ fi
   typeset -g POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE=false
   typeset -g POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND=none
   typeset -g POWERLEVEL9K_BACKGROUND_JOBS_VISUAL_IDENTIFIER_COLOR=2
-  typeset -g POWERLEVEL9K_BACKGROUND_JOBS_ICON=$(_pp_s '%%' '⇶')
-
-  # typeset -g POWERLEVEL9K_CUSTOM_RPROMPT=custom_rprompt
-  # typeset -g POWERLEVEL9K_CUSTOM_RPROMPT_BACKGROUND=none
-  # typeset -g POWERLEVEL9K_CUSTOM_RPROMPT_FOREGROUND=$(_pp_c 4 12)
-
-  unfunction _pp_c _pp_s
+  typeset -g POWERLEVEL9K_BACKGROUND_JOBS_ICON='⇶'
+  unfunction _pp_c
 } "$@"
