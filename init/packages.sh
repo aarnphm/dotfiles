@@ -27,6 +27,7 @@ export PKG=(
 	redshift
 	sqlitebrowser
 	vlc
+	xsettingsd
 	xsecurelock
 	imagemagick
 	acpi xfce4-power-manager-settings
@@ -41,6 +42,7 @@ export AUR=(
 	twmn-git
 	autofs
 	dex
+	gnome-keyring libgnome-keyring
 	optimus-manager-qt
 	python-pip
 	wine winetricks lib32-gnutls samba

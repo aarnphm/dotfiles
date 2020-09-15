@@ -1,9 +1,7 @@
-pkg/tmux/.tmux
 pkg/config/.config/spicetify/*
 !pkg/config/.config/spicetify/config.ini
 .ipython/nbextenstions/
 .ipython/extensions/
-vscode/
 .uuid
 google-cloud-sdk
 backups/

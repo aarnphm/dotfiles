@@ -1,6 +1,7 @@
 # default apps
+xsettingsd &
 nitrogen --restore &
-/usr/bin/redshift -v &
+/usr/bin/redshift -v -c $HOME/.config/redshift/redshift.conf &
 picom &
 
 # non default
@@ -8,6 +9,5 @@ picom &
 /usr/bin/discord &
 /usr/bin/skypeforlinux &
 /usr/bin/teams &
-/usr/bin/zoom &
 kdocker -q -l -o -i /usr/share/icons/ePapirus/64x64/apps/spotify.svg spotify &
 

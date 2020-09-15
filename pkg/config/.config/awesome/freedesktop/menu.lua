@@ -18,9 +18,6 @@ local icon_theme = require("menubar.icon_theme")
 
 local io, pairs, string, table, os = io, pairs, string, table, os
 
--- Add support for NixOS systems too
-table.insert(menu_gen.all_menu_dirs, string.format("%s/.nix-profile/share/applications", os.getenv("HOME")))
-
 -- Expecting a wm_name of awesome omits too many applications and tools
 menu_utils.wm_name = ""
 
