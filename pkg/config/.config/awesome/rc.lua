@@ -1,7 +1,6 @@
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
-local screen = screen
 
 -- Import theme
 local xresources = require("beautiful.xresources")

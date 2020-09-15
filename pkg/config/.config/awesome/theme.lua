@@ -1,10 +1,3 @@
---[[
-
-     Powerarrow Dark Awesome WM theme
-     github.com/lcpz
-
---]]
-
 local gears = require("gears")
 local lain  = require("lain")
 local awful = require("awful")
@@ -102,14 +95,6 @@ local cpu = lain.widget.cpu({
     end
 })
 
--- Coretemp
-local tempicon = wibox.widget.imagebox(theme.widget_temp)
-local temp = lain.widget.temp({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. coretemp_now .. "°C "))
-    end
-})
-
 -- Battery
 local baticon = wibox.widget.imagebox(theme.widget_battery)
 local bat = lain.widget.bat({
@@ -162,17 +147,9 @@ theme.volume.widget:buttons(awful.util.table.join(
 
 -- Net
 local neticon = wibox.widget.imagebox(theme.widget_net)
-local net = lain.widget.net({
-    settings = function()
-        widget:set_markup(markup.font(theme.font,
-                          markup("#7AC82E", " " .. string.format("%06.1f", net_now.received))
-                          .. " " ..
-                          markup("#46A8C3", " " .. string.format("%06.1f", net_now.sent) .. " ")))
-    end
-})
 
 -- Separators
-local spr     = wibox.widget.textbox(' ')
+local spr = wibox.widget.textbox(' ')
 
 function theme.at_screen_connect(s)
     -- Tags
@@ -214,16 +191,15 @@ function theme.at_screen_connect(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            volicon,
-            theme.volume.widget,
             memicon,
             mem.widget,
             cpuicon,
             cpu.widget,
             baticon,
             bat.widget,
-            -- neticon,
-            -- net.widget,
+            volicon,
+            theme.volume.widget,
+            neticon,
             clock,
             wibox.container.background(s.mylayoutbox, theme.bg_focus),
         },
