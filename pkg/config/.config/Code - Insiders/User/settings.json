@@ -22,5 +22,11 @@
     "vim.visualstar": true,
     "editor.minimap.enabled": false,
     "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false
+    "explorer.confirmDragAndDrop": false,
+    "vs-kubernetes": {
+        "vs-kubernetes.minikube-path.linux": "/home/aarnphm/.vs-kubernetes/tools/minikube/linux-amd64/minikube",
+        "vs-kubernetes.kubectl-path.linux": "/home/aarnphm/.vs-kubernetes/tools/kubectl/kubectl",
+        "vs-kubernetes.helm-path.linux": "/home/aarnphm/.vs-kubernetes/tools/helm/linux-amd64/helm",
+        "vs-kubernetes.draft-path.linux": "/home/aarnphm/.vs-kubernetes/tools/draft/linux-amd64/draft"
+    }
 }

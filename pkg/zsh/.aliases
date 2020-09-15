@@ -42,6 +42,7 @@ alias dotstow="lastdir=$(pwd) && cd $HOME/dotfiles && make stow && cd $lastdir"
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias g="git"
+alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"
 
 # alias steam="flatpak run com.valvesoftware.Steam"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
@@ -84,9 +85,9 @@ else
 fi
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"
-alias awesomeconf="$EDITOR $HOME/.config/awesome/rc.lua"
-alias roficonf="$EDITOR -p $HOME/.config/rofi/config.rasi"
 alias tmuxconf="$EDITOR $HOME/.tmux.conf"
+alias roficonf="$EDITOR $HOME/.config/rofi/config.rasi"
+alias awesomeconf="$EDITOR -p $HOME/.config/awesome/*"
 alias zshconf="$EDITOR -p $HOME/.zshrc"
 alias ztheme="$EDITOR -p $HOME/.zshtheme $HOME/.p10k.zsh"
 alias vconf="$EDITOR -p $HOME/.vimrc $HOME/.vim/config/*"

@@ -9,5 +9,5 @@ picom &
 /usr/bin/discord &
 /usr/bin/skypeforlinux &
 /usr/bin/teams &
-kdocker -q -l -o -i /usr/share/icons/ePapirus/64x64/apps/spotify.svg spotify &
+kdocker -q -o -i /usr/share/icons/ePapirus/64x64/apps/spotify.svg spotify &
 

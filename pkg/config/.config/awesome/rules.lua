@@ -31,14 +31,20 @@ function rules.create(clientkeys, clientbuttons)
          },
       },
         -- Floating clients.
-    {
+     {
          rule_any = {
             instance = {
                "DTA",
                "copyq",
             },
             class = {
-               "Nm-connection-editor"
+               "Nm-connection-editor",
+               "Arandr",
+               "Blueman-manager",
+               "Pcmanfm",
+               -- "Skype",
+               -- "Team",
+               -- "Discord",
             },
             name = {
                "Event Tester",

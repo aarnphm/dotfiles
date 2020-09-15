@@ -32,6 +32,10 @@ awful.util.mymainmenu = freedesktop.menu.build({
         -- other triads can be put here
     }
 })
+-- }}}
+
+-- {{{ Mouse support 
+-- enable clickable taglist for easier navigation with mouse
 keys.taglist_buttons = gears.table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ modkey }, 1, function(t)
@@ -84,6 +88,7 @@ keys.tasklist_buttons = gears.table.join(
     awful.button({ }, 4, function () awful.client.focus.byidx(1) end),
     awful.button({ }, 5, function () awful.client.focus.byidx(-1) end)
 )
+
 keys.desktopbuttons = gears.table.join(
     awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
@@ -103,6 +108,9 @@ keys.clientbuttons = gears.table.join(
         awful.mouse.client.resize(c)
     end)
 )
+-- }}}
+
+
 -- {{{ Key bindings
 keys.globalkeys = gears.table.join(
     awful.key({ modkey,           }, "w", function () awful.util.mymainmenu:show() end,

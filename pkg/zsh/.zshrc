@@ -18,10 +18,7 @@ for file in ~/.{exports,aliases,functions}; do
 done;
 unset file;
 
-# setup for pyenv
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+eval "$(dircolors $HOME/.dircolors)"
 
 autoload -Uz compinit && compinit -i
 
@@ -33,7 +30,6 @@ if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
         print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
 
-eval "$(dircolors $HOME/.dircolors)"
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
@@ -49,8 +45,9 @@ zinit light-mode for \
     zinit-zsh/z-a-bin-gem-node
 
 # fzf
-zinit ice from"gh-r" as"program"
+zinit ice from"gh-r" as "program"
 zinit load junegunn/fzf-bin
+zinit light romkatv/powerlevel10k
 
 # tab completions
 zinit ice wait"0b" lucid blockf
@@ -66,9 +63,6 @@ zstyle ':fzf-tab:complete:_zlua:*' query-string input
 zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
 zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
 zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
-zinit light romkatv/powerlevel10k
-# dark version
-zinit load 'wfxr/forgit'
 ### End of Zinit's installer chunk
 
 
@@ -79,3 +73,8 @@ if [ -f '/home/aarnphm/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aarnphm/g
 if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
 
 [[ ! -f ~/.zshtheme ]] || source ~/.zshtheme
+
+# cd on quit when nnn
+if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
+    source /usr/share/nnn/quitcd/quitcd.bash_zsh
+fi

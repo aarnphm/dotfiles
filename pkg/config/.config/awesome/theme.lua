@@ -147,7 +147,11 @@ theme.volume.widget:buttons(awful.util.table.join(
 
 -- Net
 local neticon = wibox.widget.imagebox(theme.widget_net)
-
+local net = lain.widget.net({
+    settings = function()
+        widget:set_markup(markup.fontfg(theme.font, "#FEFEFE", " " .. net_now.received .. " ↓↑ " .. net_now.sent .. " "))
+    end
+})
 -- Separators
 local spr = wibox.widget.textbox(' ')
 
@@ -190,7 +194,8 @@ function theme.at_screen_connect(s)
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            wibox.widget.systray(),
+            wibox.layout.margin(wibox.widget.systray(), 0, 0, 3, 3),
+            -- wibox.widget.systray(),
             memicon,
             mem.widget,
             cpuicon,
@@ -200,6 +205,7 @@ function theme.at_screen_connect(s)
             volicon,
             theme.volume.widget,
             neticon,
+            net,
             clock,
             wibox.container.background(s.mylayoutbox, theme.bg_focus),
         },

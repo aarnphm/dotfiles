@@ -1,4 +1,4 @@
-#!/CAr/bin/env bash
+#!/usr/bin/env bash
 # Make vim the default editor.
 export EDITOR='nvim';
 export PYENV_ROOT="$HOME/.pyenv"
@@ -11,7 +11,7 @@ export FZF_DEFAULT_OPTS="
 --multi
 --preview-window=:hidden
 --preview '([[ -f {} ]] && (bat --style=numbers {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
---prompt='∼ ' --pointer='▶' --marker='✓'
+--prompt='∼ ' --pointer='>' --marker='✓'
 --bind '?:toggle-preview'
 --bind 'ctrl-a:select-all'
 --bind 'ctrl-y:execute-silent(echo {+} | pbcopy)'
@@ -51,6 +51,7 @@ export HISTCONTROL='ignoreboth';
 export LANGUAGE='en';
 export LANG='en_CA.UTF-8';
 export LC_ALL='en_CA.UTF-8';
+export LC_COLLATE="C";
 export HOST='0x6161726E70';
 
 # Highlight section titles in manual pages.
@@ -67,9 +68,14 @@ export GPG_TTY=$(tty);
 # Hide the “default interactive shell is now zsh” warning on macOS.
 export BASH_SILENCE_DEPRECATION_WARNING=1;
 
+#nnn
+export NNN_BMS='d:~/Documents;D:~/Downloads/'
+export NNN_SSHFS="sshfs -o follow_symlinks"        # make sshfs follow symlinks on the remote
+export NNN_COLORS="2121"                           # use a different color for each context
+export NNN_TRASH=1                                 # trash (needs trash-cli) instead of delete
+
 # FZF
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
 export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'--height=50% --color=fg:#e5e9f0,bg:#2e3440,hl:#81a1c1 --color=fg+:#e5e9f0,bg+:#2e3440,hl+:#81a1c1 --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'

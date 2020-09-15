@@ -5,15 +5,12 @@ local clickable_container = require("widgets.clickable-container")
 local gears = require("gears")
 local dpi = require("beautiful").xresources.apply_dpi
 
-local PATH_TO_ICONS = os.getenv("HOME") .. "/.config/awesome/icons/bluetooth/"
-local checker
-
 
 -- ===================================================================
 -- Initialization
 -- ===================================================================
 
-
+local checker
 local widget = wibox.widget {
    {
       id = "icon",
@@ -50,18 +47,17 @@ awful.tooltip(
    }
 )
 
-local last_bluetooth_check = os.time()
 watch("bluetoothctl --monitor list", 5,
    function(_, stdout)
       -- Check if there  bluetooth
       checker = stdout:match("Controller") -- If 'Controller' string is detected on stdout
       local widget_icon_name
       if (checker ~= nil) then
-         widget_icon_name = "bluetooth"
+         widget_icon_name = "hdd"
       else
-         widget_icon_name = "bluetooth-off"
+         widget_icon_name = "magnifier"
       end
-      widget.icon:set_image(PATH_TO_ICONS .. widget_icon_name .. ".svg")
+      widget.icon:set_image(PATH_TO_ICONS .. widget_icon_name .. ".png")
       collectgarbage("collect")
    end,
    widget

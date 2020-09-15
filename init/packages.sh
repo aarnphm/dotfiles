@@ -42,8 +42,8 @@ export AUR=(
 	twmn-git
 	autofs
 	dex
+	trash-cli
 	gnome-keyring libgnome-keyring
-	optimus-manager-qt
 	python-pip
 	wine winetricks lib32-gnutls samba
 	gyazo
