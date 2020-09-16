@@ -1,26 +1,35 @@
 " define vim-plug here
 call plug#begin('~/.vim/plugins')
-Plug 'dense-analysis/ale'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'sheerun/vim-polyglot'
-Plug 'tbastos/vim-lua'
-Plug 'vim-python/python-syntax'
+" fzf with rg
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'rking/ag.vim'
+" ale for linting
+Plug 'dense-analysis/ale'
+" go support
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" vscode like support
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" language packs
+Plug 'sheerun/vim-polyglot'
+" language syntax
+Plug 'tbastos/vim-lua'
+Plug 'andrewstuart/vim-kubernetes'
+Plug 'vim-python/python-syntax'
 Plug 'mrk21/yaml-vim'
 Plug 'ekalinin/Dockerfile.vim'
+" UI related
 Plug 'mkitt/tabline.vim'
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'Rykka/InstantRst'
-Plug 'rking/ag.vim'
+Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-apathy'
 Plug 'wakatime/vim-wakatime'
 Plug 'Yggdroot/indentLine'
-Plug 'andrewstuart/vim-kubernetes'
 call plug#end()
 

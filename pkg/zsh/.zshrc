@@ -1,24 +1,52 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# zmodload zsh/zprof
+# startup
+fpath=($HOME/.zsh/completion $fpath)
+
 # run xinit
 if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   exec startx
 fi
 
-# startup
-fpath=($HOME/.zsh/completion $fpath)
+setopt CORRECT
+setopt AUTO_CD              # Auto changes to a directory without typing cd.
+setopt AUTO_PUSHD           # Push the old directory onto the stack on cd.
+setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+setopt PUSHD_TO_HOME        # Push to home directory when no argument is given.
+setopt CDABLE_VARS          # Change directory to a path stored in a variable.
+setopt MULTIOS              # Write to multiple descriptors.
+setopt EXTENDED_GLOB        # Use extended globbing syntax.
+unsetopt CLOBBER            # Do not overwrite existing files with > and >>. Use >! and >>! to bypass.
 
-# important
-setopt prompt_subst
-for f in $HOME/.zsh/*.zsh; do
-    source $f;
-done;
+# Dot expansions
+function expand-dot-to-parent-directory-path {
+  if [[ $LBUFFER = *.. ]]; then
+    LBUFFER+='/..'
+  else
+    LBUFFER+='.'
+  fi
+}
+zle -N expand-dot-to-parent-directory-path
 
+autoload -Uz vcs_info
+autoload -U colors && colors
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+
+# eval "$(dircolors $HOME/.dircolors)"
 for file in ~/.{exports,aliases,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
-unset file;
 
-eval "$(dircolors $HOME/.dircolors)"
+# termmode: minimal, fancy
+termmode=minimal
+if [[ "$termmode" == "minimal" ]]; then
+	setopt prompt_subst
+	export PROMPT="%{$fg[yellow]%}%m %{$fg_bold[blue]%}%~%{$fg_bold[cyan]%}\$vcs_info_msg_0_ %{$reset_color%}"
+	zstyle ':vcs_info:git:*' formats ' @%b'
+else	
+	[[ ! -f ~/.zshtheme ]] || source ~/.zshtheme
+fi
 
 autoload -Uz compinit && compinit -i
 
@@ -32,49 +60,19 @@ fi
 
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
+zinit wait lucid light-mode for \
+  atinit"zicompinit; zicdreplay" \
+      zdharma/fast-syntax-highlighting \
+  blockf atpull'zinit creinstall -q .' \
+      zsh-users/zsh-completions
+
 (( ${+_comps} )) && _comps[zinit]=_zinit
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zdharma/fast-syntax-highlighting \
-    zdharma/history-search-multi-word \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
-
-# fzf
-zinit ice from"gh-r" as "program"
-zinit load junegunn/fzf-bin
-zinit light romkatv/powerlevel10k
-
-# tab completions
-zinit ice wait"0b" lucid blockf
-zinit light zsh-users/zsh-completions
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' menu select=2
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*:descriptions' format '-- %d --'
-zstyle ':completion:*:processes' command 'ps -au$USER'
-zstyle ':completion:complete:*:options' sort false
-zstyle ':fzf-tab:complete:_zlua:*' query-string input
-zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
-zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
-zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
-### End of Zinit's installer chunk
-
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/aarnphm/google-cloud-sdk/path.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
-
-[[ ! -f ~/.zshtheme ]] || source ~/.zshtheme
 
 # cd on quit when nnn
 if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
     source /usr/share/nnn/quitcd/quitcd.bash_zsh
 fi
+# zprof

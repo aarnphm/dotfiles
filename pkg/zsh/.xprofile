@@ -1,13 +1,13 @@
 # default apps
 xsettingsd &
 nitrogen --restore &
-/usr/bin/redshift -v -c $HOME/.config/redshift/redshift.conf &
+/usr/bin/redshift -v &
 picom &
-blueman-manager &
 
 # non default
+# blueman-tray &
 # conky --daemonize --pause=5 &
-/usr/bin/skypeforlinux &
-/usr/bin/teams &
-kdocker -q -i /usr/share/icons/ePapirus/64x64/apps/spotify.svg spotify &
+# /usr/bin/skypeforlinux &
+# /usr/bin/teams &
+# kdocker -q -i /usr/share/icons/ePapirus/64x64/apps/spotify.svg spotify &
 
