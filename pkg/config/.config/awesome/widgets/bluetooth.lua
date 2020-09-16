@@ -4,7 +4,7 @@ local wibox = require("wibox")
 local clickable_container = require("widgets.clickable-container")
 local gears = require("gears")
 local dpi = require("beautiful").xresources.apply_dpi
-
+local PATH_TO_ICONS = "/home/aarnphm/.config/awesome/icons/"
 
 -- ===================================================================
 -- Initialization

@@ -28,12 +28,14 @@ function expand-dot-to-parent-directory-path {
 }
 zle -N expand-dot-to-parent-directory-path
 
+# ============================== Prompt
+setopt prompt_subst
 autoload -Uz vcs_info
 autoload -U colors && colors
 precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
 
-# eval "$(dircolors $HOME/.dircolors)"
+eval "$(dircolors $HOME/.dircolors)"
 for file in ~/.{exports,aliases,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
@@ -41,15 +43,39 @@ done;
 # termmode: minimal, fancy
 termmode=minimal
 if [[ "$termmode" == "minimal" ]]; then
-	setopt prompt_subst
-	export PROMPT="%{$fg[yellow]%}%m %{$fg_bold[blue]%}%~%{$fg_bold[cyan]%}\$vcs_info_msg_0_ %{$reset_color%}"
-	zstyle ':vcs_info:git:*' formats ' @%b'
+  export PROMPT="%{$fg[yellow]%}%m %{$fg[red]%}%# %{$fg_bold[blue]%}%~ > "
+  # zstyle ':vcs_info:git:*' formats '@%b'
 else	
 	[[ ! -f ~/.zshtheme ]] || source ~/.zshtheme
 fi
+# ============================== Completion
+unsetopt menu_complete   # do not autoselect the first completion entry
+unsetopt flowcontrol
+setopt auto_menu         # show completion menu on successive tab press
+setopt complete_in_word
+setopt always_to_end
+zstyle ':completion:*' menu select
 
+autoload -Uz compinit
+compinit -C
+_comp_options+=(globdots)
+
+# Case Insensitive completion
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+## Directory navigation
+setopt autocd autopushd
+
+# ============================== History
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history          # share command history data inside tmux
 autoload -Uz compinit && compinit -i
 
+# ============================== zinit & misc
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
@@ -61,10 +87,8 @@ fi
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 zinit wait lucid light-mode for \
-  atinit"zicompinit; zicdreplay" \
-      zdharma/fast-syntax-highlighting \
-  blockf atpull'zinit creinstall -q .' \
-      zsh-users/zsh-completions
+  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
+  blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions
 
 (( ${+_comps} )) && _comps[zinit]=_zinit
 

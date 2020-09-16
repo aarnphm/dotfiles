@@ -5,8 +5,8 @@ local awful = require("awful")
 -- Import theme
 local xresources = require("beautiful.xresources")
 local beautiful = require("beautiful")
-local dpi = xresources.apply_dpi
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
+local dpi = xresources.apply_dpi
 -- Import Tag Settings
 local tags = require("tags")
 -- Import Keybinds
@@ -25,10 +25,15 @@ awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 -- Define tag layouts
 awful.util.tagnames = tags
 awful.layout.layouts = {
-    awful.layout.suit.tile,
     awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral.dwindle,
+    -- awful.layout.suit.max,
+    -- awful.layout.suit.tile,
+    -- awful.layout.suit.tile.bottom,
+    -- awful.layout.suit.tile.top,
+    awful.layout.suit.floating,
  }
 
 awful.util.taglist_buttons = keys.taglist_buttons

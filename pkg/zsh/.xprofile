@@ -1,7 +1,7 @@
 # default apps
-xsettingsd &
+# xsettingsd &
 nitrogen --restore &
-/usr/bin/redshift -v &
+redshift &
 picom &
 
 # non default
