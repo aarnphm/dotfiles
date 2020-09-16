@@ -3,6 +3,10 @@ local lain  = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
+-- Notification library
+local naughty = require("naughty")
+local menubar = require("menubar")
+local vicious = require("vicious")
 
 local os = os
 local theme                                     = {}
@@ -43,10 +47,10 @@ theme.widget_ac                                 = theme.dir .. "/icons/ac.png"
 theme.widget_battery                            = theme.dir .. "/icons/battery.png"
 theme.widget_battery_low                        = theme.dir .. "/icons/battery_low.png"
 theme.widget_battery_empty                      = theme.dir .. "/icons/battery_empty.png"
+theme.widget_net                                = theme.dir .. "/icons/net_bg.png"
 theme.widget_mem                                = theme.dir .. "/icons/mem.png"
 theme.widget_cpu                                = theme.dir .. "/icons/cpu.png"
 theme.widget_temp                               = theme.dir .. "/icons/temp.png"
-theme.widget_net                                = theme.dir .. "/icons/net.png"
 theme.widget_hdd                                = theme.dir .. "/icons/hdd.png"
 theme.widget_music                              = theme.dir .. "/icons/note.png"
 theme.widget_music_on                           = theme.dir .. "/icons/note_on.png"
@@ -54,6 +58,7 @@ theme.widget_vol                                = theme.dir .. "/icons/vol.png"
 theme.widget_vol_low                            = theme.dir .. "/icons/vol_low.png"
 theme.widget_vol_no                             = theme.dir .. "/icons/vol_no.png"
 theme.widget_vol_mute                           = theme.dir .. "/icons/vol_mute.png"
+-- theme.widget_bluetooth                          = theme.dir .. "/icons/"
 theme.tasklist_plain_task_name                  = true
 theme.tasklist_disable_icon                     = true
 theme.useless_gap                               = dpi(0)
@@ -83,7 +88,7 @@ theme.cal = lain.widget.cal({
 local memicon = wibox.widget.imagebox(theme.widget_mem)
 local mem = lain.widget.mem({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. mem_now.used .. "MB "))
+        widget:set_markup(markup.font(theme.font, "" .. mem_now.used .. "MB"))
     end
 })
 
@@ -91,7 +96,7 @@ local mem = lain.widget.mem({
 local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
 local cpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
+        widget:set_markup(markup.font(theme.font, "" .. cpu_now.usage .. "%"))
     end
 })
 
@@ -109,9 +114,9 @@ local bat = lain.widget.bat({
             else
                 baticon:set_image(theme.widget_battery)
             end
-            widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
+            widget:set_markup(markup.font(theme.font, "" .. bat_now.perc .. "% "))
         else
-            widget:set_markup(markup.font(theme.font, " AC "))
+            widget:set_markup(markup.font(theme.font, "AC "))
             baticon:set_image(theme.widget_ac)
         end
     end
@@ -131,7 +136,7 @@ theme.volume = lain.widget.alsa({
             volicon:set_image(theme.widget_vol)
         end
 
-        widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
+        widget:set_markup(markup.font(theme.font, "" .. volume_now.level .. "%"))
     end
 })
 theme.volume.widget:buttons(awful.util.table.join(
@@ -149,11 +154,10 @@ theme.volume.widget:buttons(awful.util.table.join(
 local neticon = wibox.widget.imagebox(theme.widget_net)
 local net = lain.widget.net({
     settings = function()
-        widget:set_markup(markup.fontfg(theme.font, "#FEFEFE", " " .. net_now.received .. " ↓↑ " .. net_now.sent .. " "))
+        widget:set_markup(markup.fontfg(theme.font, "#FEFEFE", "" .. net_now.received .. " ↓↑ " .. net_now.sent .. " "))
     end
 })
 -- Separators
-local spr = wibox.widget.textbox(' ')
 
 function theme.at_screen_connect(s)
     -- Tags
@@ -185,7 +189,6 @@ function theme.at_screen_connect(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             s.mytaglist,
-            spr,
         },
         {
         layout = wibox.layout.fixed.horizontal,
@@ -194,16 +197,15 @@ function theme.at_screen_connect(s)
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            wibox.layout.margin(wibox.widget.systray(), 0, 0, 3, 3),
-            -- wibox.widget.systray(),
+            wibox.widget.systray(),
             memicon,
             mem.widget,
             cpuicon,
             cpu.widget,
-            baticon,
-            bat.widget,
             volicon,
             theme.volume.widget,
+            baticon,
+            bat.widget,
             neticon,
             net,
             clock,

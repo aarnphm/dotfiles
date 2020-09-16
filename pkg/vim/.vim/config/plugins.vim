@@ -4,6 +4,7 @@ Plug 'dense-analysis/ale'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
+Plug 'tbastos/vim-lua'
 Plug 'vim-python/python-syntax'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'

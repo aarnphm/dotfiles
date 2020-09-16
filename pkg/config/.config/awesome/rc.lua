@@ -49,6 +49,7 @@ screen.connect_signal("arrange", function (s)
     end
 end)
 
+beautiful.useless_gap = 5
 -- ===================================================================
 -- Garbage collection (allows for lower memory consumption)
 -- ===================================================================

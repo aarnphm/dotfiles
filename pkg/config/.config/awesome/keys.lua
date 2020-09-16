@@ -183,6 +183,28 @@ keys.globalkeys = gears.table.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
+    awful.key({ altkey,           }, "Tab",
+        function ()
+            if cycle_prev then
+                awful.client.focus.history.previous()
+            else
+                awful.client.focus.byidx(-1)
+            end
+            if client.focus then
+                client.focus:raise()
+            end
+        end,
+        {description = "cycle with previous/go back", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "Tab",
+        function ()
+            if cycle_prev then
+                awful.client.focus.byidx(1)
+                if client.focus then
+                    client.focus:raise()
+                end
+            end
+        end,
+        {description = "go forth", group = "client"}),
     -- On the fly useless gaps change
     awful.key({ modkey, "Control" }, "-", function () lain.util.useless_gaps_resize(5) end,
               {description = "increment useless gaps", group = "tag"}),
@@ -197,6 +219,18 @@ keys.globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
+    awful.key({ altkey, "Shift"   }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+              {description = "increase master width factor", group = "layout"}),
+    awful.key({ altkey, "Shift"   }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+              {description = "decrease master width factor", group = "layout"}),
+    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
+              {description = "increase the number of master clients", group = "layout"}),
+    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
+              {description = "decrease the number of master clients", group = "layout"}),
+    awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
+              {description = "increase the number of columns", group = "layout"}),
+    awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
+              {description = "decrease the number of columns", group = "layout"}),
     awful.key({ modkey, "Shift" }, "space", function () awful.layout.inc( 1) end,
               {description = "select next", group = "layout"}),
     awful.key({ modkey, altkey   }, "space", function () awful.layout.inc(-1) end,

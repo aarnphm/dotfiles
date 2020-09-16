@@ -87,7 +87,7 @@ fi
 alias reload="exec ${SHELL} -l"
 alias tmuxconf="$EDITOR $HOME/.tmux.conf"
 alias roficonf="$EDITOR $HOME/.config/rofi/config.rasi"
-alias awesomeconf="$EDITOR -p $HOME/.config/awesome/*"
+alias awesomeconf="cd $HOME/.config/awesome && $EDITOR -p rules.lua keys.lua rc.lua theme.lua widgets/*"
 alias zshconf="$EDITOR -p $HOME/.zshrc"
 alias ztheme="$EDITOR -p $HOME/.zshtheme $HOME/.p10k.zsh"
 alias vconf="$EDITOR -p $HOME/.vimrc $HOME/.vim/config/*"
