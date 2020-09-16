@@ -296,7 +296,7 @@ keys.globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "f", function () awful.spawn(apps.filebrowser) end,
               {description = "run explorer", group = "launcher"}),
     -- X screen locker
-    awful.key({ "Control", modkey }, "l", function () os.execute(apps.lock) end,
+    awful.key({ "Control",altkey }, "l", function () os.execute(apps.lock) end,
               {description = "lock screen", group = "hotkeys"}),
     --rofi
     awful.key({ modkey }, "space", function () awful.spawn(apps.launcher) end,

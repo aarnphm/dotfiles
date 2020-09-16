@@ -6,6 +6,7 @@ just a tiny collection of my development environment, built for _Arch_ and _MacO
 - I have included a Docker version of my dotfiles if you want to try it out.
 - Make sure you have `docker` installed. then do `make build` the followed by `make run`
 - now if you save all ur folder inside `pkg` u can run `make stow` if you want to stow everything
+- included custom built mozilla under `etc`, follow [this](https://github.com/mut-ex/minimal-forfunctional-fox) for instalation
 
 # Folder structures
 - `stow` is used for symlink manager
