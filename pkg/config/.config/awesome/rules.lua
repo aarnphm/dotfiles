@@ -29,9 +29,9 @@ function rules.create(clientkeys, clientbuttons)
             placement = awful.placement.no_overlap+awful.placement.no_offscreen,
             size_hints_honor = false
          },
-      },
+    },
         -- Floating clients.
-     {
+    {
          rule_any = {
             instance = {
                "DTA",
@@ -42,10 +42,12 @@ function rules.create(clientkeys, clientbuttons)
                "Arandr",
                "Blueman-manager",
                "Pcmanfm",
+               "Nitrogen"
             },
             name = {
                "Event Tester",
-               "Steam Guard - Computer Authorization Required"
+               "Steam Guard - Computer Authorization Required",
+               "Zoom - Free Account"
             },
             role = {
                "pop-up",
@@ -55,25 +57,31 @@ function rules.create(clientkeys, clientbuttons)
                "dialog"
             }
          }, properties = {floating = true}
-      },
+    },
+    {
+         rule_any = {
+            class = {
+               "Firefox"
+            },
+         }, properties = {switchtotag = true}
+    },
+    -- Rofi
+    {
+         rule_any = { name = { "rofi" } },
+         properties = { maximized = false, ontop = true }
+    },
 
-        -- Rofi
-        {
-        rule_any = { name = { "rofi" } },
-        properties = { maximized = false, ontop = true }
-        },
+    -- File chooser dialog
+    {
+         rule_any = { role = { "GtkFileChooserDialog" } },
+         properties = { floating = true, width = screen_width * 0.35, height = screen_height * 0.65 }
+    },
 
-        -- File chooser dialog
-        {
-        rule_any = { role = { "GtkFileChooserDialog" } },
-        properties = { floating = true, width = screen_width * 0.35, height = screen_height * 0.65 }
-        },
-
-        -- Pavucontrol & Bluetooth Devices
-        {
-        rule_any = { class = { "Pavucontrol" }, name = { "Bluetooth Devices" } },
-        properties = { floating = true, width = screen_width * 0.55, height = screen_height * 0.45 }
-        },
+    -- Pavucontrol & Bluetooth Devices
+    {
+         rule_any = { class = { "Pavucontrol" }, name = { "Bluetooth Devices" } },
+         properties = { floating = true, width = screen_width * 0.55, height = screen_height * 0.45 }
+    },
     }
 end
 

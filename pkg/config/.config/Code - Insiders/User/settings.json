@@ -20,7 +20,7 @@
     "vim.vimrc.enable": true,
     "vim.vimrc.path": "$HOME/.vimrc",
     "vim.visualstar": true,
-    "editor.minimap.enabled": false,
+    "editor.minimap.enabled": true,
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
     "vs-kubernetes": {
@@ -28,5 +28,7 @@
         "vs-kubernetes.kubectl-path.linux": "/home/aarnphm/.vs-kubernetes/tools/kubectl/kubectl",
         "vs-kubernetes.helm-path.linux": "/home/aarnphm/.vs-kubernetes/tools/helm/linux-amd64/helm",
         "vs-kubernetes.draft-path.linux": "/home/aarnphm/.vs-kubernetes/tools/draft/linux-amd64/draft"
-    }
+    },
+    "vim.debug.loggingLevelForConsole": "info",
+    "vim.debug.silent": true
 }

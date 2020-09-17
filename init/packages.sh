@@ -43,7 +43,10 @@ export AUR=(
 	autofs
 	dex
 	trash-cli
-	gnome-keyring libgnome-keyring
+	termite xterm
+	code-insiders
+	ibus ibus-unikey
+	gnome-keyring libgnome-keyring secret-tool
 	python-pip
 	wine winetricks lib32-gnutls samba
 	gyazo
@@ -55,7 +58,6 @@ export AUR=(
 	vmware-workstation
 	pcmanfm
 	nodejs npm
-	neovim
 	zanthura
 	file-roller lxappearance lxtask
 	foxitreader

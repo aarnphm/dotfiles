@@ -27,11 +27,13 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # curl -fsSL https://starship.rs/install.sh | bash
 
 # pyenv
+echo_info "Install pyenv..."
 eval $(
 curl https://pyenv.run | bash
 );
 
-# install gcp
+# gcp
+echo_info "Install gcloud..."
 eval $(
 curl https://sdk.cloud.google.com | bash && exec -l $SHELL
 );

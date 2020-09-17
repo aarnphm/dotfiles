@@ -1,5 +1,5 @@
 # default apps
-# xsettingsd &
+xsettingsd &
 nitrogen --restore &
 redshift &
 picom &
@@ -9,5 +9,5 @@ picom &
 # conky --daemonize --pause=5 &
 # /usr/bin/skypeforlinux &
 # /usr/bin/teams &
-# kdocker -q -i /usr/share/icons/ePapirus/64x64/apps/spotify.svg spotify &
+kdocker -q -i /usr/share/icons/ePapirus/32x32@2x/apps/spotify.svg spotify &
 

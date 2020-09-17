@@ -12,6 +12,7 @@ require("awful.hotkeys_popup.keys")
 local modkey = "Mod4"
 local altkey = "Mod1"
 local keys = {}
+local cycle_prev = true
 
 -- {{{ Menu
 local myawesomemenu = {
@@ -34,7 +35,7 @@ awful.util.mymainmenu = freedesktop.menu.build({
 })
 -- }}}
 
--- {{{ Mouse support 
+-- {{{ Mouse support
 -- enable clickable taglist for easier navigation with mouse
 keys.taglist_buttons = gears.table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
@@ -58,7 +59,7 @@ keys.tasklist_buttons = gears.table.join(
         if c == client.focus then
             c.minimized = true
         else
-            --c:emit_signal("request::activate", "tasklist", {raise = true})<Paste>
+            -- c:emit_signal("request::activate", "tasklist", {raise = true})<Paste>
 
             -- Without this, the following
             -- :isvisible() makes no sense
@@ -135,7 +136,7 @@ keys.globalkeys = gears.table.join(
     -- Default client focus
     awful.key({ altkey, "Shift"  }, "j",
         function ()
-            awful.client.focus.byidx( 1)
+            awful.client.focus.byidx(1)
         end,
         {description = "focus next by index", group = "client"}
     ),

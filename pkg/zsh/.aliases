@@ -83,12 +83,12 @@ fi
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec ${SHELL}"
 alias tmuxconf="$EDITOR $HOME/.tmux.conf"
+alias vconf="$EDITOR $HOME/.vimrc"
 alias alaconf="$EDITOR $HOME/.config/alacritty/alacritty.yml"
 alias roficonf="$EDITOR $HOME/.config/rofi/config.rasi"
-alias awesomeconf="cd $HOME/.config/awesome && $EDITOR -p rules.lua keys.lua rc.lua theme.lua widgets/*"
+alias awesomeconf="cd $HOME/.config/awesome && $EDITOR -p rc.lua theme.lua"
 alias zshconf="$EDITOR -p $HOME/.zshrc"
 alias ztheme="$EDITOR -p $HOME/.zshtheme $HOME/.p10k.zsh"
-alias vconf="$EDITOR -p $HOME/.vimrc $HOME/.vim/config/*"
 alias dotconf="$EDITOR -p $HOME/dotfiles/init/*"
 alias dotfiles="$HOME/dotfiles/pkg"
 # Print each PATH entry on a separate line

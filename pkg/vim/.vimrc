@@ -1,5 +1,50 @@
 set runtimepath+=~/.vim/
 
+" use vim-plug becauseof its minimalistic
+"¯\_(ツ)_/¯
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent call system('curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+  execute 'source  ~/.vim/autoload/plug.vim'
+  augroup plugsetup
+    au!
+    autocmd VimEnter * PlugInstall
+  augroup end
+endif
+
+" define vim-plug here
+call plug#begin('~/.vim/plugins')
+" fzf with rg
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'rking/ag.vim'
+" ale for linting
+Plug 'dense-analysis/ale'
+" go support
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" vscode like support
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" language packs
+Plug 'sheerun/vim-polyglot'
+" language syntax
+Plug 'andrewstuart/vim-kubernetes'
+Plug 'vim-python/python-syntax'
+Plug 'mrk21/yaml-vim'
+Plug 'ekalinin/Dockerfile.vim'
+" UI related
+Plug 'mkitt/tabline.vim'
+Plug 'preservim/nerdtree'
+Plug 'airblade/vim-gitgutter'
+Plug 'Rykka/InstantRst'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-apathy'
+Plug 'wakatime/vim-wakatime'
+Plug 'Yggdroot/indentLine'
+call plug#end()
+
 let g:is_unix=has('unix')
 let g:is_gui=has('gui_running')
 let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
@@ -13,17 +58,18 @@ endif
 set background=dark
 colorscheme gruvbox-material
 let g:gruvbox_material_background = 'medium'
+set noshowcmd
 set notitle
 set nowrap
 set showmatch
 set showmode
-set noshowcmd
 set number
 set hidden
 set clipboard=unnamed,unnamedplus
 set mouse=a
 if has('vim')
     set term=xterm-256color
+    colorscheme delek
 endif
 set wildmode=longest:full,full
 set wildcharm=<Tab>
@@ -32,18 +78,13 @@ set pastetoggle=<F2>
 
 " UI setting
 set laststatus=0
-set showtabline=2
-set confirm " need to save before quiting vim
-set ruler
 set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L%)
 " Performance tuning
-set copyindent
 set lazyredraw
 set nocursorline
 set hlsearch
 set ignorecase
 set smartcase
-set ttyfast
 
 " Misc
 set nobackup
@@ -92,51 +133,6 @@ imap <F2> <C-O>:set invpaste paste?<CR>
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-" use vim-plug becauseof its minimalistic
-"¯\_(ツ)_/¯
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent call system('curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
-  execute 'source  ~/.vim/autoload/plug.vim'
-  augroup plugsetup
-    au!
-    autocmd VimEnter * PlugInstall
-  augroup end
-endif
-
-" define vim-plug here
-call plug#begin('~/.vim/plugins')
-" fzf with rg
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'rking/ag.vim'
-" ale for linting
-Plug 'dense-analysis/ale'
-" go support
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" vscode like support
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" language packs
-Plug 'sheerun/vim-polyglot'
-" language syntax
-Plug 'tbastos/vim-lua'
-Plug 'andrewstuart/vim-kubernetes'
-Plug 'vim-python/python-syntax'
-Plug 'mrk21/yaml-vim'
-Plug 'ekalinin/Dockerfile.vim'
-" UI related
-Plug 'mkitt/tabline.vim'
-Plug 'preservim/nerdtree'
-Plug 'airblade/vim-gitgutter'
-Plug 'Rykka/InstantRst'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-apathy'
-Plug 'wakatime/vim-wakatime'
-Plug 'Yggdroot/indentLine'
-call plug#end()
 
 " Plugin settings
 let g:instant_rst_port=5686

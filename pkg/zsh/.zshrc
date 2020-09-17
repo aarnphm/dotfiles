@@ -8,8 +8,6 @@ if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]
 fi
 
 setopt CORRECT
-setopt AUTO_CD              # Auto changes to a directory without typing cd.
-setopt AUTO_PUSHD           # Push the old directory onto the stack on cd.
 setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
 setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
 setopt PUSHD_TO_HOME        # Push to home directory when no argument is given.
@@ -75,6 +73,10 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt share_history          # share command history data inside tmux
 autoload -Uz compinit && compinit -i
 
+# vim binding
+bindkey -v
+bindkey '^R' history-incremental-pattern-search-backward
+
 # ============================== zinit & misc
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
@@ -87,7 +89,7 @@ fi
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 zinit wait lucid light-mode for \
-  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
+  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting zsh-users/zsh-history-substring-search \
   blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions
 
 (( ${+_comps} )) && _comps[zinit]=_zinit
