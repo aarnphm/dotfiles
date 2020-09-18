@@ -61,10 +61,8 @@ end
 awful.util.tagnames = tags
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.max,
     awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.fair,
+    awful.layout.suit.max,
     awful.layout.suit.floating,
  }
 

@@ -42,12 +42,15 @@ function rules.create(clientkeys, clientbuttons)
                "Arandr",
                "Blueman-manager",
                "Pcmanfm",
-               "Nitrogen"
+               "Nitrogen",
             },
             name = {
                "Event Tester",
                "Steam Guard - Computer Authorization Required",
-               "Zoom - Free Account"
+               "Zoom - Free Account",
+               "Zoom Meeting",
+               "Discord",
+               "Chat"
             },
             role = {
                "pop-up",
@@ -64,10 +67,10 @@ function rules.create(clientkeys, clientbuttons)
          properties = { switchtotag = true }
     },
     -- alacritty or terminal of choice
-    -- {
-    --      rule_any = {class = "Alacritty",},
-    --      properties = {tag = "4", switchtotag = true}
-    -- },
+    {
+         rule_any = {instance = "Alacritty",},
+         properties = {tag = "terminal", switchtotag = true}
+    },
     -- Spotify under media
     -- {
     --      rule = {class = {"Spotify"},},

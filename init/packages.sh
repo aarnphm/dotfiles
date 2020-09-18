@@ -42,6 +42,7 @@ export AUR=(
 	twmn-git
 	autofs
 	dex
+	inkscape
 	trash-cli
 	termite xterm
 	code-insiders
