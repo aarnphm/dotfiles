@@ -5,9 +5,9 @@ redshift &
 picom &
 
 # non default
-# blueman-tray &
 # conky --daemonize --pause=5 &
 # /usr/bin/skypeforlinux &
 # /usr/bin/teams &
-kdocker -q -i /usr/share/icons/ePapirus/32x32@2x/apps/spotify.svg spotify &
-
+blueman-tray &
+xfce4-power-manager &
+kdocker -q -i /usr/share/icons/ePapirus/32x32/apps/spotify.svg spotify &

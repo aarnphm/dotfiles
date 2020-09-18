@@ -7,7 +7,6 @@
     "editor.fontFamily": "'InconsolataGo Nerd Font', 'monospace', monospace, 'Droid Sans Fallback'",
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 120,
-    "window.menuBarVisibility": "hidden",
     "vim.cursorStylePerMode.insert": "line",
     "vim.cursorStylePerMode.normal": "block",
     "vim.cursorStylePerMode.replace": "underline",
@@ -30,5 +29,6 @@
         "vs-kubernetes.draft-path.linux": "/home/aarnphm/.vs-kubernetes/tools/draft/linux-amd64/draft"
     },
     "vim.debug.loggingLevelForConsole": "info",
-    "vim.debug.silent": true
+    "vim.debug.silent": true,
+    "window.menuBarVisibility": "toggle"
 }

@@ -9,7 +9,6 @@ export PKG=(
 	awesome
 	feh
 	nitrogen
-	picom
 	rofi-git
 	alacritty
 	stow
@@ -39,6 +38,7 @@ export PKG=(
 	curl
 )
 export AUR=(
+	picom-git
 	twmn-git
 	autofs
 	dex

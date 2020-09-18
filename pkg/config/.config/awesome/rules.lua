@@ -58,13 +58,21 @@ function rules.create(clientkeys, clientbuttons)
             }
          }, properties = {floating = true}
     },
+    -- Firefox
     {
-         rule_any = {
-            class = {
-               "Firefox"
-            },
-         }, properties = {switchtotag = true}
+         rule = {class = "Firefox",},
+         properties = { switchtotag = true }
     },
+    -- alacritty or terminal of choice
+    -- {
+    --      rule_any = {class = "Alacritty",},
+    --      properties = {tag = "4", switchtotag = true}
+    -- },
+    -- Spotify under media
+    -- {
+    --      rule = {class = {"Spotify"},},
+    --      properties = {tag = "3", switchtotag = true}
+    -- },
     -- Rofi
     {
          rule_any = { name = { "rofi" } },

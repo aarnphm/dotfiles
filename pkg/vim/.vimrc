@@ -39,7 +39,6 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-apathy'
 Plug 'wakatime/vim-wakatime'
 Plug 'Yggdroot/indentLine'
@@ -58,6 +57,23 @@ endif
 set background=dark
 colorscheme gruvbox-material
 let g:gruvbox_material_background = 'medium'
+
+" Minimal
+filetype plugin indent on
+syntax enable
+set autoindent
+set backspace=indent,eol,start
+set complete-=i
+set smarttab
+
+set nrformats-=octal
+
+if !has('nvim') && &ttimeoutlen == -1
+  set ttimeout
+  set ttimeoutlen=100
+endif
+
+set incsearch
 set noshowcmd
 set notitle
 set nowrap
@@ -69,15 +85,49 @@ set clipboard=unnamed,unnamedplus
 set mouse=a
 if has('vim')
     set term=xterm-256color
-    colorscheme delek
 endif
 set wildmode=longest:full,full
 set wildcharm=<Tab>
 set shortmess+=I
 set pastetoggle=<F2>
 
+if &encoding ==# 'latin1' && has('gui_running')
+  set encoding=utf-8
+endif
+
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
+  set shell=/usr/bin/env\ bash
+endif
+
+set autoread
+
+if &history < 1000
+  set history=1000
+endif
+if &tabpagemax < 50
+  set tabpagemax=50
+endif
+if !empty(&viminfo)
+  set viminfo^=!
+endif
+set sessionoptions-=options
+set viewoptions-=options
+
 " UI setting
 set laststatus=0
+set ruler
 set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %l:%L%)
 " Performance tuning
 set lazyredraw
