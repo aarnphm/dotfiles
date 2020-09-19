@@ -1,0 +1,7 @@
+[Default Applications]
+x-scheme-handler/msteams=teams.desktop
+
+[Added Associations]
+application/pdf=foxitreader.desktop;
+
+inode/directory=pcmanfm.desktop;

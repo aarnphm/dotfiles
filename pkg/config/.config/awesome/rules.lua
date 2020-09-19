@@ -43,12 +43,14 @@ function rules.create(clientkeys, clientbuttons)
                "Blueman-manager",
                "Pcmanfm",
                "Nitrogen",
+               "Gimp",
+               "Alacritty",
+               "Termite"
             },
             name = {
-               "Event Tester",
-               "Steam Guard - Computer Authorization Required",
                "Zoom - Free Account",
                "Zoom Meeting",
+               "Library",
                "Discord",
                "Chat"
             },
@@ -66,12 +68,19 @@ function rules.create(clientkeys, clientbuttons)
          rule = {class = "Firefox",},
          properties = { switchtotag = true }
     },
+    {    rule = { class = "Conky" },
+         properties = {
+          floating = true,
+          sticky = true,
+          ontop = false,
+          focusable = false,
+          size_hints = {"program_position", "program_size"}
+    }},
     -- Rofi
     {
          rule_any = { name = { "rofi" } },
          properties = { maximized = false, ontop = true }
     },
-
     -- File chooser dialog
     {
          rule_any = { role = { "GtkFileChooserDialog" } },

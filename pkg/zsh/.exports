@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Make vim the default editor.
 export EDITOR='nvim';
-export PYENV_ROOT="$HOME/.pyenv"
+export VISUAL=$HOME/.scripts/ewrap;
+export PYENV_ROOT="$HOME/.pyenv";
 # fzf 
 export FZF_DEFAULT_OPTS="
 --layout=reverse
@@ -16,7 +17,7 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-y:execute-silent(echo {+} | pbcopy)'
 --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
 --bind 'ctrl-v:execute(code {+})'
-"
+";
 # wine prefix
 export WINEPREFIX="$HOME/.wine32" 
 export WINEARCH=win32
@@ -70,10 +71,12 @@ export GPG_TTY=$(tty);
 export BASH_SILENCE_DEPRECATION_WARNING=1;
 
 #nnn
-export NNN_BMS='d:~/Documents;D:~/Downloads/'
+export NNN_BMS='u:~/Documents;D:~/Downloads/'
 export NNN_SSHFS="sshfs -o follow_symlinks"        # make sshfs follow symlinks on the remote
-export NNN_COLORS="2121"                           # use a different color for each context
+export NNN_COLORS="5236"                           # use a different color for each context
 export NNN_TRASH=1                                 # trash (needs trash-cli) instead of delete
+export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview'
+export NNN_FIFO=/tmp/nnn.fifo
 
 # FZF
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'

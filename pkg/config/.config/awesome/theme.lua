@@ -45,7 +45,7 @@ theme.useless_gap                               = dpi(5)
 -- Icons
 -- ===================================================================
 
--- theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
+theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
 theme.taglist_squares_sel                       = theme.dir .. "/icons/square_sel.png"
 theme.taglist_squares_unsel                     = theme.dir .. "/icons/square_unsel.png"
 -- theme.layout_fairv                              = theme.dir .. "/icons/fairv.png"

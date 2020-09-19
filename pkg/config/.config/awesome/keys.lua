@@ -221,7 +221,7 @@ keys.globalkeys = gears.table.join(
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
-
+    
     awful.key({ altkey, "Shift"   }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
     awful.key({ altkey, "Shift"   }, "h",     function () awful.tag.incmwfact(-0.05)          end,
@@ -285,6 +285,8 @@ keys.globalkeys = gears.table.join(
     -- User programs
     awful.key({ modkey }, "p", function() awful.spawn(apps.screenshot) end,
               {description = "take a screenshot", group = "hotkeys"}),
+    awful.key({ altkey, "Control" }, "e", function () awful.spawn( "./.dmenu/dmenu-edit-conf.sh" ) end,
+              {description = "edit config files" , group = "dmenu scripts" }),
     awful.key({ modkey }, "b", function () awful.spawn(apps.browser) end,
               {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(apps.gui_editor) end,

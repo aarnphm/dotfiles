@@ -45,7 +45,7 @@ export AUR=(
 	dex
 	inkscape
 	trash-cli
-	termite xterm
+	termite
 	code-insiders
 	ibus ibus-unikey
 	gnome-keyring libgnome-keyring secret-tool
