@@ -49,6 +49,7 @@ alias l="ls -lF ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
 alias la="ls -lAF --color"
+alias lc='colorls -lA --sd'
 
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'
@@ -87,7 +88,7 @@ alias vconf="$EDITOR $HOME/.vimrc"
 alias alaconf="$EDITOR $HOME/.config/alacritty/alacritty.yml"
 alias roficonf="$EDITOR $HOME/.config/rofi/config.rasi"
 alias awesomeconf="cd $HOME/.config/awesome && $EDITOR -p rc.lua keys.lua rules.lua theme.lua"
-alias zshconf="$EDITOR -p $HOME/.zshrc"
+alias zconf="$EDITOR -p $HOME/.zshrc .xprofile .xinitrc .Xresources"
 alias ztheme="$EDITOR -p $HOME/.zshtheme $HOME/.p10k.zsh"
 alias dotconf="$EDITOR -p $HOME/dotfiles/init/*"
 alias dotfiles="$HOME/dotfiles/pkg"

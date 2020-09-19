@@ -12,6 +12,7 @@ export PKG=(
 	rofi-git
 	alacritty
 	stow
+	github-cli
 	dunst
 	mesa
 	firefox

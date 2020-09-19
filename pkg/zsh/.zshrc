@@ -1,5 +1,5 @@
 # zmodload zsh/zprof
-# startup
+# ============================== Startup
 fpath=($HOME/.zsh/completion $fpath)
 
 # run xinit
@@ -7,14 +7,14 @@ if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]
   exec startx
 fi
 
-setopt CORRECT
-setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
-setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
-setopt PUSHD_TO_HOME        # Push to home directory when no argument is given.
-setopt CDABLE_VARS          # Change directory to a path stored in a variable.
-setopt MULTIOS              # Write to multiple descriptors.
-setopt EXTENDED_GLOB        # Use extended globbing syntax.
-unsetopt CLOBBER            # Do not overwrite existing files with > and >>. Use >! and >>! to bypass.
+setopt correct              # You are correct
+setopt pushd_ignore_dups    # Do not store duplicates in the stack.
+setopt pushd_silent         # Do not print the directory stack after pushd or popd.
+setopt pushd_to_home        # Push to home directory when no argument is given.
+setopt cdable_vars          # Change directory to a path stored in a variable.
+setopt multios              # Write to multiple descriptors.
+setopt extended_glob        # Use extended globbing syntax.
+unsetopt clobber            # Do not overwrite existing files with > and >>. Use >! and >>! to bypass.
 
 # Dot expansions
 function expand-dot-to-parent-directory-path {
@@ -26,26 +26,100 @@ function expand-dot-to-parent-directory-path {
 }
 zle -N expand-dot-to-parent-directory-path
 
-# ============================== Prompt
-setopt prompt_subst
-autoload -Uz vcs_info
-autoload -U colors && colors
-precmd_vcs_info() { vcs_info }
-precmd_functions+=( precmd_vcs_info )
-
 eval "$(dircolors $HOME/.dircolors)"
+
 for file in ~/.{exports,aliases,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
+# ============================== Prompt
+setopt prompt_subst
+autoload -Uz vcs_info
+autoload -U colors && colors
+
 # termmode: minimal, fancy
 termmode=minimal
-if [[ "$termmode" == "minimal" ]]; then
-  export PROMPT="%{$fg[yellow]%}%m %{$fg[red]%}%# %{$fg_bold[blue]%}%~ > "
-  # zstyle ':vcs_info:git:*' formats '@%b'
-else	
+
+if [[ "$termmode" == "fancy" ]]; then
 	[[ ! -f ~/.zshtheme ]] || source ~/.zshtheme
 fi
+
+# Prompt symbol
+COMMON_PROMPT_SYMBOL="❯"
+
+# Colors
+COMMON_COLORS_HOST_ME=green
+COMMON_COLORS_HOST_AWS_VAULT=yellow
+COMMON_COLORS_CURRENT_DIR=blue
+COMMON_COLORS_RETURN_STATUS_TRUE=yellow
+COMMON_COLORS_RETURN_STATUS_FALSE=red
+COMMON_COLORS_GIT_STATUS_DEFAULT=green
+COMMON_COLORS_GIT_STATUS_STAGED=red
+COMMON_COLORS_GIT_STATUS_UNSTAGED=yellow
+COMMON_COLORS_GIT_PROMPT_SHA=green
+COMMON_COLORS_BG_JOBS=yellow
+
+# Left Prompt
+PROMPT='$(common_host)$(common_current_dir)$(common_bg_jobs)$(common_return_status)'
+
+# Right Prompt
+RPROMPT='$(common_git_status)'
+
+# Host
+common_host() {
+	if [[ -n $SSH_CONNECTION ]]; then
+   		me="%n@%m"
+  	elif [[ $LOGNAME != $USER ]]; then
+    	me="%n"
+  	fi
+  	if [[ -n $me ]]; then
+    	echo "%{$fg[$COMMON_COLORS_HOST_ME]%}$me%{$reset_color%}:"
+ 	fi
+}
+
+# Current directory
+common_current_dir() {
+  echo -n "%{$fg[$COMMON_COLORS_CURRENT_DIR]%}%c "
+}
+
+# Prompt symbol
+common_return_status() {
+  echo -n "%(?.%F{$COMMON_COLORS_RETURN_STATUS_TRUE}.%F{$COMMON_COLORS_RETURN_STATUS_FALSE})$COMMON_PROMPT_SYMBOL%f "
+}
+
+# Git status
+common_git_status() {
+    local message=""
+    local message_color="%F{$COMMON_COLORS_GIT_STATUS_DEFAULT}"
+
+    # https://git-scm.com/docs/git-status#_short_format
+    local staged=$(git status --porcelain 2>/dev/null | grep -e "^[MADRCU]")
+    local unstaged=$(git status --porcelain 2>/dev/null | grep -e "^[MADRCU? ][MADRCU?]")
+
+    if [[ -n ${staged} ]]; then
+        message_color="%F{$COMMON_COLORS_GIT_STATUS_STAGED}"
+    elif [[ -n ${unstaged} ]]; then
+        message_color="%F{$COMMON_COLORS_GIT_STATUS_UNSTAGED}"
+    fi
+
+    local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if [[ -n ${branch} ]]; then
+        message+="${message_color}${branch}%f"
+    fi
+
+    echo -n "${message}"
+}
+
+# Git prompt SHA
+ZSH_THEME_GIT_PROMPT_SHA_BEFORE="%{%F{$COMMON_COLORS_GIT_PROMPT_SHA}%}"
+ZSH_THEME_GIT_PROMPT_SHA_AFTER="%{$reset_color%} "
+
+# Background Jobs
+common_bg_jobs() {
+  bg_status="%{$fg[$COMMON_COLORS_BG_JOBS]%}%(1j.↓%j .)"
+  echo -n $bg_status
+}
+
 # ============================== Completion
 unsetopt menu_complete   # do not autoselect the first completion entry
 unsetopt flowcontrol
@@ -101,4 +175,5 @@ if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aar
 if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
     source /usr/share/nnn/quitcd/quitcd.bash_zsh
 fi
+
 # zprof
