@@ -62,6 +62,7 @@ let g:gruvbox_material_background = 'medium'
 filetype plugin indent on
 syntax enable
 set autoindent
+set nonumber
 set backspace=indent,eol,start
 set complete-=i
 set smarttab
@@ -79,7 +80,7 @@ set notitle
 set nowrap
 set showmatch
 set showmode
-set number
+set relativenumber
 set hidden
 set clipboard=unnamed,unnamedplus
 set mouse=a

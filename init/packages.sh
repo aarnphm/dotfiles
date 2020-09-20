@@ -1,19 +1,16 @@
 #!/bin/bash
 
 export PKG=(
-	lightdm
-	tmux
-	git
-	arandr
-	dialog
-	awesome awmtt
-	feh
-	nitrogen
+	lightdm git
+	mesa nvidia nvidia-dkms
+	optimus-manager optimus-manager-qt
+	stow tmux 
+	arandr dialog
+	awesome
+	feh nitrogen
 	rofi-git
 	alacritty
-	stow
 	github-cli
-	mesa
 	firefox
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa
 	alsa-utils
@@ -24,11 +21,8 @@ export PKG=(
 	neofetch
 	obs-studio
 	redshift
-	sqlitebrowser
 	vlc
-	xsettingsd
-	emacs fd
-	xsecurelock
+	xsettingsd xsecurelock
 	imagemagick
 	acpi xfce4-power-manager-settings
 	bluez blueman nn-connection-editor xbacklight
@@ -49,6 +43,7 @@ export AUR=(
 	polkit
 	dex
 	inkscape
+	mpd ncmpcpp-git
 	trash-cli
 	termite
 	code

@@ -4,8 +4,9 @@ local gears = require("gears")
 local awful = require("awful")
 local lain  = require("lain")
 local wibox = require("wibox")
+local dpi   = require("beautiful.xresources").apply_dpi
 local markup = lain.util.markup
-local apps = require("apps")
+-- local apps = require("apps")
 -- Import Tag Settings
 local tags = require("tags")
 
@@ -38,7 +39,6 @@ awful.util.taglist_buttons = keys.taglist_buttons
 awful.util.tasklist_buttons = keys.tasklist_buttons
 
 -- Import rules
- 
 local create_rules = require("rules").create
 awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 
@@ -81,23 +81,24 @@ local function run_once(cmd_arr)
     end
 end
 
-run_once({ "unclutter -root","discord", "teams", "zoom",
+run_once({ "unclutter -root", "discord", "zoom",
             "kdocker -q -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify" }) -- entries must be comma-separated
--- @DOC_WALLPAPER@
-local function set_wallpaper(s)
-  -- Wallpaper
-  if beautiful.wallpaper then
-    local wallpaper = beautiful.wallpaper
-    -- If wallpaper is a function, call it with the screen
-    if type(wallpaper) == "function" then
-      wallpaper = wallpaper(s)
-    end
-    gears.wallpaper.maximized(wallpaper, s, true)
-  end
-end
 
--- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-screen.connect_signal("property::geometry", set_wallpaper)
+-- -- @DOC_WALLPAPER@
+-- local function set_wallpaper(s)
+--   -- Wallpaper
+--   if beautiful.wallpaper then
+--     local wallpaper = beautiful.wallpaper
+--     -- If wallpaper is a function, call it with the screen
+--     if type(wallpaper) == "function" then
+--       wallpaper = wallpaper(s)
+--     end
+--     gears.wallpaper.maximized(wallpaper, s, true)
+--   end
+-- end
+
+-- -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
+-- screen.connect_signal("property::geometry", set_wallpaper)
 
 -- ===================================================================
 -- Setup tyrannical
@@ -112,10 +113,9 @@ tyrannical.tags = {
         {
         name        = tags[1],
         init        = true,
-        exclusive   = true,
+        exclusive   = false,
         screen      = {1,2},
         layout      = awful.layout.layouts[1],
-        selected    = true,
         class       = {"xterm" , "urxvt" , "alacritty" ,"Code","termite"}
         },
         {
@@ -123,16 +123,14 @@ tyrannical.tags = {
         init        = true,
         exclusive   = false,
         screen      = {1,2},
-        selected    = true,
         layout      = awful.layout.layouts[2],
         class       = {"Firefox", "Chrome"}
         },
         {
         name = tags[3],
         init        = true,
-        exclusive   = true,
+        exclusive   = false,
         screen      = {1,2},
-        selected    = true,
         layout      = awful.layout.layouts[3],
         class       = {"Spotify"},
         instance    = {"spotify"},
@@ -142,27 +140,25 @@ tyrannical.tags = {
         init        = true,
         exclusive   = false,
         screen      = {1,2},
-        selected    = true,
         layout      = awful.layout.layouts[4],
-        class       ={"Firefox", "Notion"},
+        class       = {"Notion"},
+        instance    = {"firefox"}
         },
         {
         name        = tags[5],
         init        = true,
         screen      = {1,2},
         exclusive   = false,
-        selected    = true,
         layout      = awful.layout.layouts[5],
-        instance    = {"teams", "zoom", "skype"},
+        instance    = {"firefox", "teams", "zoom", "skype"},
         },
         {
         name        = tags[6],
         init        = true,
         exclusive   = false,
         screen      = {1,2},
-        selected    = true,
         layout      = awful.layout.layouts[6],
-        instance    = {"steam", "discord"},
+        instance    = {"steam","firefox", "discord"},
         }
 }
 
@@ -230,13 +226,14 @@ volume.widget:buttons(gears.table.join(
 -- Net
 local net = lain.widget.net({
     settings = function()
-        widget:set_markup(markup.font(beautiful.font, "↓ " .. net_now.received .. " ↑ " .. net_now.sent .. ""))
+        widget:set_markup(markup.font(beautiful.font, "↓ " .. net_now.received .. " ↑ " .. net_now.sent))
     end
 })
 
 awful.screen.connect_for_each_screen(function(s)
     -- Tags, using tyranicall
     -- awful.tag(awful.util.tagnames, s, awful.layout.layouts)
+    s.quake = lain.util.quake({ app = "termite", height = 0.63, argname = "--name %s" })
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -245,7 +242,6 @@ awful.screen.connect_for_each_screen(function(s)
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
                            awful.button({ }, 1, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 2, function () awful.layout.set( awful.layout.layouts[1] ) end),
                            awful.button({ }, 3, function () awful.layout.inc(awful.layout.layouts, -1) end),
                            awful.button({ }, 4, function () awful.layout.inc(awful.layout.layouts, 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(awful.layout.layouts, -1) end)))
@@ -257,7 +253,7 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(16) })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -265,10 +261,12 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             s.mytaglist,
-            s.mypromptbox,
-            spr,
+            s.mypromptbox
         },
-        s.mytasklist, -- Middle widget
+        { -- Middle widgets
+            layout = wibox.layout.fixed.horizontal,
+            s.mytasklist
+        },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
@@ -281,7 +279,7 @@ awful.screen.connect_for_each_screen(function(s)
             spr,
             clock,
             spr,
-            s.mylayoutbox,
+            s.mylayoutbox
         },
     }
 end)

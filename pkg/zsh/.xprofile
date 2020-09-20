@@ -8,4 +8,5 @@ picom &
 # non default
 # conky --daemonize --pause=5 &
 blueman-tray &
+optimus-manager-qt &
 # xfce4-power-manager &

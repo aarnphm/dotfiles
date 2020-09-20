@@ -44,43 +44,71 @@ browser = firefox
 #cursor_foreground = #dcdccc
 
 [colors]
-foreground = #bbc5ff
-foreground_bold = #bbc5ff
-cursor = #bbc5ff
-# background transparency (requires a compositor)
-background = rgba(40, 42, 54, 0.95)
+# hard contrast: background = #1d2021
+background = #282828
+# soft contrast: background = #32302f
+foreground = #ebdbb2
+foreground_bold = #ebdbb2
 
-# if unset, will reverse foreground and background
-#highlight = #839496
+# dark0 + gray
+color0 = #282828
+color8 = #928374
 
-# colors from color0 to color254 can be set
-color0 = #101010
-color1 = #f07178
-color2 = #c3e88d
-color3 = #ffcb6b
-color4 = #82aaff
-color5 = #c792ea
-color6 = #89ddff
-color7 = #d0d0d0
-color8 = #434758
-color9 = #ff8b92
-color10 = #ddffa7
-color11 = #ffe585
-color12 = #9cc4ff
-color13 = #e1acff
-color14 = #a3f7ff
-color15 = #ffffff
+# neutral_red + bright_red
+color1 = #cc241d
+color9 = #fb4934
 
-[hints]
-#font = Monospace 12
-#foreground = #dcdccc
-#background = #3f3f3f
-#active_foreground = #e68080
-#active_background = #3f3f3f
-#padding = 2
-#border = #3f3f3f
-#border_width = 0.5
-#roundness = 2.0
+# neutral_green + bright_green
+color2 = #98971a
+color10 = #b8bb26
+
+# neutral_yellow + bright_yellow
+color3 = #d79921
+color11 = #fabd2f
+
+# neutral_blue + bright_blue
+color4 = #458588
+color12 = #83a598
+
+# neutral_purple + bright_purple
+color5 = #b16286
+color13 = #d3869b
+
+# neutral_aqua + faded_aqua
+color6 = #689d6a
+color14 = #8ec07c
+
+# light4 + light1
+color7 = #a89984
+color15 = #ebdbb2
+
+[colors]
+#foreground = #bbc5ff
+#foreground_bold = #bbc5ff
+#cursor = #bbc5ff
+## background transparency (requires a compositor)
+#background = rgba(40, 42, 54, 0.95)
+
+## if unset, will reverse foreground and background
+##highlight = #839496
+
+## colors from color0 to color254 can be set
+#color0 = #101010
+#color1 = #f07178
+#color2 = #c3e88d
+#color3 = #ffcb6b
+#color4 = #82aaff
+#color5 = #c792ea
+#color6 = #89ddff
+#color7 = #d0d0d0
+#color8 = #434758
+#color9 = #ff8b92
+#color10 = #ddffa7
+#color11 = #ffe585
+#color12 = #9cc4ff
+#color13 = #e1acff
+#color14 = #a3f7ff
+#color15 = #ffffff
 
 # vim: ft=dosini cms=#%s
 
