@@ -1,13 +1,11 @@
 # default apps
 xsettingsd &
+lxsession &
 nitrogen --restore &
 redshift &
 picom &
 
 # non default
 # conky --daemonize --pause=5 &
-# /usr/bin/skypeforlinux &
-# /usr/bin/teams &
 blueman-tray &
-xfce4-power-manager &
-kdocker -q -i /usr/share/icons/ePapirus/32x32/apps/spotify.svg spotify &
+# xfce4-power-manager &

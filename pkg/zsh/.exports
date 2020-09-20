@@ -73,7 +73,7 @@ export BASH_SILENCE_DEPRECATION_WARNING=1;
 #nnn
 export NNN_BMS='u:~/Documents;D:~/Downloads/'
 export NNN_SSHFS="sshfs -o follow_symlinks"        # make sshfs follow symlinks on the remote
-export NNN_COLORS="5236"                           # use a different color for each context
+export NNN_COLORS="#a0b5d8"                        # use a different color for each context
 export NNN_TRASH=1                                 # trash (needs trash-cli) instead of delete
 export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview'
 export NNN_FIFO=/tmp/nnn.fifo

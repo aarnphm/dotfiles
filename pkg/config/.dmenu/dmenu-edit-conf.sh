@@ -12,9 +12,10 @@ xresources
 zsh
 aliases
 exports
-dmenu
+dmenu-scripts
 rofi
-dotconf
+install-conf
+mimeapps
 quit"
 )
 choice=$(echo -e "${options[@]}" | rofi -dmenu -i -p 'Edit config file:' --show-icons)
@@ -25,6 +26,9 @@ case "$choice" in
 	;;
 	alacritty)
 		choice="$HOME/.config/alacritty/alacritty.yml"
+	;;
+	mimeapps)
+		choice="$HOME/.config/mimeapps.list"
 	;;
 	awesome)
 		choice="$HOME/.config/awesome/rc.lua"
@@ -44,6 +48,9 @@ case "$choice" in
 	vim)
 		choice="$HOME/.vimrc"
 	;;
+	dmenu-scripts)
+		choice="$HOME/.dmenu/dmenu-edit-conf.sh"
+	;;
 	xresources)
 		choice="$HOME/.xprofile"
 	;;
@@ -53,7 +60,7 @@ case "$choice" in
 	zsh)
 		choice="$HOME/.zshrc"
 	;;
-	dotconf)
+	install-conf)
 		choice="$HOME/dotfiles/init/packages.sh"
 	;;
 	aliases)
@@ -67,4 +74,4 @@ case "$choice" in
 	;;
 esac
 
-alacritty -e nvim "$choice" &
+termite --exec="nvim -p $choice"

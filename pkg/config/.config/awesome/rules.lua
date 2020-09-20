@@ -3,7 +3,8 @@ local beautiful = require("beautiful")
 
 local screen_height = awful.screen.focused().geometry.height
 local screen_width = awful.screen.focused().geometry.width
---local dpi = beautiful.xresources.apply_dpi
+local tags = require("tags")
+awful.util.tagnames = tags
 
 -- define module table
 local rules = {}
@@ -14,8 +15,9 @@ local rules = {}
 
 
 function rules.create(clientkeys, clientbuttons)
-    return {
-        -- All clients will match this rule.
+    return 
+    {
+    -- All clients will match this rule.
     {
          rule = {},
          properties = {
@@ -30,7 +32,7 @@ function rules.create(clientkeys, clientbuttons)
             size_hints_honor = false
          },
     },
-        -- Floating clients.
+    -- Floating clients.
     {
          rule_any = {
             instance = {
@@ -41,22 +43,10 @@ function rules.create(clientkeys, clientbuttons)
                "Nm-connection-editor",
                "Arandr",
                "Blueman-manager",
+               "Pavucontrol",
                "Pcmanfm",
                "Nitrogen",
-               "Gimp",
-               "Alacritty",
                "Termite"
-            },
-            name = {
-               "Zoom - Free Account",
-               "Zoom Meeting",
-               "Library",
-               "Discord",
-               "Chat"
-            },
-            role = {
-               "pop-up",
-               "GtkFileChooserDialog"
             },
             type = {
                "dialog"
@@ -64,34 +54,20 @@ function rules.create(clientkeys, clientbuttons)
          }, properties = {floating = true}
     },
     -- Firefox
-    {
-         rule = {class = "Firefox",},
-         properties = { switchtotag = true }
-    },
-    {    rule = { class = "Conky" },
-         properties = {
-          floating = true,
-          sticky = true,
-          ontop = false,
-          focusable = false,
-          size_hints = {"program_position", "program_size"}
-    }},
+    {rule={instance="firefox"}, properties={tag=awful.util.tagnames[2], switchtotag=true, screen=1}},
+    -- alacritty 
+    {rule={instance="alacritty"}, properties={tag=awful.util.tagnames[4], switchtotag=true, screen=1}},
+    -- Spotify
+    {rule_any={instance="spotify", class="Spotify"}, properties={tag=awful.util.tagnames[3], switchtotag=true, screen=1}},
+    -- Meeting clients
+    {rule_any = {instance = {"skype","teams","zoom"}},properties = {tag = awful.util.tagnames[5], switchtotag = true, floating =true }},
+    -- Chat client
+    {rule_any = {instance = {"discord", "steam"}, name={"Steam"} }, properties = {tag = awful.util.tagnames[6], switchtotag = true } },
+    { rule = { class = "Gimp" }, properties = { maximized = true } },
     -- Rofi
-    {
-         rule_any = { name = { "rofi" } },
-         properties = { maximized = false, ontop = true }
-    },
+    { rule_any = { name = { "rofi" } }, properties = { maximized = false, ontop = true } },
     -- File chooser dialog
-    {
-         rule_any = { role = { "GtkFileChooserDialog" } },
-         properties = { floating = true, width = screen_width * 0.35, height = screen_height * 0.65 }
-    },
-
-    -- Pavucontrol & Bluetooth Devices
-    {
-         rule_any = { class = { "Pavucontrol" }, name = { "Bluetooth Devices" } },
-         properties = { floating = true, width = screen_width * 0.55, height = screen_height * 0.45 }
-    },
+    {rule_any = {role = {"GtkFileChooserDialog"}}, properties = {floating = true, width = screen_width * 0.55, height = screen_height * 0.65}},
     }
 end
 

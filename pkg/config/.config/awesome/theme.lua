@@ -6,7 +6,6 @@ local lain  = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
-
 local markup = lain.util.markup
 local os = os
 
@@ -64,8 +63,6 @@ theme.layout_max                                = theme.dir .. "/icons/layouts/m
 -- ===================================================================
 -- Bar Creation
 -- ===================================================================
-
--- wibox separator
 local spr = wibox.widget.textbox(" ")
 
 -- Textclock
@@ -90,9 +87,9 @@ theme.cal = lain.widget.cal({
 local bat = lain.widget.bat({
     settings = function()
         if bat_now.status and bat_now.status ~= "N/A" then
-            widget:set_markup(markup.font(theme.font, "Batt: " .. bat_now.perc .. "% "))
+            widget:set_markup(markup.font(theme.font, "Batt: " .. bat_now.perc .. "%"))
         else
-            widget:set_markup(markup.font(theme.font, "Batt: AC "))
+            widget:set_markup(markup.font(theme.font, "Batt: AC"))
         end
     end
 })
@@ -100,7 +97,7 @@ local bat = lain.widget.bat({
 -- ALSA volume
 theme.volume = lain.widget.alsa({
     settings = function()
-        widget:set_markup(markup.font(theme.font, "Vol: " .. volume_now.level .. "% "))
+        widget:set_markup(markup.font(theme.font, "Vol: " .. volume_now.level .. "%"))
     end
 })
 theme.volume.widget:buttons(awful.util.table.join(
@@ -117,16 +114,13 @@ theme.volume.widget:buttons(awful.util.table.join(
 -- Net
 local net = lain.widget.net({
     settings = function()
-        widget:set_markup(markup.font(theme.font, " ↓ " .. net_now.received .. " ↑ " .. net_now.sent .. " "))
+        widget:set_markup(markup.font(theme.font, "↓ " .. net_now.received .. " ↑ " .. net_now.sent .. ""))
     end
 })
 
 function theme.at_screen_connect(s)
     -- Tags
     awful.tag(awful.util.tagnames, s, awful.layout.layouts)
-
-    -- Quake application
-    s.quake = lain.util.quake({ app = awful.util.terminal })
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -135,10 +129,7 @@ function theme.at_screen_connect(s)
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
                            awful.button({}, 1, function () awful.layout.inc( 1) end),
-                           awful.button({}, 2, function () awful.layout.set( awful.layout.layouts[1] ) end),
-                           awful.button({}, 3, function () awful.layout.inc(-1) end),
-                           awful.button({}, 4, function () awful.layout.inc( 1) end),
-                           awful.button({}, 5, function () awful.layout.inc(-1) end)))
+                           awful.button({}, 2, function () awful.layout.set( awful.layout.layouts[1] ) end)))
 
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
@@ -155,11 +146,11 @@ function theme.at_screen_connect(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             s.mytaglist,
-            spr,
         },
         {
         layout = wibox.layout.fixed.horizontal,
         s.mypromptbox,
+        spr,
         s.mytasklist, -- Middle widget
         },
         { -- Right widgets
@@ -167,9 +158,13 @@ function theme.at_screen_connect(s)
             wibox.widget.systray(),
             spr,
             theme.volume.widget,
+            spr,
             bat.widget,
+            spr,
             net,
+            spr,
             clock,
+            spr,
             s.mylayoutbox,
         },
     }

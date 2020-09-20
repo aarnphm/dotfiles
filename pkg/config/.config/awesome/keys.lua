@@ -14,13 +14,16 @@ local altkey = "Mod1"
 local keys = {}
 local cycle_prev = true
 
+sleep 				= "systemctl suspend"
+reboot 				= "systemctl reboot"
+poweroff 			= "systemctl poweroff"
 -- {{{ Menu
 local myawesomemenu = {
-    { "hotkeys", function() return false, hotkeys_popup.show_help end },
-    { "manual", apps.terminal .. " -e man awesome" },
-    { "edit config", string.format("%s -e %s %s", apps.terminal, apps.editor, awesome.conffile) },
     { "restart", awesome.restart },
-    { "quit", function() awesome.quit() end }
+    { "quit", function() awesome.quit() end },
+    { "sleep", sleep, beautiful.sleep },
+    { "reboot", reboot, beautiful.reboot },
+    { "poweroff", poweroff, beautiful.poweroff },
 }
 awful.util.mymainmenu = freedesktop.menu.build({
     icon_size = beautiful.menu_height or dpi(16),
@@ -49,9 +52,9 @@ keys.taglist_buttons = gears.table.join(
         if client.focus then
             client.focus:toggle_tag(t)
         end
-    end),
-    awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
-    awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
+    end)
+    -- awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
+    -- awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
 )
 
 keys.tasklist_buttons = gears.table.join(
@@ -91,9 +94,9 @@ keys.tasklist_buttons = gears.table.join(
 )
 
 keys.desktopbuttons = gears.table.join(
-    awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end)
+    -- awful.button({ }, 4, awful.tag.viewnext),
+    -- awful.button({ }, 5, awful.tag.viewprev)
 )
 
 keys.clientbuttons = gears.table.join(
@@ -119,8 +122,6 @@ keys.globalkeys = gears.table.join(
     -- Hotkeys
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description = "show help", group="awesome"}),
-    awful.key({ modkey, }, "z", function () awful.screen.focused().quake:toggle() end,
-              {description = "run quake dropdown", group = "launcher"}),
     -- Tag browsing
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
@@ -217,6 +218,8 @@ keys.globalkeys = gears.table.join(
     -- Standard program
     awful.key({ "Control", altkey }, "t", function () awful.spawn(apps.terminal) end,
               {description = "open a terminal", group = "launcher"}),
+    awful.key({ "Shift", altkey }, "t", function () awful.spawn("alacritty -e tmux") end,              
+              {description = "open a tmux session", group = "launcher"}),
     awful.key({ modkey, "Shift" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
@@ -283,31 +286,31 @@ keys.globalkeys = gears.table.join(
         {description = "volume 0%", group = "hotkeys"}),
 
     -- User programs
-    awful.key({ modkey }, "p", function() awful.spawn(apps.screenshot) end,
+    awful.key({ altkey }, "p", function() awful.spawn(apps.screenshot) end,
               {description = "take a screenshot", group = "hotkeys"}),
     awful.key({ altkey, "Control" }, "e", function () awful.spawn( "./.dmenu/dmenu-edit-conf.sh" ) end,
               {description = "edit config files" , group = "dmenu scripts" }),
-    awful.key({ modkey }, "b", function () awful.spawn(apps.browser) end,
+    awful.key({ altkey }, "b", function () awful.spawn(apps.browser) end,
               {description = "run browser", group = "launcher"}),
-    awful.key({ modkey }, "a", function () awful.spawn(apps.gui_editor) end,
+    awful.key({ altkey }, "a", function () awful.spawn(apps.gui_editor) end,
               {description = "run gui editor", group = "launcher"}),
     -- volume control with pavucontrol
-    awful.key({ modkey , "Shift"}, "v", function () awful.spawn(apps.audiocontrol) end,
+    awful.key({ altkey , "Shift"}, "v", function () awful.spawn(apps.audiocontrol) end,
               {description = "run audio control", group = "launcher"}),
     -- spotify
-    awful.key({ modkey, "Shift"}, "m", function () awful.spawn(apps.spotify) end,
+    awful.key({ altkey, "Shift"}, "m", function () awful.spawn(apps.spotify) end,
               {description = "run spotify", group = "launcher"}),
     -- file browser
-    awful.key({ modkey, "Shift" }, "f", function () awful.spawn(apps.filebrowser) end,
+    awful.key({ altkey, "Shift" }, "f", function () awful.spawn(apps.filebrowser) end,
               {description = "run explorer", group = "launcher"}),
     -- X screen locker
     awful.key({ "Control",altkey }, "l", function () os.execute(apps.lock) end,
               {description = "lock screen", group = "hotkeys"}),
     --rofi
-    awful.key({ modkey }, "space", function () awful.spawn(apps.launcher) end,
+    awful.key({ "Control" }, "space", function () awful.spawn(apps.launcher) end,
               {description = "show rofi", group = "launcher"}),
     -- Prompt
-    awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ altkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"})
 )
 

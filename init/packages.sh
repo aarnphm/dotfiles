@@ -6,14 +6,13 @@ export PKG=(
 	git
 	arandr
 	dialog
-	awesome
+	awesome awmtt
 	feh
 	nitrogen
 	rofi-git
 	alacritty
 	stow
 	github-cli
-	dunst
 	mesa
 	firefox
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa
@@ -28,6 +27,7 @@ export PKG=(
 	sqlitebrowser
 	vlc
 	xsettingsd
+	emacs fd
 	xsecurelock
 	imagemagick
 	acpi xfce4-power-manager-settings
@@ -35,20 +35,25 @@ export PKG=(
 	scrot cmatrix
 	xorg xorg-xinit
 	neovim
+	lxsession lxappearance lxtask
+	pcmanfm
 	docker
 	curl
 )
 export AUR=(
 	picom-git
 	twmn-git
+	visual-studio-code-bin
 	autofs
+	fet.sh-git
+	polkit
 	dex
 	inkscape
 	trash-cli
 	termite
-	code-insiders
+	code
 	ibus ibus-unikey
-	gnome-keyring libgnome-keyring secret-tool
+	gnome-keyring libgnome-keyring secret-tool lxsession
 	python-pip
 	wine winetricks lib32-gnutls samba
 	gyazo
@@ -58,10 +63,9 @@ export AUR=(
 	spicetify-cli
 	materia-gtk-theme
 	vmware-workstation
-	pcmanfm
 	nodejs npm
 	zanthura
-	file-roller lxappearance lxtask
+	file-roller 	
 	foxitreader
 	rainbow
 )

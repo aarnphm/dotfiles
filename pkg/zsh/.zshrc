@@ -144,7 +144,6 @@ autoload -Uz compinit && compinit -i
 
 # vim binding
 bindkey -v
-bindkey '^R' history-incremental-pattern-search-backward
 
 # ============================== zinit & misc
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
@@ -157,6 +156,11 @@ fi
 
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
+# syntax highlighting and completion
+zinit wait lucid light-mode for \
+  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
+  blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions
+
 # search history via substring
 zplugin light zsh-users/zsh-history-substring-search 
 # search through long list of commands with Ctrl+R
@@ -167,10 +171,6 @@ if [[ "$termmode" == "fancy" ]]; then
 	[[ ! -f ~/.zshtheme ]] || source ~/.zshtheme
 	zplugin light romkatv/powerlevel10k
 fi
-# syntax highlighting and completion
-zinit wait lucid light-mode for \
-  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
-  blockf atpull'zinit creinstall -q .' zsh-users/zsh-completions
 
 (( ${+_comps} )) && _comps[zinit]=_zinit
 

@@ -1,7 +1,10 @@
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+local lain  = require("lain")
 
+-- Autofocus a new client when previously focused one is closed
+require("awful.autofocus")
 -- Import theme
 local beautiful = require("beautiful")
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
@@ -17,16 +20,9 @@ local keys = require("keys")
 root.keys(keys.globalkeys)
 root.buttons(keys.desktopbuttons)
 
--- Import rules
-local create_rules = require("rules").create
-awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
-
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
-
-local apps = require("apps")
-awful.util.terminal = apps.default.terminal
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -68,6 +64,23 @@ awful.layout.layouts = {
 
 awful.util.taglist_buttons = keys.taglist_buttons
 awful.util.tasklist_buttons = keys.tasklist_buttons
+
+-- Import rules
+local create_rules = require("rules").create
+awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
+
+
+screen.connect_signal("request::wallpaper", function(s)
+    -- Wallpaper
+    if beautiful.wallpaper then
+        local wallpaper = beautiful.wallpaper
+        -- If wallpaper is a function, call it with the screen
+        if type(wallpaper) == "function" then
+            wallpaper = wallpaper(s)
+        end
+        gears.wallpaper.maximized(wallpaper, s, true)
+    end
+end)
 
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)

@@ -4,7 +4,7 @@
     "workbench.statusBar.visible": true,
     "workbench.iconTheme": "file-icons",
     "files.autoSave": "onWindowChange",
-    "editor.fontFamily": "'InconsolataGo Nerd Font', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontFamily": "'InconsolataGo Nerd Font', 'SFMono Nerd Font'",
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 120,
     "vim.cursorStylePerMode.insert": "line",
@@ -17,7 +17,7 @@
     "vim.hlsearch": true,
     "vim.leader": "",
     "vim.vimrc.enable": true,
-    "vim.vimrc.path": "$HOME/.vimrc",
+    "vim.vimrc.path": "~/.vimrc",
     "vim.visualstar": true,
     "editor.minimap.enabled": true,
     "explorer.confirmDelete": false,
@@ -28,6 +28,11 @@
         "vs-kubernetes.helm-path.linux": "/home/aarnphm/.vs-kubernetes/tools/helm/linux-amd64/helm",
         "vs-kubernetes.draft-path.linux": "/home/aarnphm/.vs-kubernetes/tools/draft/linux-amd64/draft"
     },
+    "files.exclude": {
+        "**/__pycache__": true
+    },
+    "go.useLanguageServer":true,
+    "go.lintFlags": ["--enable-all", "--new"],
     "vim.debug.loggingLevelForConsole": "info",
     "vim.debug.silent": true,
     "window.menuBarVisibility": "toggle"

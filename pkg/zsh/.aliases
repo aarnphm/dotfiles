@@ -86,12 +86,11 @@ else
 fi
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec ${SHELL}"
-alias ztheme="$EDITOR -p $HOME/.zshtheme $HOME/.p10k.zsh"
 alias dotfiles="$HOME/dotfiles/pkg"
-alias dconf="$EDITOR -p $HOME/.dmenu/*"
+alias ztheme="$EDITOR -p $HOME/.zshtheme $HOME/.p10k.zsh"
 alias aconf="$EDITOR -p $HOME/.config/awesome/*.lua"
-alias dotconf="$EDITOR -p $HOME/dotfiles/init/*"
-
+alias dconf="$EDITOR -p $HOME/dotfiles/init/*"
+alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
 
