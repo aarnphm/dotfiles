@@ -36,10 +36,11 @@ function rules.create(clientkeys, clientbuttons)
             instance = {
                "DTA",
                "copyq",
-               "nvidia-xsettings"
+               "nvidia-xsettings",
             },
             class = {
                "Nm-connection-editor",
+               "Gcr-prompter",
                "Arandr",
                "Blueman-manager",
                "Pavucontrol",

@@ -26,7 +26,7 @@ function expand-dot-to-parent-directory-path {
 }
 zle -N expand-dot-to-parent-directory-path
 
-eval "$(dircolors $HOME/.dircolors)"
+# eval "$(dircolors $HOME/.dircolors)"
 
 for file in ~/.{exports,aliases,functions}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
@@ -34,8 +34,8 @@ done;
 
 # ============================== Prompt
 setopt prompt_subst
-autoload -Uz vcs_info
-autoload -U colors && colors
+# autoload -Uz vcs_info
+# autoload -U colors && colors
 
 # Prompt symbol
 COMMON_PROMPT_SYMBOL="❯"
@@ -54,15 +54,10 @@ COMMON_COLORS_GIT_STATUS_STAGED=red
 COMMON_COLORS_GIT_STATUS_UNSTAGED=yellow
 COMMON_COLORS_GIT_PROMPT_SHA=green
 COMMON_COLORS_BG_JOBS=yellow
-# Git prompt SHA
-ZSH_THEME_GIT_PROMPT_SHA_BEFORE="%{%F{$COMMON_COLORS_GIT_PROMPT_SHA}%}"
-ZSH_THEME_GIT_PROMPT_SHA_AFTER="%{$reset_color%} "
 
 
 # Left Prompt
-PROMPT='$(common_host)$(common_current_dir)$(common_return_status)'
-# Right Prompt
-RPROMPT='$(common_git_status)'
+PROMPT='$(common_host)$(common_current_dir)$(common_git_status)$(common_return_status)'
 
 # Host
 common_host() {
@@ -83,7 +78,7 @@ common_current_dir() {
 
 # Prompt symbol
 common_return_status() {
-  echo -n "%(?.%F{$COMMON_COLORS_RETURN_STATUS_TRUE}.%F{$COMMON_COLORS_RETURN_STATUS_FALSE})$COMMON_PROMPT_SYMBOL%f "
+  echo -n " %(?.%F{$COMMON_COLORS_RETURN_STATUS_TRUE}.%F{$COMMON_COLORS_RETURN_STATUS_FALSE})$COMMON_PROMPT_SYMBOL%f "
 }
 
 # Git status
@@ -128,13 +123,11 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 setopt autocd autopushd
 
 # ============================== History
-setopt extended_history       # record timestamp of command in HISTFILE
 setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
 setopt hist_ignore_dups       # ignore duplicated commands history list
 setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
-setopt share_history          # share command history data inside tmux
-autoload -Uz compinit && compinit -i
+# autoload -Uz compinit && compinit -i
 
 # vim binding
 bindkey -v
@@ -175,44 +168,5 @@ if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aar
 if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
     source /usr/share/nnn/quitcd/quitcd.bash_zsh
 fi
-nnn-preview ()
-{
-    # Block nesting of nnn in subshells
-    if [ -n "$NNNLVL" ] && [ "${NNNLVL:-0}" -ge 1 ]; then
-        echo "nnn is already running"
-        return
-    fi
-
-    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
-    # To cd on quit only on ^G, remove the "export" as in:
-    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-    # NOTE: NNN_TMPFILE is fixed, should not be modified
-    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-
-    # This will create a fifo where all nnn selections will be written to
-    NNN_FIFO="$(mktemp --suffix=-nnn -u)"
-    export NNN_FIFO
-    (umask 077; mkfifo "$NNN_FIFO")
-
-    # Preview command
-    preview_cmd="$HOME/.scripts/preview_cmd.sh"
-
-    # Use `tmux` split as preview
-    if [ -e "${TMUX%%,*}" ]; then
-        tmux split-window -e "NNN_FIFO=$NNN_FIFO" -dh "$preview_cmd"
-
-    # Use `alacritty` as a preview window
-    elif (which alacritty &> /dev/null); then
-        alacritty -e "$preview_cmd" &
-
-    # Unable to find a program to use as a preview window
-    else
-        echo "unable to open preview, please install tmux or alacritty"
-    fi
-
-    nnn "$@"
-
-    rm -f "$NNN_FIFO"
-}
 
 # zprof

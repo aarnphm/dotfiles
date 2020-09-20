@@ -2,7 +2,6 @@
 local gears = require("gears")
 local awful = require("awful")
 local lain  = require("lain")
-local tyrannical = require("tyrannical")
 
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
@@ -25,6 +24,7 @@ root.buttons(keys.desktopbuttons)
 local create_rules = require("rules").create
 awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 
+local tyrannical = require("tyrannical")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -152,7 +152,7 @@ tyrannical.tags = {
 }
 
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
-tyrannical.properties.intrusive = {"feh","Gcr-prompter"}
+tyrannical.properties.intrusive = {"feh","gcr-prompter"}
 
 -- Ignore the tiled layout for the matching clients
 tyrannical.properties.floating = {"feh"}

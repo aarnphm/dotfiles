@@ -1,0 +1,3 @@
+[submodule "sys/nnn"]
+	path = sys/nnn
+	url = https://github.com/jarun/nnn
