@@ -2,6 +2,7 @@
     "workbench.startupEditor": "newUntitledFile",
     "workbench.colorTheme": "Atom One Dark",
     "workbench.statusBar.visible": true,
+    "restructuredtext.languageServer.trace.server": "messages",
     "workbench.iconTheme": "file-icons",
     "files.autoSave": "onWindowChange",
     "editor.fontFamily": "'InconsolataGo Nerd Font', 'SFMono Nerd Font'",
@@ -14,13 +15,19 @@
     "vim.cursorStylePerMode.visualblock": "block",
     "vim.cursorStylePerMode.visualline": "block",
     "vim.debug.loggingLevelForAlert": "verbose",
+    "vim.highlightedyank.enable": true,
     "vim.hlsearch": true,
     "vim.leader": "",
     "vim.vimrc.enable": true,
     "vim.vimrc.path": "~/.vimrc",
     "vim.visualstar": true,
+    "python.dataScience.askForKernelRestart": false,
+    "python.analysis.logLevel": "Trace",
     "editor.minimap.enabled": true,
+    "editor.autoClosingOvertype": "always",
+    "go.formatTool": "goimports",
     "explorer.confirmDelete": false,
+    "python.showStartPage": false,
     "explorer.confirmDragAndDrop": false,
     "vs-kubernetes": {
         "vs-kubernetes.minikube-path.linux": "/home/aarnphm/.vs-kubernetes/tools/minikube/linux-amd64/minikube",
@@ -31,9 +38,66 @@
     "files.exclude": {
         "**/__pycache__": true
     },
+    "terminal.external.linuxExec": "alacritty",
+    "terminal.explorerKind": "external",
+    "terminal.integrated.automationShell.linux": "",
+    "python.languageServer": "Pylance",
+    "python.dataScience.sendSelectionToInteractiveWindow": false,
+    "editor.formatOnSave": true,
+    "python.sortImports.args": [
+        "-rc",
+        "-sp $HOME/isort.cfg"
+    ],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length=90"
+    ],
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "python.dataScience.runStartupCommands": [
+        "%load_ext autoreload",
+        "%autoreload 2",
+        "%matplotlib inline"
+    ],
+    "vim.enableNeovim": true,
     "go.useLanguageServer":true,
-    "go.lintFlags": ["--enable-all", "--new"],
+    "go.lintFlags": [
+        "--enable-all",
+        "--new"
+    ],
+    "go.languageServerExperimentalFeatures": {
+        "diagnostics": true,
+        "autoComplete": true,
+        "documentSymbols": true,
+        "findReferences": true,
+        "format": true,
+        "goToDefinition": true,
+        "goToTypeDefinition": true,
+        "hover": true,
+        "signatureHelp": true,
+        "rename": true,
+        "workspaceSymbols": true,
+        "documentLink": true
+    },
+    "go.autocompleteUnimportedPackages": true,
+    "go.inferGopath": false,
+    "go.lintOnSave": "file",
+    "go.lintTool": "golangci-lint",
+    "go.trace.server": "messages",
+    "[dockerfile]": {
+        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
+    "restructuredtext.languageServer.disabled": false,
+    "restructuredtext.linter.executablePath": "$HOME/.pyenv/shims/rstcheck",
+    "restructuredtext.linter.run": "onSave",
+    "git.autofetch": true,
     "vim.debug.loggingLevelForConsole": "info",
     "vim.debug.silent": true,
-    "window.menuBarVisibility": "toggle"
+    "typescript.tsserver.log": "verbose",
+    "window.menuBarVisibility": "toggle",
+    "Lua.completion.callSnippet": "Both",
+    "git.confirmSync": false
 }

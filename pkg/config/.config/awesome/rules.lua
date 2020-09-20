@@ -38,6 +38,7 @@ function rules.create(clientkeys, clientbuttons)
             instance = {
                "DTA",
                "copyq",
+               "nvidia-xsettings"
             },
             class = {
                "Nm-connection-editor",
@@ -53,12 +54,6 @@ function rules.create(clientkeys, clientbuttons)
             }
          }, properties = {floating = true}
     },
-    -- Firefox
-    {rule={instance="firefox"}, properties={tag=awful.util.tagnames[2], switchtotag=true, screen=1}},
-    -- alacritty 
-    {rule={instance="alacritty"}, properties={tag=awful.util.tagnames[4], switchtotag=true, screen=1}},
-    -- Spotify
-    {rule_any={instance="spotify", class="Spotify"}, properties={tag=awful.util.tagnames[3], switchtotag=true, screen=1}},
     -- Meeting clients
     {rule_any = {instance = {"skype","teams","zoom"}},properties = {tag = awful.util.tagnames[5], switchtotag = true, floating =true }},
     -- Chat client

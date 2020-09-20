@@ -2,6 +2,7 @@
 local gears = require("gears")
 local awful = require("awful")
 local lain  = require("lain")
+local tyrannical = require("tyrannical")
 
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
@@ -19,6 +20,10 @@ local tags = require("tags")
 local keys = require("keys")
 root.keys(keys.globalkeys)
 root.buttons(keys.desktopbuttons)
+
+-- Import rules
+local create_rules = require("rules").create
+awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -50,25 +55,30 @@ end
 -- }}}
 
 -- ===================================================================
--- Set Up Screen & Connect Signals
+-- Set Up Tags
 -- ===================================================================
 
 -- Define tag layouts
-awful.util.tagnames = tags
-awful.layout.layouts = {
-    awful.layout.suit.tile,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    -- awful.layout.suit.floating,
- }
+-- awful.util.tagnames = tags
+-- awful.layout.layouts = {
+--     awful.layout.suit.tile,
+--     awful.layout.suit.spiral.dwindle,
+--     awful.layout.suit.max,
+--     awful.layout.suit.floating,
+--  }
+
+-- lain.layout.termfair.nmaster           = 3
+-- lain.layout.termfair.ncol              = 1
+-- lain.layout.termfair.center.nmaster    = 3
+-- lain.layout.termfair.center.ncol       = 1
+-- lain.layout.cascade.tile.offset_x      = 2
+-- lain.layout.cascade.tile.offset_y      = 32
+-- lain.layout.cascade.tile.extra_padding = 5
+-- lain.layout.cascade.tile.nmaster       = 5
+-- lain.layout.cascade.tile.ncol          = 2
 
 awful.util.taglist_buttons = keys.taglist_buttons
 awful.util.tasklist_buttons = keys.tasklist_buttons
-
--- Import rules
-local create_rules = require("rules").create
-awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
-
 
 screen.connect_signal("request::wallpaper", function(s)
     -- Wallpaper
@@ -81,6 +91,96 @@ screen.connect_signal("request::wallpaper", function(s)
         gears.wallpaper.maximized(wallpaper, s, true)
     end
 end)
+
+-- First, set some settings
+tyrannical.settings.default_layout =  awful.layout.suit.tile
+-- tyrannical.settings.master_width_factor = 0.66
+
+-- Setup some tags
+tyrannical.tags = {
+  {
+    name        = tags[1],               
+    init        = true,                  
+    exclusive   = true,                 
+    screen      = {1,2},                     
+    layout      = awful.layout.suit.tile,
+    selected    = true,
+    class       = { --Accept the following classes, refuse everything else (because of "exclusive=true")
+      "xterm" , "urxvt" , "alacritty" ,"Code","termite"
+    }
+  } ,
+  {
+    name        = tags[2],
+    init        = true,
+    exclusive   = false,
+    screen      = {1,2},      -- Setup on screen 2 if there is more than 1 screen, else on screen 1
+    layout      = awful.layout.suit.spiral.dwindle,
+    class = {"Firefox", "Chrome"}
+  } ,
+  {
+    name = tags[3],
+    init        = true,
+    exclusive   = true,
+    screen      = {1,2},
+    layout      = awful.layout.suit.max,
+    class  = {"spotify"}, --When the tag is accessed for the first time, execute this command
+  } ,
+  {
+    name = tags[4],
+    init        = true,
+    exclusive   = true,
+    screen      = {1,2},
+    layout      = awful.layout.suit.tile,
+    class ={
+      "Notion","foxitreader"}
+  } ,
+  {
+    name        = tags[5],
+    init        = true,
+    screen      = {1,2},
+    exclusive   = false,
+    layout      = awful.layout.suit.floating,
+    class       = {"teams", "zoom", "skype"} ,
+  },
+  {
+    name        = tags[6],
+    init        = true,
+    exclusive   = false,
+    screen      = {1,2},
+    layout      = awful.layout.suit.tile,
+    class       = {"steam", "discord"} ,
+}
+}
+
+-- Ignore the tag "exclusive" property for the following clients (matched by classes)
+tyrannical.properties.intrusive = {
+  "feh"           , "Gradient editor", "About KDE" , "Paste Special", "Background color"    ,
+  "kcolorchooser" , "plasmoidviewer" , "Xephyr"    , "kruler"       , "plasmaengineexplorer",
+}
+
+-- Ignore the tiled layout for the matching clients
+tyrannical.properties.floating = {
+  "xine"         , "feh"             , "kmix"       , "kcalc"        , "xcalc"          ,
+  "yakuake"      , "Select Color$"   , "kruler"     , "kcolorchooser", "Paste Special"  ,
+  "New Form"     , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer"
+}
+
+-- Make the matching clients (by classes) on top of the default layout
+tyrannical.properties.ontop = {
+  "Xephyr"       , "ksnapshot"       , "kruler", "rofi"
+}
+
+-- Force the matching clients (by classes) to be centered on the screen on init
+tyrannical.properties.centered = {
+  "kcalc"
+}
+
+-- Do not honor size hints request for those classes
+tyrannical.properties.size_hints_honor = { xterm = false, URxvt = false, alacritty = false, termite = false}
+
+-- ===================================================================
+-- Set Up Screen & Connect Signals
+-- ===================================================================
 
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)

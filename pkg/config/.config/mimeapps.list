@@ -1,8 +1,0 @@
-[Default Applications]
-x-scheme-handler/msteams=teams.desktop
-image/jpeg=feh.desktop
-
-[Added Associations]
-application/pdf=foxitreader.desktop;
-
-inode/directory=pcmanfm.desktop;

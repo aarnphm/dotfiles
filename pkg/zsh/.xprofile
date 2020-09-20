@@ -1,4 +1,5 @@
 # default apps
+ibus-daemon &
 xsettingsd &
 lxsession &
 nitrogen --restore &

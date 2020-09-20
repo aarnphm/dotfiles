@@ -119,8 +119,8 @@ local net = lain.widget.net({
 })
 
 function theme.at_screen_connect(s)
-    -- Tags
-    awful.tag(awful.util.tagnames, s, awful.layout.layouts)
+    -- Tags, using tyranicall
+    -- awful.tag(awful.util.tagnames, s, awful.layout.layouts)
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()

@@ -216,9 +216,9 @@ keys.globalkeys = gears.table.join(
               {description = "decrement useless gaps", group = "tag"}),
 
     -- Standard program
-    awful.key({ "Control", altkey }, "t", function () awful.spawn(apps.terminal) end,
+    awful.key({ "Control", altkey }, "t", function () awful.spawn(apps.terminal,{intrusive=true, floating=true, ontop=true}) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ "Shift", altkey }, "t", function () awful.spawn("alacritty -e tmux") end,              
+    awful.key({ "Shift", altkey }, "t", function () awful.spawn("alacritty -e tmux", {intrusive=true, floating=true, ontop=true}) end,              
               {description = "open a tmux session", group = "launcher"}),
     awful.key({ modkey, "Shift" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
