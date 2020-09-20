@@ -42,6 +42,7 @@ alias g="git"
 alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"
 alias N='sudo -E nnn -dH'
 alias np="nnn-preview"
+alias nnn="${aliases[nnn]:-nnn} -dH"
 
 # alias steam="flatpak run com.valvesoftware.Steam"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"

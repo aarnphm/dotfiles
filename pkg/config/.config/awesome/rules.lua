@@ -13,7 +13,7 @@ local rules = {}
 
 
 function rules.create(clientkeys, clientbuttons)
-    return 
+    return
     {
     -- All clients will match this rule.
     {
@@ -36,11 +36,10 @@ function rules.create(clientkeys, clientbuttons)
             instance = {
                "DTA",
                "copyq",
-               "nvidia-xsettings",
+               "nvidia-settings"
             },
             class = {
                "Nm-connection-editor",
-               "Gcr-prompter",
                "Arandr",
                "Blueman-manager",
                "Pavucontrol",
@@ -50,14 +49,13 @@ function rules.create(clientkeys, clientbuttons)
             },
             type = {
                "dialog"
-            }
-         }, properties = {floating = true}
+            }}, properties = {floating = true}
     },
     { rule = { class = "Gimp" }, properties = { maximized = true } },
     -- Rofi
     { rule_any = { name = { "rofi" } }, properties = { maximized = false, ontop = true } },
     -- File chooser dialog
-    {rule_any = {role = {"GtkFileChooserDialog"}}, properties = {floating = true, width = screen_width * 0.55, height = screen_height * 0.65}},
+    {rule_any = {role = "GtkFileChooserDialog"}, properties = {floating = true, width = screen_width * 0.55, height = screen_height * 0.65}},
     }
 end
 

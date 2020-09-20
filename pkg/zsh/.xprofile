@@ -1,7 +1,6 @@
 # default apps
 ibus-daemon &
 xsettingsd &
-lxsession &
 nitrogen --restore &
 redshift &
 picom &
