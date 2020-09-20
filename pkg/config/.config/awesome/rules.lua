@@ -3,8 +3,6 @@ local beautiful = require("beautiful")
 
 local screen_height = awful.screen.focused().geometry.height
 local screen_width = awful.screen.focused().geometry.width
-local tags = require("tags")
-awful.util.tagnames = tags
 
 -- define module table
 local rules = {}
@@ -54,10 +52,6 @@ function rules.create(clientkeys, clientbuttons)
             }
          }, properties = {floating = true}
     },
-    -- Meeting clients
-    {rule_any = {instance = {"skype","teams","zoom"}},properties = {tag = awful.util.tagnames[5], switchtotag = true, floating =true }},
-    -- Chat client
-    {rule_any = {instance = {"discord", "steam"}, name={"Steam"} }, properties = {tag = awful.util.tagnames[6], switchtotag = true } },
     { rule = { class = "Gimp" }, properties = { maximized = true } },
     -- Rofi
     { rule_any = { name = { "rofi" } }, properties = { maximized = false, ontop = true } },

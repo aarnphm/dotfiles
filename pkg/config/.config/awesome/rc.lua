@@ -59,13 +59,13 @@ end
 -- ===================================================================
 
 -- Define tag layouts
--- awful.util.tagnames = tags
--- awful.layout.layouts = {
---     awful.layout.suit.tile,
---     awful.layout.suit.spiral.dwindle,
---     awful.layout.suit.max,
---     awful.layout.suit.floating,
---  }
+awful.util.tagnames = tags
+awful.layout.layouts = {
+    awful.layout.suit.tile,
+    awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.max,
+    awful.layout.suit.floating,
+ }
 
 -- lain.layout.termfair.nmaster           = 3
 -- lain.layout.termfair.ncol              = 1
@@ -99,7 +99,7 @@ tyrannical.settings.default_layout =  awful.layout.suit.tile
 -- Setup some tags
 tyrannical.tags = {
   {
-    name        = tags[1],               
+    name        = tags[1],             
     init        = true,                  
     exclusive   = true,                 
     screen      = {1,2},                     
@@ -131,8 +131,7 @@ tyrannical.tags = {
     exclusive   = true,
     screen      = {1,2},
     layout      = awful.layout.suit.tile,
-    class ={
-      "Notion","foxitreader"}
+    class ={"Firefox", "Notion","foxitreader"}
   } ,
   {
     name        = tags[5],
@@ -153,27 +152,16 @@ tyrannical.tags = {
 }
 
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
-tyrannical.properties.intrusive = {
-  "feh"           , "Gradient editor", "About KDE" , "Paste Special", "Background color"    ,
-  "kcolorchooser" , "plasmoidviewer" , "Xephyr"    , "kruler"       , "plasmaengineexplorer",
-}
+tyrannical.properties.intrusive = {"feh","Gcr-prompter"}
 
 -- Ignore the tiled layout for the matching clients
-tyrannical.properties.floating = {
-  "xine"         , "feh"             , "kmix"       , "kcalc"        , "xcalc"          ,
-  "yakuake"      , "Select Color$"   , "kruler"     , "kcolorchooser", "Paste Special"  ,
-  "New Form"     , "Insert Picture"  , "kcharselect", "mythfrontend" , "plasmoidviewer"
-}
+tyrannical.properties.floating = {"feh"}
 
 -- Make the matching clients (by classes) on top of the default layout
-tyrannical.properties.ontop = {
-  "Xephyr"       , "ksnapshot"       , "kruler", "rofi"
-}
+tyrannical.properties.ontop = {"rofi"}
 
 -- Force the matching clients (by classes) to be centered on the screen on init
-tyrannical.properties.centered = {
-  "kcalc"
-}
+tyrannical.properties.centered = {"kcalc"}
 
 -- Do not honor size hints request for those classes
 tyrannical.properties.size_hints_honor = { xterm = false, URxvt = false, alacritty = false, termite = false}
