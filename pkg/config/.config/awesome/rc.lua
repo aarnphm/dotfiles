@@ -7,8 +7,6 @@ local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
 local markup = lain.util.markup
 -- local apps = require("apps")
--- Import Tag Settings
-local tags = require("tags")
 
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
@@ -21,6 +19,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 local naughty = require("naughty")
 
 -- Define tag layouts
+local tags = {"terminal", "web", "media", "docs", "meetings",  "others"}
 awful.util.tagnames = tags
 awful.layout.layouts = {
     awful.layout.suit.tile,
@@ -81,24 +80,9 @@ local function run_once(cmd_arr)
     end
 end
 
-run_once({ "unclutter -root", "discord", "zoom",
+run_once({  "unclutter -root", 
+            "discord", "zoom","teams",
             "kdocker -q -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify" }) -- entries must be comma-separated
-
--- -- @DOC_WALLPAPER@
--- local function set_wallpaper(s)
---   -- Wallpaper
---   if beautiful.wallpaper then
---     local wallpaper = beautiful.wallpaper
---     -- If wallpaper is a function, call it with the screen
---     if type(wallpaper) == "function" then
---       wallpaper = wallpaper(s)
---     end
---     gears.wallpaper.maximized(wallpaper, s, true)
---   end
--- end
-
--- -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
--- screen.connect_signal("property::geometry", set_wallpaper)
 
 -- ===================================================================
 -- Setup tyrannical

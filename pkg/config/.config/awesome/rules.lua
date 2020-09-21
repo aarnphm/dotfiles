@@ -47,18 +47,17 @@ function rules.create(clientkeys, clientbuttons)
                "Nitrogen",
                "Termite"
             },
-            name = {
-                "Library"
+            name = {"Library"},
+            type = {"dialog"}
             },
-            type = {
-               "dialog"
-            }}, properties = {floating = true}
+            properties = { floating = true }
     },
-    { rule = { class = "Gimp" }, properties = { maximized = true } },
+    { rule = { class = "Gimp" }, properties = { maximized = true }},
     -- Rofi
-    { rule_any = { instance = { "rofi" } }, properties = { maximized = false, ontop = true } },
+    { rule_any = { instance = "rofi" }, properties = { maximized = false, ontop = true }},
     -- File chooser dialog
-    {rule_any = {role = "GtkFileChooserDialog"}, properties = {floating = true, width = screen_width * 0.55, height = screen_height * 0.65}},
+    { rule_any = { role = "GtkFileChooserDialog" },
+      properties = { floating = true, width = screen_width * 0.55, height = screen_height * 0.65 }},
     }
 end
 

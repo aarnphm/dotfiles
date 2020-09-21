@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Make vim the default editor.
 export EDITOR='nvim';
-export VISUAL=$HOME/.scripts/ewrap;
+export VISUAL="nvim";
 export PYENV_ROOT="$HOME/.pyenv";
 # fzf 
 export FZF_DEFAULT_OPTS="
