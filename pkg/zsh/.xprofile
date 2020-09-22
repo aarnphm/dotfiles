@@ -8,5 +8,6 @@ picom &
 # non default
 # conky --daemonize --pause=5 &
 blueman-tray &
+kdocker -q -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify
 optimus-manager-qt &
 # xfce4-power-manager &

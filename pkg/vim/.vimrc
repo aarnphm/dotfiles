@@ -32,6 +32,7 @@ Plug 'mrk21/yaml-vim'
 Plug 'ekalinin/Dockerfile.vim'
 " UI related
 Plug 'mkitt/tabline.vim'
+Plug 'godlygeek/tabular'
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'Rykka/InstantRst'
@@ -62,7 +63,8 @@ let g:gruvbox_material_background = 'medium'
 filetype plugin indent on
 syntax enable
 set autoindent
-set nonumber
+set relativenumber
+set number
 set backspace=indent,eol,start
 set complete-=i
 set smarttab
@@ -80,7 +82,6 @@ set notitle
 set nowrap
 set showmatch
 set showmode
-set relativenumber
 set hidden
 set clipboard=unnamed,unnamedplus
 set mouse=a

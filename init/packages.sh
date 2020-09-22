@@ -4,15 +4,16 @@ export PKG=(
 	lightdm git
 	mesa nvidia nvidia-dkms
 	optimus-manager optimus-manager-qt
+	openconnect
 	stow tmux 
 	arandr dialog
 	awesome
 	xmonad xmobar
+	i3-gaps polybar i3lock-fancy
 	feh nitrogen
 	rofi-git
 	alacritty
 	github-cli
-	i3-gaps polybar
 	firefox
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa
 	alsa-utils
