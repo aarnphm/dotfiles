@@ -11,5 +11,4 @@ blueman-tray &
 kdocker -q -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify &
 optimus-manager-qt &
 xfce4-power-manager &
-discord & 
-teams &
+# discord & 

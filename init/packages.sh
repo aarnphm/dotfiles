@@ -8,11 +8,12 @@ export PKG=(
 	stow tmux 
 	arandr dialog
 	awesome
-	xmonad xmobar
+	xmonad xmobar xmonad-contrib
 	i3-gaps polybar i3lock-fancy
 	feh nitrogen
 	rofi-git
 	alacritty
+	xdg-user-dirs
 	github-cli
 	firefox
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa

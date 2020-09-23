@@ -753,15 +753,15 @@ awful.rules.rules = {
         properties = {floating = true}
     },
     {
-        rule = {instance = "firefox"},
+        rule_any = {instance = "firefox"},
         properties = {screen = 1, tag = awful.util.tagnames[3], switchtotag = true}
     },
     {
-        rule = {instance = "spotify", class = "Spotify"},
+        rule_any = {instance = "spotify", class = "Spotify"},
         properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
-        rule = {instance = {"discord", "zoom", "teams"}},
+        rule_any = {instance = {"discord", "zoom", "teams"}},
         properties = {screen = 1, tag = awful.util.tagnames[5], switchtotag = true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},

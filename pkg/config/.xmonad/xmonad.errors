@@ -1,0 +1,7 @@
+
+xmonad.hs:781:1: warning: [-Wtabs]
+    Tab character found here, and in five further locations.
+    Please use spaces instead.
+    |
+781 |                                                 , ppCurrent = xmobarColor "#c3e88d" "" . wrap "[" "]" -- Current workspace in xmobar
+    | ^^^^^^^^

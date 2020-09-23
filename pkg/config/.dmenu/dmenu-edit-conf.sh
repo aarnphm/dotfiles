@@ -13,6 +13,7 @@ zsh
 aliases
 exports
 dmenu-scripts
+xmonad
 rofi
 install-conf
 mimeapps
@@ -26,6 +27,9 @@ case "$choice" in
 	;;
 	alacritty)
 		choice="$HOME/.config/alacritty/alacritty.yml"
+	;;
+	xmonad)
+		choice="$HOME/.xmonad/xmonad.hs"
 	;;
 	mimeapps)
 		choice="$HOME/.config/mimeapps.list"

@@ -1,0 +1,48 @@
+
+Config {
+
+   -- Appearance
+     font        =  "xft:InconsolataGo Nerd Font:size=10:antialias=true:hinting=true"
+   , bgColor     =  "#22262e"
+   , fgColor     =  "#d8dee9"
+   , position    =  Top
+   , border      =  BottomB
+   , borderColor =  "#22262e"
+
+   -- Layout
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   , template = "  %UnsafeStdinReader% }{ %dynnetwork% %volume% <fc=#d8dee9>%date%</fc> "
+
+   -- General behavior
+   , lowerOnStart =     True    -- send to bottom of window stack on start
+   , hideOnStart =      False   -- start with window unmapped (hidden)
+   , allDesktops =      True    -- show on all desktops
+   , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+   , pickBroadest =     False   -- choose widest display (multi-monitor)
+   , persistent =       True    -- enable/disable hiding (True = disabled)
+
+   -- Scripts located /.local/bin/satusbar
+   , commands =
+
+        -- Date and time
+        [ Run Date "%a-%m/%d %I:%M:%S %p" "date" 1
+
+        -- network activity monitor (dynamic interface resolution)
+        , Run DynNetwork [ "--template" , " <rx>| <tx>"
+                         , "-S"         , "True"
+                         , "--Low"      , "1000"       -- units: B/s
+                         , "--High"     , "5000"       -- units: B/s
+                         , "--low"      , "#a3be8c"
+                         , "--normal"   , "#a3be8c"
+                         , "--high"     , "#bf616a"
+                         ] 10
+
+        -- Audio
+        , Run Com "volume" [] "" 10
+
+        -- Workspace
+        , Run UnsafeStdinReader
+        ]
+   }
+-- # vim: ft=cfg
