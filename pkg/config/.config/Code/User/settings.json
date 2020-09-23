@@ -1,6 +1,6 @@
 {
     "workbench.startupEditor": "newUntitledFile",
-    "workbench.colorTheme": "Atom One Dark",
+    "workbench.colorTheme": "Monokai Pro (Filter Octagon)",
     "workbench.statusBar.visible": true,
     "restructuredtext.languageServer.trace.server": "messages",
     "workbench.iconTheme": "file-icons",

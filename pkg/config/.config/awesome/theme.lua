@@ -4,9 +4,6 @@
 local os = os
 local dpi   = require("beautiful.xresources").apply_dpi
 
--- define module table
-local theme = {}
-
 -- ===================================================================
 -- Theme Variables
 -- ===================================================================
@@ -15,6 +12,7 @@ local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome"
 theme.icon_theme                                = "ePapirus"
 theme.font                                      = "InconsolataGo Nerd Font 9"
+theme.notification_font 						= theme.font
 theme.fg_normal                                 = "#FEFEFE"
 theme.fg_focus                                  = "#EA6F81"
 theme.fg_urgent                                 = "#CC9393"
@@ -30,10 +28,13 @@ theme.titlebar_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
 theme.menu_height                               = dpi(16)
-theme.menu_width                                = dpi(140)
+theme.useless_gap                               = dpi(5)
+theme.notification_max_width                    = dpi(250)
+theme.notification_max_height 					= dpi(100)
+theme.notification_icon_size 					= dpi(32)
 theme.tasklist_plain_task_name                  = true
 theme.tasklist_disable_icon                     = true
-theme.useless_gap                               = dpi(5)
+
 
 -- ===================================================================
 -- Icons
