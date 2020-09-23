@@ -15,4 +15,7 @@ pkg/python/.ipython/profile_default/*.py
 pkg/python/.ipython/profile_default/*.sqlite
 pkg/python/.ipython/profile_default/startup/*
 !pkg/python/.ipython/profile_default/startup/start.py
-
+*.hi
+*.errors
+*.o
+xmonad-x86_64-linux
