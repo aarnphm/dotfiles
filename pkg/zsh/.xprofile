@@ -3,12 +3,13 @@ ibus-daemon &
 xsettingsd &
 nitrogen --restore &
 redshift &
-picom -f &
+picom &
 blueman-tray &
 
 # non default
 # conky --daemonize --pause=5 &
-kdocker -q -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify &
+# kdocker -q -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify &
+spotify &
 optimus-manager-qt &
 xfce4-power-manager &
 # discord & 

@@ -25,7 +25,11 @@ local poweroff = "systemctl poweroff"
 local cycle_prev = true
 -- Define tag layouts
 awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
-awful.layout.layouts = awful.layout.suit.tile
+awful.layout.layouts = {
+				awful.layout.suit.tile, 
+				awful.layout.suit.max.fullscreen,
+				awful.layout.suit.spiral.dwindle
+}
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
 -- Enable hotkeys help widget for VIM and other apps when client with a matching name is opened:
@@ -731,7 +735,7 @@ awful.rules.rules = {
             instance = {
                 "DTA",
                 "copyq",
-                "nvidia-settings"
+                "nvidia-settings",
             },
             class = {
                 "Nm-connection-editor",
@@ -758,11 +762,11 @@ awful.rules.rules = {
     },
     {
         rule_any = {instance = "spotify", class = "Spotify"},
-        properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
+        properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true, floating=true}
     },
     {
-        rule_any = {instance = {"discord", "zoom", "teams"}},
-        properties = {screen = 1, tag = awful.util.tagnames[5], switchtotag = true}
+        rule_any = {instance = {"slack", "discord", "zoom", "teams"}},
+        properties = {screen = 1, tag = awful.util.tagnames[5], switchtotag = true, floating=true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
@@ -908,9 +912,9 @@ awful.screen.connect_for_each_screen(
                 spr,
                 bat.widget,
                 spr,
-                clock
-                -- spr,
-                -- s.mylayoutbox
+                clock,
+                spr,
+                s.mylayoutbox
             }
         }
     end

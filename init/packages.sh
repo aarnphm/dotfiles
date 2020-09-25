@@ -8,7 +8,7 @@ export PKG=(
 	stow tmux 
 	arandr dialog
 	awesome
-	xmonad xmobar xmonad-contrib
+	xmonad taffybar xmobar xmonad-contrib
 	i3-gaps polybar i3lock-fancy
 	feh nitrogen
 	rofi-git

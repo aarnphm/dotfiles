@@ -98,7 +98,7 @@ common_git_status() {
 
     local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [[ -n ${branch} ]]; then
-        message+=" ${message_color}${branch}%f "
+        message+=" ${message_color}${branch}%f"
     fi
 
     echo -n "${message}"
