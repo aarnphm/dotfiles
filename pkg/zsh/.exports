@@ -3,9 +3,10 @@
 export EDITOR='nvim';
 export VISUAL="nvim";
 export PYENV_ROOT="$HOME/.pyenv";
+export PYENV_SHELL=zsh
+
 # fzf 
-export FZF_DEFAULT_OPTS="
---layout=reverse
+export FZF_DEFAULT_OPTS="--layout=reverse
 --info=inline
 --height=80%
 --multi
@@ -16,8 +17,8 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-a:select-all'
 --bind 'ctrl-y:execute-silent(echo {+} | pbcopy)'
 --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
---bind 'ctrl-v:execute(code {+})'
-";
+--bind 'ctrl-v:execute(code {+})'";
+
 # wine prefix
 export WINEPREFIX="$HOME/.wine32" 
 export WINEARCH=win32

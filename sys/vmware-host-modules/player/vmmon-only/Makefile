@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 ##########################################################
-# Copyright (C) 1998-2019 VMware, Inc. All rights reserved.
+# Copyright (C) 1998-2020 VMware, Inc. All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the
@@ -135,6 +135,8 @@ endif
 ifdef VMX86_DEBUG
 CC_OPTS += -DVMX86_DEBUG
 endif
+
+# Add Spectre options when available
 
 include $(SRCROOT)/Makefile.kernel
 

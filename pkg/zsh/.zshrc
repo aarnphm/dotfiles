@@ -105,11 +105,10 @@ common_git_status() {
 }
 
 # ============================== Completion
-unsetopt menu_complete   # do not autoselect the first completion entry
-unsetopt flowcontrol
+# unsetopt menu_complete   # do not autoselect the first completion entry
+# unsetopt flowcontrol
 setopt auto_menu         # show completion menu on successive tab press
 setopt complete_in_word
-setopt always_to_end
 zstyle ':completion:*' menu select
 
 autoload -Uz compinit
@@ -160,8 +159,24 @@ fi
 if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
 
 # nnn
-if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
-    source /usr/share/nnn/quitcd/quitcd.bash_zsh
-fi
+# if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
+#     source /usr/share/nnn/quitcd/quitcd.bash_zsh
+# fi
 # zprof
+source '/home/aarnphm/.pyenv/libexec/../completions/pyenv.zsh'
+# command pyenv rehash 2>/dev/null
+# pyenv() {
+#   local command
+#   command="${1:-}"
+#   if [ "$#" -gt 0 ]; then
+#     shift
+#   fi
+
+#   case "$command" in
+#   activate|deactivate|rehash|shell)
+#     eval "$(pyenv "sh-$command" "$@")";;
+#   *)
+#     command pyenv "$command" "$@";;
+#   esac
+# }
 

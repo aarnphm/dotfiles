@@ -24,6 +24,8 @@ eval $(git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm);
 echo_info "Install pyenv..."
 eval $(curl https://pyenv.run | bash);
 
+echo_info "Install poetry..."
+eval $(curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python);
 # gcp
 echo_info "Install gcloud..."
 eval $(curl https://sdk.cloud.google.com | bash && exec -l $SHELL);

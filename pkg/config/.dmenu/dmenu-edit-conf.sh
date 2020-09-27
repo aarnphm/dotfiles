@@ -8,14 +8,14 @@ picom
 termite
 tmux
 vim
-xresources
+xprofile
 zsh
 aliases
 exports
 dmenu-scripts
 xmonad
 rofi
-install-conf
+packages
 mimeapps
 quit"
 )
@@ -55,7 +55,7 @@ case "$choice" in
 	dmenu-scripts)
 		choice="$HOME/.dmenu/dmenu-edit-conf.sh"
 	;;
-	xresources)
+	xprofile)
 		choice="$HOME/.xprofile"
 	;;
 	rofi)
@@ -64,7 +64,7 @@ case "$choice" in
 	zsh)
 		choice="$HOME/.zshrc"
 	;;
-	install-conf)
+	packages)
 		choice="$HOME/dotfiles/init/packages.sh"
 	;;
 	aliases)

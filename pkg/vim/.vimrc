@@ -23,6 +23,7 @@ call plug#begin('~/.vim/plugins')
 " fzf with rg
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'joshdick/onedark.vim'
 Plug 'rking/ag.vim'
 " ale for linting
 Plug 'dense-analysis/ale'
@@ -68,8 +69,9 @@ if g:is_termguicolors
   set termguicolors
 endif
 set background=dark
-colorscheme gruvbox-material
-let g:gruvbox_material_background = 'medium'
+colorscheme onedark
+" colorscheme gruvbox-material
+" let g:gruvbox_material_background = 'medium'
 
 " Minimal
 filetype plugin indent on
@@ -350,6 +352,10 @@ let g:gitgutter_diff_args = '-w'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! CmdLine(str)
+    call feedkeys(":" . a:str)
+endfunction 
+
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
     execute "normal! vgvy"

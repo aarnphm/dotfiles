@@ -389,7 +389,41 @@ awful.screen.connect_for_each_screen(
         )
 
         -- Create a promptbox for each screen
-        s.mypromptbox = awful.widget.prompt()
+        s.mypromptbox =
+            awful.widget.prompt(
+            with_shell == true,
+            prompt == "Exec: ",
+            hooks ==
+                {
+                    {
+                        {},
+                        "Return",
+                        function(command)
+                            local result = awful.spawn(command)
+                            s.mypromptbox[mouse.screen].widget:set_text(type(result) == "string" and result or "")
+                            return true
+                        end
+                    },
+                    {
+                        {altkey},
+                        "Return",
+                        function(command)
+                            local result = awful.spawn(command, {intrusive = true})
+                            s.mypromptbox[mouse.screen].widget:set_text(type(result) == "string" and result or "")
+                            return true
+                        end
+                    },
+                    {
+                        {"Shift"},
+                        "Return",
+                        function(command)
+                            local result = awful.spawn(command, {intrusive = true, ontop = true, floating = true})
+                            s.mypromptbox[mouse.screen].widget:set_text(type(result) == "string" and result or "")
+                            return true
+                        end
+                    }
+                }
+        )
         -- Create an imagebox widget which will contains an icon indicating which layout we're using.
         -- We need one layoutbox per screen.
         s.mylayoutbox = awful.widget.layoutbox(s)
@@ -410,12 +444,12 @@ awful.screen.connect_for_each_screen(
                 -- Left widgets
                 layout = wibox.layout.fixed.horizontal,
                 s.mytaglist
-                -- s.mypromptbox
             },
             {
                 -- Middle widgets
                 layout = wibox.layout.fixed.horizontal,
-                s.mytasklist
+                s.mypromptbox
+                -- s.mytasklist
             },
             {
                 -- Right widgets
@@ -692,7 +726,7 @@ local globalkeys =
     -- layout chanages
     awful.key(
         {altkey, "Shift"},
-        "l",
+        "h",
         function()
             awful.tag.incmwfact(0.05)
         end,
@@ -700,7 +734,7 @@ local globalkeys =
     ),
     awful.key(
         {altkey, "Shift"},
-        "h",
+        "l",
         function()
             awful.tag.incmwfact(-0.05)
         end,
@@ -943,28 +977,33 @@ awful.rules.rules = {
         properties = {screen = 2, tag = awful.util.tagnames[3], switchtotag = true}
     },
     {
-        rule_any = {class = "Firefox"},
+        rule = {class = "Firefox"},
         properties = {tag = awful.util.tagnames[4], switchtotag = true}
     },
     {
-        rule_any = {class = "Code"},
-        properties = {tag = awful.util.tagnames[2], switchtotag = true}
+        rule = {class = "Code"},
+        properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
         rule_any = {class = "Steam"},
         properties = {screen = 2, tag = awful.util.tagnames[5], floating = true}
     },
     {
-        rule_any = {instance = {"slack", "zoom", "teams"}},
+        rule_any = {instance = {"slack", "zoom"}},
         properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true, floating = true}
     },
     {
-        rule_any = {instance = {"discord"}},
+        rule = {instance = "discord"},
         properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true}
+    },
+    {
+        rule = {instance = "teams"},
+        properties = {screen = 2, floating = true, tag = awful.util.tagnames[5], switchtotag = true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
     {rule_any = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
+    {rule_any = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
     {rule_any = {class = "Messenger Call - Chromium"}, properties = {maximized = false, ontop = true}},
     -- File chooser dialog
     {
@@ -974,21 +1013,22 @@ awful.rules.rules = {
 }
 
 local tyrannical = require("tyrannical")
-
+-- require("tyrannical.shortcut")
 -- awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
 tyrannical.tags = {
     {
         name = awful.util.tagnames[1],
         init = true,
         exclusive = false,
-        screen = {1, 2},
+        screen = 1,
+        clone_on = 2,
         layout = awful.layout.suit.tile
     },
     {
         name = awful.util.tagnames[2],
         init = true,
-        exclusive = true,
-        screen = 1,
+        exclusive = false,
+        force_screen = 1,
         layout = awful.layout.suit.tile.left,
         class = {"Alacritty", "Code"}
     },
@@ -996,9 +1036,9 @@ tyrannical.tags = {
         name = awful.util.tagnames[3],
         init = true,
         exclusive = true,
-        screen = {1, 2},
+        screen = 2,
         layout = awful.layout.suit.tile,
-        instance = {"spotify"}
+        class = {"Spotify"}
     },
     {
         name = awful.util.tagnames[4],
@@ -1011,18 +1051,16 @@ tyrannical.tags = {
     {
         name = "helpers",
         init = true,
-        exclusive = true,
+        exclusive = false,
         screen = 2,
-        clone_on = 1,
-        layout = awful.layout.suit.tile.top,
-        instance = {"firefox", "chromium"}
+        layout = awful.layout.suit.tile.top
     },
     {
         name = awful.util.tagnames[5],
         init = true,
         exclusive = true,
-        screen = {2},
-        layout = awful.layout.suit.tile,
+        screen = 2,
+        layout = awful.layout.suit.spiral.dwindle,
         class = {"Zoom", "Discord", "Teams", "Slack"}
     }
 }
@@ -1031,10 +1069,14 @@ tyrannical.tags = {
 tyrannical.properties.intrusive = {
     "ksnapshot",
     "pinentry",
+    "Xephyr",
     "gtksu",
     "kcalc",
+    "termite",
     "xcalc",
+    "Termite",
     "feh",
+    "Xephyr",
     "rofi",
     "plasmaengineexplorer"
 }
@@ -1044,6 +1086,7 @@ tyrannical.properties.floating = {
     "MPlayer",
     "pinentry",
     "ksnapshot",
+    "Termite",
     "pinentry",
     "gtksu",
     "xev",
@@ -1057,6 +1100,7 @@ tyrannical.properties.floating = {
     "New Form",
     "Insert Picture",
     "mythfrontend",
+    "Xephyr",
     "plasmoidviewer"
 }
 
@@ -1064,7 +1108,9 @@ tyrannical.properties.floating = {
 tyrannical.properties.ontop = {
     "Xephyr",
     "rofi",
-    "ksnapshot"
+    "Termite",
+    "ksnapshot",
+    "Zoom"
 }
 
 -- Force the matching clients (by classes) to be centered on the screen on init
