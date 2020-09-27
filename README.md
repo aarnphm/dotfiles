@@ -1,6 +1,4 @@
 <div align="center">
-    <h1>dotfiles</h1>
-    <p>There's no place like <b><code>~</code></b> !</p>
     <p>
     <img src="https://img.shields.io/badge/WM-Awesome%20WM-535d6c.svg" />
    <img src="https://img.shields.io/badge/Editor-Vim-009930.svg" /> 
@@ -12,6 +10,7 @@
     <img src="dotfiles.png">
     <br><br>
     </p>
+    <p>There's no place like <b><code>~</code></b> !</p>
 </div>
 
 just a tiny collection of my development environment, built for _Arch_ and _MacOS_
