@@ -243,8 +243,19 @@ local clientkeys =
             c:raise()
         end,
         {description = "maximize", group = "client"}
-    )
+    ),
+	awful.key({ modkey, "Control" }, "n",
+              function ()
+                  local c = awful.client.restore()
+                  -- Focus restored client
+                  if c then
+                      client.focus = c
+                      c:raise()
+                  end
+              end,
+              {description = "restore minimized", group = "client"})
 )
+
 local desktopbuttons =
     gears.table.join(
     awful.button(
