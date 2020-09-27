@@ -8,7 +8,7 @@ just a tiny collection of my development environment, built for _Arch_ and _MacO
 - now if you save all ur folder inside `pkg` u can run `make stow` if you want to stow everything
 - included custom built mozilla under `etc`, follow [this](https://github.com/mut-ex/minimal-forfunctional-fox) for instalation
 
-# Folder structures
+## folder
 - `stow` is used for symlink manager
 - `init`: contains scripts to run for first time setup. do `make install`
     - inside `init/init.sh` contains some of `curl` commands to setup [alacritty](https://github.com/alacritty/alacritty).
@@ -16,3 +16,4 @@ just a tiny collection of my development environment, built for _Arch_ and _MacO
 
 - `screenlayout`holds config for monitor setup generated from `arandr`. remember to put it in `$PATH` for `lightdm` setup
 
+![screenshots](./desktop.png)
