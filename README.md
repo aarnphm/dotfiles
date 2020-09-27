@@ -30,4 +30,5 @@ just a tiny collection of my development environment, built for _Arch_ and _MacO
 - `screenlayout`holds config for monitor setup generated from `arandr`. remember to put it in `$PATH` for `lightdm` setup
 
 <div align="center"><h1>screenshot</h1></div>
+
 ![screenshots](./desktop.png)
