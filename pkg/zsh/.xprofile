@@ -5,11 +5,11 @@ nitrogen --restore &
 redshift &
 picom &
 blueman-tray &
+xfce4-power-manager &
 
 # non default
-# conky --daemonize --pause=5 &
-# kdocker -q -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify &
-spotify &
-optimus-manager-qt &
-xfce4-power-manager &
-# discord & 
+# spotify &
+kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify &
+discord &
+teams &
+zoom &

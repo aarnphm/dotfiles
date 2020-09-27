@@ -1,3 +1,6 @@
 [submodule "sys/nnn"]
 	path = sys/nnn
 	url = https://github.com/jarun/nnn
+[submodule "pkg/config/.config/awesome/tyrannical"]
+	path = pkg/config/.config/awesome/tyrannical
+	url = https://github.com/Elv13/tyrannical

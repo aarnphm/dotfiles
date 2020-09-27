@@ -1,12 +1,19 @@
 {
   "python.linting.pylintEnabled": true,
   "python.linting.enabled": true,
+  "python.jediEnabled":false,
   "languageserver": {
     "golang": {
       "command": "$HOME/go/bin/gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"]
     },
+     "julia": {
+      "command": "/usr/bin/julia",
+      "args" : ["--startup-file=no", "--history-file=no", "-e",
+      "using LanguageServer;\n       using Pkg;\n       import StaticLint;\n       import SymbolServer;\n       env_path = dirname(Pkg.Types.Context().env.project_file);\n       debug = false;\n       server = LanguageServer.LanguageServerInstance(stdin, stdout, debug, env_path, \"\");\n       server.runlinter = true;\n       run(server);" ],
+      "filetypes": ["julia"]
+     },
     "ccls": {
             "command": "ccls",
             "filetypes": [

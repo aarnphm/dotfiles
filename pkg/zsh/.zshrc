@@ -34,8 +34,8 @@ done;
 
 # ============================== Prompt
 setopt prompt_subst
-# autoload -Uz vcs_info
-# autoload -U colors && colors
+autoload -Uz vcs_info
+autoload -U colors && colors
 
 # Prompt symbol
 COMMON_PROMPT_SYMBOL="❯"
@@ -122,11 +122,6 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 ## Directory navigation
 setopt autocd autopushd
 
-# ============================== History
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_ignore_dups       # ignore duplicated commands history list
-setopt hist_ignore_space      # ignore commands that start with space
-setopt hist_verify            # show command with history expansion to user before running it
 # autoload -Uz compinit && compinit -i
 
 # vim binding
@@ -168,5 +163,5 @@ if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aar
 if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
     source /usr/share/nnn/quitcd/quitcd.bash_zsh
 fi
-
 # zprof
+

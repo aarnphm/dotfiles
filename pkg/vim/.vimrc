@@ -11,6 +11,13 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   augroup end
 endif
 
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-plug
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " define vim-plug here
 call plug#begin('~/.vim/plugins')
 " fzf with rg
@@ -19,9 +26,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'rking/ag.vim'
 " ale for linting
 Plug 'dense-analysis/ale'
-" go support
+" Go support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" vscode like support
+" Julia support
+" Plug 'JuliaEditorSupport/julia-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " language packs
 Plug 'sheerun/vim-polyglot'
@@ -44,6 +52,10 @@ Plug 'tpope/vim-apathy'
 Plug 'wakatime/vim-wakatime'
 Plug 'Yggdroot/indentLine'
 call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => init
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:is_unix=has('unix')
 let g:is_gui=has('gui_running')
@@ -148,6 +160,10 @@ set undolevels=9999
 set tabstop=4
 command! Ev :e! $MYVIMRC
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Mapping
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Mapping
 let mapleader=','
 nnoremap <leader>, :let @/=''<CR>:noh<CR>
@@ -159,6 +175,12 @@ nnoremap <silent> <leader>i gg=G``<CR>
 nnoremap <leader>l :set list! list?<CR>
 nnoremap <silent> <leader>t :%s/\s\+$//e<CR>
 nnoremap <leader>w :set wrap! wrap?<CR>
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
@@ -182,9 +204,10 @@ map <leader>R :PlugInstall<cr>
 " use this when lightline is not in use for minimal
 nnoremap <F2> :set invpaste paste?<CR>
 imap <F2> <C-O>:set invpaste paste?<CR>
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Plugin settings
 let g:instant_rst_port=5686
@@ -323,3 +346,23 @@ let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
 let g:gitgutter_max_signs = 1500
 let g:gitgutter_diff_args = '-w'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction

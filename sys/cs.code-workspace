@@ -1,7 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "../../Documents/cs"
+			"path": "../../Documents/cs/mlh/smallDB.jl"
+		},
+		{
+			"path": "../../Documents/cs/mlh/BentoML"
 		}
 	],
 	"settings": {}

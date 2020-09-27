@@ -13,9 +13,11 @@ local beautiful = require("beautiful")
 local dpi = require("beautiful.xresources").apply_dpi
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Custom imports
-local markup = lain.util.markup
 local screen_height = awful.screen.focused().geometry.height
 local screen_width = awful.screen.focused().geometry.width
+local markup = lain.util.markup
+-- Define tag layouts
+awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
 -- Custom keybinds
 local modkey = "Mod4"
 local altkey = "Mod1"
@@ -23,13 +25,6 @@ local sleep = "systemctl suspend"
 local reboot = "systemctl reboot"
 local poweroff = "systemctl poweroff"
 local cycle_prev = true
--- Define tag layouts
-awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
-awful.layout.layouts = {
-				awful.layout.suit.tile, 
-				awful.layout.suit.max.fullscreen,
-				awful.layout.suit.spiral.dwindle
-}
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
 -- Enable hotkeys help widget for VIM and other apps when client with a matching name is opened:
@@ -87,7 +82,8 @@ local apps = {
     editor = "nvim",
     gui_editor = os.getenv("GUI_EDITOR") or "code",
     browser = os.getenv("BROWSER") or "firefox",
-    spotify = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
+    -- spotify = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
+    spotify = "spotify",
     launcher = "rofi -modi drun -i -p -show drun -show-icons",
     lock = "xsecurelock",
     screenshot = "gyazo",
@@ -97,30 +93,8 @@ local apps = {
 }
 
 -- ===================================================================
--- Keys
+-- Set Up Screen, Connect Signal and Mouse Support
 -- ===================================================================
-
--- Menu
-local myawesomemenu = {
-    {"restart", awesome.restart},
-    {
-        "quit",
-        function()
-            awesome.quit()
-        end
-    },
-    {"sleep", sleep, beautiful.sleep},
-    {"reboot", reboot, beautiful.reboot},
-    {"poweroff", poweroff, beautiful.poweroff}
-}
-awful.util.mymainmenu =
-    freedesktop.menu.build(
-    {
-        icon_size = beautiful.menu_height or dpi(16),
-        before = {{"Awesome", myawesomemenu, beautiful.awesome_icon}},
-        after = {{"Open terminal", apps.terminal}}
-    }
-)
 
 -- Mouse support
 awful.util.taglist_buttons =
@@ -309,6 +283,222 @@ local clientbuttons =
         end
     )
 )
+
+-- Bar setup
+local spr = wibox.widget.textbox(" ")
+
+-- Textclock
+local clock =
+    awful.widget.watch(
+    "date +'%a %m-%d %R %Z'",
+    60,
+    function(widget, stdout)
+        widget:set_markup(markup.font(beautiful.font, stdout))
+    end
+)
+
+-- Calendar
+local cal =
+    lain.widget.cal(
+    {
+        attach_to = {clock},
+        notification_preset = {
+            font = beautiful.font,
+            fg = beautiful.fg_normal,
+            bg = beautiful.bg_normal
+        }
+    }
+)
+
+-- Battery
+local bat =
+    lain.widget.bat(
+    {
+        settings = function()
+            if bat_now.status and bat_now.status ~= "N/A" then
+                widget:set_markup(markup.font(beautiful.font, "Batt: " .. bat_now.perc .. "%"))
+            else
+                widget:set_markup(markup.font(beautiful.font, "Batt: AC"))
+            end
+        end
+    }
+)
+bat.widget:buttons(
+    gears.table.join(
+        awful.button(
+            {},
+            1,
+            function()
+                awful.spawn(apps.pwm)
+            end
+        )
+    )
+)
+
+-- ALSA volume
+local volume =
+    lain.widget.alsa(
+    {
+        settings = function()
+            widget:set_markup(markup.font(beautiful.font, "Vol: " .. volume_now.level .. "%"))
+        end
+    }
+)
+volume.widget:buttons(
+    gears.table.join(
+        awful.button(
+            {},
+            1,
+            function()
+                awful.spawn(apps.audiocontrol)
+            end
+        ),
+        awful.button(
+            {},
+            4,
+            function()
+                awful.spawn("amixer set Master 1%+")
+                volume.update()
+            end
+        ),
+        awful.button(
+            {},
+            5,
+            function()
+                awful.spawn("amixer set Master 1%-")
+                volume.update()
+            end
+        )
+    )
+)
+
+awful.screen.connect_for_each_screen(
+    function(s)
+        -- awful.tag(awful.util.tagnames, s, awful.layout.layouts)
+        s.quake =
+            lain.util.quake(
+            {
+                app = "termite",
+                height = 0.38,
+                width = 0.38,
+                vert = "center",
+                horiz = "center",
+                followtag = true,
+                argname = "--name %s"
+            }
+        )
+
+        -- Create a promptbox for each screen
+        s.mypromptbox = awful.widget.prompt()
+        -- Create an imagebox widget which will contains an icon indicating which layout we're using.
+        -- We need one layoutbox per screen.
+        s.mylayoutbox = awful.widget.layoutbox(s)
+
+        -- Create a taglist widget
+        s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
+
+        -- Create a tasklist widget
+        s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+
+        -- Create the wibox
+        s.mywibox = awful.wibar({position = "top", screen = s, height = beautiful.menu_height})
+
+        -- Add widgets to the wibox
+        s.mywibox:setup {
+            layout = wibox.layout.align.horizontal,
+            {
+                -- Left widgets
+                layout = wibox.layout.fixed.horizontal,
+                s.mytaglist
+                -- s.mypromptbox
+            },
+            {
+                -- Middle widgets
+                layout = wibox.layout.fixed.horizontal,
+                s.mytasklist
+            },
+            {
+                -- Right widgets
+                layout = wibox.layout.fixed.horizontal,
+                wibox.widget.systray(),
+                spr,
+                volume.widget,
+                spr,
+                bat.widget,
+                spr,
+                clock
+                -- spr,
+                -- s.mylayoutbox
+            }
+        }
+    end
+)
+
+-- No borders when rearranging only 1 non-floating or maximized client
+screen.connect_signal(
+    "arrange",
+    function(s)
+        local only_one = #s.tiled_clients == 1
+        for _, c in pairs(s.clients) do
+            if only_one and not c.floating or c.maximized then
+                c.border_width = 0
+            else
+                c.border_width = beautiful.border_width
+            end
+        end
+    end
+)
+
+-- Signal function to execute when a new client appears.
+-- @DOC_MANAGE_HOOK@
+client.connect_signal(
+    "manage",
+    function(c)
+        -- Set the windows at the slave,
+        -- i.e. put it at the end of others instead of setting it master.
+        -- if not awesome.startup then awful.client.setslave(c) end
+
+        if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
+            -- Prevent clients from being unreachable after screen count changes.
+            awful.placement.no_offscreen(c)
+        end
+    end
+)
+
+-- Enable sloppy focus, so that focus follows mouse.
+-- client.connect_signal(
+--     "mouse::enter",
+--     function(c)
+--         c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
+--     end
+-- )
+
+-- ===================================================================
+-- Keys
+-- ===================================================================
+
+-- Menu
+local myawesomemenu = {
+    {"restart", awesome.restart},
+    {
+        "quit",
+        function()
+            awesome.quit()
+        end
+    },
+    {"sleep", sleep, beautiful.sleep},
+    {"reboot", reboot, beautiful.reboot},
+    {"poweroff", poweroff, beautiful.poweroff}
+}
+awful.util.mymainmenu =
+    freedesktop.menu.build(
+    {
+        icon_size = beautiful.menu_height or dpi(16),
+        before = {{"Awesome", myawesomemenu, beautiful.awesome_icon}},
+        after = {{"Open terminal", apps.terminal}}
+    }
+)
+
 -- }}}
 
 -- {{{ Key bindings
@@ -407,7 +597,7 @@ local globalkeys =
         {"Control", altkey},
         "t",
         function()
-            awful.spawn(apps.terminal)
+            awful.spawn(apps.terminal, {properties = {screen = 1}})
         end,
         {description = "open a terminal", group = "launcher"}
     ),
@@ -451,15 +641,6 @@ local globalkeys =
             awful.spawn(apps.gui_editor)
         end,
         {description = "run gui editor", group = "launcher"}
-    ),
-    -- volume control with pavucontrol
-    awful.key(
-        {modkey, "Shift"},
-        "v",
-        function()
-            awful.spawn(apps.audiocontrol)
-        end,
-        {description = "run audio control", group = "launcher"}
     ),
     -- spotify
     awful.key(
@@ -587,51 +768,49 @@ local globalkeys =
     ),
     -- ALSA volume control
     awful.key(
-        {altkey},
+        {},
+        "XF86AudioRaiseVolume",
+        function()
+            os.execute(string.format("amixer -q set %s 2%%+", volume.channel))
+            volume.update()
+        end,
+        {description = "volume up", group = "volume"}
+    ),
+    awful.key(
+        {},
+        "XF86AudioLowerVolume",
+        function()
+            os.execute(string.format("amixer -q set %s 2%%-", volume.channel))
+            volume.update()
+        end,
+        {description = "volume down", group = "volume"}
+    ),
+    awful.key(
+        {},
+        "XF86AudioMute",
+        function()
+            os.execute(string.format("amixer -q set %s toggle", volume.togglechannel or volume.channel))
+            volume.update()
+        end,
+        {description = "toggle mute", group = "volume"}
+    ),
+    awful.key(
+        {altkey, "Control"},
         "Up",
         function()
-            os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
-            beautiful.volume.update()
+            os.execute(string.format("amixer -q set %s 100%%", volume.channel))
+            volume.update()
         end,
-        {description = "volume up", group = "hotkeys"}
+        {description = "volume 100%", group = "volume"}
     ),
     awful.key(
-        {altkey},
+        {altkey, "Control"},
         "Down",
         function()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
-            beautiful.volume.update()
+            os.execute(string.format("amixer -q set %s 0%%", volume.channel))
+            volume.update()
         end,
-        {description = "volume down", group = "hotkeys"}
-    ),
-    awful.key(
-        {altkey},
-        "m",
-        function()
-            os.execute(
-                string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel)
-            )
-            beautiful.volume.update()
-        end,
-        {description = "toggle mute", group = "hotkeys"}
-    ),
-    awful.key(
-        {altkey, "Control"},
-        "9",
-        function()
-            os.execute(string.format("amixer -q set %s 100%%", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume 100%", group = "hotkeys"}
-    ),
-    awful.key(
-        {altkey, "Control"},
-        "0",
-        function()
-            os.execute(string.format("amixer -q set %s 0%%", beautiful.volume.channel))
-            beautiful.volume.update()
-        end,
-        {description = "volume 0%", group = "hotkeys"}
+        {description = "volume 0%", group = "volume"}
     )
 )
 
@@ -724,7 +903,7 @@ awful.rules.rules = {
             raise = true,
             keys = clientkeys,
             buttons = clientbuttons,
-            screen = awful.screen.preferred,
+            screen = awful.screen.focused,
             placement = awful.placement.no_overlap + awful.placement.no_offscreen,
             size_hints_honor = false
         }
@@ -736,6 +915,7 @@ awful.rules.rules = {
                 "DTA",
                 "copyq",
                 "nvidia-settings",
+                "xmessage"
             },
             class = {
                 "Nm-connection-editor",
@@ -749,7 +929,9 @@ awful.rules.rules = {
             name = {
                 "Library",
                 "Chat",
+                "zoom",
                 "Zoom Meeting",
+                "Event Tester",
                 "Settings"
             },
             type = {"dialog", "popup"}
@@ -757,20 +939,33 @@ awful.rules.rules = {
         properties = {floating = true}
     },
     {
-        rule_any = {instance = "firefox"},
-        properties = {screen = 1, tag = awful.util.tagnames[3], switchtotag = true}
+        rule = {class = "Spotify"},
+        properties = {screen = 2, tag = awful.util.tagnames[3], switchtotag = true}
     },
     {
-        rule_any = {instance = "spotify", class = "Spotify"},
-        properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true, floating=true}
+        rule_any = {class = "Firefox"},
+        properties = {tag = awful.util.tagnames[4], switchtotag = true}
     },
     {
-        rule_any = {instance = {"slack", "discord", "zoom", "teams"}},
-        properties = {screen = 1, tag = awful.util.tagnames[5], switchtotag = true, floating=true}
+        rule_any = {class = "Code"},
+        properties = {tag = awful.util.tagnames[2], switchtotag = true}
+    },
+    {
+        rule_any = {class = "Steam"},
+        properties = {screen = 2, tag = awful.util.tagnames[5], floating = true}
+    },
+    {
+        rule_any = {instance = {"slack", "zoom", "teams"}},
+        properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true, floating = true}
+    },
+    {
+        rule_any = {instance = {"discord"}},
+        properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
     {rule_any = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
+    {rule_any = {class = "Messenger Call - Chromium"}, properties = {maximized = false, ontop = true}},
     -- File chooser dialog
     {
         rule_any = {role = "GtkFileChooserDialog"},
@@ -778,183 +973,107 @@ awful.rules.rules = {
     }
 }
 
--- ===================================================================
--- Set Up Screen & Connect Signals
--- ===================================================================
+local tyrannical = require("tyrannical")
 
-local spr = wibox.widget.textbox(" ")
-
--- Textclock
-local clock =
-    awful.widget.watch(
-    "date +'%a %m-%d %R %Z'",
-    60,
-    function(widget, stdout)
-        widget:set_markup(markup.font(beautiful.font, stdout))
-    end
-)
-
--- Calendar
-local cal =
-    lain.widget.cal(
+-- awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
+tyrannical.tags = {
     {
-        attach_to = {clock},
-        notification_preset = {
-            font = beautiful.font,
-            fg = beautiful.fg_normal,
-            bg = beautiful.bg_normal
-        }
-    }
-)
-
--- Battery
-local bat =
-    lain.widget.bat(
+        name = awful.util.tagnames[1],
+        init = true,
+        exclusive = false,
+        screen = {1, 2},
+        layout = awful.layout.suit.tile
+    },
     {
-        settings = function()
-            if bat_now.status and bat_now.status ~= "N/A" then
-                widget:set_markup(markup.font(beautiful.font, "Batt: " .. bat_now.perc .. "%"))
-            else
-                widget:set_markup(markup.font(beautiful.font, "Batt: AC"))
-            end
-        end
-    }
-)
-bat.widget:buttons(
-    gears.table.join(
-        awful.button(
-            {},
-            1,
-            function()
-                awful.spawn(apps.pwm)
-            end
-        )
-    )
-)
-
--- ALSA volume
-local volume =
-    lain.widget.alsa(
+        name = awful.util.tagnames[2],
+        init = true,
+        exclusive = true,
+        screen = 1,
+        layout = awful.layout.suit.tile.left,
+        class = {"Alacritty", "Code"}
+    },
     {
-        settings = function()
-            widget:set_markup(markup.font(beautiful.font, "Vol: " .. volume_now.level .. "%"))
-        end
+        name = awful.util.tagnames[3],
+        init = true,
+        exclusive = true,
+        screen = {1, 2},
+        layout = awful.layout.suit.tile,
+        instance = {"spotify"}
+    },
+    {
+        name = awful.util.tagnames[4],
+        init = true,
+        exclusive = false,
+        screen = 1,
+        layout = awful.layout.suit.tile.left,
+        class = {"Firefox", "Chromium"}
+    },
+    {
+        name = "helpers",
+        init = true,
+        exclusive = true,
+        screen = 2,
+        clone_on = 1,
+        layout = awful.layout.suit.tile.top,
+        instance = {"firefox", "chromium"}
+    },
+    {
+        name = awful.util.tagnames[5],
+        init = true,
+        exclusive = true,
+        screen = {2},
+        layout = awful.layout.suit.tile,
+        class = {"Zoom", "Discord", "Teams", "Slack"}
     }
-)
-volume.widget:buttons(
-    gears.table.join(
-        awful.button(
-            {},
-            1,
-            function()
-                awful.spawn(apps.audiocontrol)
-            end
-        ),
-        awful.button(
-            {},
-            4,
-            function()
-                awful.spawn("amixer set Master 1%+")
-                volume.update()
-            end
-        ),
-        awful.button(
-            {},
-            5,
-            function()
-                awful.spawn("amixer set Master 1%-")
-                volume.update()
-            end
-        )
-    )
-)
+}
 
-awful.screen.connect_for_each_screen(
-    function(s)
-        awful.tag(awful.util.tagnames, s, awful.layout.layouts)
-        s.quake = lain.util.quake({app = "termite", height = 0.34, argname = "--name %s"})
+-- Ignore the tag "exclusive" property for the following clients (matched by classes)
+tyrannical.properties.intrusive = {
+    "ksnapshot",
+    "pinentry",
+    "gtksu",
+    "kcalc",
+    "xcalc",
+    "feh",
+    "rofi",
+    "plasmaengineexplorer"
+}
 
-        -- Create a promptbox for each screen
-        s.mypromptbox = awful.widget.prompt()
-        -- Create an imagebox widget which will contains an icon indicating which layout we're using.
-        -- We need one layoutbox per screen.
-        s.mylayoutbox = awful.widget.layoutbox(s)
+-- Ignore the tiled layout for the matching clients
+tyrannical.properties.floating = {
+    "MPlayer",
+    "pinentry",
+    "ksnapshot",
+    "pinentry",
+    "gtksu",
+    "xev",
+    "xine",
+    "Unlock keyring",
+    "feh",
+    "Select Color$",
+    "kruler",
+    "kcolorchooser",
+    "Paste Special",
+    "New Form",
+    "Insert Picture",
+    "mythfrontend",
+    "plasmoidviewer"
+}
 
-        -- Create a taglist widget
-        s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
+-- Make the matching clients (by classes) on top of the default layout
+tyrannical.properties.ontop = {
+    "Xephyr",
+    "rofi",
+    "ksnapshot"
+}
 
-        -- Create a tasklist widget
-        s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+-- Force the matching clients (by classes) to be centered on the screen on init
+tyrannical.properties.placement = {
+    kcalc = awful.placement.centered
+}
 
-        -- Create the wibox
-        s.mywibox = awful.wibar({position = "top", screen = s, height = beautiful.menu_height})
-
-        -- Add widgets to the wibox
-        s.mywibox:setup {
-            layout = wibox.layout.align.horizontal,
-            {
-                -- Left widgets
-                layout = wibox.layout.fixed.horizontal,
-                s.mytaglist,
-                s.mypromptbox
-            },
-            {
-                -- Middle widgets
-                layout = wibox.layout.fixed.horizontal,
-                s.mytasklist
-            },
-            {
-                -- Right widgets
-                layout = wibox.layout.fixed.horizontal,
-                wibox.widget.systray(),
-                spr,
-                volume.widget,
-                spr,
-                bat.widget,
-                spr,
-                clock,
-                spr,
-                s.mylayoutbox
-            }
-        }
-    end
-)
-
--- No borders when rearranging only 1 non-floating or maximized client
-screen.connect_signal(
-    "arrange",
-    function(s)
-        local only_one = #s.tiled_clients == 1
-        for _, c in pairs(s.clients) do
-            if only_one and not c.floating or c.maximized then
-                c.border_width = 0
-            else
-                c.border_width = beautiful.border_width
-            end
-        end
-    end
-)
-
--- Signal function to execute when a new client appears.
--- @DOC_MANAGE_HOOK@
-client.connect_signal(
-    "manage",
-    function(c)
-        -- Set the windows at the slave,
-        -- i.e. put it at the end of others instead of setting it master.
-        -- if not awesome.startup then awful.client.setslave(c) end
-
-        if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
-            -- Prevent clients from being unreachable after screen count changes.
-            awful.placement.no_offscreen(c)
-        end
-    end
-)
-
--- Enable sloppy focus, so that focus follows mouse.
--- client.connect_signal("mouse::enter", function(c)
---     c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
--- end)
+tyrannical.settings.block_children_focus_stealing = true --Block popups ()
+tyrannical.settings.group_children = true --Force popups/dialogs to have the same tags as the parent client
 
 -- ===================================================================
 -- Garbage collection (allows for lower memory consumption)

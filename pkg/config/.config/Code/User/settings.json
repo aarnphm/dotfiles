@@ -99,5 +99,7 @@
     "typescript.tsserver.log": "verbose",
     "window.menuBarVisibility": "toggle",
     "Lua.completion.callSnippet": "Both",
-    "git.confirmSync": false
+    "git.confirmSync": false,
+    "julia.enableTelemetry": true,
+    "julia.executablePath": "/usr/bin/julia"
 }
