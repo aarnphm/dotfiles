@@ -7,7 +7,7 @@ export PKG=(
 	stow tmux 
 	arandr dialog
 	awesome
-	xmonad taffybar xmobar xmonad-contrib
+	xmonad xmobar xmonad-contrib
 	feh nitrogen
 	alacritty termite
 	xdg-user-dirs
@@ -36,6 +36,8 @@ export PKG=(
 )
 export AUR=(
 	picom-git
+	adobe-source-han-serif-otc-fonts adobe-source-han-sans-otc-fonts noto-fonts-emoji
+	ncdu bleachbit cacheclean
 	github-cli rofi-git
 	rr-git
 	twmn-git

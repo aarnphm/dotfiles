@@ -159,9 +159,9 @@ fi
 if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
 
 # nnn
-# if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
-#     source /usr/share/nnn/quitcd/quitcd.bash_zsh
-# fi
+if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
+    source /usr/share/nnn/quitcd/quitcd.bash_zsh
+fi
 # zprof
 source '/home/aarnphm/.pyenv/libexec/../completions/pyenv.zsh'
 # command pyenv rehash 2>/dev/null
@@ -180,3 +180,6 @@ source '/home/aarnphm/.pyenv/libexec/../completions/pyenv.zsh'
 #   esac
 # }
 
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init -)"
+# fi

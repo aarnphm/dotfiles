@@ -1,10 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "../../Documents/cs/mlh/BentoML"
-		},
-		{
-			"path": "../../Documents/cs/mlh/DiscoBot"
+			"path": "../../documents/cs/mlh/DiscoBot"
 		}
 	],
 	"settings": {}

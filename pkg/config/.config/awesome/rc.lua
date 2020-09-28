@@ -82,8 +82,8 @@ local apps = {
     editor = "nvim",
     gui_editor = os.getenv("GUI_EDITOR") or "code",
     browser = os.getenv("BROWSER") or "firefox",
-    -- spotify = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
-    spotify = "spotify",
+    spotify = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
+    -- spotify = "spotify",
     launcher = "rofi -modi drun -i -p -show drun -show-icons",
     lock = "xsecurelock",
     screenshot = "gyazo",
@@ -244,16 +244,19 @@ local clientkeys =
         end,
         {description = "maximize", group = "client"}
     ),
-	awful.key({ modkey, "Control" }, "n",
-              function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then
-                      client.focus = c
-                      c:raise()
-                  end
-              end,
-              {description = "restore minimized", group = "client"})
+    awful.key(
+        {modkey, "Control"},
+        "n",
+        function()
+            local c = awful.client.restore()
+            -- Focus restored client
+            if c then
+                client.focus = c
+                c:raise()
+            end
+        end,
+        {description = "restore minimized", group = "client"}
+    )
 )
 
 local desktopbuttons =
@@ -351,7 +354,11 @@ local volume =
     lain.widget.alsa(
     {
         settings = function()
-            widget:set_markup(markup.font(beautiful.font, "Vol: " .. volume_now.level .. "%"))
+            if volume_now.status == "off" then
+                widget:set_markup(markup.font(beautiful.font, "Vol: Mute"))
+            else
+                widget:set_markup(markup.font(beautiful.font, "Vol: " .. volume_now.level .. "%"))
+            end
         end
     }
 )
@@ -642,7 +649,7 @@ local globalkeys =
         {"Control", altkey},
         "t",
         function()
-            awful.spawn(apps.terminal, {properties = {screen = 1}})
+            awful.spawn(apps.terminal)
         end,
         {description = "open a terminal", group = "launcher"}
     ),
@@ -944,7 +951,7 @@ awful.rules.rules = {
         properties = {
             border_width = beautiful.border_width,
             border_color = beautiful.border_normal,
-            focus = awful.client.focus.filter,
+            focus = awful.client.focus,
             raise = true,
             keys = clientkeys,
             buttons = clientbuttons,
@@ -960,7 +967,8 @@ awful.rules.rules = {
                 "DTA",
                 "copyq",
                 "nvidia-settings",
-                "xmessage"
+                "xmessage",
+                "lxappearance"
             },
             class = {
                 "Nm-connection-editor",
@@ -996,15 +1004,23 @@ awful.rules.rules = {
         properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
+        rule = {class = "Alacritty"},
+        properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
+    },
+    {
         rule_any = {class = "Steam"},
         properties = {screen = 2, tag = awful.util.tagnames[5], floating = true}
     },
     {
-        rule_any = {instance = {"slack", "zoom"}},
+        rule_any = {instance = {"zoom"}},
         properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true, floating = true}
     },
     {
         rule = {instance = "discord"},
+        properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true}
+    },
+    {
+        rule = {instance = "slack"},
         properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true}
     },
     {
@@ -1013,9 +1029,9 @@ awful.rules.rules = {
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
-    {rule_any = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
-    {rule_any = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
-    {rule_any = {class = "Messenger Call - Chromium"}, properties = {maximized = false, ontop = true}},
+    {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
+    {rule = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
+    {rule = {name = "Messenger Call - Chromium"}, properties = {maximized = false, ontop = true}},
     -- File chooser dialog
     {
         rule_any = {role = "GtkFileChooserDialog"},
@@ -1033,7 +1049,8 @@ tyrannical.tags = {
         exclusive = false,
         screen = 1,
         clone_on = 2,
-        layout = awful.layout.suit.tile
+        layout = awful.layout.suit.tile,
+        instance = {"Vmware", "Steam"}
     },
     {
         name = awful.util.tagnames[2],
@@ -1055,7 +1072,7 @@ tyrannical.tags = {
         name = awful.util.tagnames[4],
         init = true,
         exclusive = false,
-        screen = 1,
+        force_screen = 1,
         layout = awful.layout.suit.tile.left,
         class = {"Firefox", "Chromium"}
     },
@@ -1071,23 +1088,21 @@ tyrannical.tags = {
         init = true,
         exclusive = true,
         screen = 2,
-        layout = awful.layout.suit.spiral.dwindle,
+        layout = awful.layout.suit.tile.top,
         class = {"Zoom", "Discord", "Teams", "Slack"}
     }
 }
 
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
 tyrannical.properties.intrusive = {
-    "ksnapshot",
-    "pinentry",
     "Xephyr",
     "gtksu",
-    "kcalc",
-    "termite",
-    "xcalc",
+    "awmtt",
+    "gparted",
     "Termite",
     "feh",
     "Xephyr",
+    "Messenger Call - Chromium",
     "rofi",
     "plasmaengineexplorer"
 }
@@ -1095,23 +1110,22 @@ tyrannical.properties.intrusive = {
 -- Ignore the tiled layout for the matching clients
 tyrannical.properties.floating = {
     "MPlayer",
-    "pinentry",
-    "ksnapshot",
     "Termite",
     "pinentry",
+    "gparted",
     "gtksu",
+    "awmtt",
+    "Xephyr",
     "xev",
     "xine",
     "Unlock keyring",
     "feh",
-    "Select Color$",
-    "kruler",
-    "kcolorchooser",
+    "bleachbit",
     "Paste Special",
     "New Form",
+    "Messenger Call - Chromium",
     "Insert Picture",
     "mythfrontend",
-    "Xephyr",
     "plasmoidviewer"
 }
 
@@ -1119,7 +1133,10 @@ tyrannical.properties.floating = {
 tyrannical.properties.ontop = {
     "Xephyr",
     "rofi",
+    "gparted",
+    "awmtt",
     "Termite",
+    "Messenger Call - Chromium",
     "ksnapshot",
     "Zoom"
 }

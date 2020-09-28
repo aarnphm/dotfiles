@@ -21,7 +21,7 @@ fi
 
 alias kubesecret="kubectl get secret regcred --output=yaml"
 alias iwctl="sudo wifi-menu"
-alias allvim="$EDITOR -p $@"
+alias av="$EDITOR -p $@"
 # curl shortcut
 alias header='curl -I'
 # shortcut for curl with authentication header : $0->Methods, $1->authkey, $2->addr
@@ -42,7 +42,7 @@ alias g="git"
 alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"
 alias N='sudo -E nnn -dH'
 alias np="nnn-preview"
-alias nnn="${aliases[nnn]:-nnn} -dH"
+alias nn="nnn -dH"
 
 # alias steam="flatpak run com.valvesoftware.Steam"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
