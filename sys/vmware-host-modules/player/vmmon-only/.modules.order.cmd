@@ -1,1 +1,0 @@
-cmd_/home/aarnphm/dotfiles/sys/vmware-host-modules/player/vmmon-only/modules.order := {   echo /home/aarnphm/dotfiles/sys/vmware-host-modules/player/vmmon-only/vmmon.ko; :; } | awk '!x[$$0]++' - > /home/aarnphm/dotfiles/sys/vmware-host-modules/player/vmmon-only/modules.order
