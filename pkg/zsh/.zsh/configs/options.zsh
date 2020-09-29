@@ -7,6 +7,8 @@ setopt extendedglob
 
 unsetopt clobber           
 
+zstyle ':completion:*' menu select
+
 # ============================== zinit & misc
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"

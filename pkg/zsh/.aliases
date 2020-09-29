@@ -11,7 +11,7 @@ alias e="$EDITOR $@"
 alias v="$VISUAL $@"
 alias kubesecret="kubectl get secret regcred --output=yaml"
 alias iwctl="sudo wifi-menu"
-alias av="$EDITOR -p $@"
+alias av="$VISUAL -p $@"
 # curl shortcut
 alias header='curl -I'
 # shortcut for curl with authentication header : $0->Methods, $1->authkey, $2->addr
@@ -81,8 +81,8 @@ fi
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec ${SHELL}"
 alias dotfiles="$HOME/dotfiles/pkg"
-alias aconf="$EDITOR -p $HOME/.config/awesome/*.lua"
-alias dconf="$EDITOR -p $HOME/dotfiles/init/*"
+alias aconf="$VISUAL -p $HOME/.config/awesome/*.lua"
+alias dconf="$VISUAL -p $HOME/dotfiles/init/*"
 alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'

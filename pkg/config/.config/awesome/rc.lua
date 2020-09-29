@@ -965,6 +965,7 @@ awful.rules.rules = {
         rule_any = {
             instance = {
                 "DTA",
+				"vmware",
                 "copyq",
                 "nvidia-settings",
 				"baobab",
@@ -1051,7 +1052,7 @@ tyrannical.tags = {
         screen = 1,
         clone_on = 2,
         layout = awful.layout.suit.tile,
-        instance = {"Vmware", "Steam"}
+        instance = {"Steam"}
     },
     {
         name = awful.util.tagnames[2],
