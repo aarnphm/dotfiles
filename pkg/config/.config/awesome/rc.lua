@@ -965,11 +965,13 @@ awful.rules.rules = {
         rule_any = {
             instance = {
                 "DTA",
-				"vmware",
                 "copyq",
                 "nvidia-settings",
 				"baobab",
                 "xmessage",
+				"slack",
+				"skype",
+				"chromium",
                 "lxappearance"
             },
             class = {
@@ -1002,6 +1004,10 @@ awful.rules.rules = {
         properties = {tag = awful.util.tagnames[4], switchtotag = true}
     },
     {
+        rule = {class = "Chromium"},
+        properties = {screen=2, tag = "helpers", switchtotag = true}
+    },
+    {
         rule = {class = "Code"},
         properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
     },
@@ -1010,20 +1016,16 @@ awful.rules.rules = {
         properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
-        rule_any = {class = "Steam"},
-        properties = {screen = 2, tag = awful.util.tagnames[5], floating = true}
-    },
-    {
-        rule_any = {instance = {"zoom"}},
+        rule_any = {instance = {"zoom"}, class={"Steam"}},
         properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true, floating = true}
     },
     {
-        rule = {instance = "discord"},
+        rule_any = {instance = {"discord","slack","skype"}},
         properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true}
     },
     {
-        rule = {instance = "slack"},
-        properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true}
+        rule = {instance = "vmware"},
+        properties = {screen = 2, tag = "vm", switchtotag = true}
     },
     {
         rule = {instance = "teams"},
@@ -1058,7 +1060,7 @@ tyrannical.tags = {
         name = awful.util.tagnames[2],
         init = true,
         exclusive = false,
-        force_screen = 1,
+        screen = 1,
         layout = awful.layout.suit.tile.left,
         class = {"Alacritty", "Code"}
     },
@@ -1074,7 +1076,7 @@ tyrannical.tags = {
         name = awful.util.tagnames[4],
         init = true,
         exclusive = false,
-        force_screen = 1,
+        screen = 1,
         layout = awful.layout.suit.tile.left,
         class = {"Firefox", "Chromium"}
     },
@@ -1092,6 +1094,13 @@ tyrannical.tags = {
         screen = 2,
         layout = awful.layout.suit.tile.top,
         class = {"Zoom", "Discord", "Teams", "Slack"}
+    },
+    {
+        name = "vm",
+        init = true,
+        exclusive = false,
+        screen = 2,
+        layout = awful.layout.suit.tile.top
     }
 }
 

@@ -11,4 +11,6 @@ xfce4-power-manager &
 # spotify &
 kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify &
 discord &
+slack &
+zoom &
 teams &
