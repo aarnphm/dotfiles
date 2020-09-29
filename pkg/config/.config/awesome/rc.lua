@@ -967,6 +967,7 @@ awful.rules.rules = {
                 "DTA",
                 "copyq",
                 "nvidia-settings",
+				"baobab",
                 "xmessage",
                 "lxappearance"
             },

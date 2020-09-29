@@ -1,0 +1,5 @@
+# stow from everywhere
+function dotstow {
+  lastdir=$(pwd)
+  cd $HOME/dotfiles && make stow && cd $lastdir
+}

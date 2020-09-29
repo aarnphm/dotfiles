@@ -7,18 +7,8 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
-
-# hmm if there is only one way to use nvim
-if command -v nvim 1>/dev/null 2>&1;then
-    alias vim="/usr/bin/nvim"
-    alias vi="/usr/bin/nvim"
-    alias v="/usr/bin/nvim"
-else
-    alias vim="/usr/bin/vim"
-    alias vi="/usr/bin/vim"
-    alias v="/usr/bin/vim"
-fi
-
+alias e="$EDITOR $@"
+alias v="$VISUAL $@"
 alias kubesecret="kubectl get secret regcred --output=yaml"
 alias iwctl="sudo wifi-menu"
 alias av="$EDITOR -p $@"
@@ -36,13 +26,16 @@ alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
 
 # Shortcuts
-alias dl="cd ~/Downloads"
+alias dl="cd ${HOME}/downloads"
+alias dc="cd ${HOME}/documents"
+alias cs="cd ${HOME}/documents/cs"
 alias g="git"
 # nnn intensifies
 alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"
 alias N='sudo -E nnn -dH'
 alias np="nnn-preview"
 alias nn="nnn -dH"
+alias dockerprune="docker system prune -a -f"
 
 # alias steam="flatpak run com.valvesoftware.Steam"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
@@ -51,7 +44,7 @@ alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-pa
 alias l="ls -lF ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
-alias la="ls -lAF --color"
+alias la="ls -laF --color"
 alias lc='colorls -lA --sd'
 
 # Enable aliases to be sudo’ed
@@ -88,7 +81,6 @@ fi
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec ${SHELL}"
 alias dotfiles="$HOME/dotfiles/pkg"
-alias ztheme="$EDITOR -p $HOME/.zshtheme $HOME/.p10k.zsh"
 alias aconf="$EDITOR -p $HOME/.config/awesome/*.lua"
 alias dconf="$EDITOR -p $HOME/dotfiles/init/*"
 alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"

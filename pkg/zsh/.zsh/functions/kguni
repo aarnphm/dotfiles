@@ -1,0 +1,6 @@
+function kguni {
+    pid=`ps ax | grep gunicorn | grep 5000 | awk '{split($0,a," "); print a[1]}' | head -n 1`
+    if [ ! -z "$pid"]; then
+        kill $pid
+    fi
+}
