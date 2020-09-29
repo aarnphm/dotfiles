@@ -7,7 +7,7 @@
    <img src="https://img.shields.io/badge/Font-InconsolataGo-lightgrey.svg" /> 
    <img src="https://img.shields.io/badge/Distro-Arch%20Linux-0f94d2.svg" /> 
    <br><br> 
-    <img src="screenshot/dotfiles.png">
+    <img src="screenshots/dotfiles.png">
     <br><br>
     </p>
     <p>There's no place like <b><code>~</code></b> !</p>
