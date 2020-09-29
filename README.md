@@ -7,7 +7,7 @@
    <img src="https://img.shields.io/badge/Font-InconsolataGo-lightgrey.svg" /> 
    <img src="https://img.shields.io/badge/Distro-Arch%20Linux-0f94d2.svg" /> 
    <br><br> 
-    <img src="dotfiles.png">
+    <img src="screenshot/dotfiles.png">
     <br><br>
     </p>
     <p>There's no place like <b><code>~</code></b> !</p>
@@ -30,4 +30,4 @@ just a tiny collection of my development environment, built for _Arch_ and _MacO
 
 <div align="center"><h1>screenshot</h1></div>
 
-![screenshots](./desktop.png)
+![screenshots](./screenshots/desktop.png)
