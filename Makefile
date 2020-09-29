@@ -1,4 +1,4 @@
-.PHONY: install
+.PHONY: install init stow build run
 
 .DEFAULT: install
 
