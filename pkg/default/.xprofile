@@ -4,9 +4,8 @@ xsettingsd &
 nitrogen --restore &
 redshift &
 picom &
-blueman-tray &
 xfce4-power-manager &
-unclutter &
+unclutter -root &
 
 # non default
 # spotify &
@@ -14,4 +13,4 @@ kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify &
 discord &
 slack &
 zoom &
-teams &
+/usr/bin/teams &

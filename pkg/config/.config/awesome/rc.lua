@@ -88,8 +88,10 @@ local apps = {
     lock = "xsecurelock",
     screenshot = "gyazo",
     filebrowser = "pcmanfm",
+	zotero = "/opt/zotero/zotero",
     pwm = "xfce4-power-manager-settings",
-    audiocontrol = "pavucontrol"
+    audiocontrol = "pavucontrol",
+	bluetooth = "blueman-manager"
 }
 
 -- ===================================================================
@@ -373,6 +375,13 @@ volume.widget:buttons(
         ),
         awful.button(
             {},
+            3,
+            function()
+                awful.spawn(apps.bluetooth)
+            end
+        ),
+        awful.button(
+            {},
             4,
             function()
                 awful.spawn("amixer set Master 1%+")
@@ -397,8 +406,8 @@ awful.screen.connect_for_each_screen(
             lain.util.quake(
             {
                 app = "termite",
-                height = 0.38,
-                width = 0.38,
+                height = 0.53,
+                width = 0.53,
                 vert = "center",
                 horiz = "center",
                 followtag = true,
@@ -466,8 +475,8 @@ awful.screen.connect_for_each_screen(
             {
                 -- Middle widgets
                 layout = wibox.layout.fixed.horizontal,
-                s.mypromptbox
-                -- s.mytasklist
+                s.mypromptbox,
+                s.mytasklist
             },
             {
                 -- Right widgets
@@ -711,6 +720,14 @@ local globalkeys =
             awful.spawn(apps.filebrowser)
         end,
         {description = "run explorer", group = "launcher"}
+    ),
+    awful.key(
+        {modkey, "Shift"},
+        "z",
+        function()
+            awful.spawn(apps.zotero)
+        end,
+        {description = "run zotero", group = "launcher"}
     ),
     -- X screen locker
     awful.key(
@@ -967,16 +984,20 @@ awful.rules.rules = {
                 "DTA",
                 "copyq",
                 "nvidia-settings",
+				"blueman-services",
+				"blueman-adapters",
+				"cadence",
 				"baobab",
                 "xmessage",
-				"slack",
 				"skype",
+				"zoom",
 				"chromium",
                 "lxappearance"
             },
             class = {
                 "Nm-connection-editor",
                 "Arandr",
+				"Zotero",
                 "Blueman-manager",
                 "Pavucontrol",
                 "Pcmanfm",
@@ -986,8 +1007,6 @@ awful.rules.rules = {
             name = {
                 "Library",
                 "Chat",
-                "zoom",
-                "Zoom Meeting",
                 "Event Tester",
                 "Settings"
             },
@@ -1016,15 +1035,11 @@ awful.rules.rules = {
         properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
-        rule_any = {instance = {"zoom"}, class={"Steam"}},
-        properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true, floating = true}
-    },
-    {
-        rule_any = {instance = {"discord","slack","skype"}},
+        rule_any = {instance = {"zoom","discord","slack","skype"}, class={"Steam"}},
         properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true}
     },
     {
-        rule = {instance = "vmware"},
+        rule_any = { class = {"Vmware","VirtualBox Manager"}},
         properties = {screen = 2, tag = "vm", switchtotag = true}
     },
     {
@@ -1035,7 +1050,6 @@ awful.rules.rules = {
     -- Rofi
     {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
     {rule = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
-    {rule = {name = "Messenger Call - Chromium"}, properties = {maximized = false, ontop = true}},
     -- File chooser dialog
     {
         rule_any = {role = "GtkFileChooserDialog"},
@@ -1090,10 +1104,10 @@ tyrannical.tags = {
     {
         name = awful.util.tagnames[5],
         init = true,
-        exclusive = true,
+        exclusive = false,
         screen = 2,
         layout = awful.layout.suit.tile.top,
-        class = {"Zoom", "Discord", "Teams", "Slack"}
+        class = {"Zoom", "Discord", "Slack"}
     },
     {
         name = "vm",
@@ -1108,10 +1122,14 @@ tyrannical.tags = {
 tyrannical.properties.intrusive = {
     "Xephyr",
     "gtksu",
+	"Zoom",	
     "awmtt",
     "gparted",
     "Termite",
     "feh",
+	"browser-window",
+	"Teams",
+	"microsoft teams - preview",
     "Xephyr",
     "Messenger Call - Chromium",
     "rofi",
@@ -1123,9 +1141,12 @@ tyrannical.properties.floating = {
     "MPlayer",
     "Termite",
     "pinentry",
+	"zoom",
     "gparted",
     "gtksu",
     "awmtt",
+	"browser-window",
+	"microsoft teams - preview",
     "Xephyr",
     "xev",
     "xine",
@@ -1146,10 +1167,11 @@ tyrannical.properties.ontop = {
     "rofi",
     "gparted",
     "awmtt",
+	"microsoft teams - preview",
     "Termite",
-    "Messenger Call - Chromium",
+	"browser-window",
     "ksnapshot",
-    "Zoom"
+    "zoom"
 }
 
 -- Force the matching clients (by classes) to be centered on the screen on init

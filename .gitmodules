@@ -7,9 +7,7 @@
 [submodule "sys/vmware-host-modules/player"]
 	path = sys/vmware-host-modules/player
 	url = https://github.com/mkubecek/vmware-host-modules
-	branch = player-16.0.0
 [submodule "sys/vmware-host-modules/workstation"]
 	path = sys/vmware-host-modules/workstation
 	url = https://github.com/mkubecek/vmware-host-modules
-	branch = workstation-16.0.0
 
