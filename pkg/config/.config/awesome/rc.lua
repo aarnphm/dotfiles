@@ -17,7 +17,13 @@ local screen_height = awful.screen.focused().geometry.height
 local screen_width = awful.screen.focused().geometry.width
 local markup = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
+awful.util.tagnames = {"focus", "media", "web", "meetings"}
+awful.layout.layouts={
+	awful.layout.suit.tile,
+	awful.layout.suit.max,
+	awful.layout.suit.tile.left,
+	awful.layout.suit.tile.top,
+}
 -- Custom keybinds
 local modkey = "Mod4"
 local altkey = "Mod1"
@@ -82,17 +88,20 @@ local apps = {
     editor = "nvim",
     gui_editor = os.getenv("GUI_EDITOR") or "code",
     browser = os.getenv("BROWSER") or "firefox",
+    chromium = "chromium",
     spotify = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
     -- spotify = "spotify",
     launcher = "rofi -modi drun -i -p -show drun -show-icons",
     lock = "xsecurelock",
     screenshot = "gyazo",
     filebrowser = "pcmanfm",
-	zotero = "/opt/zotero/zotero",
+    zotero = "/opt/zotero/zotero",
     pwm = "xfce4-power-manager-settings",
     audiocontrol = "pavucontrol",
-	bluetooth = "blueman-manager"
+    bluetooth = "blueman-manager"
 }
+
+awful.util.terminal = apps.terminal
 
 -- ===================================================================
 -- Set Up Screen, Connect Signal and Mouse Support
@@ -658,7 +667,7 @@ local globalkeys =
         {"Control", altkey},
         "t",
         function()
-            awful.spawn(apps.terminal)
+            awful.spawn(apps.terminal, {screen = 1})
         end,
         {description = "open a terminal", group = "launcher"}
     ),
@@ -693,7 +702,15 @@ local globalkeys =
         function()
             awful.spawn(apps.browser)
         end,
-        {description = "run browser", group = "launcher"}
+        {description = "run Firefox", group = "launcher"}
+    ),
+    awful.key(
+        {modkey, "Shift"},
+        "b",
+        function()
+            awful.spawn(apps.chromium)
+        end,
+        {description = "run Chromium", group = "launcher"}
     ),
     awful.key(
         {modkey},
@@ -984,20 +1001,20 @@ awful.rules.rules = {
                 "DTA",
                 "copyq",
                 "nvidia-settings",
-				"blueman-services",
-				"blueman-adapters",
-				"cadence",
-				"baobab",
+                "blueman-services",
+                "blueman-adapters",
+                "cadence",
+                "baobab",
                 "xmessage",
-				"skype",
-				"zoom",
-				"chromium",
+                "skype",
+                "zoom",
+                "chromium",
                 "lxappearance"
             },
             class = {
                 "Nm-connection-editor",
                 "Arandr",
-				"Zotero",
+                "Zotero",
                 "Blueman-manager",
                 "Pavucontrol",
                 "Pcmanfm",
@@ -1016,35 +1033,39 @@ awful.rules.rules = {
     },
     {
         rule = {class = "Spotify"},
-        properties = {screen = 2, tag = awful.util.tagnames[3], switchtotag = true}
+        properties = {screen = 2, tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
         rule = {class = "Firefox"},
-        properties = {tag = awful.util.tagnames[4], switchtotag = true}
-    },
-    {
-        rule = {class = "Chromium"},
-        properties = {screen=2, tag = "helpers", switchtotag = true}
+        properties = {screen=1, tag = awful.util.tagnames[3], switchtotag = true}
     },
     {
         rule = {class = "Code"},
-        properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
+        properties = {screen = 1, tag = awful.util.tagnames[1], switchtotag = true}
     },
     {
-        rule = {class = "Alacritty"},
-        properties = {screen = 1, tag = awful.util.tagnames[2], switchtotag = true}
+        rule_any = {instance = {"zoom", "discord", "slack", "skype"}},
+        properties = {screen = 2, tag = awful.util.tagnames[4], switchtotag = true}
     },
     {
-        rule_any = {instance = {"zoom","discord","slack","skype"}, class={"Steam"}},
-        properties = {screen = 2, tag = awful.util.tagnames[5], switchtotag = true}
+        rule = {class="microsoft teams - preview"},
+        properties = {screen = 2, tag = awful.util.tagnames[4], switchtotag = true}
     },
     {
-        rule_any = { class = {"Vmware","VirtualBox Manager"}},
-        properties = {screen = 2, tag = "vm", switchtotag = true}
-    },
-    {
-        rule = {instance = "teams"},
-        properties = {screen = 2, floating = true, tag = awful.util.tagnames[5], switchtotag = true}
+        id = "teams_notification",
+        rule_any = {
+            name = {"Microsoft Teams Notification"}
+        },
+        properties = {
+            titlebars_enabled = false,
+            floating = true,
+            focus = false,
+            draw_backdrop = false,
+            skip_decoration = true,
+            skip_taskbar = true,
+            ontop = true,
+            sticky = true
+        }
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
@@ -1058,7 +1079,6 @@ awful.rules.rules = {
 }
 
 local tyrannical = require("tyrannical")
--- require("tyrannical.shortcut")
 -- awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
 tyrannical.tags = {
     {
@@ -1066,20 +1086,11 @@ tyrannical.tags = {
         init = true,
         exclusive = false,
         screen = 1,
-        clone_on = 2,
         layout = awful.layout.suit.tile,
         instance = {"Steam"}
     },
     {
         name = awful.util.tagnames[2],
-        init = true,
-        exclusive = false,
-        screen = 1,
-        layout = awful.layout.suit.tile.left,
-        class = {"Alacritty", "Code"}
-    },
-    {
-        name = awful.util.tagnames[3],
         init = true,
         exclusive = true,
         screen = 2,
@@ -1087,63 +1098,42 @@ tyrannical.tags = {
         class = {"Spotify"}
     },
     {
-        name = awful.util.tagnames[4],
+        name = awful.util.tagnames[3],
         init = true,
         exclusive = false,
-        screen = 1,
+        screen = {1,2},
         layout = awful.layout.suit.tile.left,
         class = {"Firefox", "Chromium"}
     },
     {
-        name = "helpers",
-        init = true,
-        exclusive = false,
-        screen = 2,
-        layout = awful.layout.suit.tile.top
-    },
-    {
-        name = awful.util.tagnames[5],
+        name = awful.util.tagnames[4],
         init = true,
         exclusive = false,
         screen = 2,
         layout = awful.layout.suit.tile.top,
         class = {"Zoom", "Discord", "Slack"}
     },
-    {
-        name = "vm",
-        init = true,
-        exclusive = false,
-        screen = 2,
-        layout = awful.layout.suit.tile.top
-    }
 }
 
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
 tyrannical.properties.intrusive = {
     "Xephyr",
-    "gtksu",
-	"Zoom",	
+	"vmware",
     "awmtt",
     "gparted",
     "Termite",
     "feh",
 	"browser-window",
-	"Teams",
 	"microsoft teams - preview",
-    "Xephyr",
     "Messenger Call - Chromium",
     "rofi",
-    "plasmaengineexplorer"
 }
 
 -- Ignore the tiled layout for the matching clients
 tyrannical.properties.floating = {
     "MPlayer",
     "Termite",
-    "pinentry",
 	"zoom",
-    "gparted",
-    "gtksu",
     "awmtt",
 	"browser-window",
 	"microsoft teams - preview",
@@ -1157,8 +1147,6 @@ tyrannical.properties.floating = {
     "New Form",
     "Messenger Call - Chromium",
     "Insert Picture",
-    "mythfrontend",
-    "plasmoidviewer"
 }
 
 -- Make the matching clients (by classes) on top of the default layout
@@ -1189,7 +1177,6 @@ tyrannical.settings.group_children = true --Force popups/dialogs to have the sam
 collectgarbage("setpause", 110)
 collectgarbage("setstepmul", 1000)
 
--- @DOC_BORDER@
 client.connect_signal(
     "focus",
     function(c)

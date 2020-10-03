@@ -1,8 +1,0 @@
-#compdef bentoml
-
-_bentoml() {
-  eval $(env COMMANDLINE="${words[1,$CURRENT]}" _BENTOML_COMPLETE=complete-zsh  bentoml)
-}
-if [[ "$(basename -- ${(%):-%x})" != "_bentoml" ]]; then
-  compdef _bentoml bentoml
-fi
