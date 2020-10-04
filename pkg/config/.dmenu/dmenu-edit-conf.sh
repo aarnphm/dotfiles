@@ -78,4 +78,5 @@ case "$choice" in
 	;;
 esac
 
-termite --exec="nvim -p $choice"
+alacritty -e $VISUAL "$choice"
+# termite --exec="nvim -p $choice"

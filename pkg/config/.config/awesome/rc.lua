@@ -1036,6 +1036,10 @@ awful.rules.rules = {
         properties = {screen = 2, tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
+        rule = {class = "Alacritty"},
+        properties = {screen = 1,floating=true, switchtotag = true}
+    },
+    {
         rule = {class = "Firefox"},
         properties = {screen=1, tag = awful.util.tagnames[3], switchtotag = true}
     },
@@ -1048,24 +1052,8 @@ awful.rules.rules = {
         properties = {screen = 2, tag = awful.util.tagnames[4], switchtotag = true}
     },
     {
-        rule = {class="microsoft teams - preview"},
-        properties = {screen = 2, tag = awful.util.tagnames[4], switchtotag = true}
-    },
-    {
-        id = "teams_notification",
-        rule_any = {
-            name = {"Microsoft Teams Notification"}
-        },
-        properties = {
-            titlebars_enabled = false,
-            floating = true,
-            focus = false,
-            draw_backdrop = false,
-            skip_decoration = true,
-            skip_taskbar = true,
-            ontop = true,
-            sticky = true
-        }
+        rule = {class="Microsoft Teams - Preview"},
+        properties = {screen = 2, tag="meetings",floating=true, switchtotag = true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
@@ -1101,9 +1089,17 @@ tyrannical.tags = {
         name = awful.util.tagnames[3],
         init = true,
         exclusive = false,
-        screen = {1,2},
+        screen = 1,
         layout = awful.layout.suit.tile.left,
-        class = {"Firefox", "Chromium"}
+        class = {"Firefox"}
+    },
+    {
+        name = "helpers",
+        init = true,
+        exclusive = false,
+        screen = 2,
+        layout = awful.layout.suit.tile.top,
+        class = {"Chromium","Vmware"}
     },
     {
         name = awful.util.tagnames[4],
