@@ -8,7 +8,7 @@ set -e
 
 if ! command -v yay &> /dev/null; then
     echo_info "Installing yay ..."
-    sudo "$PKGMN" "$PKGOPT" git base-devel;
+    sudo "$PKGMN" -S git base-devel;
     git clone https://aur.archlinux.org/yay.git $HOME/yay;
     cd $HOME/yay && makepkg -si && cd $HOME;
 fi;

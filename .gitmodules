@@ -4,3 +4,9 @@
 [submodule "pkg/config/.config/awesome/tyrannical"]
 	path = pkg/config/.config/awesome/tyrannical
 	url = https://github.com/Elv13/tyrannical.git
+[submodule "sys/vmware-host-modules/player"]
+	path = sys/vmware-host-modules/player
+	url = https://github.com/mkubecek/vmware-host-modules/
+[submodule "sys/vmware-host-modules/workstation"]
+	path = sys/vmware-host-modules/workstation
+	url = https://github.com/mkubecek/vmware-host-modules/

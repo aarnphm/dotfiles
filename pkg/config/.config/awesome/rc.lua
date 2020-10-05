@@ -410,7 +410,7 @@ volume.widget:buttons(
 
 awful.screen.connect_for_each_screen(
     function(s)
-        -- awful.tag(awful.util.tagnames, s, awful.layout.layouts)
+        awful.tag(awful.util.tagnames, s, awful.layout.layouts)
         s.quake =
             lain.util.quake(
             {
@@ -493,8 +493,8 @@ awful.screen.connect_for_each_screen(
                 wibox.widget.systray(),
                 spr,
                 volume.widget,
-                spr,
-                bat.widget,
+                -- spr,
+                -- bat.widget,
                 spr,
                 clock
                 -- spr,
@@ -695,6 +695,22 @@ local globalkeys =
             awful.spawn("./.dmenu/dmenu-edit-conf.sh")
         end,
         {description = "edit config files", group = "dmenu scripts"}
+    ),
+    awful.key(
+        {altkey, "Control"},
+        "2",
+        function()
+            awful.spawn("./.screenlayout/dual.sh")
+        end,
+        {description = "dual screen", group = "screen layout"}
+    ),
+    awful.key(
+        {altkey, "Control"},
+        "3",
+        function()
+            awful.spawn("./.screenlayout/triple.sh")
+        end,
+        {description = "triple screen", group = "screen layout"}
     ),
     awful.key(
         {modkey},
@@ -1033,11 +1049,11 @@ awful.rules.rules = {
     },
     {
         rule = {class = "Spotify"},
-        properties = {screen = 2, tag = awful.util.tagnames[2], switchtotag = true}
+        properties = {tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
         rule = {class = "Alacritty"},
-        properties = {screen = 1, switchtotag = true}
+        properties = {screen=1, tag=awful.util.tagnames[1], switchtotag = true}
     },
     {
         rule = {class = "Firefox"},
@@ -1049,11 +1065,11 @@ awful.rules.rules = {
     },
     {
         rule_any = {instance = {"zoom", "discord", "slack", "skype"}},
-        properties = {screen = 2, tag = awful.util.tagnames[4], switchtotag = true}
+        properties = {screen = 1, tag = awful.util.tagnames[4], switchtotag = true}
     },
     {
         rule = {class="Microsoft Teams - Preview"},
-        properties = {screen = 2, tag="meetings",floating=true, switchtotag = true}
+        properties = {screen = 1, tag="meetings",floating=true, switchtotag = true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
@@ -1066,108 +1082,108 @@ awful.rules.rules = {
     }
 }
 
-local tyrannical = require("tyrannical")
--- awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
-tyrannical.tags = {
-    {
-        name = awful.util.tagnames[1],
-        init = true,
-        exclusive = false,
-        screen = 1,
-        layout = awful.layout.suit.tile,
-        instance = {"Steam"}
-    },
-    {
-        name = awful.util.tagnames[2],
-        init = true,
-        exclusive = true,
-        screen = 2,
-        layout = awful.layout.suit.tile,
-        class = {"Spotify"}
-    },
-    {
-        name = awful.util.tagnames[3],
-        init = true,
-        exclusive = false,
-        screen = 1,
-        layout = awful.layout.suit.tile.left,
-        class = {"Firefox"}
-    },
-    {
-        name = "helpers",
-        init = true,
-        exclusive = false,
-        screen = 2,
-        layout = awful.layout.suit.tile.top,
-        class = {"Chromium","Vmware"}
-    },
-    {
-        name = awful.util.tagnames[4],
-        init = true,
-        exclusive = false,
-        screen = 2,
-        layout = awful.layout.suit.tile.top,
-        class = {"Zoom", "Discord", "Slack"}
-    },
-}
+-- local tyrannical = require("tyrannical")
+-- -- awful.util.tagnames = {"focus", "terminal", "media", "web", "meetings"}
+-- tyrannical.tags = {
+--     {
+--         name = awful.util.tagnames[1],
+--         init = true,
+--         exclusive = false,
+--         screen = 1,
+--         layout = awful.layout.suit.tile,
+--         instance = {"Steam"}
+--     },
+--     {
+--         name = awful.util.tagnames[2],
+--         init = true,
+--         exclusive = true,
+--         screen = 2,
+--         layout = awful.layout.suit.tile,
+--         class = {"Spotify"}
+--     },
+--     {
+--         name = awful.util.tagnames[3],
+--         init = true,
+--         exclusive = false,
+--         screen = 1,
+--         layout = awful.layout.suit.tile.left,
+--         class = {"Firefox"}
+--     },
+--     {
+--         name = "helpers",
+--         init = true,
+--         exclusive = false,
+--         screen = 2,
+--         layout = awful.layout.suit.tile.top,
+--         class = {"Chromium","Vmware"}
+--     },
+--     {
+--         name = awful.util.tagnames[4],
+--         init = true,
+--         exclusive = false,
+--         screen = 2,
+--         layout = awful.layout.suit.tile.top,
+--         class = {"Zoom", "Discord", "Slack"}
+--     },
+-- }
 
--- Ignore the tag "exclusive" property for the following clients (matched by classes)
-tyrannical.properties.intrusive = {
-    "Xephyr",
-	"Nitrogen",
-	"vmware",
-    "awmtt",
-    "gparted",
-    "Termite",
-    "feh",
-	"browser-window",
-	"microsoft teams - preview",
-    "Messenger Call - Chromium",
-    "rofi",
-}
+-- -- Ignore the tag "exclusive" property for the following clients (matched by classes)
+-- tyrannical.properties.intrusive = {
+--     "Xephyr",
+-- 	"Nitrogen",
+-- 	"vmware",
+--     "awmtt",
+--     "gparted",
+--     "Termite",
+--     "feh",
+-- 	"browser-window",
+-- 	"microsoft teams - preview",
+--     "Messenger Call - Chromium",
+--     "rofi",
+-- }
 
--- Ignore the tiled layout for the matching clients
-tyrannical.properties.floating = {
-    "MPlayer",
-    "Termite",
-	"zoom",
-    "awmtt",
-	"browser-window",
-	"microsoft teams - preview",
-    "Xephyr",
-	"Nitrogen",
-    "xev",
-    "xine",
-    "Unlock keyring",
-    "feh",
-    "bleachbit",
-    "Paste Special",
-    "New Form",
-    "Messenger Call - Chromium",
-    "Insert Picture",
-}
+-- -- Ignore the tiled layout for the matching clients
+-- tyrannical.properties.floating = {
+--     "MPlayer",
+--     "Termite",
+-- 	"zoom",
+--     "awmtt",
+-- 	"browser-window",
+-- 	"microsoft teams - preview",
+--     "Xephyr",
+-- 	"Nitrogen",
+--     "xev",
+--     "xine",
+--     "Unlock keyring",
+--     "feh",
+--     "bleachbit",
+--     "Paste Special",
+--     "New Form",
+--     "Messenger Call - Chromium",
+--     "Insert Picture",
+-- }
 
--- Make the matching clients (by classes) on top of the default layout
-tyrannical.properties.ontop = {
-    "Xephyr",
-    "rofi",
-    "gparted",
-    "awmtt",
-	"Nitrogen",
-	"microsoft teams - preview",
-    "Termite",
-	"browser-window",
-    "ksnapshot",
-    "zoom"
-}
+-- -- Make the matching clients (by classes) on top of the default layout
+-- tyrannical.properties.ontop = {
+--     "Xephyr",
+--     "rofi",
+--     "gparted",
+--     "awmtt",
+-- 	"Nitrogen",
+-- 	"microsoft teams - preview",
+--     "Termite",
+-- 	"browser-window",
+--     "ksnapshot",
+--     "zoom"
+-- }
 
--- Force the matching clients (by classes) to be centered on the screen on init
-tyrannical.properties.placement = {
-    kcalc = awful.placement.centered
-}
+-- -- Force the matching clients (by classes) to be centered on the screen on init
+-- tyrannical.properties.placement = {
+--     kcalc = awful.placement.centered
+-- }
 
-tyrannical.settings.block_children_focus_stealing = true --Block popups ()
-tyrannical.settings.group_children = true --Force popups/dialogs to have the same tags as the parent client
+-- tyrannical.settings.block_children_focus_stealing = true --Block popups ()
+-- tyrannical.settings.group_children = true --Force popups/dialogs to have the same tags as the parent client
 
 -- ===================================================================
 -- Garbage collection (allows for lower memory consumption)

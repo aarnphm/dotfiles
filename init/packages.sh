@@ -2,13 +2,13 @@
 
 export PKG=(
 	lightdm git
-	mesa nvidia nvidia-dkms nvidia-settings
+	mesa nvidia
 	stow tmux arandr dialog
 	realtime-privileges
 	awesome xmonad xmobar xmonad-contrib
 	feh nitrogen
 	alacritty termite xdg-user-dirs
-	kdocker firefox
+	firefox
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa alsa-utils
 	cadence gcc cmake ripgrep ctags
 	obs-studio redshift vlc
