@@ -4,7 +4,7 @@
 
 init:
 	chmod +x init/*.sh && ./init/init.sh
-stow: init
+stow:	
 	cd pkg && . ../init/stow.sh
 install: init
 	./init/install.sh

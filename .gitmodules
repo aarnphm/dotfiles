@@ -1,13 +1,6 @@
 [submodule "sys/nnn"]
 	path = sys/nnn
-	url = https://github.com/jarun/nnn
+	url = https://github.com/jarun/nnn.git
 [submodule "pkg/config/.config/awesome/tyrannical"]
 	path = pkg/config/.config/awesome/tyrannical
-	url = https://github.com/Elv13/tyrannical
-[submodule "sys/vmware-host-modules/player"]
-	path = sys/vmware-host-modules/player
-	url = https://github.com/mkubecek/vmware-host-modules/tree/player-16.0.0
-[submodule "sys/vmware-host-modules/workstation"]
-	path = sys/vmware-host-modules/workstation
-	url = https://github.com/mkubecek/vmware-host-modules/tree/workstation-16.0.0
-
+	url = https://github.com/Elv13/tyrannical.git

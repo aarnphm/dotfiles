@@ -415,8 +415,8 @@ awful.screen.connect_for_each_screen(
             lain.util.quake(
             {
                 app = "termite",
-                height = 0.53,
-                width = 0.53,
+                height = 0.43,
+                width = 0.43,
                 vert = "center",
                 horiz = "center",
                 followtag = true,
@@ -1037,7 +1037,7 @@ awful.rules.rules = {
     },
     {
         rule = {class = "Alacritty"},
-        properties = {screen = 1,floating=true, switchtotag = true}
+        properties = {screen = 1, switchtotag = true}
     },
     {
         rule = {class = "Firefox"},
@@ -1114,6 +1114,7 @@ tyrannical.tags = {
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
 tyrannical.properties.intrusive = {
     "Xephyr",
+	"Nitrogen",
 	"vmware",
     "awmtt",
     "gparted",
@@ -1134,6 +1135,7 @@ tyrannical.properties.floating = {
 	"browser-window",
 	"microsoft teams - preview",
     "Xephyr",
+	"Nitrogen",
     "xev",
     "xine",
     "Unlock keyring",
@@ -1151,6 +1153,7 @@ tyrannical.properties.ontop = {
     "rofi",
     "gparted",
     "awmtt",
+	"Nitrogen",
 	"microsoft teams - preview",
     "Termite",
 	"browser-window",
