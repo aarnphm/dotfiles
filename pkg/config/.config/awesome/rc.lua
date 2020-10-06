@@ -8,6 +8,7 @@ local awful = require("awful")
 local lain = require("lain")
 local naughty = require("naughty")
 local freedesktop = require("freedesktop")
+local menubar = require("menubar")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local dpi = require("beautiful.xresources").apply_dpi
@@ -17,7 +18,7 @@ local screen_height = awful.screen.focused().geometry.height
 local screen_width = awful.screen.focused().geometry.width
 local markup = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames = {"focus", "media", "web", "meetings"}
+awful.util.tagnames = {"focus","terminal","media","web","meetings","vm"}
 awful.layout.layouts={
 	awful.layout.suit.tile,
 	awful.layout.suit.max,
@@ -348,17 +349,17 @@ local bat =
         end
     }
 )
-bat.widget:buttons(
-    gears.table.join(
-        awful.button(
-            {},
-            1,
-            function()
-                awful.spawn(apps.pwm)
-            end
-        )
-    )
-)
+-- bat.widget:buttons(
+--     gears.table.join(
+--         awful.button(
+--             {},
+--             1,
+--             function()
+--                 awful.spawn(apps.pwm)
+--             end
+--         )
+--     )
+-- )
 
 -- ALSA volume
 local volume =
@@ -485,7 +486,7 @@ awful.screen.connect_for_each_screen(
                 -- Middle widgets
                 layout = wibox.layout.fixed.horizontal,
                 s.mypromptbox,
-                s.mytasklist
+                -- s.mytasklist
             },
             {
                 -- Right widgets
@@ -493,8 +494,8 @@ awful.screen.connect_for_each_screen(
                 wibox.widget.systray(),
                 spr,
                 volume.widget,
-                -- spr,
-                -- bat.widget,
+                spr,
+                bat.widget,
                 spr,
                 clock
                 -- spr,
@@ -568,7 +569,6 @@ awful.util.mymainmenu =
         after = {{"Open terminal", apps.terminal}}
     }
 )
-
 -- }}}
 
 -- {{{ Key bindings
@@ -1019,13 +1019,12 @@ awful.rules.rules = {
                 "nvidia-settings",
                 "blueman-services",
                 "blueman-adapters",
-                "cadence",
+				"galculator",
                 "baobab",
                 "xmessage",
                 "skype",
                 "zoom",
                 "chromium",
-                "lxappearance"
             },
             class = {
                 "Nm-connection-editor",
@@ -1035,7 +1034,8 @@ awful.rules.rules = {
                 "Pavucontrol",
                 "Pcmanfm",
                 "Nitrogen",
-                "Termite"
+                "Termite",
+				"Steam",
             },
             name = {
                 "Library",
@@ -1048,28 +1048,32 @@ awful.rules.rules = {
         properties = {floating = true}
     },
     {
-        rule = {class = "Spotify"},
+        rule = {class = "Alacritty"},
         properties = {tag = awful.util.tagnames[2], switchtotag = true}
     },
     {
-        rule = {class = "Alacritty"},
-        properties = {screen=1, tag=awful.util.tagnames[1], switchtotag = true}
+        rule_any = {instance="kdocker",class = "Spotify"},
+        properties = {tag = awful.util.tagnames[3], switchtotag = true}
     },
     {
         rule = {class = "Firefox"},
-        properties = {screen=1, tag = awful.util.tagnames[3], switchtotag = true}
+        properties = {tag = awful.util.tagnames[4], switchtotag = true}
     },
     {
         rule = {class = "Code"},
-        properties = {screen = 1, tag = awful.util.tagnames[1], switchtotag = true}
+        properties = {tag = awful.util.tagnames[1], switchtotag = true}
+    },
+    {
+        rule = {instance = "vmware"},
+        properties = {tag = awful.util.tagnames[6], switchtotag = true}
     },
     {
         rule_any = {instance = {"zoom", "discord", "slack", "skype"}},
-        properties = {screen = 1, tag = awful.util.tagnames[4], switchtotag = true}
+        properties = {tag = awful.util.tagnames[5], switchtotag = true}
     },
     {
         rule = {class="Microsoft Teams - Preview"},
-        properties = {screen = 1, tag="meetings",floating=true, switchtotag = true}
+        properties = {tag=awful.util.tagnames[5],floating=true, switchtotag = true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
@@ -1204,3 +1208,4 @@ client.connect_signal(
         c.border_color = beautiful.border_normal
     end
 )
+awful.spawn.with_shell("~/.config/awesome/autorun.sh")

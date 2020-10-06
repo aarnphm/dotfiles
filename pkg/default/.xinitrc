@@ -63,6 +63,6 @@ get_session(){
 	echo "dbus-launch ${dbus_args[*]}"
 }
 
-[ -f ~/.xprofile ] && . ~/.xprofile
+# [ -f ~/.xprofile ] && . ~/.xprofile
 
-exec $(get_session "$1")
+# exec $(get_session "$1")

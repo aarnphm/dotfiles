@@ -1,12 +1,10 @@
 #!/bin/bash
 
 export PKG=(
-	lightdm git
-	mesa nvidia
-	stow tmux arandr dialog
+	mesa stow tmux arandr dialog
 	realtime-privileges
 	awesome xmonad xmobar xmonad-contrib
-	feh nitrogen
+	feh nitrogen tree
 	alacritty termite xdg-user-dirs
 	firefox nm-connection-editor
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa alsa-utils
@@ -17,16 +15,13 @@ export PKG=(
 	scrot docker zathura curl
 )
 export AUR=(
-	picom-git ncdu bleachbit cacheclean 
+	ncdu bleachbit cacheclean kdocker spotify
 	adobe-source-han-serif-otc-fonts adobe-source-han-sans-otc-fonts noto-fonts-emoji
 	discord papirus-icon-theme
-	dmenu-git github-cli rofi-git twmn-git
-	visual-studio-code-bin
-	autofs fet.sh-git polkit dex inkscape
+	dmenu-git github-cli slack-desktop
+	visual-studio-code-bin autofs fet.sh-git polkit dex inkscape
 	wine winetricks lib32-gnutls samba
-	gyazo zoom postgresql
-	pgadmin4 spicetify-cli
+	gyazo zoom postgresql pgadmin4 spicetify-cli
 	materia-gtk-theme breeze-default-cursor-theme
-	vmware-workstation
-	nodejs npm rainbow
+	vmware-workstation nodejs npm rainbow
 )
