@@ -37,7 +37,6 @@ run blueman-tray
 
 # run blueman-applet
 run kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify 
-run picom
-run slack
+run picom -f
 run discord 
 run optimus-manager-qt
