@@ -1,12 +1,12 @@
-[submodule "sys/nnn"]
-	path = sys/nnn
+[submodule "drivers/nnn"]
+	path = drivers/nnn
 	url = https://github.com/jarun/nnn.git
 [submodule "pkg/config/.config/awesome/tyrannical"]
 	path = pkg/config/.config/awesome/tyrannical
 	url = https://github.com/Elv13/tyrannical.git
-[submodule "sys/vmware-host-modules/player"]
-	path = sys/vmware-host-modules/player
+[submodule "drivers/vmware-host-modules/player"]
+	path = drivers/vmware-host-modules/player
 	url = https://github.com/mkubecek/vmware-host-modules/
-[submodule "sys/vmware-host-modules/workstation"]
-	path = sys/vmware-host-modules/workstation
+[submodule "drivers/vmware-host-modules/workstation"]
+	path = drivers/vmware-host-modules/workstation
 	url = https://github.com/mkubecek/vmware-host-modules/
