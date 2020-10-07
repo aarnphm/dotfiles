@@ -42,4 +42,3 @@ autoload -U compinit && compinit
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
-

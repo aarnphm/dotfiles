@@ -486,7 +486,7 @@ awful.screen.connect_for_each_screen(
                 -- Middle widgets
                 layout = wibox.layout.fixed.horizontal,
                 s.mypromptbox,
-                -- s.mytasklist
+                s.mytasklist
             },
             {
                 -- Right widgets
@@ -1023,6 +1023,7 @@ awful.rules.rules = {
                 "baobab",
                 "xmessage",
                 "skype",
+                "lxappearance",
                 "zoom",
                 "chromium",
             },
@@ -1049,7 +1050,7 @@ awful.rules.rules = {
     },
     {
         rule = {class = "Alacritty"},
-        properties = {screen=1,tag = awful.util.tagnames[2], switchtotag = true}
+        properties = {screen=1,tag = awful.util.tagnames[2], floating=true, switchtotag = true}
     },
     {
         rule = {class = "Spotify"},
@@ -1108,7 +1109,7 @@ tyrannical.tags = {
         name = awful.util.tagnames[3],
         init = true,
         exclusive = true,
-        screen = 2,
+        screen = {1,2},
         layout = awful.layout.suit.max,
         class = {"Spotify"}
     },
@@ -1119,13 +1120,6 @@ tyrannical.tags = {
         screen = 1,
         layout = awful.layout.suit.tile,
         class = {"Firefox","Chromium"}
-    },
-    {
-        name = "helpers",
-        init = true,
-        exclusive = false,
-        screen = screen.count()>1 and 2 or 1,
-        layout = awful.layout.suit.tile.top,
     },
     {
         name = awful.util.tagnames[5],
@@ -1151,7 +1145,9 @@ tyrannical.properties.intrusive = {
 	"Nitrogen",
 	"vmware",
     "awmtt",
+    "lxappearance",
     "gparted",
+    "alacritty",
     "Termite",
     "feh",
 	"browser-window",
@@ -1177,6 +1173,7 @@ tyrannical.properties.floating = {
     "bleachbit",
     "Paste Special",
     "New Form",
+    "lxappearance",
     "Messenger Call - Chromium",
     "Insert Picture",
 }

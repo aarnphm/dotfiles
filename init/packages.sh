@@ -6,14 +6,14 @@ export PKG=(
 	alacritty termite xdg-user-dirs
 	firefox nm-connection-editor
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa alsa-utils
-	cadence gcc cmake ripgrep ctags
+	cadence gcc cmake ripgrep ctags lxtask lxappearance
 	obs-studio redshift vlc xsettingsd xsecurelock
 	imagemagick acpi neovim ibus ibus-unikey gnome-keyring libgnome-keyring
 	bluez blueman nnn bluez-utils pavucontrol
-	scrot docker zathura curl
+	scrot docker zathura curl vim neovim
 )
 export AUR=(
-	ncdu bleachbit cacheclean kdocker spotify
+	ncdu bleachbit cacheclean kdocker steam
 	adobe-source-han-serif-otc-fonts adobe-source-han-sans-otc-fonts noto-fonts-emoji
 	discord papirus-icon-theme dmenu-git github-cli slack-desktop
 	visual-studio-code-bin autofs fet.sh-git polkit dex inkscape

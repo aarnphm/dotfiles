@@ -26,9 +26,9 @@ alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
 
 # Shortcuts
-alias dl="cd ${HOME}/downloads"
-alias dc="cd ${HOME}/documents"
-alias cs="cd ${HOME}/documents/cs"
+alias dl="cd ${HOME}/Downloads"
+alias dc="cd ${HOME}/Documents"
+alias cs="cd ${HOME}/Documents/cs"
 alias g="git"
 # nnn intensifies
 alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"

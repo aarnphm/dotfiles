@@ -6,7 +6,7 @@
 	url = https://github.com/Elv13/tyrannical.git
 [submodule "drivers/vmware-host-modules/player"]
 	path = drivers/vmware-host-modules/player
-	url = https://github.com/mkubecek/vmware-host-modules/
+	url = https://github.com/mkubecek/vmware-host-modules.git
 [submodule "drivers/vmware-host-modules/workstation"]
 	path = drivers/vmware-host-modules/workstation
-	url = https://github.com/mkubecek/vmware-host-modules/
+	url = https://github.com/mkubecek/vmware-host-modules.git
