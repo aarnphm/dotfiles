@@ -1095,7 +1095,6 @@ tyrannical.tags = {
         exclusive = false,
         screen = 1,
         layout = awful.layout.suit.tile,
-        instance = {"Steam"}
     },
     {
         name = awful.util.tagnames[2],
