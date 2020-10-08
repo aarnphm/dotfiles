@@ -19,12 +19,9 @@ local screen_width = awful.screen.focused().geometry.width
 local markup = lain.util.markup
 -- Define tag layouts
 awful.util.tagnames = {"focus","terminal","media","web","meetings","vm"}
--- awful.layout.layouts={
--- 	awful.layout.suit.tile,
--- 	awful.layout.suit.max,
--- 	awful.layout.suit.tile.left,
--- 	awful.layout.suit.tile.top,
--- }
+awful.layout.layouts={
+	awful.layout.suit.tile,
+}
 -- Custom keybinds
 local modkey = "Mod4"
 local altkey = "Mod1"
@@ -38,6 +35,12 @@ require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 -- Theme
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
+
+local function run_once(cmd_arr)
+    for _, cmd in ipairs(cmd_arr) do
+        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
+    end
+end
 
 -- ===================================================================
 -- Error handling
@@ -493,8 +496,9 @@ awful.screen.connect_for_each_screen(
                 layout = wibox.layout.fixed.horizontal,
                 wibox.widget.systray(),
                 spr,
-                volume.widget,
-                spr,
+                volume.
+				widget,
+				spr,
                 bat.widget,
                 spr,
                 clock
@@ -1142,6 +1146,9 @@ tyrannical.tags = {
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
 tyrannical.properties.intrusive = {
     "Xephyr",
+	"Steam",
+	"Blueman-manager",
+	"pavucontrol",
 	"Nitrogen",
 	"vmware",
     "awmtt",
@@ -1149,7 +1156,8 @@ tyrannical.properties.intrusive = {
     "gparted",
     "alacritty",
     "Termite",
-    "feh",
+	"nm-connection-editor",
+	"feh",
 	"browser-window",
 	"microsoft teams - preview",
     "Messenger Call - Chromium",
@@ -1160,9 +1168,12 @@ tyrannical.properties.intrusive = {
 tyrannical.properties.floating = {
     "MPlayer",
     "Termite",
+	"Steam",
 	"zoom",
+	"pavucontrol",
     "awmtt",
 	"browser-window",
+	"nm-connection-editor",
 	"microsoft teams - preview",
     "Xephyr",
 	"Nitrogen",
@@ -1183,6 +1194,8 @@ tyrannical.properties.ontop = {
     "Xephyr",
     "rofi",
     "gparted",
+	"pavucontrol",
+	"nm-connection-editor",
     "awmtt",
 	"Nitrogen",
 	"microsoft teams - preview",

@@ -3,8 +3,9 @@
 export PKG=(
 	mesa stow tmux arandr dialog
 	awesome	feh nitrogen tree
+	asciinema
 	alacritty termite xdg-user-dirs
-	firefox nm-connection-editor
+	firefox nm-connection-editor pcmanfm
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa alsa-utils
 	cadence gcc cmake ripgrep ctags lxtask lxappearance
 	obs-studio redshift vlc xsettingsd xsecurelock

@@ -19,3 +19,4 @@ pkg/python/.ipython/profile_default/startup/*
 *.errors
 *.o
 xmonad-x86_64-linux
+Code
