@@ -1070,7 +1070,7 @@ awful.rules.rules = {
     },
     {
         rule = {instance = "vmware"},
-        properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[6], switchtotag = true}
+        properties = {screen=1,tag = awful.util.tagnames[6], switchtotag = true}
     },
     {
         rule_any = {instance = {"zoom", "discord", "slack", "skype"}},
@@ -1100,7 +1100,8 @@ tyrannical.tags = {
         exclusive = false,
         screen = 1,
         layout = awful.layout.suit.tile,
-    },
+		instance = {"vmware"}
+	},
     {
         name = awful.util.tagnames[2],
         init = true,
@@ -1132,21 +1133,14 @@ tyrannical.tags = {
         screen = screen.count()>1 and 2 or 1,
         layout = awful.layout.suit.tile.top,
         class = {"Zoom", "Discord", "Slack","Teams"}
-    },
-    {
-        name = awful.util.tagnames[6],
-        init = false,
-        exclusive = true,
-        screen = screen.count()>1 and 2 or 1,
-        layout = awful.layout.suit.tile.top,
-        class = {"Vmware"}
-    },
+    }
 }
 
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
 tyrannical.properties.intrusive = {
     "Xephyr",
 	"Steam",
+	"Vmware",
 	"Blueman-manager",
 	"pavucontrol",
 	"Nitrogen",
@@ -1158,6 +1152,16 @@ tyrannical.properties.intrusive = {
     "Termite",
 	"nm-connection-editor",
 	"feh",
+    "xev",
+    "xine",
+    "Unlock keyring",
+    "feh",
+    "bleachbit",
+    "Paste Special",
+    "New Form",
+    "lxappearance",
+    "Messenger Call - Chromium",
+    "Insert Picture",
 	"browser-window",
 	"microsoft teams - preview",
     "Messenger Call - Chromium",
@@ -1194,6 +1198,7 @@ tyrannical.properties.ontop = {
     "Xephyr",
     "rofi",
     "gparted",
+	"Vmware",
 	"pavucontrol",
 	"nm-connection-editor",
     "awmtt",

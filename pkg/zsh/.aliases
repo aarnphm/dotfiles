@@ -80,6 +80,7 @@ else
 fi
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec ${SHELL}"
+alias vconf="$VISUAL $HOME/.vimrc"
 alias dotfiles="$HOME/dotfiles/pkg"
 alias aconf="$VISUAL -p $HOME/.config/awesome/*.lua"
 alias dconf="$VISUAL -p $HOME/dotfiles/init/*"
