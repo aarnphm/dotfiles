@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export PKG=(
-	mesa stow tmux arandr dialog
-	awesome	feh nitrogen tree
+	yay mesa stow tmux arandr dialog
+	awesome	feh nitrogen tree base-devel
 	asciinema alacritty xdg-user-dirs
 	firefox nm-connection-editor pcmanfm
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa alsa-utils
