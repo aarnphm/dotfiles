@@ -3,8 +3,7 @@
 export PKG=(
 	mesa stow tmux arandr dialog
 	awesome	feh nitrogen tree
-	asciinema
-	alacritty termite xdg-user-dirs
+	asciinema alacritty xdg-user-dirs
 	firefox nm-connection-editor pcmanfm
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa alsa-utils
 	cadence gcc cmake ripgrep ctags lxtask lxappearance
@@ -14,12 +13,12 @@ export PKG=(
 	scrot docker zathura curl vim neovim
 )
 export AUR=(
-	ncdu bleachbit cacheclean kdocker steam
+	ncdu bleachbit cacheclean kdocker 
 	adobe-source-han-serif-otc-fonts adobe-source-han-sans-otc-fonts noto-fonts-emoji
-	discord papirus-icon-theme dmenu-git github-cli slack-desktop
-	visual-studio-code-bin autofs fet.sh-git polkit dex inkscape
-	wine winetricks lib32-gnutls samba
+	discord dmenu-git github-cli slack-desktop
+	visual-studio-code-bin autofs fet.sh-git polkit inkscape
+	wine winetricks lib32-gnutls samba steam
 	gyazo zoom postgresql pgadmin4 spicetify-cli
-	materia-gtk-theme breeze-default-cursor-theme
+	materia-gtk-theme papirus-icon-theme breeze-default-cursor-theme
 	vmware-workstation nodejs npm rainbow
 )

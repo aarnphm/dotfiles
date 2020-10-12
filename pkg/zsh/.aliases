@@ -16,6 +16,7 @@ alias av="$VISUAL -p $@"
 alias header='curl -I'
 # shortcut for curl with authentication header : $0->Methods, $1->authkey, $2->addr
 alias curlauth="curl -v -H 'Authorization: $authkey' $1"
+alias ovpn="sudo openvpn --config $@"
 #verbose curl
 alias vcurl="curl -v"
 # mcmaster vpn
