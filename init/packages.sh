@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PKG=(
-	yay mesa stow tmux arandr dialog
+	mesa stow tmux arandr dialog
 	awesome	feh nitrogen tree base-devel
 	asciinema alacritty xdg-user-dirs
 	firefox nm-connection-editor pcmanfm

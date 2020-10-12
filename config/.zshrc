@@ -1,7 +1,7 @@
 # run xinit
-if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  exec startx
-fi
+#if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+#  exec startx
+#fi
 
 for function in $HOME/.zsh/functions/*; do
 	source $function

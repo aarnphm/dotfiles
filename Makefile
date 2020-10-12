@@ -1,13 +1,11 @@
-.PHONY: install init stow build run
+.PHONY: init build run stow
 
-.DEFAULT: install
+.DEFAULT: init
 
 init:
 	chmod +x init/*.sh && ./init/init.sh
-stow:	
-	cd pkg && . stow.sh
-install: init
-	./init/install.sh
+stow:
+	stow config --target=${HOME}
 build:
 	docker build -t aar0npham/dotfiles:latest .
 run:

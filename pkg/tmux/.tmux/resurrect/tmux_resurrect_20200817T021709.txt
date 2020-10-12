@@ -1,3 +1,0 @@
-pane	0	1	:vi	1	:*	0	:/mnt/Centralized/documents/cs/dha-pr/ingress/pkg/models	1	vi	:vi attributes.go
-window	0	1	1	:*	b37d,102x42,0,0,0
-state	0	
