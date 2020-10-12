@@ -30,7 +30,10 @@ alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__p
 alias dl="cd ${HOME}/Downloads"
 alias dc="cd ${HOME}/Documents"
 alias cs="cd ${HOME}/Documents/cs"
+alias mlh="cd ${HOME}/Documents/cs/mlh/BentoML"
+# git
 alias g="git"
+alias ghs="git status"
 # nnn intensifies
 alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"
 alias N='sudo -E nnn -dH'

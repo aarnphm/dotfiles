@@ -7,9 +7,11 @@
 [submodule "drivers/vmware-host-modules/player"]
 	path = drivers/vmware-host-modules/player
 	url = https://github.com/mkubecek/vmware-host-modules.git
+	branch=player-16.0.0
 [submodule "drivers/vmware-host-modules/workstation"]
 	path = drivers/vmware-host-modules/workstation
 	url = https://github.com/mkubecek/vmware-host-modules.git
+	branch=workstation-16.0.0
 [submodule "yay"]
 	path = yay
 	url = https://aur.archlinux.org/yay.git
