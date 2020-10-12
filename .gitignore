@@ -20,3 +20,7 @@ pkg/python/.ipython/profile_default/startup/*
 *.o
 xmonad-x86_64-linux
 Code
+crls.d
+private*
+pubring*
+trust*

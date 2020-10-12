@@ -18,7 +18,7 @@ local screen_height = awful.screen.focused().geometry.height
 local screen_width = awful.screen.focused().geometry.width
 local markup = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames = {"focus","terminal","media","web","meetings","vm"}
+awful.util.tagnames = {"focus","terminal","media","web","meetings","games","vm"}
 awful.layout.layouts={
 	awful.layout.suit.tile,
 }
@@ -415,18 +415,18 @@ volume.widget:buttons(
 awful.screen.connect_for_each_screen(
 	function(s)
 		-- awful.tag(awful.util.tagnames, s, awful.layout.layouts)
-		-- s.quake =
-		--     lain.util.quake(
-		--     {
-		--         app = "termite",
-		--         height = 0.43,
-		--         width = 0.43,
-		--         vert = "center",
-		--         horiz = "center",
-		--         followtag = true,
-		--         argname = "--name %s"
-		--     }
-		-- )
+		s.quake =
+		    lain.util.quake(
+		    {
+		        app = "termite",
+		        height = 0.43,
+		        width = 0.43,
+		        vert = "center",
+		        horiz = "center",
+		        followtag = true,
+		        argname = "--name %s"
+		    }
+		)
 
 		-- Create a promptbox for each screen
 		s.mypromptbox =
@@ -590,14 +590,14 @@ gears.table.join(
 	-- Hotkeys
 	awful.key({modkey}, "s", hotkeys_popup.show_help, {description = "show help", group = "awesome"}),
 	-- Dropdown application
-	-- awful.key(
-	--     {modkey},
-	--     "z",
-	--     function()
-	--         awful.screen.focused().quake:toggle()
-	--     end,
-	--     {description = "dropdown application", group = "launcher"}
-	-- ),
+	awful.key(
+	    {modkey},
+	    "z",
+	    function()
+	        awful.screen.focused().quake:toggle()
+	    end,
+	    {description = "dropdown application", group = "launcher"}
+	),
 	-- Default client focus
 	awful.key(
 		{altkey, "Shift"},
@@ -740,6 +740,7 @@ gears.table.join(
 		end,
 		{description = "run gui editor", group = "launcher"}
 		),
+	awful.key({"Ctrl","Shift"}, "s",function() awful.spawn("xfce4-settings-manager") end,{description = "show settings", group = "launcher"}),
 	-- spotify
 	awful.key(
 		{modkey, "Shift"},
@@ -1052,10 +1053,6 @@ awful.rules.rules = {
 		properties = {floating = true}
 	},
 	{
-		rule = {class = "Alacritty"},
-		properties = {screen=1,tag = awful.util.tagnames[2], switchtotag = true}
-	},
-	{
 		rule = {class = "Spotify"},
 		properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[3], switchtotag = true}
 	},
@@ -1082,7 +1079,7 @@ awful.rules.rules = {
 	{rule = {class = "Gimp"}, properties = {maximized = true}},
 	-- Rofi
 	{rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
-	{rule = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
+	{rule = {instance = "termite"}, properties = {screen=1,maximized = false, ontop = true, floating = true}},
 	-- File chooser dialog
 	{
 		rule_any = {role = "GtkFileChooserDialog"},
@@ -1103,17 +1100,17 @@ tyrannical.tags = {
 	},
 	{
 		name = awful.util.tagnames[2],
-		init = true,
+		init = false,
 		exclusive = true,
 		screen = 1,
 		layout = awful.layout.suit.tile,
-		class = {"Alacritty","Code"}
+		class = {"Code"}
 	},
 	{
 		name = awful.util.tagnames[3],
 		init = true,
 		exclusive = true,
-		screen = {1,2},
+		screen = screen.count()>1 and 2 or 1,
 		layout = awful.layout.suit.max,
 		class = {"Spotify"}
 	},
@@ -1134,7 +1131,7 @@ tyrannical.tags = {
 		class = {"Zoom", "Discord", "Slack","Teams"}
 	},
 	{
-		name = "games",
+		name = awful.util.tagnames[6],
 		init = false,
 		exclusive = false,
 		screen = 1,
@@ -1150,6 +1147,7 @@ tyrannical.properties.intrusive = {
 	"Blueman-manager",
 	"Among Us",
 	"Firefox",
+	"xfce4-settings-manager",
 	"Chromium",
 	"pavucontrol",
 	"Nitrogen",
@@ -1157,7 +1155,7 @@ tyrannical.properties.intrusive = {
 	"awmtt",
 	"lxappearance",
 	"gparted",
-	"alacritty",
+	"Alacritty",
 	"Termite",
 	"nm-connection-editor",
 	"feh",
@@ -1179,7 +1177,7 @@ tyrannical.properties.intrusive = {
 
 -- Ignore the tiled layout for the matching clients
 tyrannical.properties.floating = {
-	"MPlayer",
+	"xfce4-settings-manager",
 	"Termite",
 	"zoom",
 	"pavucontrol",

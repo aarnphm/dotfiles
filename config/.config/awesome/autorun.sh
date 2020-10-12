@@ -17,9 +17,9 @@ fi
 if (command -v /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 && ! pgrep polkit-mate-aut) ; then
     /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 fi
-# if (command -v  xfce4-power-manager && ! pgrep xfce4-power-man) ; then
-#     xfce4-power-manager &
-# fi
+if (command -v  xfce4-power-manager && ! pgrep xfce4-power-man) ; then
+    xfce4-power-manager &
+fi
 
 run xfsettingsd
 run nm-applet

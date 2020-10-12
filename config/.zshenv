@@ -31,6 +31,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
+export QT_QPA_PLATFORMTHEME="qt5ct"
 
 # npm config
 export NPM_PACKAGES="${HOME}/.npm-packages"
