@@ -10,3 +10,6 @@
 [submodule "drivers/vmware-host-modules/workstation"]
 	path = drivers/vmware-host-modules/workstation
 	url = https://github.com/mkubecek/vmware-host-modules.git
+[submodule "yay"]
+	path = yay
+	url = https://aur.archlinux.org/yay.git
