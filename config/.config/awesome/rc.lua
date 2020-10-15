@@ -3,32 +3,30 @@
 -- ===================================================================
 
 local os, root, awesome, client = os, root, awesome, client
-local gears = require("gears")
-local awful = require("awful")
-local lain = require("lain")
-local naughty = require("naughty")
-local freedesktop = require("freedesktop")
-local menubar = require("menubar")
-local wibox = require("wibox")
-local beautiful = require("beautiful")
-local dpi = require("beautiful.xresources").apply_dpi
-local hotkeys_popup = require("awful.hotkeys_popup").widget
+local gears                     = require("gears")
+local awful                     = require("awful")
+local lain                      = require("lain")
+local naughty                   = require("naughty")
+local freedesktop               = require("freedesktop")
+local menubar                   = require("menubar")
+local wibox                     = require("wibox")
+local beautiful                 = require("beautiful")
+local dpi                       = require("beautiful.xresources").apply_dpi
+local hotkeys_popup             = require("awful.hotkeys_popup").widget
 -- Custom imports
-local screen_height = awful.screen.focused().geometry.height
-local screen_width = awful.screen.focused().geometry.width
-local markup = lain.util.markup
+local screen_height             = awful.screen.focused().geometry.height
+local screen_width              = awful.screen.focused().geometry.width
+local markup                    = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames = {"focus","media","web","meetings","games"}
-awful.layout.layouts={
-	awful.layout.suit.tile,
-}
+awful.util.tagnames             = {"focus","media","web","meetings","games"}
+awful.layout.layouts            = {awful.layout.suit.tile}
 -- Custom keybinds
-local modkey = "Mod4"
-local altkey = "Mod1"
-local sleep = "systemctl suspend"
-local reboot = "systemctl reboot"
-local poweroff = "systemctl poweroff"
-local cycle_prev = true
+local modkey                    = "Mod4"
+local altkey                    = "Mod1"
+local sleep                     = "systemctl suspend"
+local reboot                    = "systemctl reboot"
+local poweroff                  = "systemctl poweroff"
+local cycle_prev                = true
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
 -- Enable hotkeys help widget for VIM and other apps when client with a matching name is opened:
@@ -37,6 +35,7 @@ require("awful.hotkeys_popup.keys")
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 local function run_once(cmd_arr)
+    theme.menu_width               = dpi(140)
 	for _, cmd in ipairs(cmd_arr) do
 		awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
 	end
@@ -88,21 +87,21 @@ end
 -- ===================================================================
 
 local apps = {
-	terminal = "alacritty",
-	editor = "nvim",
-	gui_editor = os.getenv("GUI_EDITOR") or "code",
-	browser = os.getenv("BROWSER") or "firefox",
-	chromium = "chromium",
-	spotify = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
-	-- spotify = "spotify",
-	launcher = "rofi -modi drun -i -p -show drun -show-icons",
-	lock = "xsecurelock",
-	screenshot = "gyazo",
-	filebrowser = "pcmanfm",
-	zotero = "/opt/zotero/zotero",
-	pwm = "xfce4-power-manager-settings",
+	terminal     = "alacritty",
+	editor       = "nvim",
+	gui_editor   = os.getenv("GUI_EDITOR") or "code",
+	browser      = os.getenv("BROWSER") or "firefox",
+	chromium     = "chromium",
+	spotify      = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
+	-- spotify   = "spotify",
+	launcher     = "rofi -modi drun -i -p -show drun -show-icons",
+	lock         = "xsecurelock",
+	screenshot   = "gyazo",
+	filebrowser  = "pcmanfm",
+	zotero       = "/opt/zotero/zotero",
+	pwm          = "xfce4-power-manager-settings",
 	audiocontrol = "pavucontrol",
-	bluetooth = "blueman-manager"
+	bluetooth    = "blueman-manager"
 }
 
 awful.util.terminal = apps.terminal
@@ -531,7 +530,6 @@ screen.connect_signal(
 	)
 
 -- Signal function to execute when a new client appears.
--- @DOC_MANAGE_HOOK@
 client.connect_signal(
 	"manage",
 	function(c)
@@ -1240,4 +1238,5 @@ client.connect_signal(
 		c.border_color = beautiful.border_normal
 	end
 	)
+
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
