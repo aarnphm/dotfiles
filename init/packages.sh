@@ -10,15 +10,15 @@ export PKG=(
 	obs-studio redshift vlc xsettingsd xsecurelock
 	imagemagick acpi neovim ibus ibus-unikey gnome-keyring libgnome-keyring
 	bluez blueman nnn bluez-utils pavucontrol
-	scrot docker zathura curl vim neovim
+	scrot docker zathura curl vim neovim caprine
 )
 export AUR=(
-	ncdu bleachbit cacheclean kdocker 
+	ncdu bleachbit cacheclean kdocker slack awmtt
 	adobe-source-han-serif-otc-fonts adobe-source-han-sans-otc-fonts noto-fonts-emoji
 	discord dmenu-git github-cli slack-desktop
 	visual-studio-code-bin autofs fet.sh-git polkit inkscape
-	wine winetricks lib32-gnutls samba steam
+	wine winetricks lib32-gnutls samba steam ccls
 	gyazo zoom postgresql pgadmin4 spicetify-cli
 	materia-gtk-theme papirus-icon-theme breeze-default-cursor-theme
-	vmware-workstation nodejs npm rainbow
+	vmware-workstation nodejs npm rainbow ruby-colorls
 )

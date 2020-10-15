@@ -18,7 +18,7 @@ local screen_height = awful.screen.focused().geometry.height
 local screen_width = awful.screen.focused().geometry.width
 local markup = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames = {"focus","terminal","media","web","meetings","games","vm"}
+awful.util.tagnames = {"focus","media","web","meetings","games"}
 awful.layout.layouts={
 	awful.layout.suit.tile,
 }
@@ -340,43 +340,44 @@ lain.widget.cal(
 	)
 
 -- Battery
-local bat =
-lain.widget.bat(
-	{
+local baticon = wibox.widget.imagebox(beautiful.widget_battery)
+local bat = lain.widget.bat({
 		settings = function()
 			if bat_now.status and bat_now.status ~= "N/A" then
-				widget:set_markup(markup.font(beautiful.font, "Batt: " .. bat_now.perc .. "%"))
+				if bat_now.ac_status == 1 then
+					baticon:set_image(beautiful.widget_ac)
+				elseif not bat_now.perc and tonumber(bat_now.perc) <= 5 then
+					baticon:set_image(beautiful.widget_battery_empty)
+				elseif not bat_now.perc and tonumber(bat_now.perc) <= 15 then
+					baticon:set_image(beautiful.widget_battery_low)
+				else
+					baticon:set_image(beautiful.widget_battery)
+				end
+				widget:set_markup(markup.font(beautiful.font, bat_now.perc .. "%"))
 			else
-				widget:set_markup(markup.font(beautiful.font, "Batt: AC"))
+				widget:set_markup(markup.font(beautiful.font, "AC"))
+				baticon:set_image(beautiful.widget_ac)
 			end
 		end
-	}
-	)
--- bat.widget:buttons(
---     gears.table.join(
---         awful.button(
---             {},
---             1,
---             function()
---                 awful.spawn(apps.pwm)
---             end
---         )
---     )
--- )
+	})
 
 -- ALSA volume
-local volume =
-lain.widget.alsa(
-	{
-		settings = function()
-			if volume_now.status == "off" then
-				widget:set_markup(markup.font(beautiful.font, "Vol: Mute"))
-			else
-				widget:set_markup(markup.font(beautiful.font, "Vol: " .. volume_now.level .. "%"))
-			end
-		end
-	}
-	)
+local volicon = wibox.widget.imagebox(beautiful.widget_vol)
+local volume = lain.widget.alsa({
+    settings = function()
+        if volume_now.status == "off" then
+            volicon:set_image(beautiful.widget_vol_mute)
+        elseif tonumber(volume_now.level) == 0 then
+            volicon:set_image(beautiful.widget_vol_no)
+        elseif tonumber(volume_now.level) <= 50 then
+            volicon:set_image(beautiful.widget_vol_low)
+        else
+            volicon:set_image(beautiful.widget_vol)
+        end
+
+        widget:set_markup(markup.font(beautiful.font,volume_now.level .. "%"))
+    end
+})
 volume.widget:buttons(
 	gears.table.join(
 		awful.button(
@@ -416,17 +417,17 @@ awful.screen.connect_for_each_screen(
 	function(s)
 		-- awful.tag(awful.util.tagnames, s, awful.layout.layouts)
 		s.quake =
-		    lain.util.quake(
-		    {
-		        app = "termite",
-		        height = 0.43,
-		        width = 0.43,
-		        vert = "center",
-		        horiz = "center",
-		        followtag = true,
-		        argname = "--name %s"
-		    }
-		)
+		lain.util.quake(
+			{
+				app = "termite",
+				height = 0.43,
+				width = 0.43,
+				vert = "center",
+				horiz = "center",
+				followtag = true,
+				argname = "--name %s"
+			}
+			)
 
 		-- Create a promptbox for each screen
 		s.mypromptbox =
@@ -496,12 +497,13 @@ awful.screen.connect_for_each_screen(
 				layout = wibox.layout.fixed.horizontal,
 				wibox.widget.systray(),
 				spr,
-				volume.
-				widget,
+				volicon,
+				volume.widget,
 				spr,
+				baticon,
 				bat.widget,
 				spr,
-				clock
+				clock,
 				-- spr,
 				-- s.mylayoutbox
 			}
@@ -591,13 +593,13 @@ gears.table.join(
 	awful.key({modkey}, "s", hotkeys_popup.show_help, {description = "show help", group = "awesome"}),
 	-- Dropdown application
 	awful.key(
-	    {modkey},
-	    "z",
-	    function()
-	        awful.screen.focused().quake:toggle()
-	    end,
-	    {description = "dropdown application", group = "launcher"}
-	),
+		{modkey},
+		"z",
+		function()
+			awful.screen.focused().quake:toggle()
+		end,
+		{description = "dropdown application", group = "launcher"}
+		),
 	-- Default client focus
 	awful.key(
 		{altkey, "Shift"},
@@ -702,6 +704,14 @@ gears.table.join(
 		),
 	awful.key(
 		{altkey, "Control"},
+		"1",
+		function()
+			awful.spawn("./.screenlayout/one.sh")
+		end,
+		{description = "one screen", group = "screen layout"}
+		),
+	awful.key(
+		{altkey, "Control"},
 		"2",
 		function()
 			awful.spawn("./.screenlayout/dual.sh")
@@ -799,7 +809,7 @@ gears.table.join(
 	-- layout chanages
 	awful.key(
 		{altkey, "Shift"},
-		"h",
+		"l",
 		function()
 			awful.tag.incmwfact(0.05)
 		end,
@@ -807,7 +817,7 @@ gears.table.join(
 		),
 	awful.key(
 		{altkey, "Shift"},
-		"l",
+		"h",
 		function()
 			awful.tag.incmwfact(-0.05)
 		end,
@@ -1054,29 +1064,25 @@ awful.rules.rules = {
 	},
 	{
 		rule = {class = "Spotify"},
-		properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[3], switchtotag = true}
+		properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2], switchtotag = true}
+	},
+	{
+		rule = {class = "Caprine"},
+		properties = {screen=screen.count()>1 and 2 or 1,tag = "meetings", switchtotag = true}
 	},
 	{
 		rule = {class = "Firefox"},
-		properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[4], switchtotag = true}
-	},
-	{
-		rule = {class = "Code"},
-		properties = {screen=1,tag = awful.util.tagnames[1], switchtotag = true}
-	},
-	{
-		rule = {instance = "vmware"},
-		properties = {screen=1,tag = awful.util.tagnames[6], switchtotag = true}
+		properties = {screen=1,tag = awful.util.tagnames[3], switchtotag = true}
 	},
 	{
 		rule_any = {instance = {"zoom", "discord", "slack", "skype"}},
-		properties = {screen=screen.count()>1 and 2 or 1, tag = awful.util.tagnames[5], switchtotag = true}
+		properties = {screen=screen.count()>1 and 2 or 1, tag = awful.util.tagnames[4], switchtotag = true}
 	},
 	{
 		rule = {class="Microsoft Teams - Preview"},
-		properties = {tag=awful.util.tagnames[5],floating=true, switchtotag = true}
+		properties = {screen=screen.count()>1 and 2 or 1, tag="meetings",maximized=false,floating=true, switchtotag = true}
 	},
-	{rule = {class = "Gimp"}, properties = {maximized = true}},
+	{rule = {class = "Gimp"}, properties = {maximized = true,intrusive=true}},
 	-- Rofi
 	{rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
 	{rule = {instance = "termite"}, properties = {screen=1,maximized = false, ontop = true, floating = true}},
@@ -1087,7 +1093,7 @@ awful.rules.rules = {
 	}
 }
 
--- awful.util.tagnames = {"focus","terminal","media","web","meetings","vm"}
+-- awful.util.tagnames = {"focus","media","web","meetings","games"}
 local tyrannical = require("tyrannical")
 tyrannical.tags = {
 	{
@@ -1096,18 +1102,11 @@ tyrannical.tags = {
 		exclusive = false,
 		screen = 1,
 		layout = awful.layout.suit.tile,
-		instance = {"vmware"}
-	},
-	{
-		name = awful.util.tagnames[2],
-		init = false,
-		exclusive = true,
-		screen = 1,
-		layout = awful.layout.suit.tile,
+		instance = {"vmware"},
 		class = {"Code"}
 	},
 	{
-		name = awful.util.tagnames[3],
+		name = awful.util.tagnames[2],
 		init = true,
 		exclusive = true,
 		screen = screen.count()>1 and 2 or 1,
@@ -1115,23 +1114,24 @@ tyrannical.tags = {
 		class = {"Spotify"}
 	},
 	{
-		name = awful.util.tagnames[4],
+		name = awful.util.tagnames[3],
 		init = true,
 		exclusive = false,
 		screen = 1,
 		layout = awful.layout.suit.tile,
-		class = {"Firefox","Chromium"}
+		class = {"Firefox"}
 	},
 	{
-		name = awful.util.tagnames[5],
+		name = awful.util.tagnames[4],
 		init = true,
 		exclusive = false,
 		screen = screen.count()>1 and 2 or 1,
 		layout = awful.layout.suit.tile.top,
-		class = {"Zoom", "Discord", "Slack","Teams"}
+		instance = {"caprine"},
+		class = {"Zoom", "Discord", "Slack","Microsoft Teams - Preview"}
 	},
 	{
-		name = awful.util.tagnames[6],
+		name = awful.util.tagnames[5],
 		init = false,
 		exclusive = false,
 		screen = 1,
@@ -1144,6 +1144,8 @@ tyrannical.tags = {
 tyrannical.properties.intrusive = {
 	"Xephyr",
 	"Vmware",
+	"Alacritty",
+	"caprine",
 	"Blueman-manager",
 	"Among Us",
 	"Firefox",
@@ -1155,7 +1157,6 @@ tyrannical.properties.intrusive = {
 	"awmtt",
 	"lxappearance",
 	"gparted",
-	"Alacritty",
 	"Termite",
 	"nm-connection-editor",
 	"feh",
@@ -1170,8 +1171,6 @@ tyrannical.properties.intrusive = {
 	"Messenger Call - Chromium",
 	"Insert Picture",
 	"browser-window",
-	"microsoft teams - preview",
-	"Messenger Call - Chromium",
 	"rofi",
 }
 
@@ -1179,12 +1178,12 @@ tyrannical.properties.intrusive = {
 tyrannical.properties.floating = {
 	"xfce4-settings-manager",
 	"Termite",
+	"caprine",
 	"zoom",
 	"pavucontrol",
 	"awmtt",
 	"browser-window",
 	"nm-connection-editor",
-	"microsoft teams - preview",
 	"Xephyr",
 	"Nitrogen",
 	"xev",
@@ -1209,16 +1208,10 @@ tyrannical.properties.ontop = {
 	"nm-connection-editor",
 	"awmtt",
 	"Nitrogen",
-	"microsoft teams - preview",
 	"Termite",
 	"browser-window",
 	"ksnapshot",
 	"zoom"
-}
-
--- Force the matching clients (by classes) to be centered on the screen on init
-tyrannical.properties.placement = {
-	kcalc = awful.placement.centered
 }
 
 tyrannical.settings.block_children_focus_stealing = true --Block popups ()

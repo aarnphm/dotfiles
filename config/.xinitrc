@@ -9,6 +9,8 @@ usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
 
+gpu=$(glxinfo | grep "server glx vendor string" | sed 's/.*://')
+
 # SESSION=${1:-xfce}
 
 # merge in defaults and keymaps
@@ -63,6 +65,13 @@ get_session(){
 	echo "dbus-launch ${dbus_args[*]}"
 }
 
+# specific screen startup
+if [ $gpu == " NVIDIA Corporation" ]; then
+    sf=$HOME/.screenlayout/dual.sh
+else
+    sf=$HOME/.screenlayout/one.sh
+fi
+[ -x "$sf" ] && . "$sf"
 # [ -f ~/.xprofile ] && . ~/.xprofile
 
 # exec $(get_session "$1")

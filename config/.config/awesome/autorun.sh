@@ -21,7 +21,7 @@ if (command -v  xfce4-power-manager && ! pgrep xfce4-power-man) ; then
     xfce4-power-manager &
 fi
 
-run xfsettingsd
+# run xfsettingsd
 run nm-applet
 run ibus-daemon 
 run nitrogen --restore 
@@ -32,11 +32,9 @@ run blueman-tray
 # run pa-applet
 # run xfce4-power-manager
 
-## The following are not included in minimal edition by default
-## but autorun.sh will pick them up if you install them
 
 # run blueman-applet
 run kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify 
-# run picom -f
+run picom -f
 run discord 
 run optimus-manager-qt
