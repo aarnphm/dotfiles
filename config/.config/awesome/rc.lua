@@ -353,7 +353,11 @@ local bat = lain.widget.bat({
 				else
 					baticon:set_image(beautiful.widget_battery)
 				end
-				widget:set_markup(markup.font(beautiful.font, bat_now.perc .. "%"))
+				if tonumber(bat_now.perc)==100 then
+					widget:set_markup(markup.font(beautiful.font, "Full"))
+				else
+					widget:set_markup(markup.font(beautiful.font, bat_now.perc .. "%"))
+				end
 			else
 				widget:set_markup(markup.font(beautiful.font, "AC"))
 				baticon:set_image(beautiful.widget_ac)
@@ -364,20 +368,20 @@ local bat = lain.widget.bat({
 -- ALSA volume
 local volicon = wibox.widget.imagebox(beautiful.widget_vol)
 local volume = lain.widget.alsa({
-    settings = function()
-        if volume_now.status == "off" then
-            volicon:set_image(beautiful.widget_vol_mute)
-        elseif tonumber(volume_now.level) == 0 then
-            volicon:set_image(beautiful.widget_vol_no)
-        elseif tonumber(volume_now.level) <= 50 then
-            volicon:set_image(beautiful.widget_vol_low)
-        else
-            volicon:set_image(beautiful.widget_vol)
-        end
+		settings = function()
+			if volume_now.status == "off" then
+				volicon:set_image(beautiful.widget_vol_mute)
+			elseif tonumber(volume_now.level) == 0 then
+				volicon:set_image(beautiful.widget_vol_no)
+			elseif tonumber(volume_now.level) <= 50 then
+				volicon:set_image(beautiful.widget_vol_low)
+			else
+				volicon:set_image(beautiful.widget_vol)
+			end
 
-        widget:set_markup(markup.font(beautiful.font,volume_now.level .. "%"))
-    end
-})
+			widget:set_markup(markup.font(beautiful.font,volume_now.level .. "%"))
+		end
+	})
 volume.widget:buttons(
 	gears.table.join(
 		awful.button(
@@ -504,8 +508,8 @@ awful.screen.connect_for_each_screen(
 				bat.widget,
 				spr,
 				clock,
-				-- spr,
-				-- s.mylayoutbox
+				spr,
+				s.mylayoutbox
 			}
 		}
 	end

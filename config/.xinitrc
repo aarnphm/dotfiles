@@ -72,6 +72,7 @@ else
     sf=$HOME/.screenlayout/one.sh
 fi
 [ -x "$sf" ] && . "$sf"
-# [ -f ~/.xprofile ] && . ~/.xprofile
 
+# [ -f ~/.xprofile ] && . ~/.xprofile
+ibus-daemon &
 # exec $(get_session "$1")
