@@ -9,7 +9,7 @@ export PKG=(
 	cadence gcc cmake ripgrep ctags lxtask lxappearance
 	obs-studio redshift vlc xsettingsd xsecurelock
 	imagemagick acpi neovim ibus ibus-unikey gnome-keyring libgnome-keyring
-	bluez blueman nnn bluez-utils pavucontrol
+	bluez blueman nnn bluez-utils pavucontrol mpv mpc mpd
 	scrot docker zathura curl vim neovim caprine
 )
 export AUR=(
@@ -18,7 +18,7 @@ export AUR=(
 	discord dmenu-git github-cli slack-desktop
 	visual-studio-code-bin autofs fet.sh-git polkit inkscape
 	wine winetricks lib32-gnutls samba steam ccls
-	gyazo zoom postgresql pgadmin4 spicetify-cli
+	gyazo zoom postgresql pgadmin4 spicetify-cli obs-linuxbrowser
 	materia-gtk-theme papirus-icon-theme breeze-default-cursor-theme
 	vmware-workstation nodejs npm rainbow ruby-colorls
 )

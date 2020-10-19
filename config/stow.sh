@@ -2,5 +2,5 @@
 
 for d in pkg/*; do
     dir=$(basename $d);
-    stow $dir --target=$HOME;
+    stow $dir --target=$HOME --ignore='stow.sh';
 done
