@@ -73,6 +73,8 @@ else
 fi
 [ -x "$sf" ] && . "$sf"
 
-# [ -f ~/.xprofile ] && . ~/.xprofile
-ibus-daemon &
+[ -f ~/.xprofile ] && . ~/.xprofile
+
+# ibus-daemon -drx &
+
 # exec $(get_session "$1")

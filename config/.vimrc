@@ -166,19 +166,34 @@ set undolevels=9999
 set tabstop=4
 command! Ev :e! $MYVIMRC
 
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mapping
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Mapping
+nnoremap ; :
+nnoremap : ;
+imap jj <Esc>
 let mapleader=','
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
-" nnoremap ; :
-" nnoremap : ;
-nnoremap <leader>, :let @/=''<CR>:noh<CR>
+nnoremap <leader>\ :let @/=''<CR>:noh<CR>
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>
 nnoremap <leader>b :ls<CR>:buffer<space>
 nnoremap <leader>d :w !diff % -<CR>
@@ -204,15 +219,17 @@ map <C-left> :tabp<cr>
 map <C-right> :tabn<cr>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
-map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
+nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
+" remove Ex mode
+map Q <Nop>
 " added yank to clipboard shortcut
 noremap <M-Y> "*y
 noremap <M-P> "*p
 noremap <M-y> "+y
 noremap <M-p> "+p
 " map <M-r> for PlugInstall and <M-d> for PlugClean
-map <leader>C :PlugClean<cr>
-map <leader>R :PlugInstall<cr>
+nnoremap <leader>C :PlugClean<cr>
+nnoremap <leader>R :PlugInstall<cr>
 " use this when lightline is not in use for minimal
 nnoremap <F2> :set invpaste paste?<CR>
 imap <F2> <C-O>:set invpaste paste?<CR>

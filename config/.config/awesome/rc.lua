@@ -19,7 +19,7 @@ local screen_width              = awful.screen.focused().geometry.width
 local markup                    = lain.util.markup
 -- Define tag layouts
 awful.util.tagnames             = {"focus","media","web","meetings","games"}
-awful.layout.layouts            = {awful.layout.suit.tile.right,awful.layout.suit.max,awful.layout.suit.tile.left,awful.layout.suit.tile.top}
+awful.layout.layouts            = {awful.layout.suit.tile.right,awful.layout.suit.max,awful.layout.suit.fair,awful.layout.suit.tile.top}
 -- Custom keybinds
 local modkey                    = "Mod4"
 local altkey                    = "Mod1"
@@ -1011,6 +1011,7 @@ awful.screen.connect_for_each_screen(
                     "baobab",
                     "xmessage",
                     "skype",
+                    "chatterino",
                     "lxappearance",
                     "zoom",
                 },

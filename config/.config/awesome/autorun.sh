@@ -23,7 +23,7 @@ fi
 
 run xfsettingsd
 run nm-applet
-run ibus-daemon 
+run ibus-daemon -drx 
 run nitrogen --restore 
 run redshift 
 run unclutter -idle 1 
