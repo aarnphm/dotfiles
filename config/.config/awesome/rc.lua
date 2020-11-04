@@ -1011,7 +1011,7 @@ awful.screen.connect_for_each_screen(
                     "baobab",
                     "xmessage",
                     "skype",
-                    "chatterino",
+                    -- "chatterino",
                     "lxappearance",
                     "zoom",
                 },
