@@ -6,10 +6,10 @@ export PKG=(
 	asciinema alacritty xdg-user-dirs
 	firefox nm-connection-editor pcmanfm
 	pulseaudio pulseaudio-bluetooth pulseaudio-alsa alsa-utils
-	cadence gcc cmake ripgrep ctags lxtask lxappearance
+	gcc cmake ripgrep ctags lxtask lxappearance
 	obs-studio redshift vlc xsettingsd xsecurelock
-	imagemagick acpi neovim ibus ibus-unikey gnome-keyring libgnome-keyring
-	bluez blueman nnn bluez-utils pavucontrol mpv mpc mpd
+	imagemagick acpi ibus ibus-unikey gnome-keyring libgnome-keyring
+	bluez blueman nnn bluez-utils pavucontrol
 	scrot docker zathura curl vim neovim caprine
 )
 export AUR=(
