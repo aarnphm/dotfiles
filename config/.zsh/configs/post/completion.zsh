@@ -1,7 +1,7 @@
 # load our own completion functions
 fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fpath)
 
-source '/home/aarnphm/.pyenv/libexec/../completions/pyenv.zsh'
+# source '/home/aarnphm/.pyenv/libexec/../completions/pyenv.zsh'
 command pyenv rehash 2>/dev/null
 pyenv() {
   local command

@@ -18,8 +18,8 @@ local screen_height             = awful.screen.focused().geometry.height
 local screen_width              = awful.screen.focused().geometry.width
 local markup                    = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames             = {"focus","media","web","meetings","games"}
-awful.layout.layouts            = {awful.layout.suit.tile.right,awful.layout.suit.max,awful.layout.suit.fair,awful.layout.suit.tile.top}
+awful.util.tagnames             = {"focus","media","web","meetings","games","code"}
+awful.layout.layouts            = {awful.layout.suit.tile.right}
 -- Custom keybinds
 local modkey                    = "Mod4"
 local altkey                    = "Mod1"
@@ -692,6 +692,14 @@ awful.screen.connect_for_each_screen(
             {description = "dual screen", group = "screen layout"}
             ),
         awful.key(
+            {modkey, "Control"},
+            "2",
+            function()
+                awful.spawn("./.screenlayout/dual-side.sh")
+            end,
+            {description = "dual screen", group = "screen layout"}
+            ),
+        awful.key(
             {altkey, "Control"},
             "3",
             function()
@@ -1011,12 +1019,13 @@ awful.screen.connect_for_each_screen(
                     "baobab",
                     "xmessage",
                     "skype",
-                    -- "chatterino",
+                    "chatterino",
                     "lxappearance",
                     "zoom",
                 },
                 class = {
                     "Nm-connection-editor",
+                    "Thunar",
                     "Arandr",
                     "Zotero",
                     "Blueman-manager",
@@ -1040,8 +1049,16 @@ awful.screen.connect_for_each_screen(
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2], switchtotag = true}
         },
         {
-            rule = {class = "Steam"},
+            rule = {class = "Alacritty"},
+            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[6], switchtotag = true}
+        },
+        {
+            rule_any = {class = {"Lutris","Steam"}},
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[5], switchtotag = true}
+        },
+        {
+            rule_any = {class = {"leagueclientux.exe", "Wine"}},
+            properties = {screen=1,tag = awful.util.tagnames[5], switchtotag = true}
         },
         {
             rule_any = {class = "Firefox", instance="chromium"},
