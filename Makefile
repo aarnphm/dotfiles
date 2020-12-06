@@ -10,4 +10,5 @@ build:
 	docker build -t aar0npham/dotfiles:latest .
 run:
 	docker run -it aar0npham/dotfiles:latest
-
+vmware:
+	sudo modprobe -a vmw_vmci vmmon

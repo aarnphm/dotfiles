@@ -21,4 +21,5 @@ wine winetricks lib32-gnutls samba steam ccls
 jre-openjdk jdk-openjdk zoom postgresql pgadmin4 spicetify-cli 
 materia-gtk-theme papirus-icon-theme breeze-default-cursor-theme
 vmware-workstation nodejs npm rainbow ruby-colorls
+picom-git
 )
