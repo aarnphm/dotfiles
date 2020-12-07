@@ -25,3 +25,4 @@ private*
 pubring*
 trust*
 streams
+config/.config/coc/*
