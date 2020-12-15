@@ -470,7 +470,7 @@ awful.screen.connect_for_each_screen(
                     -- Right widgets
                     layout = wibox.layout.fixed.horizontal,
                     wibox.widget.systray(),
-                    spr,
+                    -- spr,
                     volicon,
                     volume.widget,
                     spr,
@@ -1053,7 +1053,7 @@ awful.screen.connect_for_each_screen(
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[6], switchtotag = true}
         },
         {
-            rule_any = {class = {"Lutris","Steam"}},
+            rule_any = {class = {"Lutris","Steam", "minecraft-launcher"}},
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[5], switchtotag = true}
         },
         {
