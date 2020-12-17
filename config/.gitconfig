@@ -4,8 +4,8 @@
 [submodule]
 	recurse = true
 [credential]
-	helper = osxkeychain
-	; helper = /usr/share/git/credential/gnome-keyring/git-credential-gnome-keyring
+	; helper = osxkeychain
+	helper = /usr/share/git/credential/gnome-keyring/git-credential-gnome-keyring
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

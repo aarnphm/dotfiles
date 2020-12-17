@@ -25,15 +25,13 @@ run xfsettingsd
 run nm-applet
 run ibus-daemon -drx 
 run nitrogen --restore 
-run /usr/bin/redshift -v
+run redshift-qt
 run unclutter -idle 1 
 run blueman-tray
+run kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify 
+run picom -f
+run optimus-manager-qt
 # run xcape -e 'Super_L=Super_L|Control_L|Escape'
 # run pa-applet
 # run xfce4-power-manager
 
-
-# run blueman-applet
-run kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify 
-run picom -f
-run optimus-manager-qt

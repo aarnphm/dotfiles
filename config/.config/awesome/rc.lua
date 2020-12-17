@@ -19,7 +19,7 @@ local screen_width              = awful.screen.focused().geometry.width
 local markup                    = lain.util.markup
 -- Define tag layouts
 awful.util.tagnames             = {"focus","media","web","meetings","games","code"}
-awful.layout.layouts            = {awful.layout.suit.tile.right}
+awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max}
 -- Custom keybinds
 local modkey                    = "Mod4"
 local altkey                    = "Mod1"
@@ -1022,6 +1022,7 @@ awful.screen.connect_for_each_screen(
                     "chatterino",
                     "lxappearance",
                     "zoom",
+                    "gparted"
                 },
                 class = {
                     "Nm-connection-editor",
@@ -1045,7 +1046,7 @@ awful.screen.connect_for_each_screen(
             properties = {floating = true}
         },
         {
-            rule = {class = "Spotify"},
+            rule_any = {class = {"Spotify","Vmware"}},
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2], switchtotag = true}
         },
         {
