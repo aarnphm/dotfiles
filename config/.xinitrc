@@ -11,7 +11,7 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 
 gpu=$(glxinfo | grep "server glx vendor string" | sed 's/.*://')
 
-# SESSION=${1:-xfce}
+SESSION=${1:-awesome}
 
 # merge in defaults and keymaps
 
@@ -40,41 +40,16 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
-get_session(){
-	local dbus_args=(--sh-syntax --exit-with-session)
-	case "$1" in
-		awesome) dbus_args+=(awesome) ;;
-		bspwm) dbus_args+=(bspwm-session) ;;
-		budgie) dbus_args+=(budgie-desktop) ;;
-		cinnamon) dbus_args+=(cinnamon-session) ;;
-		deepin) dbus_args+=(startdde) ;;
-		enlightenment) dbus_args+=(enlightenment_start) ;;
-		fluxbox) dbus_args+=(startfluxbox) ;;
-		gnome) dbus_args+=(gnome-session) ;;
-		i3|i3wm) dbus_args+=(i3 --shmlog-size 0) ;;
-		jwm) dbus_args+=(jwm) ;;
-		kde) dbus_args+=(startplasma-x11) ;;
-		lxde) dbus_args+=(startlxde) ;;
-		lxqt) dbus_args+=(lxqt-session) ;;
-		mate) dbus_args+=(mate-session) ;;
-		xfce) dbus_args+=(xfce4-session) ;;
-		openbox) dbus_args+=(openbox-session) ;;
-		*) dbus_args+=("$1") ;;
-	esac
-
-	echo "dbus-launch ${dbus_args[*]}"
-}
-
 # specific screen startup
-if [ $gpu == " NVIDIA Corporation" ]; then
-    sf=$HOME/.screenlayout/dual.sh
-else
-    sf=$HOME/.screenlayout/one.sh
-fi
-[ -x "$sf" ] && . "$sf"
+#if [ $gpu == " NVIDIA Corporation" ]; then
+#    sf=$HOME/.screenlayout/dual.sh
+#else
+#    sf=$HOME/.screenlayout/one.sh
+#fi
+#[ -x "$sf" ] && . "$sf"
 
 [ -f ~/.xprofile ] && . ~/.xprofile
 
 # ibus-daemon -drx &
+exec awesome
 
-# exec $(get_session "$1")

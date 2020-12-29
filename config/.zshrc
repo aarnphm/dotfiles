@@ -1,7 +1,7 @@
 # run xinit
-#if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-#  exec startx
-#fi
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+  exec startx
+fi
 
 for function in $HOME/.zsh/functions/*; do
 	source $function
@@ -43,5 +43,5 @@ autoload -U compinit && compinit
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 

@@ -17,11 +17,7 @@ fi
 if (command -v /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 && ! pgrep polkit-mate-aut) ; then
     /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 fi
-if (command -v  xfce4-power-manager && ! pgrep xfce4-power-man) ; then
-    xfce4-power-manager &
-fi
 
-run xfsettingsd
 run nm-applet
 run ibus-daemon -drx 
 run nitrogen --restore 
@@ -31,7 +27,4 @@ run blueman-tray
 run kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify 
 run picom -f
 run optimus-manager-qt
-# run xcape -e 'Super_L=Super_L|Control_L|Escape'
-# run pa-applet
-# run xfce4-power-manager
 
