@@ -687,25 +687,9 @@ awful.screen.connect_for_each_screen(
             {altkey, "Control"},
             "2",
             function()
-                awful.spawn("./.screenlayout/dual.sh")
-            end,
-            {description = "dual screen", group = "screen layout"}
-            ),
-        awful.key(
-            {modkey, "Control"},
-            "2",
-            function()
                 awful.spawn("./.screenlayout/dual-side.sh")
             end,
             {description = "dual screen", group = "screen layout"}
-            ),
-        awful.key(
-            {altkey, "Control"},
-            "3",
-            function()
-                awful.spawn("./.screenlayout/triple.sh")
-            end,
-            {description = "triple screen", group = "screen layout"}
             ),
         awful.key(
             {modkey},

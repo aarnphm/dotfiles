@@ -9,10 +9,6 @@ usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
 
-gpu=$(glxinfo | grep "server glx vendor string" | sed 's/.*://')
-
-SESSION=${1:-awesome}
-
 # merge in defaults and keymaps
 
 if [ -f $sysresources ]; then
@@ -39,14 +35,6 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     done
     unset f
 fi
-
-# specific screen startup
-#if [ $gpu == " NVIDIA Corporation" ]; then
-#    sf=$HOME/.screenlayout/dual.sh
-#else
-#    sf=$HOME/.screenlayout/one.sh
-#fi
-#[ -x "$sf" ] && . "$sf"
 
 [ -f ~/.xprofile ] && . ~/.xprofile
 

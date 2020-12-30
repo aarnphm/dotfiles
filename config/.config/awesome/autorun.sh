@@ -18,7 +18,7 @@ if (command -v /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 && ! pgre
     /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 fi
 
-run nm-applet
+run nm-tray
 run ibus-daemon -drx 
 run nitrogen --restore 
 run redshift-qt
