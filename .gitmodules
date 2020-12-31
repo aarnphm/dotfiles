@@ -15,3 +15,6 @@
 [submodule "yay"]
 	path = yay
 	url = https://aur.archlinux.org/yay.git
+[submodule "simple-bar"]
+	path = macos/simple-bar
+	url = https://github.com/Jean-Tinland/simple-bar.git
