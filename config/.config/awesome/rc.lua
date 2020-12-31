@@ -34,12 +34,6 @@ require("awful.hotkeys_popup.keys")
 -- Theme
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
-local function run_once(cmd_arr)
-    for _, cmd in ipairs(cmd_arr) do
-        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
-    end
-end
-
 -- ===================================================================
 -- Error handling
 -- ===================================================================
@@ -98,7 +92,6 @@ local apps = {
     screenshot   = "gyazo",
     filebrowser  = "pcmanfm",
     zotero       = "/opt/zotero/zotero",
-    pwm          = "xfce4-power-manager-settings",
     audiocontrol = "pavucontrol",
     bluetooth    = "blueman-manager"
 }
@@ -317,7 +310,7 @@ local spr = wibox.widget.textbox(" ")
 -- Textclock
 local clock =
 awful.widget.watch(
-    "date +'%a %m-%d %R %Z'",
+    "date +'%a %m-%d %R %Z GMT'",
     60,
     function(widget, stdout)
         widget:set_markup(markup.font(beautiful.font, stdout))
@@ -478,7 +471,7 @@ awful.screen.connect_for_each_screen(
                     bat.widget,
                     spr,
                     clock,
-                    spr,
+                    -- spr,
                     s.mylayoutbox
                 }
             }
@@ -516,12 +509,12 @@ awful.screen.connect_for_each_screen(
         )
 
     -- Enable sloppy focus, so that focus follows mouse.
-    client.connect_signal(
-        "mouse::enter",
-        function(c)
-            c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
-        end
-        )
+    -- client.connect_signal(
+    --     "mouse::enter",
+    --     function(c)
+    --         c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
+    --     end
+    --     )
 
     -- ===================================================================
     -- Keys
@@ -1006,7 +999,9 @@ awful.screen.connect_for_each_screen(
                     "chatterino",
                     "lxappearance",
                     "zoom",
-                    "gparted"
+                    "gparted",
+                    "qt5ct",
+                    "kvantum"
                 },
                 class = {
                     "Nm-connection-editor",

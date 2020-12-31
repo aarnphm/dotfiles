@@ -7,6 +7,7 @@ export VISUAL='nvim';
 export PYENV_ROOT="$HOME/.pyenv";
 export PYENV_SHELL=zsh
 export PYTHONPATH="$HOME/.local/lib/python3.8/site-packages:/usr/lib/python3.8/site-packages"
+export QT_QPA_PLATFORMTHEME=qt5ct
 
 # fzf 
 export FZF_DEFAULT_OPTS="--layout=reverse
@@ -89,3 +90,4 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
 export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
 export LS_COLORS="${LS_COLORS}:ow=01;33"
+export LC_ALL="en_US.UTF-8"

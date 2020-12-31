@@ -28,7 +28,7 @@ zinit wait lucid light-mode for \
 # search history via substring
 zplugin light zsh-users/zsh-history-substring-search 
 # search through long list of commands with Ctrl+R
-zplugin ice from"gh" wait"1" silent pick"history-search-multi-word.plugin.zsh" lucid
+zplugin ice from"gh" wait"1" silent pick "history-search-multi-word.plugin.zsh" lucid
 zplugin light zdharma/history-search-multi-word
 
 (( ${+_comps} )) && _comps[zinit]=_zinit

@@ -48,7 +48,12 @@ alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-pa
 alias l="ls -lF ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
-alias la="ls -laF --color"
+if [ "$(uname -s)" = "Darwin" ]; then
+  alias la="ls -laF"
+else
+  alias la="ls -laF --color"
+fi
+
 alias lc='colorls -lA --sd'
 
 # Enable aliases to be sudo’ed

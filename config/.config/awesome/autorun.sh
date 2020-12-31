@@ -18,13 +18,13 @@ if (command -v /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 && ! pgre
     /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 fi
 
-run nm-tray
+run nm-applet
 run ibus-daemon -drx 
 run nitrogen --restore 
-run redshift-qt
+run redshift-gtk
 run unclutter -idle 1 
 run blueman-tray
-run kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify 
+run kdocker -q -o -i /usr/share/icons/ePapirus/32x32/apps/spotify.svg spotify 
 run picom -f
 run optimus-manager-qt
 

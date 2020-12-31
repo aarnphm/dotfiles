@@ -43,5 +43,6 @@ autoload -U compinit && compinit
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
-# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+if [ "$(uname -s)" = "Darwin" ]; then
+  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+fi
