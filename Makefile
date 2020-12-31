@@ -6,6 +6,7 @@ init:
 	chmod +x init/*.sh && ./init/init.sh
 stow:
 	stow config --target=${HOME} --ignore='stow.sh'
+	stow macos --target=${HOME}/Library/Application\ Support/Übersicht/widgets
 build:
 	docker build -t aar0npham/dotfiles:latest .
 run:
