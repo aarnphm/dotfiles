@@ -8,6 +8,7 @@ local awful                     = require("awful")
 local lain                      = require("lain")
 local naughty                   = require("naughty")
 local freedesktop               = require("freedesktop")
+local switcher                  = require("awesome-switcher")
 local menubar                   = require("menubar")
 local wibox                     = require("wibox")
 local beautiful                 = require("beautiful")
@@ -19,7 +20,9 @@ local screen_width              = awful.screen.focused().geometry.width
 local markup                    = lain.util.markup
 -- Define tag layouts
 awful.util.tagnames             = {"focus","media","web","meetings","games","code"}
-awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max}
+awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max, 
+                                   awful.layout.suit.left, awful.layout.suit.spiral.dwindle, awful.layout.suit.max,
+                                   awful.layout.suit.tile.top}
 -- Custom keybinds
 local modkey                    = "Mod4"
 local altkey                    = "Mod1"
@@ -84,7 +87,6 @@ local apps = {
     editor       = "nvim",
     gui_editor   = os.getenv("GUI_EDITOR") or "code",
     browser      = os.getenv("BROWSER") or "firefox",
-    chromium     = "chromium",
     spotify      = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
     -- spotify   = "spotify",
     launcher     = "rofi -modi drun -i -p -show drun -show-icons",
@@ -456,8 +458,8 @@ awful.screen.connect_for_each_screen(
                 {
                     -- Middle widgets
                     layout = wibox.layout.fixed.horizontal,
-                    s.mypromptbox,
-                    s.mytasklist
+                    -- s.mypromptbox,
+                    -- s.mytasklist
                 },
                 {
                     -- Right widgets
@@ -471,7 +473,7 @@ awful.screen.connect_for_each_screen(
                     bat.widget,
                     spr,
                     clock,
-                    -- spr,
+                    spr,
                     s.mylayoutbox
                 }
             }
@@ -643,14 +645,6 @@ awful.screen.connect_for_each_screen(
             end,
             {description = "open a terminal", group = "launcher"}
             ),
-        awful.key(
-            {"Shift", altkey},
-            "t",
-            function()
-                awful.spawn("alacritty -e tmux")
-            end,
-            {description = "open a tmux session", group = "launcher"}
-            ),
         -- User programs
         awful.key(
             {modkey},
@@ -669,36 +663,12 @@ awful.screen.connect_for_each_screen(
             {description = "edit config files", group = "dmenu scripts"}
             ),
         awful.key(
-            {altkey, "Control"},
-            "1",
-            function()
-                awful.spawn("./.screenlayout/one.sh")
-            end,
-            {description = "one screen", group = "screen layout"}
-            ),
-        awful.key(
-            {altkey, "Control"},
-            "2",
-            function()
-                awful.spawn("./.screenlayout/dual-side.sh")
-            end,
-            {description = "dual screen", group = "screen layout"}
-            ),
-        awful.key(
             {modkey},
             "b",
             function()
                 awful.spawn(apps.browser)
             end,
             {description = "run Firefox", group = "launcher"}
-            ),
-        awful.key(
-            {modkey, "Shift"},
-            "b",
-            function()
-                awful.spawn(apps.chromium)
-            end,
-            {description = "run Chromium", group = "launcher"}
             ),
         awful.key(
             {modkey},
@@ -813,34 +783,40 @@ awful.screen.connect_for_each_screen(
             end,
             {description = "decrease the number of columns", group = "layout"}
             ),
-        awful.key(
-            {altkey},
-            "Tab",
+        -- normal Alt-Tab behaviour
+        -- awful.key(
+        --     {altkey},
+        --     "Tab",
+        --     function()
+        --         if cycle_prev then
+        --             awful.client.focus.history.previous()
+        --         else
+        --             awful.client.focus.byidx(-1)
+        --         end
+        --         if client.focus then
+        --             client.focus:raise()
+        --         end
+        --     end,
+        --     {description = "cycle with previous/go back", group = "client"}
+        --     ),
+        -- awful.key(
+        --     {altkey, "Shift"},
+        --     "Tab",
+        --     function()
+        --         if cycle_prev then
+        --             awful.client.focus.byidx(1)
+        --             if client.focus then
+        --                 client.focus:raise()
+        --             end
+        --         end
+        --     end,
+        --     {description = "go forth", group = "client"}
+        --     ),
+
+        awful.key({altkey}, "Tab", 
             function()
-                if cycle_prev then
-                    awful.client.focus.history.previous()
-                else
-                    awful.client.focus.byidx(-1)
-                end
-                if client.focus then
-                    client.focus:raise()
-                end
-            end,
-            {description = "cycle with previous/go back", group = "client"}
-            ),
-        awful.key(
-            {altkey, "Shift"},
-            "Tab",
-            function()
-                if cycle_prev then
-                    awful.client.focus.byidx(1)
-                    if client.focus then
-                        client.focus:raise()
-                    end
-                end
-            end,
-            {description = "go forth", group = "client"}
-            ),
+                switcher.switch(1, altkey, "Alt_L", "Shift", Tab)
+            end),
         -- ALSA volume control
         awful.key(
             {},
@@ -963,6 +939,22 @@ awful.screen.connect_for_each_screen(
     -- global keys
     root.keys(globalkeys)
 
+    -- switcher settings
+    switcher.settings.preview_box = true                                  -- display preview-box
+    switcher.settings.preview_box_bg = "#ddddddaa"                        -- background color
+    switcher.settings.preview_box_border = "#22222200"                -- border-color
+    switcher.settings.preview_box_fps = 30                                -- refresh framerate
+    switcher.settings.preview_box_delay = 150                            -- delay in ms
+    switcher.settings.preview_box_title_font = {"mononoki Nerd Font","italic","normal"} -- the font for cairo
+    switcher.settings.preview_box_title_font_size_factor = 1            -- the font sizing factor
+    
+    switcher.settings.client_opacity = true                             -- opacity for unselected clients
+    switcher.settings.client_opacity_value = 0.5                          -- alpha-value for any client
+    switcher.settings.client_opacity_value_in_focus = 0.5                 -- alpha-value for the client currently in focus
+    switcher.settings.client_opacity_value_selected = 1                   -- alpha-value for the selected client
+
+    switcher.settings.cycle_raise_client = true                           -- raise clients on cycle
+
     -- ===================================================================
     -- Rules setup
     -- ===================================================================
@@ -1030,19 +1022,15 @@ awful.screen.connect_for_each_screen(
         },
         {
             rule = {class = "Alacritty"},
-            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[6], switchtotag = true}
+            properties = {screen=2,tag = awful.util.tagnames[6], switchtotag = true}
         },
         {
             rule_any = {class = {"Lutris","Steam", "minecraft-launcher"}},
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[5], switchtotag = true}
         },
         {
-            rule_any = {class = {"leagueclientux.exe", "Wine"}},
-            properties = {screen=1,tag = awful.util.tagnames[5], switchtotag = true}
-        },
-        {
             rule_any = {class = "Firefox", instance="chromium"},
-            properties = {tag = awful.util.tagnames[3], switchtotag = true}
+            properties = {screen=1, tag = awful.util.tagnames[3], switchtotag = true}
         },
         {
             rule_any = {
@@ -1054,7 +1042,7 @@ awful.screen.connect_for_each_screen(
         {rule = {class = "Gimp"}, properties = {maximized = true}},
         -- Rofi
         {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
-        {rule = {instance = "termite"}, properties = {screen=1,maximized = false, ontop = true, floating = true}},
+        {rule = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
         -- File chooser dialog
         {
             rule_any = {role = "GtkFileChooserDialog"},

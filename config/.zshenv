@@ -91,3 +91,4 @@ export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
 export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
 export LS_COLORS="${LS_COLORS}:ow=01;33"
 export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
