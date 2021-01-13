@@ -31,6 +31,7 @@ alias dl="cd ${HOME}/Downloads"
 alias dc="cd ${HOME}/Documents"
 alias cs="cd ${HOME}/Documents/cs"
 alias mlh="cd ${HOME}/Documents/cs/mlh/BentoML"
+alias checkint="watch -n 1 ping -c 1 google.com"
 # git
 alias g="git"
 alias ghs="git status"

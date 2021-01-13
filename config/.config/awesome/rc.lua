@@ -21,7 +21,7 @@ local markup                    = lain.util.markup
 -- Define tag layouts
 awful.util.tagnames             = {"focus","media","web","meetings","games","code"}
 awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max, 
-                                   awful.layout.suit.left, awful.layout.suit.spiral.dwindle, awful.layout.suit.max,
+                                   awful.layout.suit.left, awful.layout.suit.tile.top, awful.layout.suit.max,
                                    awful.layout.suit.tile.top}
 -- Custom keybinds
 local modkey                    = "Mod4"
@@ -641,7 +641,7 @@ awful.screen.connect_for_each_screen(
             {"Control", altkey},
             "t",
             function()
-                awful.spawn(apps.terminal, {screen = 1})
+                awful.spawn(apps.terminal)
             end,
             {description = "open a terminal", group = "launcher"}
             ),
@@ -948,7 +948,7 @@ awful.screen.connect_for_each_screen(
     switcher.settings.preview_box_title_font = {"mononoki Nerd Font","italic","normal"} -- the font for cairo
     switcher.settings.preview_box_title_font_size_factor = 1            -- the font sizing factor
     
-    switcher.settings.client_opacity = true                             -- opacity for unselected clients
+    switcher.settings.client_opacity = false                             -- opacity for unselected clients
     switcher.settings.client_opacity_value = 0.5                          -- alpha-value for any client
     switcher.settings.client_opacity_value_in_focus = 0.5                 -- alpha-value for the client currently in focus
     switcher.settings.client_opacity_value_selected = 1                   -- alpha-value for the selected client
@@ -1017,8 +1017,12 @@ awful.screen.connect_for_each_screen(
             properties = {floating = true}
         },
         {
-            rule_any = {class = {"Spotify","Vmware"}},
-            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2], switchtotag = true}
+            rule_any = {class = {"Spotify","Vmware"}, instance={"spotify","kdocker"}},
+            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2]}
+        },
+        {
+            rule_any = {class = {"dota2"}},
+            properties = {screen=1,tag = awful.util.tagnames[5], switchtotag = true}
         },
         {
             rule = {class = "Alacritty"},
