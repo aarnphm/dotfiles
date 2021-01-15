@@ -15,6 +15,9 @@
 [submodule "yay"]
 	path = yay
 	url = https://aur.archlinux.org/yay.git
-[submodule "simple-bar"]
+[submodule "macos/simple-bar"]
 	path = macos/simple-bar
 	url = https://github.com/Jean-Tinland/simple-bar.git
+[submodule "drivers/spicetify-themes"]
+	path = drivers/spicetify-themes
+	url = https://github.com/morpheusthewhite/spicetify-themes.git
