@@ -32,6 +32,7 @@ alias dc="cd ${HOME}/Documents"
 alias cs="cd ${HOME}/Documents/cs"
 alias mlh="cd ${HOME}/Documents/cs/mlh/BentoML"
 alias checkint="watch -n 1 ping -c 1 google.com"
+alias home="ssh -p 35000 aarnphm@117.7.132.176"
 # git
 alias g="git"
 alias ghs="git status"
@@ -50,7 +51,7 @@ alias l="ls -lF ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
 if [ "$(uname -s)" = "Darwin" ]; then
-  alias la="ls -laF"
+  alias la="ls -laF -G"
 else
   alias la="ls -laF --color"
 fi

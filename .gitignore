@@ -26,3 +26,5 @@ pubring*
 trust*
 streams
 config/.config/coc/*
+config/.config/spicetify_data/*
+!config/.config/spicetify_data/config.ini
