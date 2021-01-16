@@ -511,12 +511,12 @@ awful.screen.connect_for_each_screen(
         )
 
     -- Enable sloppy focus, so that focus follows mouse.
-    -- client.connect_signal(
-    --     "mouse::enter",
-    --     function(c)
-    --         c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
-    --     end
-    --     )
+    client.connect_signal(
+        "mouse::enter",
+        function(c)
+            c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
+        end
+        )
 
     -- ===================================================================
     -- Keys
@@ -1030,7 +1030,7 @@ awful.screen.connect_for_each_screen(
         },
         {
             rule_any = {class = {"Lutris","Steam", "minecraft-launcher"}},
-            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[5], switchtotag = true}
+            properties = { switchtotag = true, screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[5]}
         },
         {
             rule_any = {class = "Firefox", instance="chromium"},
