@@ -20,7 +20,7 @@ alias ovpn="sudo openvpn --config $@"
 #verbose curl
 alias vcurl="curl -v"
 # mcmaster vpn
-alias macvpn="/opt/anyconnect-linux64-4.6.04056/vpn/vpn connect sslvpn.mcmaster.ca"
+alias macvpn="/opt/anyconnect-linux64-4.6.04056/vpn/vpn connect studentvpn.mcmaster.ca"
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # remove bytecode
