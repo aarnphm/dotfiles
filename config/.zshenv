@@ -2,6 +2,8 @@
 # Make vim the default editor.
 export EDITOR='/usr/bin/vim';
 export VISUAL='nvim';
+export BROWSER=/usr/bin/firefox
+export DISPLAY=:0
 
 # export python
 export PYENV_ROOT="$HOME/.pyenv";

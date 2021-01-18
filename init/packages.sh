@@ -15,7 +15,7 @@ bluez blueman nnn bluez-utils pavucontrol
 scrot docker zathura curl vim neovim caprine termite
 lightdm gparted mate-polkit qt5-base htop
 kvantum-qt5 wireless-tools network-manager-applet
-net-tools
+openssh sshfs net-tools
 )
 export AUR=(
 rofi lightdm-slick-greeter nm-applet ncdu bleachbit cacheclean kdocker
