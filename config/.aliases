@@ -30,7 +30,6 @@ alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__p
 alias dl="cd ${HOME}/Downloads"
 alias dc="cd ${HOME}/Documents"
 alias cs="cd ${HOME}/Documents/cs"
-alias mlh="cd ${HOME}/Documents/cs/mlh/BentoML"
 alias checkint="watch -n 1 ping -c 1 google.com"
 alias home="ssh -p 35000 aarnphm@116.101.231.72"
 # git
