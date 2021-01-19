@@ -413,22 +413,34 @@ volume.widget:buttons(
 awful.screen.connect_for_each_screen(
     function(s)
         awful.tag(awful.util.tagnames, s, awful.layout.layouts)
+
         s.quake =
         lain.util.quake(
             {
-                app = "termite",
+                app = "kitty",
                 height = 0.43,
                 width = 0.43,
                 vert = "center",
                 horiz = "center",
-                followtag = true,
-                argname = "--name %s"
+                followtag = true
             }
             )
+        -- s.quake =
+        -- lain.util.quake(
+        --     {
+        --         app = "termite",
+        --         height = 0.43,
+        --         width = 0.43,
+        --         vert = "center",
+        --         horiz = "center",
+        --         followtag = true,
+        --         argname = "--name %s"
+        --     }
+        --     )
 
         -- Create a promptbox for each screen
-        s.mypromptbox =
-        awful.widget.prompt(with_shell == true,prompt == "Exec: ")
+        -- s.mypromptbox =
+        -- awful.widget.prompt(with_shell == true,prompt == "Exec: ")
         -- Create an imagebox widget which will contains an icon indicating which layout we're using.
         -- We need one layoutbox per screen.
         s.mylayoutbox = awful.widget.layoutbox(s)
@@ -784,39 +796,39 @@ awful.screen.connect_for_each_screen(
             {description = "decrease the number of columns", group = "layout"}
             ),
         -- normal Alt-Tab behaviour
-        -- awful.key(
-        --     {altkey},
-        --     "Tab",
-        --     function()
-        --         if cycle_prev then
-        --             awful.client.focus.history.previous()
-        --         else
-        --             awful.client.focus.byidx(-1)
-        --         end
-        --         if client.focus then
-        --             client.focus:raise()
-        --         end
-        --     end,
-        --     {description = "cycle with previous/go back", group = "client"}
-        --     ),
-        -- awful.key(
-        --     {altkey, "Shift"},
-        --     "Tab",
-        --     function()
-        --         if cycle_prev then
-        --             awful.client.focus.byidx(1)
-        --             if client.focus then
-        --                 client.focus:raise()
-        --             end
-        --         end
-        --     end,
-        --     {description = "go forth", group = "client"}
-        --     ),
-
-        awful.key({altkey}, "Tab", 
+        awful.key(
+            {altkey},
+            "Tab",
             function()
-                switcher.switch(1, altkey, "Alt_L", "Shift", Tab)
-            end),
+                if cycle_prev then
+                    awful.client.focus.history.previous()
+                else
+                    awful.client.focus.byidx(-1)
+                end
+                if client.focus then
+                    client.focus:raise()
+                end
+            end,
+            {description = "cycle with previous/go back", group = "client"}
+            ),
+        awful.key(
+            {altkey, "Shift"},
+            "Tab",
+            function()
+                if cycle_prev then
+                    awful.client.focus.byidx(1)
+                    if client.focus then
+                        client.focus:raise()
+                    end
+                end
+            end,
+            {description = "go forth", group = "client"}
+            ),
+
+        -- awful.key({altkey}, "Tab", 
+        --     function()
+        --         switcher.switch(1, altkey, "Alt_L", "Shift", Tab)
+        --     end),
         -- ALSA volume control
         awful.key(
             {},
@@ -1005,6 +1017,7 @@ awful.screen.connect_for_each_screen(
                     "Pcmanfm",
                     "Nitrogen",
                     "Termite",
+                    "Kitty"
                 },
                 name = {
                     "Library",
@@ -1017,8 +1030,8 @@ awful.screen.connect_for_each_screen(
             properties = {floating = true}
         },
         {
-            rule_any = {class = {"Spotify","Vmware"}, instance={"spotify","kdocker"}},
-            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2]}
+            rule_any = {class = {"Spotify","Vmware"}, instance={"kdocker"}},
+            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2], switchtotag=true}
         },
         {
             rule_any = {class = {"dota2"}},
@@ -1026,7 +1039,7 @@ awful.screen.connect_for_each_screen(
         },
         {
             rule = {class = "Alacritty"},
-            properties = {screen=2,tag = awful.util.tagnames[6], switchtotag = true}
+            properties = {screen=1,tag = awful.util.tagnames[6], switchtotag = true}
         },
         {
             rule_any = {class = {"Lutris","Steam", "minecraft-launcher"}},
@@ -1046,7 +1059,7 @@ awful.screen.connect_for_each_screen(
         {rule = {class = "Gimp"}, properties = {maximized = true}},
         -- Rofi
         {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
-        {rule = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
+        {rule_any = {instance = {"termite","kitty"}}, properties = {maximized = false, ontop = true, floating = true}},
         -- File chooser dialog
         {
             rule_any = {role = "GtkFileChooserDialog"},

@@ -16,19 +16,17 @@ alias av="$VISUAL -p $@"
 alias header='curl -I'
 # shortcut for curl with authentication header : $0->Methods, $1->authkey, $2->addr
 alias curlauth="curl -v -H 'Authorization: $authkey' $1"
-alias ovpn="sudo openvpn --config $@"
 #verbose curl
 alias vcurl="curl -v"
 # mcmaster vpn
 alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
+alias dc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # remove bytecode
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
 
 # Shortcuts
-alias dl="cd ${HOME}/Downloads"
-alias dc="cd ${HOME}/Documents"
 alias cs="cd ${HOME}/Documents/cs"
 alias checkint="watch -n 1 ping -c 1 google.com"
 alias home="ssh -p 35000 aarnphm@116.101.231.72"
@@ -64,7 +62,8 @@ alias sudo='nocorrect sudo'
 alias week='date +%V'
 
 # IP addresses
-alias lip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias ip4="dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com"
+alias ip6="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com"
 
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'

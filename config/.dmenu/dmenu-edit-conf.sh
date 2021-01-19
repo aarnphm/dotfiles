@@ -2,6 +2,7 @@
 
 declare options=(
 "alacritty
+kitty
 awesome
 dunst
 picom
@@ -27,6 +28,9 @@ case "$choice" in
 	;;
 	alacritty)
 		choice="$HOME/.config/alacritty/alacritty.yml"
+	;;
+	kitty)
+		choice="$HOME/.config/kitty/kitty.conf"
 	;;
 	xmonad)
 		choice="$HOME/.xmonad/xmonad.hs"

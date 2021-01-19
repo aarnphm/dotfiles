@@ -21,3 +21,6 @@
 [submodule "drivers/spicetify-themes"]
 	path = drivers/spicetify-themes
 	url = https://github.com/morpheusthewhite/spicetify-themes.git
+[submodule "config/.config/kitty/kitty-themes"]
+	path = config/.config/kitty/kitty-themes
+	url = https://github.com/dexpota/kitty-themes
