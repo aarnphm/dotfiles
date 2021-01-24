@@ -19,10 +19,8 @@ local screen_height             = awful.screen.focused().geometry.height
 local screen_width              = awful.screen.focused().geometry.width
 local markup                    = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames             = {"focus","media","web","meetings","games","code"}
-awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max, 
-                                   awful.layout.suit.left, awful.layout.suit.tile.top, awful.layout.suit.max,
-                                   awful.layout.suit.tile.top}
+awful.util.tagnames             = {"ano","media","web","meetings","games","code"}
+awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max, awful.layout.suit.tile, awful.layout.suit.tile.top, awful.layout.suit.max, awful.layout.suit.tile.top}
 -- Custom keybinds
 local modkey                    = "Mod4"
 local altkey                    = "Mod1"
@@ -36,7 +34,7 @@ require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 -- Theme
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
-
+naughty.config.defaults.timeout = 1.2
 -- ===================================================================
 -- Error handling
 -- ===================================================================
@@ -87,8 +85,8 @@ local apps = {
     editor       = "nvim",
     gui_editor   = os.getenv("GUI_EDITOR") or "code",
     browser      = os.getenv("BROWSER") or "firefox",
-    spotify      = "kdocker -q -o -i /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
-    -- spotify   = "spotify",
+    spotify      = "kdocker -qi /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
+    zotero       = "kdocker -qi /usr/share/icons/ePapirus/32x32/apps/zotero.svg zotero",
     launcher     = "rofi -modi drun -i -p -show drun -show-icons",
     lock         = "xsecurelock",
     screenshot   = "gyazo",
@@ -177,7 +175,7 @@ gears.table.join(
                     instance:hide()
                     instance = nil
                 else
-                    instance = awful.menu.clients({theme = {width = dpi(250)}})
+                    instance = awful.menu.clients({theme = {width = dpi(25)}})
                 end
             end
         end
@@ -413,34 +411,18 @@ volume.widget:buttons(
 awful.screen.connect_for_each_screen(
     function(s)
         awful.tag(awful.util.tagnames, s, awful.layout.layouts)
-
         s.quake =
         lain.util.quake(
             {
-                app = "kitty",
+                app = "termite",
                 height = 0.43,
                 width = 0.43,
                 vert = "center",
                 horiz = "center",
-                followtag = true
+                followtag = true,
+                argname = "--name %s"
             }
             )
-        -- s.quake =
-        -- lain.util.quake(
-        --     {
-        --         app = "termite",
-        --         height = 0.43,
-        --         width = 0.43,
-        --         vert = "center",
-        --         horiz = "center",
-        --         followtag = true,
-        --         argname = "--name %s"
-        --     }
-        --     )
-
-        -- Create a promptbox for each screen
-        -- s.mypromptbox =
-        -- awful.widget.prompt(with_shell == true,prompt == "Exec: ")
         -- Create an imagebox widget which will contains an icon indicating which layout we're using.
         -- We need one layoutbox per screen.
         s.mylayoutbox = awful.widget.layoutbox(s)
@@ -470,7 +452,6 @@ awful.screen.connect_for_each_screen(
                 {
                     -- Middle widgets
                     layout = wibox.layout.fixed.horizontal,
-                    -- s.mypromptbox,
                     -- s.mytasklist
                 },
                 {
@@ -523,12 +504,12 @@ awful.screen.connect_for_each_screen(
         )
 
     -- Enable sloppy focus, so that focus follows mouse.
-    client.connect_signal(
-        "mouse::enter",
-        function(c)
-            c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
-        end
-        )
+    -- client.connect_signal(
+    --     "mouse::enter",
+    --     function(c)
+    --         c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
+    --     end
+    --     )
 
     -- ===================================================================
     -- Keys
@@ -650,12 +631,20 @@ awful.screen.connect_for_each_screen(
             ),
         -- Standard program
         awful.key(
+            {"Shift", altkey},
+            "t",
+            function()
+                awful.spawn("alacritty")
+            end,
+            {description = "open a terminal", group = "launcher"}
+            ),
+        awful.key(
             {"Control", altkey},
             "t",
             function()
-                awful.spawn(apps.terminal)
+                awful.spawn("kitty")
             end,
-            {description = "open a terminal", group = "launcher"}
+            {description = "open a kitty", group = "launcher"}
             ),
         -- User programs
         awful.key(
@@ -690,7 +679,6 @@ awful.screen.connect_for_each_screen(
             end,
             {description = "run gui editor", group = "launcher"}
             ),
-        awful.key({"Ctrl","Shift"}, "s",function() awful.spawn("xfce4-settings-manager") end,{description = "show settings", group = "launcher"}),
         -- spotify
         awful.key(
             {modkey, "Shift"},
@@ -722,6 +710,7 @@ awful.screen.connect_for_each_screen(
             {"Control", altkey},
             "l",
             function()
+                naughty.suspend()
                 os.execute(apps.lock)
             end,
             {description = "lock screen", group = "hotkeys"}
@@ -777,6 +766,7 @@ awful.screen.connect_for_each_screen(
             function()
                 awful.tag.incnmaster(-1, nil, true)
             end,
+                -- screen = awful.screen.focused,
             {description = "decrease the number of master clients", group = "layout"}
             ),
         awful.key(
@@ -952,20 +942,18 @@ awful.screen.connect_for_each_screen(
     root.keys(globalkeys)
 
     -- switcher settings
-    switcher.settings.preview_box = true                                  -- display preview-box
-    switcher.settings.preview_box_bg = "#ddddddaa"                        -- background color
-    switcher.settings.preview_box_border = "#22222200"                -- border-color
-    switcher.settings.preview_box_fps = 30                                -- refresh framerate
-    switcher.settings.preview_box_delay = 150                            -- delay in ms
-    switcher.settings.preview_box_title_font = {"mononoki Nerd Font","italic","normal"} -- the font for cairo
-    switcher.settings.preview_box_title_font_size_factor = 1            -- the font sizing factor
-    
-    switcher.settings.client_opacity = false                             -- opacity for unselected clients
-    switcher.settings.client_opacity_value = 0.5                          -- alpha-value for any client
-    switcher.settings.client_opacity_value_in_focus = 0.5                 -- alpha-value for the client currently in focus
-    switcher.settings.client_opacity_value_selected = 1                   -- alpha-value for the selected client
-
-    switcher.settings.cycle_raise_client = true                           -- raise clients on cycle
+    switcher.settings.preview_box                        = true                                     -- display preview-box
+    switcher.settings.preview_box_bg                     = "#ddddddaa"                              -- background color
+    switcher.settings.preview_box_border                 = "#22222200"                              -- border-color
+    switcher.settings.preview_box_fps                    = 30                                       -- refresh framerate
+    switcher.settings.preview_box_delay                  = 150                                      -- delay in ms
+    switcher.settings.preview_box_title_font             = {"mononoki Nerd Font","italic","normal"} -- the font for cairo
+    switcher.settings.preview_box_title_font_size_factor = 1                                        -- the font sizing factor
+    switcher.settings.client_opacity                     = false                                    -- opacity for unselected clients
+    switcher.settings.client_opacity_value               = 0.5                                      -- alpha-value for any client
+    switcher.settings.client_opacity_value_in_focus      = 0.5                                      -- alpha-value for the client currently in focus
+    switcher.settings.client_opacity_value_selected      = 1                                        -- alpha-value for the selected client
+    switcher.settings.cycle_raise_client                 = true                                     -- raise clients on cycle
 
     -- ===================================================================
     -- Rules setup
@@ -982,7 +970,6 @@ awful.screen.connect_for_each_screen(
                 raise = true,
                 keys = clientkeys,
                 buttons = clientbuttons,
-                screen = awful.screen.focused,
                 placement = awful.placement.no_overlap + awful.placement.no_offscreen,
                 size_hints_honor = false
             }
@@ -1005,7 +992,8 @@ awful.screen.connect_for_each_screen(
                     "zoom",
                     "gparted",
                     "qt5ct",
-                    "kvantum"
+                    "kvantum",
+                    "grub-customizer"
                 },
                 class = {
                     "Nm-connection-editor",
@@ -1017,7 +1005,6 @@ awful.screen.connect_for_each_screen(
                     "Pcmanfm",
                     "Nitrogen",
                     "Termite",
-                    "Kitty"
                 },
                 name = {
                     "Library",
@@ -1027,26 +1014,22 @@ awful.screen.connect_for_each_screen(
                 },
                 type = {"dialog", "popup"}
             },
-            properties = {floating = true}
+            properties = {{floating = true}}
         },
         {
-            rule_any = {class = {"Spotify","Vmware"}, instance={"kdocker"}},
+            rule_any = {class = {"spotify","Vmware"}, instance={"kdocker"}},
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2], switchtotag=true}
         },
         {
-            rule_any = {class = {"dota2"}},
-            properties = {screen=1,tag = awful.util.tagnames[5], switchtotag = true}
-        },
-        {
-            rule = {class = "Alacritty"},
-            properties = {screen=1,tag = awful.util.tagnames[6], switchtotag = true}
+            rule = {class = "kitty"},
+            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[6], switchtotag = true}
         },
         {
             rule_any = {class = {"Lutris","Steam", "minecraft-launcher"}},
             properties = { switchtotag = true, screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[5]}
         },
         {
-            rule_any = {class = "Firefox", instance="chromium"},
+            rule_any = {instance={"chromium","firefox"}},
             properties = {screen=1, tag = awful.util.tagnames[3], switchtotag = true}
         },
         {
@@ -1059,7 +1042,7 @@ awful.screen.connect_for_each_screen(
         {rule = {class = "Gimp"}, properties = {maximized = true}},
         -- Rofi
         {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
-        {rule_any = {instance = {"termite","kitty"}}, properties = {maximized = false, ontop = true, floating = true}},
+        {rule = {instance = {"termite"}}, properties = {maximized = false, ontop = true, floating = true}},
         -- File chooser dialog
         {
             rule_any = {role = "GtkFileChooserDialog"},

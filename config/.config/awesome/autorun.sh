@@ -24,7 +24,7 @@ run nitrogen --restore
 run redshift-gtk
 run unclutter -idle 1 
 run blueman-tray
-run kdocker -q -o -i /usr/share/icons/ePapirus/32x32/apps/spotify.svg spotify 
-run kdocker -q -o -i /usr/share/icons/ePapirus/32x32/apps/zotero.svg zotero
+run discord
+run kdocker -qi /usr/share/icons/ePapirus/32x32/apps/spotify.svg spotify 
 run picom -f
 run optimus-manager-qt

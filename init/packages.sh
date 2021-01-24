@@ -5,7 +5,7 @@ xorg xorg-server xorg-xinit
 nvidia nvidia-dkms nvidia-settings nvidia-prime
 mesa stow tmux arandr dialog
 awesome	feh nitrogen tree base-devel
-asciinema alacritty xdg-user-dirs
+asciinema kitty xdg-user-dirs
 firefox nm-connection-editor pcmanfm
 pulseaudio pulseaudio-bluetooth pulseaudio-alsa alsa-utils
 gcc cmake ripgrep ctags lxappearance
@@ -26,5 +26,5 @@ jre-openjdk jdk-openjdk zoom postgresql pgadmin4 spicetify-cli
 materia-gtk-theme papirus-icon-theme qt5ct pyenv
 vmware-workstation nodejs npm rainbow ruby-colorls spotify
 picom-git redshift-qt unclutter optimus-manager-qt bbswitch numix-circle-icon-theme-git
-teams gyazo
+teams gyazo lib32-libappindicator-gtk2 lib32-libappindicator-gtk3
 )

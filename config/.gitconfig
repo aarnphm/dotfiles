@@ -5,7 +5,6 @@
 	recurse = true
 [credential]
 	helper = osxkeychain
-[credential]
 	helper = /usr/share/git/credential/gnome-keyring/git-credential-gnome-keyring
 [filter "lfs"]
 	clean = git-lfs clean -- %f
