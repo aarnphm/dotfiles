@@ -997,6 +997,7 @@ awful.screen.connect_for_each_screen(
                 },
                 class = {
                     "Nm-connection-editor",
+                    "gnome-disks",
                     "Thunar",
                     "Arandr",
                     "Zotero",
@@ -1042,7 +1043,7 @@ awful.screen.connect_for_each_screen(
         {rule = {class = "Gimp"}, properties = {maximized = true}},
         -- Rofi
         {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
-        {rule = {instance = {"termite"}}, properties = {maximized = false, ontop = true, floating = true}},
+        {rule = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
         -- File chooser dialog
         {
             rule_any = {role = "GtkFileChooserDialog"},
