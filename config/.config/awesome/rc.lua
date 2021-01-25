@@ -998,6 +998,7 @@ awful.screen.connect_for_each_screen(
                 class = {
                     "Nm-connection-editor",
                     "gnome-disks",
+                    "caffeine",
                     "Thunar",
                     "Arandr",
                     "Zotero",

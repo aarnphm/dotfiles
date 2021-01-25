@@ -1,15 +1,15 @@
-[submodule "scripts/nnn"]
-	path = scripts/nnn
+[submodule "drivers/nnn"]
+	path = drivers/nnn
 	url = https://github.com/jarun/nnn.git
 [submodule "pkg/config/.config/awesome/tyrannical"]
 	path = pkg/config/.config/awesome/tyrannical
 	url = https://github.com/Elv13/tyrannical.git
-[submodule "scripts/vmware-host-modules/player"]
-	path = scripts/vmware-host-modules/player
+[submodule "drivers/vmware-host-modules/player"]
+	path = drivers/vmware-host-modules/player
 	url = https://github.com/mkubecek/vmware-host-modules.git
 	branch=player-16.0.0
-[submodule "scripts/vmware-host-modules/workstation"]
-	path = scripts/vmware-host-modules/workstation
+[submodule "drivers/vmware-host-modules/workstation"]
+	path = drivers/vmware-host-modules/workstation
 	url = https://github.com/mkubecek/vmware-host-modules.git
 	branch=workstation-16.0.0
 [submodule "yay"]
@@ -18,8 +18,8 @@
 [submodule "macos/simple-bar"]
 	path = macos/simple-bar
 	url = https://github.com/Jean-Tinland/simple-bar.git
-[submodule "scripts/spicetify-themes"]
-	path = scripts/spicetify-themes
+[submodule "drivers/spicetify-themes"]
+	path = drivers/spicetify-themes
 	url = https://github.com/morpheusthewhite/spicetify-themes.git
 [submodule "config/.config/kitty/kitty-themes"]
 	path = config/.config/kitty/kitty-themes
