@@ -12,7 +12,7 @@ gcc cmake ripgrep ctags lxappearance
 obs-studio redshift vlc xsettingsd xsecurelock
 imagemagick acpi ibus ibus-unikey gnome-keyring libgnome-keyring
 bluez blueman nnn bluez-utils pavucontrol
-scrot docker zathura curl vim neovim caprine termite
+scrot docker zathura curl vim cronie neovim caprine termite
 lightdm gparted mate-polkit qt5-base htop
 kvantum-qt5 wireless-tools network-manager-applet
 openssh sshfs net-tools
