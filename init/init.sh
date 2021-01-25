@@ -6,11 +6,14 @@
 # install essentials
 _update system
 
-# if [[ ! -f $HOME/.vim/autoload/plug.vim ]]; then
-#     echo_info "Installing vim-plug..."
-#     eval $(curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-#                 https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim);
-# fi
+# init cron
+crontab $HOME/dotfiles/scripts/cronfile
+
+if [[ ! -f $HOME/.vim/autoload/plug.vim ]]; then
+    echo_info "Installing vim-plug..."
+    eval $(curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+                https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim);
+fi
 
 # zinit
 if [[ ! -d $HOME/.zinit ]]; then

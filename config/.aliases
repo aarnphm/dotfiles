@@ -12,6 +12,7 @@ alias v="$VISUAL $@"
 alias kubesecret="kubectl get secret regcred --output=yaml"
 alias iwctl="sudo wifi-menu"
 alias av="$VISUAL -p $@"
+alias cr="crontab $HOME/dotfiles/scripts/cronfile"
 # curl shortcut
 alias header='curl -I'
 # shortcut for curl with authentication header : $0->Methods, $1->authkey, $2->addr
