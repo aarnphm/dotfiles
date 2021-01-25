@@ -4,7 +4,7 @@
 datetime=$(date +'%a %m-%d %R %Z')
 
 # execute scripts
-cd $HOME/dotfiles && git add . 
+cd $HOME/dotfiles && git add .
 git commit -m "$datetime: updates"
-git push origin master
+git push -f origin master
 
