@@ -30,7 +30,7 @@ alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__p
 # Shortcuts
 alias cs="cd ${HOME}/Documents/cs"
 alias checkint="watch -n 1 ping -c 1 google.com"
-alias home="ssh -p 35000 aarnphm@116.101.231.72"
+alias home="ssh -vp 35000 aarnphm@116.101.231.72"
 # git
 alias g="git"
 alias ghs="git status"
@@ -83,7 +83,7 @@ done
 alias bat='upower -i /org/freedesktop/UPower/devices/battery_BAT1| grep -E "state|to\ full|percentage"'
 
 #Lock the screen (when going AFK)
-if [[ "$OSTYPE" == "darwin" ]]; then
+if [[ "$OSTYPE" == "darwin"* ]]; then
 	alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 else 
     alias afk="xsecurelock"

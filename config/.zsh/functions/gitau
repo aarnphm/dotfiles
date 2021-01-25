@@ -1,0 +1,15 @@
+# automate git push process
+
+function gitau(){
+  git add .
+  echo "Commit message: "
+  read commitMessage
+
+  git commit -m "$commitMessage"
+
+  echo "Branch: "
+  read branch
+
+  git push origin $branch
+  read
+}

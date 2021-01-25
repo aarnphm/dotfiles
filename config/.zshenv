@@ -46,8 +46,13 @@ export GOPROXY="https://proxy.golang.org/,direct"
 
 # define Gem path
 export GEMPATH="$HOME/.gem/ruby/2.7.0"
+
+# define java path
+if [[ "$OSTYPE" == "darwin"* ]]; then
+		export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
+fi
 # define PATH
-export PATH="/home/aarnphm/.pyenv/shims:/usr/local/opt/openjdk/bin:${PATH}:$HOME/google-cloud-sdk/bin:$HOME/.poetry/bin:$GEMPATH/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:$HOME/.local/bin:$HOME/.cargo/bin"
+export PATH="/home/aarnphm/.pyenv/shims:$JAVA_HOME/bin:${PATH}:$HOME/google-cloud-sdk/bin:$HOME/.poetry/bin:$GEMPATH/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:$HOME/.local/bin:$HOME/.cargo/bin"
 export PATH=`printf %s "$PATH" | awk -v RS=: '{ if (!arr[$0]++) {printf("%s%s",!ln++?"":":",$0)}}'`
 
 # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.

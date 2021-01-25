@@ -164,6 +164,8 @@ set undofile
 set undodir=~/.vim/undo
 set undolevels=9999
 set tabstop=4
+set shiftwidth=4
+set expandtab
 command! Ev :e! $MYVIMRC
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
