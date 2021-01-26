@@ -19,7 +19,8 @@ local screen_height             = awful.screen.focused().geometry.height
 local screen_width              = awful.screen.focused().geometry.width
 local markup                    = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames             = {"ano","media","web","meetings","games","code"}
+-- awful.util.tagnames             = {"⚙","♭♮♯","✈","⌘","Σ","⚛"}
+awful.util.tagnames             = {"ano","mus","web","meet","gree","code"}
 awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max, awful.layout.suit.tile, awful.layout.suit.tile.top, awful.layout.suit.max, awful.layout.suit.tile.top}
 -- Custom keybinds
 local modkey                    = "Mod4"
@@ -971,7 +972,7 @@ awful.screen.connect_for_each_screen(
                 keys = clientkeys,
                 buttons = clientbuttons,
                 placement = awful.placement.no_overlap + awful.placement.no_offscreen,
-                size_hints_honor = false
+                -- size_hints_honor = false
             }
         },
         -- Floating clients.
@@ -1019,7 +1020,7 @@ awful.screen.connect_for_each_screen(
             properties = {{floating = true}}
         },
         {
-            rule_any = {class = {"spotify","Vmware"}, instance={"kdocker"}},
+            rule = {class = "spotify"},
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2], switchtotag=true}
         },
         {

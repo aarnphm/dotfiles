@@ -196,6 +196,7 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 nnoremap <leader>\ :let @/=''<CR>:noh<CR>
+nnoremap <silent> <leader>p :%s///g<CR>
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>
 nnoremap <leader>b :ls<CR>:buffer<space>
 nnoremap <leader>d :w !diff % -<CR>
