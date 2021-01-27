@@ -1,15 +1,15 @@
 [user]
-	email = aaronpham0103@gmail.com
-	name = aar0npham
+    email = aaronpham0103@gmail.com
+    name = aar0npham
 [submodule]
-	recurse = true
+    recurse = true
 [credential]
-	helper = osxkeychain
-	helper = /usr/share/git/credential/gnome-keyring/git-credential-gnome-keyring
+    helper = osxkeychain
+    helper = /usr/share/git/credential/gnome-keyring/git-credential-gnome-keyring
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
 [pull]
-	rebase = false
+    rebase = false

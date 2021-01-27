@@ -7,5 +7,5 @@ datetime=$(date +'%a %m-%d %R %Z')
 HOME=/home/aarnphm
 cd $HOME/dotfiles && git add .
 git commit -am "$datetime: updates"
-git push
+git push --all
 
