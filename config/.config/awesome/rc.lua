@@ -8,7 +8,6 @@ local awful                     = require("awful")
 local lain                      = require("lain")
 local naughty                   = require("naughty")
 local freedesktop               = require("freedesktop")
-local switcher                  = require("awesome-switcher")
 local menubar                   = require("menubar")
 local wibox                     = require("wibox")
 local beautiful                 = require("beautiful")
@@ -418,8 +417,8 @@ awful.screen.connect_for_each_screen(
         lain.util.quake(
             {
                 app = "termite",
-                height = 0.43,
-                width = 0.43,
+                height = 0.7,
+                width = 0.7,
                 vert = "center",
                 horiz = "center",
                 followtag = true,
@@ -438,11 +437,11 @@ awful.screen.connect_for_each_screen(
             -- Create a taglist widget
             s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
-            -- Create a tasklist widget
-            s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
-
             -- Create the wibox
-            s.mywibox = awful.wibar({position = "top", screen = s, height = beautiful.menu_height})
+            s.mywibox = awful.wibar({position = "top", screen = s, height = beautiful.menu_height, bg = beautiful.bg_normal})
+
+            -- Create systray
+            s.systray = wibox.widget.systray()
 
             -- Add widgets to the wibox
             s.mywibox:setup {
@@ -455,13 +454,11 @@ awful.screen.connect_for_each_screen(
                 {
                     -- Middle widgets
                     layout = wibox.layout.fixed.horizontal,
-                    -- s.mytasklist
                 },
                 {
                     -- Right widgets
                     layout = wibox.layout.fixed.horizontal,
-                    wibox.widget.systray(),
-                    -- spr,
+                    s.systray,
                     volicon,
                     volume.widget,
                     spr,
@@ -951,20 +948,6 @@ awful.screen.connect_for_each_screen(
     end
     -- global keys
     root.keys(globalkeys)
-
-    -- switcher settings
-    switcher.settings.preview_box                        = true                                     -- display preview-box
-    switcher.settings.preview_box_bg                     = "#ddddddaa"                              -- background color
-    switcher.settings.preview_box_border                 = "#22222200"                              -- border-color
-    switcher.settings.preview_box_fps                    = 30                                       -- refresh framerate
-    switcher.settings.preview_box_delay                  = 150                                      -- delay in ms
-    switcher.settings.preview_box_title_font             = {"mononoki Nerd Font","italic","normal"} -- the font for cairo
-    switcher.settings.preview_box_title_font_size_factor = 1                                        -- the font sizing factor
-    switcher.settings.client_opacity                     = false                                    -- opacity for unselected clients
-    switcher.settings.client_opacity_value               = 0.5                                      -- alpha-value for any client
-    switcher.settings.client_opacity_value_in_focus      = 0.5                                      -- alpha-value for the client currently in focus
-    switcher.settings.client_opacity_value_selected      = 1                                        -- alpha-value for the selected client
-    switcher.settings.cycle_raise_client                 = true                                     -- raise clients on cycle
 
     -- ===================================================================
     -- Rules setup

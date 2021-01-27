@@ -25,6 +25,7 @@ call plug#begin('~/.vim/plugins')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'romainl/Apprentice'
 Plug 'rking/ag.vim'
 " ale for linting
 Plug 'dense-analysis/ale'
@@ -71,9 +72,8 @@ if g:is_termguicolors
   set termguicolors
 endif
 set background=dark
-colorscheme onedark
-" colorscheme gruvbox-material
-" let g:gruvbox_material_background = 'medium'
+" colorscheme onedark
+colorscheme apprentice
 
 " Minimal
 filetype plugin indent on
