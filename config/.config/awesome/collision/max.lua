@@ -272,7 +272,7 @@ local function change_tag(s,direction,is_swap)
   end
   local tags = capi.screen[s].tags
   local fk = awful.util.table.hasitem(tags,capi.screen[s].selected_tag)
-  draw_shape(s,tags,fk,tag_icon,capi.screen[s].workarea.y + 15,20)
+  -- draw_shape(s,tags,fk,tag_icon,capi.screen[s].workarea.y + 15,20)
 end
 
 function module.display_tags(s,direction,c,is_swap,is_max)

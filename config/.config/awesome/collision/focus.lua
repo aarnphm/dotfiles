@@ -134,7 +134,7 @@ local function bydirection(dir, c, swap,max)
   -- Move the client if floating, swaping wont work anyway
   if swap and float then
     c:geometry((max and float_move_max or float_move)(dir,c))
-    display_wiboxes(nil,nil,float,swap,c)
+    -- display_wiboxes(nil,nil,float,swap,c)
   else
 
     if not edge then
@@ -227,7 +227,7 @@ local function bydirection(dir, c, swap,max)
         end
       end
     end
-    display_wiboxes(cltbl,geomtbl,float,swap,c)
+    -- display_wiboxes(cltbl,geomtbl,float,swap,c)
   end
 end
 
@@ -255,7 +255,7 @@ function module.display(mod,key,event,direction,is_swap,is_max)
   -- If there is still no accessible clients, there is nothing to display
   if not c then return end
 
-  display_wiboxes(cltbl,geomtbl,c.floating or alayout.get(c.screen) == alayout.suit.floating,is_swap,c)
+  -- display_wiboxes(cltbl,geomtbl,c.floating or alayout.get(c.screen) == alayout.suit.floating,is_swap,c)
 end
 
 function module._quit()

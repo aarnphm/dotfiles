@@ -13,5 +13,5 @@ function test-agent(){
 }
 
 # failsafe in case .xinitrc fails to run
-test-agent
+# test-agent
 
