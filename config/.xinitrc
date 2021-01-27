@@ -38,6 +38,8 @@ fi
 
 [ -f ~/.xprofile ] && . ~/.xprofile
 
+eval $(ssh-agent)
+
 # ibus-daemon -drx &
 exec awesome
 
