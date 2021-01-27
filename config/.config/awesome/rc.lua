@@ -33,6 +33,7 @@ local cycle_prev                = true
 require("awful.autofocus")
 -- Enable hotkeys help widget for VIM and other apps when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+-- fancy tag switching
 require("collision")()
 -- Theme
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
