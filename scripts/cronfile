@@ -1,1 +1,1 @@
-00 00 * * * . $HOME/dotfiles/automate.sh
+00 00 * * * . $HOME/dotfiles/scripts/automate.sh

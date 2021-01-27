@@ -647,6 +647,14 @@ awful.screen.connect_for_each_screen(
             end,
             {description = "open a kitty", group = "launcher"}
             ),
+        awful.key(
+            {"Control", altkey},
+            "1",
+            function()
+                awful.spawn(". $HOME/.screenlayout/one.sh")
+            end,
+            {description = "open a kitty", group = "launcher"}
+            ),
         -- User programs
         awful.key(
             {modkey},

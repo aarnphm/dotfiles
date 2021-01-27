@@ -16,10 +16,11 @@ bluez blueman nnn bluez-utils pavucontrol
 scrot docker zathura curl vim cronie neovim caprine termite
 lightdm gparted mate-polkit qt5-base htop
 kvantum-qt5 wireless-tools network-manager-applet
-openssh sshfs net-tools
+openssh openvpn sshfs net-tools
 )
 export AUR=(
 awmtt rofi lightdm-slick-greeter nm-applet ncdu bleachbit cacheclean kdocker
+noip
 adobe-source-han-serif-otc-fonts adobe-source-han-sans-otc-fonts noto-fonts-emoji
 discord dmenu-git github-cli slack-desktop dnsutils
 visual-studio-code-bin autofs fet.sh-git polkit inkscape samba ccls wine

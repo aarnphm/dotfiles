@@ -9,9 +9,9 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 alias e="$EDITOR $@"
 alias v="$VISUAL $@"
-alias kubesecret="kubectl get secret regcred --output=yaml"
-alias iwctl="sudo wifi-menu"
+# vim all
 alias av="$VISUAL -p $@"
+# run crontab
 alias cr="crontab $HOME/dotfiles/scripts/cronfile"
 # curl shortcut
 alias header='curl -I'
@@ -26,6 +26,8 @@ alias dc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # remove bytecode
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
+# convert https to ssh
+alias h2s="$HOME/dotfiles/scripts/http2ssh.sh"
 
 # Shortcuts
 alias cs="cd ${HOME}/Documents/cs"
@@ -40,6 +42,8 @@ alias N='sudo -E nnn -dH'
 alias np="nnn-preview"
 alias nn="nnn -dH"
 alias dockerprune="docker system prune -a -f"
+alias kubesecret="kubectl get secret regcred --output=yaml"
+alias iwctl="sudo wifi-menu"
 
 # alias steam="flatpak run com.valvesoftware.Steam"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
@@ -54,7 +58,9 @@ else
   alias la="ls -laF --color"
 fi
 
-alias lc='colorls -lA --sd'
+if [ "$(command colorls 2> /dev/null)" ]; then
+    alias lc='colorls -lA --sd'
+fi
 
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'
