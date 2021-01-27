@@ -1,3 +1,5 @@
 function listen {
     sudo lsof -iTCP:"$@" -sTCP:LISTEN;
 }
+#\!\/bin\/bash
+

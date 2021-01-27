@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Select a docker container to start and attach to
 function da() {
   local cid
@@ -5,3 +7,4 @@ function da() {
 
   [ -n "$cid" ] && docker start "$cid" && docker attach "$cid"
 }
+

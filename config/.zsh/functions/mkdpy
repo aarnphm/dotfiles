@@ -1,3 +1,0 @@
-function mkdpy(){
-    mkdir -p "$@" && cd "$_" && touch "__init__.py";
-}

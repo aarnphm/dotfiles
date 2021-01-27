@@ -1,3 +1,4 @@
+#!/bin/bash
 # Select a running docker container to stop
 function ds() {
   local cid
@@ -5,3 +6,4 @@ function ds() {
 
   [ -n "$cid" ] && docker stop "$cid"
 }
+

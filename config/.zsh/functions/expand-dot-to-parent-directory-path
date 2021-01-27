@@ -1,3 +1,4 @@
+#!/bin/bash
 # Dot expansions
 function expand-dot-to-parent-directory-path {
   if [[ $LBUFFER = *.. ]]; then
@@ -7,3 +8,4 @@ function expand-dot-to-parent-directory-path {
   fi
 }
 zle -N expand-dot-to-parent-directory-path
+

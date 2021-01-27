@@ -3,7 +3,7 @@
 export PKG=(
 xorg xorg-server xorg-xinit
 nvidia nvidia-dkms nvidia-settings nvidia-prime
-android-tools android-udev
+android-tools android-udev fzf
 mesa stow tmux arandr dialog
 awesome	feh nitrogen tree base-devel
 asciinema kitty xdg-user-dirs

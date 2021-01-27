@@ -1,3 +1,4 @@
+#!/bin/bash
 function nnn-preview (){
     # Block nesting of nnn in subshells
     if [ -n "$NNNLVL" ] && [ "${NNNLVL:-0}" -ge 1 ]; then
@@ -36,3 +37,4 @@ function nnn-preview (){
 
     rm -f "$NNN_FIFO"
 }
+

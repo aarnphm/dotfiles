@@ -1,6 +1,9 @@
+#!/bin/bash
+
 function dockerclean {
     # remove first none images
     docker rmi -f $(docker images -a | grep "^<none>" | awk '{print $3}') 2> /dev/null;
     # now remove none container
     docker rmi -f $(docker ps -a -f status=exited -q) 2> /dev/null;
 }
+
