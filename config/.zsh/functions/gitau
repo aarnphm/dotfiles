@@ -5,10 +5,7 @@ function gitau(){
   echo "Commit message: "
   read commitMessage
 
-  git commit -m "$commitMessage"
+  git commit -am "$commitMessage"
 
-  echo "Branch: "
-  read branch
-
-  git push origin $branch
+  git push 
 }
