@@ -1,29 +1,9 @@
-[submodule "drivers/nnn"]
-	path = drivers/nnn
-	url = https://github.com/jarun/nnn.git
-[submodule "pkg/config/.config/awesome/tyrannical"]
-	path = pkg/config/.config/awesome/tyrannical
-	url = https://github.com/Elv13/tyrannical.git
-[submodule "drivers/vmware-host-modules/player"]
-	path = drivers/vmware-host-modules/player
-	url = https://github.com/mkubecek/vmware-host-modules.git
-	branch=player-16.0.0
-[submodule "drivers/vmware-host-modules/workstation"]
-	path = drivers/vmware-host-modules/workstation
-	url = https://github.com/mkubecek/vmware-host-modules.git
-	branch=workstation-16.0.0
-[submodule "yay"]
-	path = yay
-	url = https://aur.archlinux.org/yay.git
-[submodule "macos/simple-bar"]
-	path = macos/simple-bar
-	url = https://github.com/Jean-Tinland/simple-bar.git
 [submodule "scripts/spicetify-themes"]
 	path = scripts/spicetify-themes
 	url = https://github.com/morpheusthewhite/spicetify-themes.git
-[submodule "config/.config/kitty/kitty-themes"]
-	path = config/.config/kitty/kitty-themes
-	url = https://github.com/dexpota/kitty-themes
 [submodule "config/.config/awesome/tyrannical"]
 	path = config/.config/awesome/tyrannical
 	url = https://github.com/Elv13/tyrannical
+[submodule "config/.config/awesome/collision"]
+	path = config/.config/awesome/collision
+	url = https://github.com/Elv13/collision
