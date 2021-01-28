@@ -5,7 +5,7 @@ datetime=$(date +'%a:%m-%d:%R')
 
 # copy lightdm configs to scripts
 LIGHTDM_DIR=/etc/lightdm
-USER=`$(whoami)` sudo cp $LIGHTDM_DIR/lightdm.conf $LIGHTDM_DIR/lightdm-mini-greeter.conf $HOME/dotfiles/scripts
+sudo cp $LIGHTDM_DIR/lightdm.conf $LIGHTDM_DIR/lightdm-mini-greeter.conf $HOME/dotfiles/scripts
 
 # execute scripts
 cd $HOME/dotfiles && git add .
