@@ -3,6 +3,8 @@
 declare options=(
 "alacritty
 kitty
+lightdm
+lightdm-greeter
 awesome
 dunst
 picom
@@ -28,6 +30,12 @@ case "$choice" in
 	;;
 	alacritty)
 		choice="$HOME/.config/alacritty/alacritty.yml"
+	;;
+	lightdm)
+		choice="/etc/lightdm/lightdm.conf"
+	;;
+	lightdm-greeter)
+		choice="/etc/lightdm/lightdm-mini-greeter.conf"
 	;;
 	kitty)
 		choice="$HOME/.config/kitty/kitty.conf"
@@ -82,5 +90,4 @@ case "$choice" in
 	;;
 esac
 
-# alacritty -e nvim "$choice"
 termite --exec="nvim $choice"

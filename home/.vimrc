@@ -195,6 +195,7 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+cnoremap W w :term sudo tee % > /dev/null
 nnoremap <leader>\ :let @/=''<CR>:noh<CR>
 nnoremap <silent> <leader>p :%s///g<CR>
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>
