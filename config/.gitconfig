@@ -1,15 +1,24 @@
 [user]
     email = aaronpham0103@gmail.com
-    name = aar0npham
+    name = aarnphm
 [submodule]
     recurse = true
-[credential]
-    helper = osxkeychain
-    helper = /usr/share/git/credential/gnome-keyring/git-credential-gnome-keyring
+[core]
+    whitespace = warn,space-before-tab,trailing-space
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
+[alias]
+    st = status -sb
+    ci = commit
+    br = branch -vv
+    co = checkout
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    cp = cherry-pick
 [pull]
     rebase = false
+    recurse-submodule=1
+[color]
+    ui = true

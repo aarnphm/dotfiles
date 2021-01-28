@@ -24,6 +24,10 @@ export FZF_DEFAULT_OPTS="--layout=reverse
 --bind 'ctrl-y:execute-silent(echo {+} | pbcopy)'
 --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
 --bind 'ctrl-v:execute(code {+})'";
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
+export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
 
 # wine prefix
 export WINEPREFIX="$HOME/.wine32" 
@@ -92,11 +96,6 @@ export NNN_TRASH=1                                 # trash (needs trash-cli) ins
 export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview'
 export NNN_FIFO=/tmp/nnn.fifo
 
-# FZF
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
-export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
 export LS_COLORS="${LS_COLORS}:ow=01;33"
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"

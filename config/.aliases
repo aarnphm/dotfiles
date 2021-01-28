@@ -96,7 +96,6 @@ alias reload="exec ${SHELL}"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias dotfiles="$HOME/dotfiles"
 alias aconf="$VISUAL -p $HOME/.config/awesome/*.lua"
-alias dconf="$VISUAL -p $HOME/dotfiles/init/*"
 alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'

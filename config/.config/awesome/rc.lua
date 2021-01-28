@@ -18,8 +18,7 @@ local screen_height             = awful.screen.focused().geometry.height
 local screen_width              = awful.screen.focused().geometry.width
 local markup                    = lain.util.markup
 -- Define tag layouts
--- awful.util.tagnames             = {"⚙","♭♮♯","✈","⌘","Σ","⚛"}
-awful.util.tagnames             = {"ano","mus","web","meet","gree","code"}
+awful.util.tagnames             = {"another","music","web","meet","greet","code"}
 awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max, awful.layout.suit.tile, awful.layout.suit.tile.top, awful.layout.suit.max, awful.layout.suit.tile.top}
 -- Custom keybinds
 local modkey                    = "Mod4"
@@ -32,11 +31,9 @@ local cycle_prev                = true
 require("awful.autofocus")
 -- Enable hotkeys help widget for VIM and other apps when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
--- fancy tag switching
-require("collision")()
 -- Theme
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
-naughty.config.defaults.timeout = 1.2
+
 -- ===================================================================
 -- Error handling
 -- ===================================================================
@@ -83,7 +80,7 @@ end
 -- ===================================================================
 
 local apps = {
-    terminal     = "alacritty",
+    terminal     = "kitty",
     editor       = "nvim",
     gui_editor   = os.getenv("GUI_EDITOR") or "code",
     browser      = os.getenv("BROWSER") or "firefox",
@@ -459,10 +456,10 @@ awful.screen.connect_for_each_screen(
                     -- Right widgets
                     layout = wibox.layout.fixed.horizontal,
                     s.systray,
-                    volicon,
+                    -- volicon,
                     volume.widget,
                     spr,
-                    baticon,
+                    -- baticon,
                     bat.widget,
                     spr,
                     clock,
@@ -716,7 +713,7 @@ awful.screen.connect_for_each_screen(
         -- X screen locker
         awful.key(
             {"Control", altkey},
-            "l",
+            "\\",
             function()
                 naughty.suspend()
                 os.execute(apps.lock)
@@ -774,7 +771,7 @@ awful.screen.connect_for_each_screen(
             function()
                 awful.tag.incnmaster(-1, nil, true)
             end,
-                -- screen = awful.screen.focused,
+            -- screen = awful.screen.focused,
             {description = "decrease the number of master clients", group = "layout"}
             ),
         awful.key(
@@ -823,7 +820,7 @@ awful.screen.connect_for_each_screen(
             {description = "go forth", group = "client"}
             ),
 
-        -- awful.key({altkey}, "Tab", 
+        -- awful.key({altkey}, "Tab",
         --     function()
         --         switcher.switch(1, altkey, "Alt_L", "Shift", Tab)
         --     end),
@@ -1030,7 +1027,7 @@ awful.screen.connect_for_each_screen(
         },
         {
             rule_any = {
-                class="Microsoft Teams - Preview", 
+                class="Microsoft Teams - Preview",
                 instance = {"zoom", "discord", "slack", "skype","caprine"}
             },
             properties = {screen=screen.count()>1 and 2 or 1, tag = awful.util.tagnames[4], switchtotag = true}
@@ -1046,6 +1043,8 @@ awful.screen.connect_for_each_screen(
         }
     }
 
+    -- fancy tag switching
+    require("collision")()
     -- ===================================================================
     -- Garbage collection (allows for lower memory consumption)
     -- ===================================================================

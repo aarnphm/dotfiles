@@ -25,12 +25,12 @@ nnn-preview ()
         tmux split-window -e "NNN_FIFO=$NNN_FIFO" -dh "$preview_cmd"
 
     # Use `alacritty` as a preview window
-    elif (which alacritty &> /dev/null); then
-        alacritty -e "$preview_cmd" &
+    elif (which kitty &> /dev/null); then
+        kitty -e "$preview_cmd" &
 
     # Unable to find a program to use as a preview window
     else
-        echo "unable to open preview, please install tmux or alacritty"
+        echo "unable to open preview, please install tmux or kitty"
     fi
 
     nnn "$@"

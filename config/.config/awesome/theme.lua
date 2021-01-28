@@ -22,10 +22,8 @@ theme.bg_focus                 = "#313131"
 theme.bg_urgent                = "#1A1A1A"
 theme.bg_systray               = theme.bg_normal
 theme.systray_opacity          = "55"
-theme.border_width             = dpi(1)
+theme.border_width             = dpi(3)
 theme.border_normal            = "#3F3F3F"
--- theme.border_focus          = "#000000"
--- theme.border_marked         = "#000000"
 theme.border_focus             = "#7F7F7F"
 theme.border_marked            = "#CC9393"
 theme.tasklist_bg_focus        = theme.bg_normal
@@ -40,11 +38,6 @@ theme.notification_max_height  = dpi(200)
 theme.notification_icon_size   = dpi(32)
 theme.tasklist_plain_task_name = true
 theme.tasklist_disable_icon    = true
-theme.collision_bg_focus       = "#000000"
-theme.collision_fg_focus       = "#000000"
-theme.collision_resize_bg      = '#000000'
-theme.collision_resize_fg      = '#000000'
-theme.collision_resize_shape   = nil
 
 
 -- ===================================================================
