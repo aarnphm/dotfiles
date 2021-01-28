@@ -54,7 +54,7 @@ export GEMPATH="$HOME/.gem/ruby/2.7.0"
 
 # define java path
 if [[ "$OSTYPE" == "darwin"* ]]; then
-		export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
+    export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 fi
 # define PATH
 export PATH="/home/aarnphm/.pyenv/shims:$JAVA_HOME/bin:${PATH}:$HOME/google-cloud-sdk/bin:$HOME/.poetry/bin:$GEMPATH/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:$HOME/.local/bin:$HOME/.cargo/bin"

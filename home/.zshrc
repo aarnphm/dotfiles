@@ -1,3 +1,4 @@
+# #!/usr/bin/zsh 
 # profiling
 # zmodload zsh/zprof
 
@@ -6,9 +7,14 @@ if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     exec startx
 fi
 
-for function in $HOME/.zsh/functions/*; do
-    source $function
+# load our own completion functions
+zfunc=${HOME}/.zsh/functions
+fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $zfunc $fpath)
+
+for function in $zfunc/*; do
+    autoload -Uz ${function:t}
 done
+unset zfunc
 
 # extra files in ~/.zsh/configs/pre , ~/.zsh/configs , and ~/.zsh/configs/post
 # these are loaded first, second, and third, respectively.
@@ -41,8 +47,6 @@ _load_settings() {
 }
 
 _load_settings "$HOME/.zsh/configs"
-
-zstyle ':completion:*' menu select
 
 source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
