@@ -12,10 +12,6 @@ else
 fi;
 _comp_options+=(globdots)
 
-# disable zsh bundled function mtools command mcd
-# which causes a conflict.
-compdef -d mcd
-
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
 

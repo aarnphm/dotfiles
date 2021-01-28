@@ -1,3 +1,6 @@
+# profiling
+# zmodload zsh/zprof
+
 # run xinit
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     exec startx
@@ -45,13 +48,6 @@ source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
 
 # syntax highlighting and completion
 zinit wait lucid light-mode for \
@@ -62,3 +58,4 @@ zplugin light zdharma/history-search-multi-word
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
+# zprof

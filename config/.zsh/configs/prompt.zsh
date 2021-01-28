@@ -1,7 +1,7 @@
 # ============================== Prompt
 setopt prompt_subst
-# autoload -Uz vcs_info
-autoload -U colors && colors
+autoload -Uz vcs_info
+autoload -Uz colors
 
 # Prompt symbol
 COMMON_PROMPT_SYMBOL="❯"
