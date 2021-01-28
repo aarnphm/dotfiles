@@ -19,8 +19,7 @@ kvantum-qt5 wireless-tools network-manager-applet
 openssh openvpn sshfs net-tools
 )
 export AUR=(
-awmtt rofi lightdm-slick-greeter nm-applet ncdu bleachbit cacheclean kdocker
-noip
+awmtt rofi lightdm-mini-greeter nm-applet ncdu bleachbit cacheclean kdocker noip
 adobe-source-han-serif-otc-fonts adobe-source-han-sans-otc-fonts noto-fonts-emoji
 discord dmenu-git github-cli slack-desktop dnsutils
 visual-studio-code-bin autofs fet.sh-git polkit inkscape samba ccls wine
