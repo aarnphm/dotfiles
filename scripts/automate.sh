@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # get datetime
-datetime=$(date +'%a%m-%d%R')
+datetime=$(date +'%a:%m-%d:%R')
 
 # execute scripts
 HOME=/home/aarnphm
