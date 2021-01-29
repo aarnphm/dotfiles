@@ -982,6 +982,7 @@ awful.screen.connect_for_each_screen(
                     "lxappearance",
                     "zoom",
                     "gparted",
+                    "pavucontrol",
                     "qt5ct",
                     "kvantum",
                     "grub-customizer"
@@ -994,7 +995,6 @@ awful.screen.connect_for_each_screen(
                     "Arandr",
                     "Zotero",
                     "Blueman-manager",
-                    "Pavucontrol",
                     "Pcmanfm",
                     "Nitrogen",
                     "Termite",
@@ -1023,7 +1023,7 @@ awful.screen.connect_for_each_screen(
         },
         {
             rule_any = {instance={"chromium","firefox"}},
-            properties = {screen=1, tag = awful.util.tagnames[3], switchtotag = true}
+            properties = {tag = awful.util.tagnames[3], switchtotag = true}
         },
         {
             rule_any = {
