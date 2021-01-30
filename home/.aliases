@@ -5,8 +5,8 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
-alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
+
 alias e="$EDITOR $@"
 alias v="$VISUAL $@"
 # vim all
@@ -65,8 +65,8 @@ alias sudo='nocorrect sudo'
 alias week='date +%V'
 
 # IP addresses
-alias ip4="dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com"
-alias ip6="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com"
+alias ip4='dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com'
+alias ip6='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
 
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
