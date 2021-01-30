@@ -11,8 +11,6 @@ local pangocairo = require("lgi").PangoCairo
 local module = {}
 
 local w = nil
-local rad = 10
-local border = 3
 
 local function init()
   w = wibox{}

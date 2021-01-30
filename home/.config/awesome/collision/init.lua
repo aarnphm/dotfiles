@@ -3,7 +3,7 @@ local util   = require( "awful.util")
 local awful  = require( "awful")
 local glib   = require( "lgi").GLib
 local unpack = unpack or table.unpack -- luacheck: globals unpack (compatibility with Lua 5.1)
-local module = { _max                                                                          = require("collision.max")}
+local module = { _max = require("collision.max")}
 
 local current_mode   = "focus"
 

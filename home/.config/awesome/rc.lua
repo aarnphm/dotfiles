@@ -950,6 +950,9 @@ awful.screen.connect_for_each_screen(
     -- Rules setup
     -- ===================================================================
 
+    -- fancy tag switching
+    require("collision")()
+
     awful.rules.rules = {
         -- All clients will match this rule.
         {
@@ -1043,8 +1046,6 @@ awful.screen.connect_for_each_screen(
         }
     }
 
-    -- fancy tag switching
-    require("collision")()
     -- ===================================================================
     -- Garbage collection (allows for lower memory consumption)
     -- ===================================================================
