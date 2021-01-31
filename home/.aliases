@@ -27,6 +27,8 @@ alias h2s="$HOME/dotfiles/scripts/http2ssh.sh"
 # some shortcut
 alias bento="$XDG_CONFIG_DOCUMENTS/cs/BentoML"
 alias cs="$XDG_CONFIG_DOCUMENTS/cs"
+alias ggbby="ssh ggbbyaero15w8"
+alias home="ssh ggbbyaero15w8_home"
 
 # Shortcuts
 alias checkint="watch -n 1 ping -c 1 google.com"
