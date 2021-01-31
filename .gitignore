@@ -1,5 +1,3 @@
-pkg/config/.config/spicetify/*
-!pkg/config/.config/spicetify/config.ini
 .ipython/nbextenstions/
 .ipython/extensions/
 .uuid
@@ -10,11 +8,11 @@ plugins/
 cache/
 swaps/
 undo/
-pkg/python/.ipython/profile_default/db
-pkg/python/.ipython/profile_default/*.py
-pkg/python/.ipython/profile_default/*.sqlite
-pkg/python/.ipython/profile_default/startup/*
-!pkg/python/.ipython/profile_default/startup/start.py
+python/.ipython/profile_default/db
+python/.ipython/profile_default/*.py
+python/.ipython/profile_default/*.sqlite
+python/.ipython/profile_default/startup/*
+!python/.ipython/profile_default/startup/start.py
 *.hi
 *.errors
 *.o
@@ -25,7 +23,6 @@ private*
 pubring*
 trust*
 streams
-config/.config/coc/*
-config/.config/spicetify_data/*
-!config/.config/spicetify_data/config.ini
+home/.config/coc/*
 *.zwc
+scripts/lightdm
