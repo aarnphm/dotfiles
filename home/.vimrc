@@ -44,6 +44,7 @@ Plug 'mrk21/yaml-vim'
 Plug 'ekalinin/Dockerfile.vim'
 " UI related
 Plug 'mkitt/tabline.vim'
+Plug 'lambdalisue/suda.vim'
 Plug 'godlygeek/tabular'
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
@@ -166,7 +167,7 @@ set undolevels=9999
 set tabstop=4
 set shiftwidth=4
 set expandtab
-command! Ev :e! $MYVIMRC
+command! Ev :e! $HOME/.vimrc
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
@@ -195,7 +196,7 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
-cnoremap W w :term sudo tee % > /dev/null
+nnoremap <leader>S :SudaWrite<CR>
 nnoremap <leader>\ :let @/=''<CR>:noh<CR>
 nnoremap <silent> <leader>p :%s///g<CR>
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>
@@ -244,6 +245,8 @@ imap <F2> <C-O>:set invpaste paste?<CR>
 
 " Plugin settings
 let g:instant_rst_port=5686
+let g:suda_smart_edit = 1
+let g:suda#prompt = 'Mot de passe: '
 " show tabline close button
 let g:tablineclosebutton=0
 " syntax settings
