@@ -33,9 +33,9 @@ theme.titlebar_fg_focus        = theme.fg_focus
 theme.menu_height              = dpi(16)
 theme.menu_width               = dpi(140)
 theme.useless_gap              = dpi(3)
-theme.notification_max_width   = dpi(250)
-theme.notification_max_height  = dpi(200)
-theme.notification_icon_size   = dpi(32)
+theme.notification_max_width   = dpi(150)
+theme.notification_max_height  = dpi(50)
+theme.notification_icon_size   = dpi(16)
 theme.tasklist_plain_task_name = true
 theme.tasklist_disable_icon    = true
 

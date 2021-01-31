@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # Make vim the default editor.
 export EDITOR='/usr/bin/vim';
 export VISUAL='nvim';
@@ -32,6 +32,7 @@ export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
 # wine prefix
 export WINEPREFIX="$HOME/.wine32" 
 export WINEARCH=win32
+
 # XDG  config
 export XDG_CONFIG_DIRS="/etc/xdg"
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -56,6 +57,7 @@ export GEMPATH="$HOME/.gem/ruby/2.7.0"
 if [[ "$OSTYPE" == "darwin"* ]]; then
     export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 fi
+
 # define PATH
 export PATH="/home/aarnphm/.pyenv/shims:$JAVA_HOME/bin:${PATH}:$HOME/google-cloud-sdk/bin:$HOME/.poetry/bin:$GEMPATH/bin:$NPM_PACKAGES/bin:$GOPATH/bin:$GOPATH/src:$HOME/spicetify-cli/:$PYENV_ROOT/bin:$HOME/.local/bin:$HOME/.cargo/bin"
 export PATH=`printf %s "$PATH" | awk -v RS=: '{ if (!arr[$0]++) {printf("%s%s",!ln++?"":":",$0)}}'`

@@ -7,8 +7,10 @@ datetime=$(date +'%a:%m-%d:%R')
 LIGHTDM_DIR=/etc/lightdm
 sudo cp $LIGHTDM_DIR/lightdm.conf $LIGHTDM_DIR/lightdm-mini-greeter.conf $HOME/dotfiles/scripts
 
+cd $HOME/dotfiles && git pull --recurse-submodules
+
 # execute scripts
-cd $HOME/dotfiles && git add .
+git add .
 git commit -am "$datetime: cron updates"
 git push --all
 

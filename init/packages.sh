@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PKG=(
-xorg xorg-server xorg-xinit
+xorg xorg-server xorg-xinit nftables sshguard
 nvidia nvidia-dkms nvidia-settings nvidia-prime
 android-tools android-udev fzf
 mesa stow tmux arandr dialog

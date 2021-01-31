@@ -29,7 +29,6 @@ alias cs="$XDG_CONFIG_DOCUMENTS/cs"
 
 # Shortcuts
 alias checkint="watch -n 1 ping -c 1 google.com"
-alias home="ssh -vp 35000 aarnphm@116.101.231.72"
 # git
 alias g="git"
 # nnn intensifies
