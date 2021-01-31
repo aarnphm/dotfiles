@@ -1,4 +1,5 @@
 .ipython/nbextenstions/
+home/.ssh/config
 .ipython/extensions/
 .uuid
 google-cloud-sdk
