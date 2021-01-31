@@ -13,6 +13,7 @@ alias v="$VISUAL $@"
 alias av="$VISUAL -p $@"
 # run crontab
 alias cr="crontab $HOME/dotfiles/scripts/cronfile"
+alias aud="sh $HOME/dotfiles/scripts/automate.sh"
 # mcmaster vpn
 alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
 alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
