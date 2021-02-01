@@ -5,7 +5,7 @@
 (
     setopt LOCAL_OPTIONS EXTENDED_GLOB
     autoload -U zrecompile
-    local ZSHCONFIG=~/.zsh
+    local ZSHCONFIG=$HOME/.zsh
 
     # Compile zcompdump, if modified, to increase startup speed.
     zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"

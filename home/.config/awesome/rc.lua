@@ -501,12 +501,12 @@ awful.screen.connect_for_each_screen(
         )
 
     -- Enable sloppy focus, so that focus follows mouse.
-    -- client.connect_signal(
-    --     "mouse::enter",
-    --     function(c)
-    --         c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
-    --     end
-    --     )
+    client.connect_signal(
+        "mouse::enter",
+        function(c)
+            c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
+        end
+        )
 
     -- ===================================================================
     -- Keys
@@ -729,15 +729,6 @@ awful.screen.connect_for_each_screen(
             end,
             {description = "show rofi", group = "launcher"}
             ),
-        -- Prompt
-        awful.key(
-            {modkey},
-            "r",
-            function()
-                awful.screen.focused().mypromptbox:run()
-            end,
-            {description = "run prompt", group = "launcher"}
-            ),
         awful.key({modkey, "Shift"}, "r", awesome.restart, {description = "reload awesome", group = "awesome"}),
         awful.key({modkey, "Shift"}, "q", awesome.quit, {description = "quit awesome", group = "awesome"}),
         -- layout chanages
@@ -820,11 +811,6 @@ awful.screen.connect_for_each_screen(
             {description = "go forth", group = "client"}
             ),
 
-        -- awful.key({altkey}, "Tab",
-        --     function()
-        --         switcher.switch(1, altkey, "Alt_L", "Shift", Tab)
-        --     end),
-        -- ALSA volume control
         awful.key(
             {},
             "XF86AudioRaiseVolume",
@@ -950,8 +936,6 @@ awful.screen.connect_for_each_screen(
     -- Rules setup
     -- ===================================================================
 
-    -- fancy tag switching
-    require("collision")()
 
     awful.rules.rules = {
         -- All clients will match this rule.
@@ -1067,3 +1051,7 @@ awful.screen.connect_for_each_screen(
         )
 
     awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+
+    -- fancy tag switching
+    require("collision")()
+
