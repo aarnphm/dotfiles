@@ -7,22 +7,20 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias -- -="cd -"
 
-alias e="$EDITOR $@"
+# vim
 alias v="$VISUAL $@"
-# vim all
 alias av="$VISUAL -p $@"
-# run crontab
-alias cr="crontab $HOME/dotfiles/scripts/cronfile"
-alias aud="sh $HOME/dotfiles/scripts/automate.sh"
+
 # mcmaster vpn
 alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
 alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
+
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # remove bytecode
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
 # convert https to ssh
-alias h2s="$HOME/dotfiles/scripts/http2ssh.sh"
+alias h2s="$HOME/.scripts/http2ssh.sh"
 
 # some shortcut
 alias bento="$XDG_CONFIG_DOCUMENTS/cs/BentoML"
