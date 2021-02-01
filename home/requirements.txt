@@ -1,7 +1,7 @@
 jupyter
 jupyter_contrib_nbextensions
-tensorflow-gpu
-keras
+seaborn
+prometheus-client
 pymongo
 numpy
 sklearn
@@ -19,5 +19,3 @@ flask
 imgaug
 onnx
 bentoml
-onnxruntime
-tensorflow_addons

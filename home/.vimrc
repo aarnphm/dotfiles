@@ -370,7 +370,7 @@ let NERDTreeDirArrows = 1
 let g:NERDTreeWinPos = "right"
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
-map <F3> :NERDTreeToggle<cr>
+nnoremap <F5> :NERDTreeToggle<cr>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
