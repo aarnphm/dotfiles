@@ -1,12 +1,5 @@
 <div align="center">
     <p>
-> <!--     <img src="https://img.shields.io/badge/WM-Awesome%20WM-535d6c.svg" />
->    <img src="https://img.shields.io/badge/Editor-Vim-009930.svg" /> 
->    <img src="https://img.shields.io/badge/Terminal-Alacritty-784421.svg" /> 
->    <img src="https://img.shields.io/badge/Shell-Zsh-red.svg" /> 
->    <img src="https://img.shields.io/badge/Font-InconsolataGo-lightgrey.svg" /> 
->    <img src="https://img.shields.io/badge/Distro-Arch%20Linux-0f94d2.svg" />  -->
-   <br><br> 
     <img src="screenshots/dotfiles.png">
     <br><br>
     </p>
