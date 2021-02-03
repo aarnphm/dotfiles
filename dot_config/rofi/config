@@ -1,0 +1,6 @@
+rofi.theme: .config/rofi/apprentice.rasi
+
+rofi.modi: window,run,ssh,drun,combi
+rofi.lines: 10
+rofi.case-sensitive: false
+rofi.matching: fuzzy
