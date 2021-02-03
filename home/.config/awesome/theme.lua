@@ -35,7 +35,7 @@ theme.menu_width               = dpi(140)
 theme.useless_gap              = dpi(3)
 theme.notification_max_width   = dpi(256)
 theme.notification_max_height  = dpi(128)
-theme.notification_icon_size   = dpi(16)
+theme.notification_icon_size   = dpi(24)
 theme.tasklist_plain_task_name = true
 theme.tasklist_disable_icon    = true
 

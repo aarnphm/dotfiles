@@ -102,6 +102,9 @@ set showmode
 set hidden
 set clipboard=unnamed,unnamedplus
 set mouse=a
+set foldmethod=syntax "indent-syntax-manual
+set foldnestmax=2
+set foldlevel=1
 if has('vim')
   set term=xterm-256color
 endif
@@ -196,6 +199,10 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+inoremap <F9> <C-O>za
+nnoremap <F9> za
+onoremap <F9> <C-C>za
+vnoremap <F9> zf
 nnoremap <leader>S :SudaWrite<CR>
 nnoremap <leader>\ :let @/=''<CR>:noh<CR>
 nnoremap <silent> <leader>p :%s///g<CR>

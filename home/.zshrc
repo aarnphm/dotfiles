@@ -14,7 +14,14 @@ fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $zfunc $fpath)
 for function in $zfunc/*; do
     autoload -Uz ${function:t}
 done
-unset zfunc
+
+# Start ssh-agent
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+fi
+if [[ ! "$SSH_AUTH_SOCK" ]]; then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+fi
 
 # extra files in ~/.zsh/configs/pre , ~/.zsh/configs , and ~/.zsh/configs/post
 # these are loaded first, second, and third, respectively.
@@ -47,14 +54,6 @@ _load_settings() {
 }
 
 _load_settings "$HOME/.zsh/configs"
-
-# Start ssh-agent
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
-fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-fi
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases

@@ -28,6 +28,7 @@ alias cs="$XDG_CONFIG_DOCUMENTS/cs"
 
 # Shortcuts
 alias checkint="watch -n 1 ping -c 1 google.com"
+alias net="ping google.com | grep -E --only-match --color=never '[0-9\.]+ ms'"
 # git
 alias g="git"
 # nnn intensifies
