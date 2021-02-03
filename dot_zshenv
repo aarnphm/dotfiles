@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # Make vim the default editor.
-export EDITOR='/usr/bin/vim';
+# export EDITOR='/usr/bin/vim';
+export EDITOR='/usr/bin/nvim';
 export VISUAL='nvim';
 export BROWSER=/usr/bin/firefox
 export DISPLAY=:0

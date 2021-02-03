@@ -12,6 +12,7 @@ alias v="$VISUAL $@"
 alias av="$VISUAL -p $@"
 #chezmoi
 alias e="chezmoi edit $@"
+alias ca="chezmoi apply -v"
 alias dotfiles="chezmoi cd"
 alias cr="crontab $HOME/.local/share/chezmoi/scripts/cronfile"
 
