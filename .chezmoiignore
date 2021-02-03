@@ -1,0 +1,9 @@
+README.md
+Makefile
+install.sh
+*.deb
+*.tar.gz
+
+scripts
+screenshots
+init

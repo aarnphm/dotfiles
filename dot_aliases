@@ -10,11 +10,14 @@ alias -- -="cd -"
 # vim
 alias v="$VISUAL $@"
 alias av="$VISUAL -p $@"
+#chezmoi
+alias e="chezmoi edit $@"
+alias dotfiles="chezmoi cd"
+alias cr="crontab $HOME/.local/share/chezmoi/scripts/cronfile"
 
 # mcmaster vpn
 alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
 alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
-alias cr="crontab $HOME/dotfiles/scripts/cronfile"
 
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
@@ -93,7 +96,6 @@ fi
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec ${SHELL}"
 alias vconf="$VISUAL $HOME/.vimrc"
-alias dotfiles="$HOME/dotfiles"
 alias aconf="$VISUAL -p $HOME/.config/awesome/*.lua"
 alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"
 # Print each PATH entry on a separate line
