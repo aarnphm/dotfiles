@@ -2,11 +2,7 @@
 
 
 # check for chezmoi
-if [[ `uname -s`=="Darwin"* ]]; then
-    export CHEZMOI_BIN=chezmoi
-else
-    export CHEZMOI_BIN="$(command -v chezmoi)"
-fi
+export CHEZMOI_BIN="$(command -v chezmoi)"
 
 # make nvim
 if [[ `uname -s` == "Darwin"* ]]; then

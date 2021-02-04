@@ -14,4 +14,10 @@ screenshots
 
 {{ if ne .chezmoi.os "darwin" }}
 Brewfile
+.config/yabai
+.config/skhd
+{{ end  }}
+
+{{ if ne .chezmoi.os "linux" }}
+.config/awesome
 {{ end  }}
