@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -12,10 +11,11 @@ alias -- -="cd -"
 alias v="$EDITOR $@"
 alias av="$VISUAL -p $@"
 # chezmoi
-alias e="$CHEZMOI_BIN edit $@"
-alias dotfiles="$CHEZMOI_BIN cd"
+alias e="$CHEZMOI_BIN edit --apply $@"
+alias o="xdg-open $@"
+alias dotfiles="cd $HOME/.local/share/chezmoi"
 alias cr="crontab $HOME/.local/share/chezmoi/scripts/cronfile"
-alias h2s="$HOME/.scripts/http2ssh.sh"
+alias h2s="$HOME/.scripts/http-to-ssh.sh"
 
 # mcmaster vpn
 alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"

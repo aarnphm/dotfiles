@@ -6,3 +6,10 @@ Makefile
 
 scripts
 screenshots
+
+{{ if eq .chezmoi.os "linux" }}
+.ssh/known_hosts
+.ssh/id_rsa
+.ssh/id_ed25519
+.ssh/*.pub
+{{ end }}

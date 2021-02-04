@@ -39,5 +39,3 @@ fi
 [ -f ~/.xprofile ] && . ~/.xprofile
 
 exec awesome
-exec ${SHELL} 2> $HOME/zsh-error.log
-

@@ -89,7 +89,6 @@ local apps = {
     launcher     = "rofi -modi drun -i -p -show drun -show-icons",
     lock         = "xsecurelock",
     screenshot   = "gyazo",
-    filebrowser  = "pcmanfm",
     zotero       = "/opt/zotero/zotero",
     audiocontrol = "pavucontrol",
     bluetooth    = "blueman-manager"
@@ -698,9 +697,9 @@ awful.screen.connect_for_each_screen(
             {modkey, "Shift"},
             "f",
             function()
-                awful.spawn(apps.filebrowser)
+                awful.spawn("firefox --new-window file:///home/aarnphm")
             end,
-            {description = "run explorer", group = "launcher"}
+            {description = "open explorer", group = "launcher"}
             ),
         awful.key(
             {modkey, "Shift"},
