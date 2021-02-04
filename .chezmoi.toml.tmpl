@@ -1,0 +1,37 @@
+{{/* boolean feature tags */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+{{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
+{{- $isovalent := false -}}{{/* true if this machine should have Isovalent secrets from 1Password */}}
+{{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
+{{- $personal := false -}}{{/* true if this machine should have personal secrets from LastPass */}}
+{{- "" -}}
+
+{{/* work around unreliable hostname on darwin */}}
+{{- $hostname := .chezmoi.hostname -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $serialNumberSHA256Sum := index ioreg "IORegistryEntryChildren" 0 "IOPlatformSerialNumber" | sha256sum -}}
+{{-   if eq $serialNumberSHA256Sum "21bc2b3dba08a4f53732b42ac8b041ac2a83ebe95b73dfc2b5c251b4767463d8" -}}
+{{-     $hostname = "APPL-AIR12" -}}
+{{-   end -}}
+{{- end -}}
+
+
+{{- if not $transient -}}
+{{-   if eq $hostname "APPL-AIR12" -}}
+{{-     $personal = true -}}
+{{-   else if eq $hostname "0x6161726E70" -}}
+{{-     $personal = true -}}
+{{-   else -}}
+{{-     $headless = promptBool "headless" -}}
+{{-     $transient = promptBool "transient" -}}
+{{-     $kubernetes = promptBool "kubernetes" -}}
+{{-   end -}}
+{{- end -}}
+
+[data]
+  headless = {{ $headless }}
+  hostname = {{ $hostname | quote }}
+  transient = {{ $transient }}
+  isovalent = {{ $isovalent }}
+  kubernetes = {{ $kubernetes }}
+  personal = {{ $personal }}

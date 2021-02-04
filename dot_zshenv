@@ -7,6 +7,8 @@ export CHEZMOI_BIN=`command -v chezmoi`
 # Make vim the default editor.
 if [ ! "$(command -v nvim)" ]; then
     export EDITOR='/usr/bin/vim';
+elif [[ `uname -s` == "Darwin"* ]]; then
+    export EDITOR='/usr/local/bin/nvim';
 else 
     export EDITOR='/usr/bin/nvim';
 fi
