@@ -11,3 +11,7 @@ screenshots
 .ssh/id_rsa
 .ssh/id_ed25519
 .ssh/*.pub
+
+{{ if ne .chezmoi.os "darwin" }}
+Brewfile
+{{ end  }}

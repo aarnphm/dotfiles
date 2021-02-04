@@ -14,7 +14,7 @@ alias av="$VISUAL -p $@"
 alias e="$CHEZMOI_BIN edit --apply $@"
 alias o="xdg-open $@"
 alias dotfiles="cd $HOME/.local/share/chezmoi"
-alias cr="crontab $HOME/.local/share/chezmoi/scripts/cronfile"
+alias cr="crontab $(chezmoi source-path)/scripts/cronfile"
 alias h2s="$HOME/.scripts/http-to-ssh.sh"
 
 # mcmaster vpn

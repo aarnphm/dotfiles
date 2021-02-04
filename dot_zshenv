@@ -1,8 +1,12 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 
 # check for chezmoi
-export CHEZMOI_BIN=`command -v chezmoi`
+if [[ `uname -s`=="Darwin"* ]]; then
+    export CHEZMOI_BIN=chezmoi
+else
+    export CHEZMOI_BIN="$(command -v chezmoi)"
+fi
 
 # Make vim the default editor.
 if [ ! "$(command -v nvim)" ]; then
@@ -12,6 +16,7 @@ elif [[ `uname -s` == "Darwin"* ]]; then
 else 
     export EDITOR='/usr/bin/nvim';
 fi
+
 export VISUAL=$EDITOR;
 export BROWSER=/usr/bin/firefox
 export DISPLAY=:0
