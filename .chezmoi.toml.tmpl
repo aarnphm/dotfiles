@@ -15,7 +15,6 @@
 {{-   end -}}
 {{- end -}}
 
-
 {{- if not $transient -}}
 {{-   if eq $hostname "APPL-AIR12" -}}
 {{-     $personal = true -}}
@@ -28,7 +27,6 @@
 {{-   end -}}
 {{- end -}}
 
-color = on
 [data]
   headless = {{ $headless }}
   hostname = {{ $hostname | quote }}
