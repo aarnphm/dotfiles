@@ -27,4 +27,3 @@ streams
 home/.config/coc/*
 *.zwc
 *.old
-scripts/lightdm
