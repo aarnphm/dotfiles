@@ -12,9 +12,10 @@ alias v="$VISUAL $@"
 alias av="$VISUAL -p $@"
 #chezmoi
 alias e="chezmoi edit $@"
-alias ca="chezmoi apply -v"
+alias ca="chezmoi apply -v --color on"
 alias dotfiles="chezmoi cd"
 alias cr="crontab $HOME/.local/share/chezmoi/scripts/cronfile"
+alias h2s="$HOME/.scripts/http2ssh.sh"
 
 # mcmaster vpn
 alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
@@ -24,8 +25,6 @@ alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # remove bytecode
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
-# convert https to ssh
-alias h2s="$HOME/.scripts/http2ssh.sh"
 
 # some shortcut
 alias bento="$XDG_CONFIG_DOCUMENTS/cs/BentoML"

@@ -77,7 +77,7 @@ case "$choice" in
 		choice="$HOME/.zshrc"
 	;;
 	packages)
-		choice="$HOME/dotfiles/init/packages.sh"
+		choice="$HOME/.local/share/chezmoi/packages.sh"
 	;;
 	aliases)
 		choice="$HOME/.aliases"

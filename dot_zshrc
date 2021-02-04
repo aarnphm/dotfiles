@@ -8,20 +8,13 @@ if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 fi
 
 # load our own completion functions
-zfunc=${HOME}/.zsh/functions
-fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $zfunc $fpath)
+fn=${HOME}/.local/bin
+fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fn $fpath)
 
-for function in $zfunc/*; do
+for function in $fn/*; do
     autoload -Uz ${function:t}
 done
 
-# Start ssh-agent
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
-fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-fi
 
 # extra files in ~/.zsh/configs/pre , ~/.zsh/configs , and ~/.zsh/configs/post
 # these are loaded first, second, and third, respectively.
@@ -53,7 +46,7 @@ _load_settings() {
     fi
 }
 
-_load_settings "$HOME/.zsh/configs"
+_load_settings "$HOME/.zsh"
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases

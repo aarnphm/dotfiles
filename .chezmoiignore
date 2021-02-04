@@ -1,9 +1,8 @@
 README.md
 Makefile
-install.sh
+*.sh
 *.deb
 *.tar.gz
 
 scripts
 screenshots
-init

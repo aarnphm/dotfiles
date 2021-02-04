@@ -1,4 +1,4 @@
-.PHONY: init build run stow
+.PHONY: init build run
 
 .DEFAULT_GOAL := help
 
@@ -10,10 +10,7 @@ help:
 	| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 init:
-	chmod +x init/*.sh && ./init/init.sh
-
-stow:
-	stow home --target=${HOME} --ignore='stow.sh'
+	./install.sh
 
 build:
 	docker build -t aar0npham/dotfiles:latest .

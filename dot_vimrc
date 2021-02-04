@@ -1,5 +1,9 @@
 set runtimepath+=~/.vim/
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-plug
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " use vim-plug becauseof its minimalistic
 "¯\_(ツ)_/¯
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -11,13 +15,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall
   augroup end
 endif
-
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-plug
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " define vim-plug here
 call plug#begin('~/.vim/plugins')
@@ -59,6 +56,15 @@ Plug 'Yggdroot/indentLine'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => autocmd glore
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType vim setlocal foldmethod=marker
+autocmd FileType python setlocal foldmethod=indent
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => init
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -67,6 +73,9 @@ let g:is_gui=has('gui_running')
 let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
 let g:has_job = has('job')
 let g:has_term = has('terminal')
+if has('vim')
+  set term=xterm-256color
+endif
 
 " Setup
 if g:is_termguicolors
@@ -102,12 +111,7 @@ set showmode
 set hidden
 set clipboard=unnamed,unnamedplus
 set mouse=a
-set foldmethod=syntax "indent-syntax-manual
-set foldnestmax=2
-set foldlevel=1
-if has('vim')
-  set term=xterm-256color
-endif
+set foldmethod=manual "indent-syntax-manual
 set wildmode=longest:full,full
 set wildcharm=<Tab>
 set shortmess+=I
