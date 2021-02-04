@@ -5,7 +5,7 @@ autoload -Uz vcs_info
 autoload -Uz colors && colors
 
 # Prompt symbol
-COMMON_PROMPT_SYMBOL="❯"
+COMMON_PROMPT_SYMBOL=">"
 
 # Colors
 COMMON_COLORS_HOST_ME=green

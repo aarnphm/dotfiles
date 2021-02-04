@@ -38,8 +38,6 @@ fi
 
 [ -f ~/.xprofile ] && . ~/.xprofile
 
-# ibus-daemon -drx &
-eval $(ssh-agent)
 exec awesome
 exec ${SHELL} 2> $HOME/zsh-error.log
 

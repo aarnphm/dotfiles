@@ -1,17 +1,18 @@
 #!/bin/bash
 
 function test-agent(){
-    if ps -p $SSH_AGENT_PID > /dev/null
-    then
-       echo "ssh-agent is already running"
-       ssh-add
-       # Do something knowing the pid exists, i.e. the process with $PID is running
+    if [ $(ps ax | grep ssh-agent | wc -l) -gt 0 ] ; then
+        echo "ssh-agent is already running"
     else
-    eval `ssh-agent -s`
+        eval $(ssh-agent -s)
+        if [ "$(ssh-add -l)" == "The agent has no identities." ] ; then
+            ssh-add ~/.ssh/id_rsa
+        fi
+
+        # Don't leave extra agents around: kill it on exit. You may not want this part.
+        trap "ssh-agent -k" exit
     fi
 
 }
 
-# failsafe in case .xinitrc fails to run
-# test-agent
 

@@ -1,6 +1,7 @@
 # #!/usr/bin/env zsh
 # profiling
 # zmodload zsh/zprof
+# set -x
 
 # run xinit
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
@@ -14,7 +15,6 @@ fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fn $fpath)
 for function in $fn/*; do
     autoload -Uz ${function:t}
 done
-
 
 # extra files in ~/.zsh/configs/pre , ~/.zsh/configs , and ~/.zsh/configs/post
 # these are loaded first, second, and third, respectively.
@@ -48,10 +48,25 @@ _load_settings() {
 
 _load_settings "$HOME/.zsh"
 
+# run ssh-agents
+if [ $(ps ax | grep ssh-agent | wc -l) -gt 0 ] ; then
+    # echo "ssh-agent is already running"
+else
+    eval `ssh-agent -s`
+    if [ "$(ssh-add -l)" == "The agent has no identities." ] ; then
+        ssh-add -t 4h
+    fi
+
+    # Don't leave extra agents around: kill it on exit. You may not want this part.
+    trap "ssh-agent -k" exit
+fi
+
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
 # .localrc contains all the local dev variables
-[[ -f ~/.localrc ]] && source ~/.localrc
+if [[ -f ~/.localrc ]];then
+    source ~/.localrc
+fi
 
 # zprof

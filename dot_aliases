@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -8,12 +9,11 @@ alias .....="cd ../../../.."
 alias -- -="cd -"
 
 # vim
-alias v="$VISUAL $@"
+alias v="$EDITOR $@"
 alias av="$VISUAL -p $@"
-#chezmoi
-alias e="chezmoi edit $@"
-alias ca="chezmoi apply -v --color on"
-alias dotfiles="chezmoi cd"
+# chezmoi
+alias e="$CHEZMOI_BIN edit $@"
+alias dotfiles="$CHEZMOI_BIN cd"
 alias cr="crontab $HOME/.local/share/chezmoi/scripts/cronfile"
 alias h2s="$HOME/.scripts/http2ssh.sh"
 
@@ -52,12 +52,12 @@ alias l="ls -lF ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
 if [ "$(uname -s)" = "Darwin" ]; then
-  alias la="ls -laF -G"
+    alias la="ls -laF -G"
 else
-  alias la="ls -laF --color"
+    alias la="ls -laF --color"
 fi
 
-if [ "$(command colorls 2> /dev/null)" ]; then
+if [ "$(command -v colorls)" ]; then
     alias lc='colorls -lA --sd'
 fi
 
@@ -81,7 +81,7 @@ alias map="xargs -n1"
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-	alias "${method}"="lwp-request -m '${method}'"
+    alias "${method}"="lwp-request -m '${method}'"
 done
 
 # battery
@@ -89,12 +89,12 @@ alias bat='upower -i /org/freedesktop/UPower/devices/battery_BAT1| grep -E "stat
 
 #Lock the screen (when going AFK)
 if [[ "$OSTYPE" == "darwin"* ]]; then
-	alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+    alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 else 
     alias afk="xsecurelock"
 fi
 # Reload the shell (i.e. invoke as a login shell (-l))
-alias reload="exec ${SHELL}"
+alias reload="$CHEZMOI_BIN apply -v --color on && exec ${SHELL}"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias aconf="$VISUAL -p $HOME/.config/awesome/*.lua"
 alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"
@@ -109,7 +109,7 @@ alias lni="${aliases[ln]:-ln} -i"
 
 # File Download
 if (( $+commands[curl] )); then
-  alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
+    alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
 elif (( $+commands[wget] )); then
-  alias get='wget --continue --progress=bar --timestamping'
+    alias get='wget --continue --progress=bar --timestamping'
 fi
