@@ -22,5 +22,7 @@ Brewfile
 .config/picom
 .config/redshift
 .config/rofi
+.dmenu/
 {{ end  }}
+
 coc-settings.json
