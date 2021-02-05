@@ -47,14 +47,15 @@ _load_settings() {
 
 _load_settings "$HOME/.zsh"
 
-if [ $(ps ax | grep -F ssh-agent | wc -l) -gt 0 ] ; then
-    # echo "ssh-agent is already running"
-    ssh-add -q -t 4h
+
+if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    #ps ${SSH_AGENT_PID} doesn't work under cywgin
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+    }
 else
-    eval $(ssh-agent -s)
-    ssh-add -l -q
-    # Don't leave extra agents around: kill it on exit. You may not want this part.
-    trap "ssh-agent -k" exit
+    start_agent;
 fi
 
 # aliases

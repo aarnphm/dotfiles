@@ -12,6 +12,7 @@
     $ curl -sfL https://git.io/chezmoi | sh
     $ sh -c "https://raw.githubusercontent.com/aarnphm/dotfiles/main/install.sh"
 ```
+- for first time installer do `make install`
 A more responsible options:
 - after installing chezmoi you can do `chezmoi init git@github.com:aarnphm/dotfiles.git`
 - `chezmoi diff -v` to see different files, `chezmoi apply -v --dry-run` to check for errors

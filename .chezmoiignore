@@ -1,5 +1,6 @@
 README.md
 Makefile
+Dockerfile
 *.sh
 *.deb
 install*
@@ -15,6 +16,7 @@ Brewfile
 .config/yabai
 .config/skhd
 .config/spicetify_data
+.hushlogin
 {{ end  }}
 
 {{ if ne .chezmoi.os "linux" }}
@@ -22,8 +24,8 @@ Brewfile
 .config/picom
 .config/redshift
 .config/rofi
+.config/termite
+.config/conky
+.Xresources
 .dmenu/
 {{ end  }}
-
-config/coc-settings.json
-config/Brewfile

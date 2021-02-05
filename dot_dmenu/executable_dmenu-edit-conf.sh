@@ -90,4 +90,4 @@ case "$choice" in
 	;;
 esac
 
-termite --exec="nvim $choice"
+termite --exec="chezmoi edit --apply $choice"

@@ -4,6 +4,8 @@
 #
 # Executed by startx (run your window manager from here)
 
+{{- if .personal }}
+{{-   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) }}
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
@@ -38,6 +40,6 @@ fi
 
 [ -f ~/.xprofile ] && . ~/.xprofile
 
-{{- if eq .chezmoi.os "linux" }}
 exec awesome
+{{-   end }}
 {{- end }}

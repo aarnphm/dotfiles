@@ -2,6 +2,7 @@
 #
 # Execute code in the background to not affect the current session
 
+{{- if .personal }}
 (
     setopt LOCAL_OPTIONS EXTENDED_GLOB
     autoload -U zrecompile
@@ -13,4 +14,4 @@
         zrecompile -pq "$zcompdump"
     fi
 ) &!
-
+{{- end }}

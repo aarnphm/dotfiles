@@ -1,3 +1,5 @@
+{{- if .personal }}
+{{-   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) }}
 Xcursor.size: 12
 *.foreground: #BCBCBC
 *.background: #262626
@@ -17,3 +19,5 @@ Xcursor.size: 12
 *.color14:    #5FAFAF
 *.color7:     #6C6C6C
 *.color15:    #FFFFFF
+{{-   end }}
+{{- end }}

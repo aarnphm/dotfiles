@@ -21,7 +21,7 @@ fi
 run nm-applet
 run ibus-daemon -drx 
 run nitrogen --restore 
-run redshift-gtk
+run redshift
 run unclutter -idle 1 
 run blueman-tray
 run discord

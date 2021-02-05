@@ -1049,8 +1049,8 @@ awful.screen.connect_for_each_screen(
         end
         )
 
-    awful.spawn.with_shell("~/.config/awesome/autorun.sh")
-
     -- fancy tag switching
     require("collision")()
+
+    awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 
