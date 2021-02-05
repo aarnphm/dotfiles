@@ -1,6 +1,6 @@
-# chezmoi does dotfiles
+# aaron does dotfiles
 
-<div align="center">_automated deployment for <code>!~</code> across Unix-like devices_</div>
+<div align="center"><p>automated deployment for <code>!~</code> across Unix-like devices.(<i>currently Arch and MacOS</i>)</p></div>
 
 - managed with [chezmoi](https://www.chezmoi.io/) 
 - secrets stored with [BitWarden CLI](https://bitwarden.com/) and [Unix pass](https://www.passwordstore.org/)
