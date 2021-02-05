@@ -5,7 +5,8 @@ export CHEZMOI_BIN=chezmoi
 export EDITOR='/usr/local/bin/nvim'
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 export BASH_SILENCE_DEPRECATION_WARNING=1;
-{{- else if eq .chezmoi.os "linux" }}
+{{- end }}
+{{- if eq .chezmoi.os "linux" }}
 export CHEZMOI_BIN="$(command -v chezmoi)"
 export EDITOR='/usr/bin/nvim'
 export DISPLAY=:0
