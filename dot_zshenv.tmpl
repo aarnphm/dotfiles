@@ -3,12 +3,14 @@
 {{- if eq .chezmoi.os "darwin" }}
 export CHEZMOI_BIN="$(which chezmoi)"
 export EDITOR='/usr/local/bin/nvim'
+export VISUAL='/usr/bin/vim'
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 export BASH_SILENCE_DEPRECATION_WARNING=1;
 {{- end }}
 {{- if eq .chezmoi.os "linux" }}
 export CHEZMOI_BIN="$(command -v chezmoi)"
 export EDITOR='/usr/bin/nvim'
+export VISUAL='/usr/bin/nvim'
 export DISPLAY=:0
 # wine prefix
 export WINEPREFIX="$HOME/.wine32"
@@ -16,7 +18,6 @@ export WINEARCH=win32
 {{- end }}
 
 export BROWSER='/usr/bin/firefox'
-export VISUAL='/usr/bin/vim'
 export LS_COLORS="${LS_COLORS}:ow=01;33"
 
 {{ $fzf := `command -v fzf` }}

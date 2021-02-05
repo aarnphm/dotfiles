@@ -1,12 +1,12 @@
-# aarnphm doesn't do dotfiles, but chezmoi
+# chezmoi does dotfiles
 
-_automated deployment for dotfiles across unix-like devices_
+<div align="center">_automated deployment for <code>!~</code> across Unix-like devices_</div>
 
 - managed with [chezmoi](https://www.chezmoi.io/) 
 - secrets stored with [BitWarden CLI](https://bitwarden.com/) and [Unix pass](https://www.passwordstore.org/)
 - I have included a Docker version of my dotfiles if you want to try it out.
 
-## Installation
+# Installation
 
 ```sh 
     $ curl -sfL https://git.io/chezmoi | sh

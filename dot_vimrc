@@ -177,7 +177,7 @@ set undolevels=9999
 set tabstop=4
 set shiftwidth=4
 set expandtab
-command! Ev :e! $HOME/.vimrc
+command! Ev :terminal $CHEZMOI_BIN edit --apply $HOME/.vimrc
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
