@@ -79,7 +79,10 @@ echo_info "Installing from AUR ..."
 _install aur
 
 # log cron
-crontab $HOME/dotfiles/scripts/cronfile
+crontab `chezmoi source-path`/linux_conf/cronfile
+
+# bitwarden 
+npm install -g @bitwarden/cli
 
 if [[ ! -f $HOME/.vim/autoload/plug.vim ]]; then
     echo_info "Installing vim-plug..."

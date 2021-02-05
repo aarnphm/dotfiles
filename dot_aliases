@@ -11,10 +11,10 @@ alias -- -="cd -"
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
 # chezmoi
-alias e="$CHEZMOI_BIN edit --apply $@"
+alias e="$CHEZMOI_BIN edit $@"
 alias o="xdg-open $@"
 alias dotfiles="cd $HOME/.local/share/chezmoi"
-alias cr="crontab $(chezmoi source-path)/scripts/cronfile"
+alias cr="crontab $(chezmoi source-path)/linux_conf/cronfile"
 alias h2s="$HOME/.scripts/http-to-ssh.sh"
 
 # mcmaster vpn
@@ -96,7 +96,7 @@ else
     alias afk="xsecurelock"
 fi
 # Reload the shell (i.e. invoke as a login shell (-l))
-alias reload="$CHEZMOI_BIN apply -v --color on && exec ${SHELL}"
+alias reload="exec ${SHELL} && chezmoi apply -v --color on"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias aconf="$VISUAL -p $HOME/.config/awesome/*.lua"
 alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"

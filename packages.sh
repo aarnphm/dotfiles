@@ -24,7 +24,7 @@ adobe-source-han-serif-otc-fonts adobe-source-han-sans-otc-fonts noto-fonts-emoj
 discord dmenu-git github-cli slack-desktop dnsutils visual-studio-code-bin
 autofs fet.sh-git polkit inkscape samba ccls wine
 jre-openjdk jdk-openjdk zoom postgresql pgadmin4 spicetify-cli
-materia-gtk-theme papirus-icon-theme qt5ct pyenv odoo
+materia-gtk-theme papirus-icon-theme qt5ct pyenv 
 vmware-workstation nodejs npm rainbow ruby-colorls spotify
 picom-git redshift-qt unclutter optimus-manager-qt bbswitch numix-circle-icon-theme-git
 teams gyazo lib32-libappindicator-gtk2 lib32-libappindicator-gtk3
