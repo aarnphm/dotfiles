@@ -11,7 +11,7 @@ alias -- -="cd -"
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
 # chezmoi
-alias e="$CHEZMOI_BIN edit $@"
+alias e="$CHEZMOI_BIN edit --apply $@"
 alias o="xdg-open $@"
 alias dotfiles="cd $HOME/.local/share/chezmoi"
 alias cr="crontab $(chezmoi source-path)/config/cronfile"
@@ -96,7 +96,7 @@ else
     alias afk="xsecurelock"
 fi
 # Reload the shell (i.e. invoke as a login shell (-l))
-alias reload="chezmoi apply -v --color on && exec ${SHELL}"
+alias reload="exec ${SHELL}"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias aconf="$VISUAL -p $HOME/.config/awesome/*.lua"
 alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"
