@@ -1,0 +1,5 @@
+{{- if .personal -}}
+{{-   if eq .hostname "APPL-AIR12" }}
+{{-     (bitwarden "item" "PRI_APPL_AIR12_SSH_NOT_GIT").notes -}}
+{{-   end -}}
+{{- end -}}
