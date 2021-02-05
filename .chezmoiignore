@@ -2,10 +2,10 @@ README.md
 Makefile
 *.sh
 *.deb
+install*
 *.tar.gz
 
-test*
-scripts
+linux_conf
 screenshots
 
 .ssh/known_hosts

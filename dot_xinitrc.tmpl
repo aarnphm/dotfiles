@@ -38,4 +38,6 @@ fi
 
 [ -f ~/.xprofile ] && . ~/.xprofile
 
+{{- if eq .chezmoi.os "linux" }}
 exec awesome
+{{- end }}
