@@ -5,7 +5,7 @@ Makefile
 install*
 *.tar.gz
 
-linux_conf
+config
 screenshots
 
 .ssh/known_hosts
@@ -25,5 +25,5 @@ Brewfile
 .dmenu/
 {{ end  }}
 
-coc-settings.json
-Brewfile
+config/coc-settings.json
+config/Brewfile

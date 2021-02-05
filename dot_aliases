@@ -96,7 +96,7 @@ else
     alias afk="xsecurelock"
 fi
 # Reload the shell (i.e. invoke as a login shell (-l))
-alias reload="exec ${SHELL} && chezmoi apply -v --color on"
+alias reload="chezmoi apply -v --color on && exec ${SHELL}"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias aconf="$VISUAL -p $HOME/.config/awesome/*.lua"
 alias awet="awmtt start -C $HOME/.config/awesome/rc.lua.test -D 2 -S 1024x764"
