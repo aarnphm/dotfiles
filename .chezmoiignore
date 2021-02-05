@@ -26,3 +26,4 @@ Brewfile
 {{ end  }}
 
 coc-settings.json
+Brewfile
