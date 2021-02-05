@@ -1,3 +1,0 @@
-[submodule "$HOME/.local/share/chezmoi/dot_scripts/spicetify-themes"]
-	path = $HOME/.local/share/chezmoi/dot_scripts/spicetify-themes
-	url = https://github.com/morpheusthewhite/spicetify-themes.git

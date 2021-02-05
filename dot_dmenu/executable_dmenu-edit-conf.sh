@@ -77,7 +77,7 @@ case "$choice" in
 		choice="$HOME/.zshrc"
 	;;
 	packages)
-		choice="$HOME/.local/share/chezmoi/packages.sh"
+		choice="$HOME/.local/share/chezmoi/run_once_10-install-arch-linux-packages.sh.tmpl"
 	;;
 	aliases)
 		choice="$HOME/.aliases"

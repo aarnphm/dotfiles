@@ -21,3 +21,5 @@ fi
 script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)"
 # exec: replace current process with chezmoi init
 exec "$chezmoi" init --apply "--source=$script_dir"
+
+[[ `uname -s` == "Linux"* ]] && ./linux

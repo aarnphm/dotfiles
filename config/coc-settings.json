@@ -2,6 +2,7 @@
   "python.linting.pylintEnabled": true,
   "python.linting.enabled": true,
   "python.jediEnabled":false,
+  "json.format.enable":false,
   "languageserver": {
     "golang": {
       "command": "$HOME/go/bin/gopls",
@@ -24,8 +25,5 @@
                 ".hg/"
             ]
         }
-  },
-  "yaml.schemas": {
-      "kubernetes": "/*.yml"
-    }
+  }
 }

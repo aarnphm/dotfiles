@@ -43,6 +43,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'mkitt/tabline.vim'
 Plug 'lambdalisue/suda.vim'
 Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'Rykka/InstantRst'
@@ -51,8 +52,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-apathy'
+Plug 'thaerkh/vim-indentguides'
 Plug 'wakatime/vim-wakatime'
-Plug 'Yggdroot/indentLine'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -61,6 +62,7 @@ call plug#end()
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType python setlocal foldmethod=indent
 
@@ -102,6 +104,7 @@ if !has('nvim') && &ttimeoutlen == -1
   set ttimeoutlen=100
 endif
 
+set conceallevel=0
 set incsearch
 set noshowcmd
 set notitle
@@ -229,10 +232,6 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
-map <C-up> :tabr<cr>
-map <C-down> :tabl<cr>
-map <C-left> :tabp<cr>
-map <C-right> :tabn<cr>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
@@ -255,6 +254,12 @@ imap <F2> <C-O>:set invpaste paste?<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Plugin settings
+let g:indentguides_spacechar = '┆'
+let g:indentguides_tabchar = '|'
+let g:indentguides_ignorelist = ['text']
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
 let g:instant_rst_port=5686
 let g:suda_smart_edit = 1
 let g:suda#prompt = 'Mot de passe: '
@@ -262,10 +267,7 @@ let g:suda#prompt = 'Mot de passe: '
 let g:tablineclosebutton=0
 " syntax settings
 let g:python_highlight_all = 1
-" indent line
-" let g:indentLine_concealcursor = 'inc'
-let g:indentLine_conceallevel = 1
-let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+
 " ale
 let g:ale_enabled = 1
 nmap <silent> <F5> :ALEToggle<CR>
@@ -335,7 +337,7 @@ let g:fzf_colors =
 "   'previous-history' instead of 'down' and 'up'.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 nnoremap <C-f> :Files <CR>
-nnoremap <C-l> :Lines <CR>
+nnoremap <C-g> :Lines <CR>
 
 " vim-go
 let g:go_fmt_command = "goimports"
@@ -344,6 +346,7 @@ let g:go_auto_type_info = 1
 let g:go_fmt_autosave = 1
 let g:go_def_mapping_enabled = 0
 
+let g:coc_global_extensions = ['coc-json', 'coc-python', 'coc-java', 'coc-tsserver']
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
