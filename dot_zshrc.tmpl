@@ -1,15 +1,15 @@
 # #!/usr/bin/env zsh
-# profiling
+
 # zmodload zsh/zprof
 
-# run xinit
+{{- if eq .chezmoi.os "linux" }}
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     exec startx
 fi
+{{- end }}
 
-# load our own completion functions
 fn=${HOME}/.local/bin
-fpath=(~/.zsh/completion /usr/local/share/zsh/site-functions $fn $fpath)
+fpath=($HOME/.zsh/completion /usr/local/share/zsh/site-functions $fn $fpath)
 
 for function in $fn/*; do
     autoload -Uz ${function:t}
@@ -64,8 +64,10 @@ fi
 [[ -f ~/.aliases ]] && source ~/.aliases
 
 # .localrc contains all the local dev variables
-if [[ -f ~/.localrc ]];then
+if [[ -f ~/.localrc ]]; then
     source ~/.localrc
 fi
+
+typeset -U path cdpath fpath manpath
 
 # zprof

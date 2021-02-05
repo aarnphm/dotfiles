@@ -1,15 +1,17 @@
 [user]
     email = aaronpham0103@gmail.com
-    name = aarnphm
+    name = {{ .chezmoi.group }}
 
 [submodule]
     recurse = true
 
+{{ if "$(git lfs &> /dev/null)" }}
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
+{{ end }}
 
 [alias]
     # quick commit
@@ -27,6 +29,7 @@
     # View the current working tree status using the short format.
     s = status -s
     st = status -sb
+    si = status --ignored
 
     # Show the diff between the latest commit and the current state.
     d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
@@ -95,11 +98,7 @@
     rebase = false
 
 [core]
-
-    # Use custom `.gitignore` and `.gitattributes`.
-    excludesfile = ~/.gitignore
-    attributesfile = ~/.gitattributes
-
+    {{- if eq .chezmoi.os "darwin" }}
     # Treat spaces before tabs and all kinds of trailing whitespace as an error.
     # [default] trailing-space: looks for spaces at the end of a line
     # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
@@ -112,7 +111,7 @@
     # Prevent showing files whose names contain non-ASCII symbols as unversioned.
     # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
     precomposeunicode = false
-
+    {{- end }}
     # Speed up commands involving untracked files such as `git status`.
     # https://git-scm.com/docs/git-update-index#_untracked_cache
     untrackedCache = true

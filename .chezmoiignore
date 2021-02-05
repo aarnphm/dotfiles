@@ -4,20 +4,23 @@ Makefile
 *.deb
 *.tar.gz
 
+test*
 scripts
 screenshots
 
 .ssh/known_hosts
-.ssh/id_rsa
-.ssh/id_ed25519
-.ssh/*.pub
 
 {{ if ne .chezmoi.os "darwin" }}
 Brewfile
 .config/yabai
 .config/skhd
+.config/spicetify_data
 {{ end  }}
 
 {{ if ne .chezmoi.os "linux" }}
 .config/awesome
+.config/picom
+.config/redshift
+.config/rofi
 {{ end  }}
+coc-settings.json

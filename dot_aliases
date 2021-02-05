@@ -9,7 +9,7 @@ alias -- -="cd -"
 
 # vim
 alias v="$EDITOR $@"
-alias av="$VISUAL -p $@"
+alias av="$EDITOR -p $@"
 # chezmoi
 alias e="$CHEZMOI_BIN edit --apply $@"
 alias o="xdg-open $@"
