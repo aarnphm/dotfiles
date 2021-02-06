@@ -6,6 +6,7 @@
 
 {{- if .personal }}
 {{-   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) }}
+
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
@@ -40,6 +41,12 @@ fi
 
 [ -f ~/.xprofile ] && . ~/.xprofile
 
+{{-     if eq .hostname "0x6161726E70" }}
+{{-       if eq .wm "awesome" }}
 exec awesome
+{{-       else if eq .wm "i3" }}
+exec i3
+{{-       end }}
+{{-     end }}
 {{-   end }}
 {{- end }}

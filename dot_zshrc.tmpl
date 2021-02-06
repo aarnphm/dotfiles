@@ -1,4 +1,4 @@
-# #!/usr/bin/env zsh
+#!/usr/bin/env zsh
 
 # zmodload zsh/zprof
 
@@ -46,26 +46,15 @@ _load_settings() {
 }
 
 _load_settings "$HOME/.zsh"
-
-
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-    start_agent;
-fi
+unset -f _load_settings
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
 # .localrc contains all the local dev variables
-if [[ -f ~/.localrc ]]; then
-    source ~/.localrc
-fi
+# [[ -f ~/.localrc ]] && source ~/.localrc
 
+# fixes for path
 typeset -U path cdpath fpath manpath
 
 # zprof

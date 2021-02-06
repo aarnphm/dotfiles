@@ -10,6 +10,7 @@ config
 screenshots
 
 .ssh/known_hosts
+.ssh/agent-environment
 
 {{ if ne .chezmoi.os "darwin" }}
 Brewfile

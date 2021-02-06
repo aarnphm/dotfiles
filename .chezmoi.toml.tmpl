@@ -4,6 +4,7 @@
 {{- $isovalent := false -}}{{/* true if this machine should have Isovalent secrets from 1Password */}}
 {{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets from LastPass */}}
+{{- $wm := "awesome" }}
 {{- "" -}}
 
 {{/* work around unreliable hostname on darwin */}}
@@ -30,6 +31,7 @@
 [data]
   headless = {{ $headless }}
   hostname = {{ $hostname | quote }}
+  wm = {{ $wm | quote }}
   transient = {{ $transient }}
   isovalent = {{ $isovalent }}
   kubernetes = {{ $kubernetes }}

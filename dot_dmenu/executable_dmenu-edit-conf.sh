@@ -1,8 +1,8 @@
 #!/bin/bash
 
-declare options=(
-"alacritty
+declare -a options=("alacritty
 kitty
+instarch
 lightdm
 lightdm-greeter
 awesome
@@ -11,25 +11,22 @@ picom
 termite
 tmux
 vim
-xprofile
 zsh
 aliases
 exports
 dmenu-scripts
-xmonad
 rofi
-packages
+install
 mimeapps
 quit"
 )
+
 choice=$(echo -e "${options[@]}" | rofi -dmenu -i -p 'Edit config file:' --show-icons)
+chez_path=$(chezmoi source-path)
 
 case "$choice" in
 	quit)
 		echo "Program terminated." && exit 1
-	;;
-	alacritty)
-		choice="$HOME/.config/alacritty/alacritty.yml"
 	;;
 	lightdm)
 		choice="/etc/lightdm/lightdm.conf"
@@ -37,57 +34,54 @@ case "$choice" in
 	lightdm-greeter)
 		choice="/etc/lightdm/lightdm-mini-greeter.conf"
 	;;
-	kitty)
-		choice="$HOME/.config/kitty/kitty.conf"
+    instarch)
+		choice="$chez_path/init.sh"
 	;;
-	xmonad)
-		choice="$HOME/.xmonad/xmonad.hs"
+	alacritty)
+		choice="$chez_path/private_dot_config/alacritty/alacritty.yml"
+	;;
+	kitty)
+		choice="$chez_path/private_dot_config/kitty/kitty.conf"
 	;;
 	mimeapps)
-		choice="$HOME/.config/mimeapps.list"
+		choice="$chez_path/private_dot_config/mimeapps.list"
 	;;
 	awesome)
-		choice="$HOME/.config/awesome/rc.lua"
+		choice="$chez_path/private_dot_config/awesome/rc.lua"
 	;;
 	dunst)
-		choice="$HOME/.config/dunst/dunstrc"
+		choice="$chez_path/private_dot_config/dunst/dunstrc"
 	;;
 	picom)
-		choice="$HOME/.config/picom/picom.conf"
+		choice="$chez_path/private_dot_config/picom/picom.conf"
 	;;
 	tmux)
-		choice="$HOME/.tmux.conf"
+		choice="$chez_path/dot_tmux.conf"
 	;;
 	termite)
-		choice="$HOME/.config/termite/config"
+		choice="$chez_path/private_dot_config/termite/config"
 	;;
 	vim)
-		choice="$HOME/.vimrc"
+		choice="$chez_path/dot_vimrc"
 	;;
 	dmenu-scripts)
-		choice="$HOME/.dmenu/dmenu-edit-conf.sh"
-	;;
-	xprofile)
-		choice="$HOME/.xprofile"
+		choice="$chez_path/private_dot_dmenu/dmenu-edit-conf.sh"
 	;;
 	rofi)
-		choice="$HOME/.config/rofi/config.rasi"
+		choice="$chez_path/private_dot_config/rofi/config.rasi"
 	;;
 	zsh)
-		choice="$HOME/.zshrc"
-	;;
-	packages)
-		choice="$HOME/.local/share/chezmoi/run_once_10-install-arch-linux-packages.sh.tmpl"
+		choice="$chez_path/dot_zshrc.tmpl"
 	;;
 	aliases)
-		choice="$HOME/.aliases"
+		choice="$chez_path/dot_aliases"
 	;;
 	exports)
-		choice="$HOME/.exports"
+		choice="$chez_path/dot_zshenv.tmpl"
 	;;
 	*)
 		exit 1
 	;;
 esac
 
-termite --exec="chezmoi edit --apply $choice"
+alacritty -e nvim "$choice" && chezmoi apply -v

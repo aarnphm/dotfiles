@@ -18,8 +18,8 @@ local screen_height             = awful.screen.focused().geometry.height
 local screen_width              = awful.screen.focused().geometry.width
 local markup                    = lain.util.markup
 -- Define tag layouts
-awful.util.tagnames             = {"another","music","web","meet","greet","code"}
-awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max, awful.layout.suit.tile, awful.layout.suit.tile.top, awful.layout.suit.max, awful.layout.suit.tile.top}
+awful.util.tagnames             = {"another","music","web","meet","code"}
+awful.layout.layouts            = {awful.layout.suit.tile.right, awful.layout.suit.max, awful.layout.suit.tile, awful.layout.suit.tile.top, awful.layout.suit.tile.top}
 -- Custom keybinds
 local modkey                    = "Mod4"
 local altkey                    = "Mod1"
@@ -675,14 +675,6 @@ awful.screen.connect_for_each_screen(
             end,
             {description = "run Firefox", group = "launcher"}
             ),
-        awful.key(
-            {modkey},
-            "a",
-            function()
-                awful.spawn(apps.gui_editor)
-            end,
-            {description = "run gui editor", group = "launcher"}
-            ),
         -- spotify
         awful.key(
             {modkey, "Shift"},
@@ -955,8 +947,6 @@ awful.screen.connect_for_each_screen(
         {
             rule_any = {
                 instance = {
-                    "DTA",
-                    "copyq",
                     "nvidia-settings",
                     "blueman-services",
                     "blueman-adapters",
@@ -964,8 +954,8 @@ awful.screen.connect_for_each_screen(
                     "baobab",
                     "xmessage",
                     "skype",
-                    "chatterino",
                     "lxappearance",
+                    "chatterino",
                     "zoom",
                     "gparted",
                     "pavucontrol",
@@ -977,13 +967,10 @@ awful.screen.connect_for_each_screen(
                     "Nm-connection-editor",
                     "gnome-disks",
                     "caffeine",
-                    "Thunar",
                     "Arandr",
                     "Zotero",
-                    "Blueman-manager",
-                    "Pcmanfm",
-                    "Nitrogen",
-                    "Termite",
+                    "blueman-manager",
+                    "nitrogen",
                 },
                 name = {
                     "Library",
@@ -1001,11 +988,7 @@ awful.screen.connect_for_each_screen(
         },
         {
             rule = {class = "kitty"},
-            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[6], switchtotag = true}
-        },
-        {
-            rule_any = {class = {"Lutris","Steam", "minecraft-launcher"}},
-            properties = { switchtotag = true, screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[5]}
+            properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[5], switchtotag = true}
         },
         {
             rule_any = {instance={"chromium","firefox"}},
@@ -1022,6 +1005,7 @@ awful.screen.connect_for_each_screen(
         -- Rofi
         {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
         {rule = {instance = "termite"}, properties = {maximized = false, ontop = true, floating = true}},
+        {rule = {instance = "alacritty"}, properties = {maximized = false, ontop = true, floating = true}},
         -- File chooser dialog
         {
             rule_any = {role = "GtkFileChooserDialog"},
@@ -1050,7 +1034,7 @@ awful.screen.connect_for_each_screen(
         )
 
     -- fancy tag switching
-    require("collision")()
+    -- require("collision")()
 
     awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 

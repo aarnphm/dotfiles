@@ -12,5 +12,5 @@ if [ $(git rev-parse @)==$(git merge-base @ ${1:-'@{u}'}) ]; then
 fi
 
 # execute scripts
-git add .&& git commit -am "$datetime: cron chores" && git push --all
+git add . && git commit -am "$datetime: cron chores" && git push --all
 

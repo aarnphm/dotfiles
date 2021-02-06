@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # completion; use cache if updated within 24h
 autoload -Uz compinit
 if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
@@ -5,7 +7,7 @@ if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
 else
   compinit -C;
 fi;
-_comp_options+=(globdots)
+# _comp_options+=(globdots)
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
@@ -82,40 +84,4 @@ fi
 if [[ $#h -gt 0 ]]; then
   zstyle ':completion:*:ssh:*' hosts $h
   zstyle ':completion:*:slogin:*' hosts $h
-fi
-
-zstyle ':completion:*:(ssh|scp|rsync):*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
-zstyle ':completion:*:(scp|rsync):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
-zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host users hosts-ipaddr
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^[-[:alnum:]]##(.[-[:alnum:]]##)##' '*@*'
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
-
-
-# ignores uninteresting users ...
-zstyle ':completion:*:*:*:users' ignored-patterns \
-  adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
-  dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
-  hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
-  mailman mailnull mldonkey mysql nagios \
-  named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
-  operator pcap postfix postgres privoxy pulse pvm quagga radvd \
-  rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs '_*'
-
-################################################################################
-# only for debugging
-if false; then
-
-# Fuzzy match mistyped completions
-# zstyle ':completion:*' completer _complete _match _approximate
-# zstyle ':completion:*:match:*' original only
-# zstyle ':completion:*:approximate:*' max-errors 1 numeric
-
-# kill
-zstyle ':completion:*:*:*:*:processes' command 'ps -u $LOGNAME -o pid,user,command -w'
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;36=0=01'
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:*:kill:*' force-list always
-zstyle ':completion:*:*:kill:*' insert-ids single
-
 fi

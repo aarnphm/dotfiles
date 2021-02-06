@@ -1,7 +1,16 @@
 #!/usr/bin/env zsh
 
+setopt correct auto_menu
+setopt autocd autopushd multios
+setopt complete_in_word
+setopt pushd_ignore_dups
+setopt pushd_silent pushd_to_home cdable_vars
+setopt extendedglob
+setopt hist_ignore_all_dups inc_append_history
+
+unsetopt clobber
 setopt prompt_subst
-autoload -Uz vcs_info
+# autoload -Uz vcs_info
 autoload -Uz colors && colors
 
 # Prompt symbol
@@ -17,30 +26,16 @@ COMMON_COLORS_GIT_STATUS_DEFAULT=green
 COMMON_COLORS_GIT_STATUS_STAGED=red
 COMMON_COLORS_GIT_STATUS_UNSTAGED=yellow
 COMMON_COLORS_GIT_PROMPT_SHA=green
-COMMON_COLORS_BG_JOBS=yellow
 
 # Left Prompt
-PROMPT='$(common_host)$(common_current_dir)$(common_bg_jobs)$(common_return_status)'
-
-# Right Prompt
-RPROMPT='$(common_git_status)'
-
-# Prompt with current SHA
-# PROMPT='$(common_host)$(common_current_dir)$(common_bg_jobs)$(common_return_status)'
-# RPROMPT='$(common_git_status) $(git_prompt_short_sha)'
+PROMPT='$(common_host)$(common_current_dir)$(common_git_status)$(common_return_status)'
 
 # Host
+# me="%n@%m"
 common_host() {
-    if [[ -n $SSH_CONNECTION ]]; then
-        me="%n@%m"
-    elif [[ $LOGNAME != $USER ]]; then
-        me="%n"
-    fi
+    me="%m"
     if [[ -n $me ]]; then
         echo "%{$fg[$COMMON_COLORS_HOST_ME]%}$me%{$reset_color%}:"
-    fi
-    if [[ $AWS_VAULT ]]; then
-        echo "%{$fg[$COMMON_COLORS_HOST_AWS_VAULT]%}$AWS_VAULT%{$reset_color%} "
     fi
 }
 
@@ -71,18 +66,8 @@ common_git_status() {
 
     local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [[ -n ${branch} ]]; then
-        message+="${message_color}${branch}%f"
+        message+="${message_color}${branch}%f "
     fi
 
     echo -n "${message}"
-}
-
-# Git prompt SHA
-ZSH_THEME_GIT_PROMPT_SHA_BEFORE="%{%F{$COMMON_COLORS_GIT_PROMPT_SHA}%}"
-ZSH_THEME_GIT_PROMPT_SHA_AFTER="%{$reset_color%} "
-
-# Background Jobs
-common_bg_jobs() {
-    bg_status="%{$fg[$COMMON_COLORS_BG_JOBS]%}%(1j.↓%j .)"
-    echo -n $bg_status
 }

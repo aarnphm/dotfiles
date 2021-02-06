@@ -58,7 +58,6 @@ function echo_info() {
   printf '\n\033[36m%s\033[0m\n' "$1"
 }
 
-
 function _update() {
   if [[ $1 == "system" ]]; then
     echo_info "Updating system packages..."
@@ -121,7 +120,7 @@ _install aur
 
 ##############################################
 # log cron
-crontab `chezmoi source-path`/linux_conf/cronfile
+crontab `chezmoi source-path`/config/cronfile
 
 # bitwarden 
 npm install -g @bitwarden/cli
