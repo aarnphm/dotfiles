@@ -1,1 +1,1 @@
-00 00 * * * . $HOME/.scripts/automate.sh &> $HOME/cron.log
+00 00 * * * . $HOME/.scripts/automate-git.sh &> $HOME/cron.log
