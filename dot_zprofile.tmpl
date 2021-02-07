@@ -1,16 +1,18 @@
 #!/usr/bin/env zsh
 
-{{- if eq .chezmoi.os "darwin" }}
+{{- if .personal }}
+if [[ ! `command -v nvim` ]]; then
+    export EDITOR=$(which nvim)
+else
+    export EDITOR=$(which vim)
+fi
+{{-   if eq .chezmoi.os "darwin" }}
+export VISUAL=$EDITOR
 export CHEZMOI_BIN=$(which chezmoi)
-export EDITOR='/usr/local/bin/nvim'
-export VISUAL='/usr/bin/vim'
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 export BASH_SILENCE_DEPRECATION_WARNING=1;
-{{- end }}
-{{- if eq .chezmoi.os "linux" }}
+{{-   else if eq .chezmoi.os "linux" }}
 export CHEZMOI_BIN=$(command -v chezmoi)
-export EDITOR='/usr/bin/nvim'
-export VISUAL='/usr/bin/nvim'
 export DISPLAY=:0
 # wine prefix
 export WINEPREFIX="$HOME/.wine32"
@@ -20,6 +22,7 @@ export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 export QT_QPA_PLATFORMTHEME="qt5ct"
+{{-   end }}
 {{- end }}
 
 export BROWSER='/usr/bin/firefox'
