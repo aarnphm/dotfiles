@@ -1,10 +1,42 @@
 #!/usr/bin/env zsh
 
+{{ $pyenv := `command -v pyenv` }}
+{{- if $pyenv}}
+# export python
+export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_SHELL=$SHELL
+{{- end }}
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING='UTF-8';
+export PYTHONDONTWRITEBYTECODE=1
+
+# XDG  config
+export XDG_CONFIG_DIRS="/etc/xdg"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_DOCUMENTS="$HOME/Documents"
+
+# npm config
+export NPM_PACKAGES="${HOME}/.npm-packages"
+export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+
+# defined go path
+export GOPATH="$HOME/go"
+export GOPROXY="https://proxy.golang.org/,direct"
+
+# define Gem path
+export GEMPATH="$HOME/.gem/ruby/2.7.0"
+
+# define PATH
+export PATH="{{ .chezmoi.homedir }}/.pyenv/shims:$NPM_PACKAGES/bin:$HOME/google-cloud-sdk/bin:$GEMPATH/bin:$GOPATH/bin:$GOPATH/src:$PYENV_ROOT/bin:$HOME/.local/bin:$HOME/.cargo/bin:${PATH}"
+{{- if eq .chezmoi.os "darwin" }}
+export PATH="/usr/local/bin:$JAVA_HOME/bin:${PATH}"
+{{- end }}
+
 {{- if .personal }}
 if [[ ! `command -v nvim` ]]; then
-    export EDITOR=$(which nvim)
-else
     export EDITOR=$(which vim)
+else
+    export EDITOR=$(which nvim)
 fi
 {{-   if eq .chezmoi.os "darwin" }}
 export VISUAL=$EDITOR
@@ -58,38 +90,6 @@ export NNN_COLORS="2134"
 export NNN_TRASH=1
 export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview'
 export NNN_FIFO=/tmp/nnn.fifo
-{{- end }}
-
-{{ $pyenv := `command -v pyenv` }}
-{{- if $pyenv}}
-# export python
-export PYENV_ROOT="$HOME/.pyenv"
-export PYENV_SHELL=$SHELL
-{{- end }}
-# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
-export PYTHONIOENCODING='UTF-8';
-export PYTHONDONTWRITEBYTECODE=1
-
-# XDG  config
-export XDG_CONFIG_DIRS="/etc/xdg"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CONFIG_DOCUMENTS="$HOME/Documents"
-
-# npm config
-export NPM_PACKAGES="${HOME}/.npm-packages"
-export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
-
-# defined go path
-export GOPATH="$HOME/go"
-export GOPROXY="https://proxy.golang.org/,direct"
-
-# define Gem path
-export GEMPATH="$HOME/.gem/ruby/2.7.0"
-
-# define PATH
-export PATH="{{ .chezmoi.homedir }}/.pyenv/shims:$NPM_PACKAGES/bin:$HOME/google-cloud-sdk/bin:$GEMPATH/bin:$GOPATH/bin:$GOPATH/src:$PYENV_ROOT/bin:$HOME/.local/bin:$HOME/.cargo/bin:${PATH}"
-{{- if eq .chezmoi.os "darwin" }}
-export PATH="/usr/local/bin:$JAVA_HOME/bin:${PATH}"
 {{- end }}
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
