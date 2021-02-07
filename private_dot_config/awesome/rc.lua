@@ -939,14 +939,22 @@ awful.screen.connect_for_each_screen(
                 raise = true,
                 keys = clientkeys,
                 buttons = clientbuttons,
-                placement = awful.placement.no_overlap + awful.placement.no_offscreen,
-                -- size_hints_honor = false
+                screen = awful.screen.preferred,
+                -- placement = awful.placement.no_overlap + awful.placement.no_offscreen,
+                placement = awful.placement.centered
             }
         },
         -- Floating clients.
         {
             rule_any = {
-                instance = {
+                class = {
+                    "Nm-connection-editor",
+                    "gnome-disks",
+                    "caffeine",
+                    "Arandr",
+                    "Zotero",
+                    "blueman-manager",
+                    "nitrogen",
                     "nvidia-settings",
                     "blueman-services",
                     "blueman-adapters",
@@ -962,15 +970,6 @@ awful.screen.connect_for_each_screen(
                     "qt5ct",
                     "kvantum",
                     "grub-customizer"
-                },
-                class = {
-                    "Nm-connection-editor",
-                    "gnome-disks",
-                    "caffeine",
-                    "Arandr",
-                    "Zotero",
-                    "blueman-manager",
-                    "nitrogen",
                 },
                 name = {
                     "Library",
@@ -1013,6 +1012,11 @@ awful.screen.connect_for_each_screen(
         }
     }
 
+    -- fancy tag switching
+    require("collision")()
+
+    awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+
     -- ===================================================================
     -- Garbage collection (allows for lower memory consumption)
     -- ===================================================================
@@ -1033,8 +1037,4 @@ awful.screen.connect_for_each_screen(
         end
         )
 
-    -- fancy tag switching
-    -- require("collision")()
-
-    awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 
