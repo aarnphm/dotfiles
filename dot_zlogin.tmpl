@@ -14,4 +14,8 @@
         zrecompile -pq "$zcompdump"
     fi
 ) &!
+
+
+# .localrc contains all the local dev variables
+[[ -f ~/.localrc ]] && source ~/.localrc
 {{- end }}
