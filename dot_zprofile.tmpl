@@ -11,8 +11,8 @@ export PYTHONIOENCODING='UTF-8';
 export PYTHONDONTWRITEBYTECODE=1
 
 # XDG  config
-export XDG_CONFIG_DIRS="/etc/xdg"
-export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CONFIG_DOCUMENTS="$HOME/documents"
 
 # npm config
