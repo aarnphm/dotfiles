@@ -31,4 +31,5 @@ Brewfile
 .Xresources
 .dmenu/
 .screenlayout/
+.zsh/post/ssh-agent-start
 {{ end  }}

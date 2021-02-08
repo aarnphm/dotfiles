@@ -21,7 +21,6 @@ quit"
 )
 
 choice=$(echo -e "${options[@]}" | rofi -dmenu -i -p 'Edit config file:' --show-icons)
-chez_path=$(chezmoi source-path)
 
 case "$choice" in
 	quit)
@@ -34,53 +33,53 @@ case "$choice" in
 		choice="/etc/lightdm/lightdm-mini-greeter.conf"
 	;;
     .dotfiles)
-		choice="$chez_path/init.sh"
+		choice="$CHEZMOI_DIR/init.sh"
 	;;
 	alacritty)
-		choice="$chez_path/private_dot_config/alacritty/alacritty.yml"
+		choice="$CHEZMOI_DIR/private_dot_config/alacritty/alacritty.yml"
 	;;
 	kitty)
-		choice="$chez_path/private_dot_config/kitty/kitty.conf"
+		choice="$CHEZMOI_DIR/private_dot_config/kitty/kitty.conf"
 	;;
 	mimeapps)
-		choice="$chez_path/private_dot_config/mimeapps.list"
+		choice="$CHEZMOI_DIR/private_dot_config/mimeapps.list"
 	;;
 	awesome)
-		choice="$chez_path/private_dot_config/awesome/rc.lua"
+		choice="$CHEZMOI_DIR/private_dot_config/awesome/rc.lua"
 	;;
 	dunst)
-		choice="$chez_path/private_dot_config/dunst/dunstrc"
+		choice="$CHEZMOI_DIR/private_dot_config/dunst/dunstrc"
 	;;
 	picom)
-		choice="$chez_path/private_dot_config/picom/picom.conf"
+		choice="$CHEZMOI_DIR/private_dot_config/picom/picom.conf"
 	;;
 	tmux)
-		choice="$chez_path/dot_tmux.conf"
+		choice="$CHEZMOI_DIR/dot_tmux.conf"
 	;;
 	termite)
-		choice="$chez_path/private_dot_config/termite/config"
+		choice="$CHEZMOI_DIR/private_dot_config/termite/config"
 	;;
 	vim)
-		choice="$chez_path/dot_vimrc"
+		choice="$CHEZMOI_DIR/dot_vimrc"
 	;;
 	dmenu-scripts)
-		choice="$chez_path/private_dot_dmenu/dmenu-edit-conf.sh"
+		choice="$CHEZMOI_DIR/private_dot_dmenu/dmenu-edit-conf.sh"
 	;;
 	rofi)
-		choice="$chez_path/private_dot_config/rofi/config.rasi"
+		choice="$CHEZMOI_DIR/private_dot_config/rofi/config.rasi"
 	;;
 	zsh)
-		choice="$chez_path/dot_zshrc.tmpl"
+		choice="$CHEZMOI_DIR/dot_zshrc.tmpl"
 	;;
 	aliases)
-		choice="$chez_path/dot_aliases"
+		choice="$CHEZMOI_DIR/dot_aliases"
 	;;
 	exports)
-		choice="$chez_path/dot_zshenv.tmpl"
+		choice="$CHEZMOI_DIR/dot_zshenv.tmpl"
 	;;
 	*)
 		exit 1
 	;;
 esac
 
-alacritty -e nvim "$choice" && chezmoi apply -v
+alacritty -e nvim "$choice"

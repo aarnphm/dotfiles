@@ -1,14 +1,20 @@
 {{- if eq .chezmoi.os "darwin" -}}
+Host *
+    IgnoreUnknown UseKeychain
+    UseKeychain yes
+    AddKeysToAgent yes
+    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_ed25519
+
 Host GGBBYAERO15W8
     HostName 116.101.231.72
     Port 34689
     User {{ .chezmoi.username }}
-    IdentityFile ~/.ssh/id_rsa
+    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_rsa
 
 Host HOME
     HostName 192.168.1.117
     Port 34689
     User {{ .chezmoi.username }}
-    IdentityFile ~/.ssh/id_rsa
+    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_rsa
 {{- end }}
 
