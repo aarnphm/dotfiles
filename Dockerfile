@@ -1,24 +1,24 @@
-FROM debian:latest
+FROM archlinux:base-devel
+MAINTAINER Aaron Pham <aaronpham0103@gmail.com>
 
-ARG USERNAME=anotheruser
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+RUN mkdir -p /var/lib/pacman/
 
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && apt-get update \
-    && apt-get install -y sudo make stow zsh git curl wget tmux\
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME \
-    #
-    # Clean up
-    && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
-USER root
-WORKDIR /dotfiles
-COPY . .
-RUN sudo make install
-RUN cd pkg/ && for dir in "alacritty fonts git python starship tmux vim zsh"; do sudo stow $dir -t /root;done
+RUN pacman -Syu --noconfirm
+RUN pacman -S sudo git file awk gcc base-devel reflector --noconfirm
 
-CMD ["zsh"]
+RUN reflector --latest 5 \
+        --save "/etc/pacman.d/mirrorlist" \
+        --sort rate \
+        --verbose
+
+RUN useradd -ms /bin/bash arch
+RUN gpasswd -a arch wheel
+RUN echo 'arch ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER arch
+
+RUN mkdir /home/arch/dotfiles
+COPY  --chown=arch:users . ./home/arch/dotfiles
+WORKDIR /home/arch/dotfiles
+
+ENTRYPOINT ["sh", "docker-entrypoint.sh"]

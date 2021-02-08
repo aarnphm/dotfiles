@@ -16,5 +16,5 @@ A more responsible options:
 - after installing chezmoi you can do `chezmoi init git@github.com:aarnphm/dotfiles.git`
 - `chezmoi diff -v` to see different files, `chezmoi apply -v --dry-run` to check for errors
 - then run `chezmoi apply -v` to see the magic happens
-
-
+- Runtime goes zoooom
+![runtime vrom vrom](./runtime.png)

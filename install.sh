@@ -1,14 +1,15 @@
 #!/usr/bin/env sh
 
-set -e
+set -euo pipefail
 
-if [[ ! `command -v chezmoi` ]]; then
-    curl -sfL https://git.io/chezmoi | sh
-fi
+# Test if $1 is available
+isavailable() {
+    type "$1" &>/dev/null
+}
 
-if [[ `uname -s` == "Linux" ]]; then
+if [[ `$OSTYPE` == "linux-gnu"* ]]; then
+    is available chezmoi || sudo pacman -S chezmoi --noconfirm
     ./arch_bootstrap.sh
 fi
 
 ./chezmoi_bootstrap.sh
-
