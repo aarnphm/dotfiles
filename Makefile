@@ -9,14 +9,14 @@ help:
 	| sort \
 	| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-install:
+install: # first time install
 	sudo ./install.sh
 
-build:
+build: # build docker file
 	docker build -t aar0npham/dotfiles:latest .
 
-run:
+run: # run docker images
 	docker run -it aar0npham/dotfiles:latest
 
-vmware:
+vmware: # vmware related
 	sudo modprobe -a vmw_vmci vmmon

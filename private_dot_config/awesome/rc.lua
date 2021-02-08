@@ -805,7 +805,7 @@ awful.screen.connect_for_each_screen(
                 volume.update()
             end,
             {description = "toggle mute", group = "volume"}
-            ),
+            )
         )
 
     -- Bind all key numbers to tags.
@@ -862,7 +862,7 @@ awful.screen.connect_for_each_screen(
                     end
                 end,
                 descr_move
-                ),
+                )
             )
     end
     -- global keys
