@@ -29,13 +29,14 @@ COMMON_COLORS_GIT_PROMPT_SHA=green
 
 # Left Prompt
 PROMPT='$(common_host)$(common_current_dir)$(common_git_status)$(common_return_status)'
+# RPROMPT='command_execution_time'
 
 # Host
 # me="%n@%m"
 common_host() {
-    me="%m"
+    me="%n@%m"
     if [[ -n $me ]]; then
-        echo "%{$fg[$COMMON_COLORS_HOST_ME]%}$me%{$reset_color%}:"
+        echo "%{$fg[$COMMON_COLORS_HOST_ME]%}$me:"
     fi
 }
 
