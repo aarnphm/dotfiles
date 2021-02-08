@@ -3,6 +3,7 @@ Makefile
 Dockerfile
 *.sh
 *.deb
+*.png
 install*
 *.tar.gz
 
