@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -eufo pipefail
+trap "exit" INT
 
 ##############################################
 # Packages options from both pacman and AUR

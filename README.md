@@ -9,7 +9,6 @@
 # Installation
 
 ```sh 
-    $ curl -sfL https://git.io/chezmoi | sh
     $ sh -c "https://raw.githubusercontent.com/aarnphm/dotfiles/main/install.sh"
 ```
 - for first time installer do `make install`

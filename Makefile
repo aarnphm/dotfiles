@@ -10,7 +10,7 @@ help:
 	| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 install:
-	sudo ./.dotfiles.sh
+	sudo ./install.sh
 
 build:
 	docker build -t aar0npham/dotfiles:latest .
