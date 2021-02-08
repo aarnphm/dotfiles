@@ -29,4 +29,5 @@ Brewfile
 .config/conky
 .Xresources
 .dmenu/
+.screenlayout/
 {{ end  }}

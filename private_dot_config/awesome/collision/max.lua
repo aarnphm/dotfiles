@@ -1,26 +1,17 @@
-local capi = {screen=screen,client=client,mouse=mouse}
-local wibox = require("wibox")
-local awful = require("awful")
-local cairo        = require( "lgi"              ).cairo
-local color        = require( "gears.color"      )
-local beautiful    = require( "beautiful"        )
-local surface      = require( "gears.surface"    )
-local shape        = require( "gears.shape"      )
-local pango = require("lgi").Pango
-local pangocairo = require("lgi").PangoCairo
+local capi       = {screen = screen, client = client, mouse = mouse}
+local wibox      = require("wibox")
+local awful      = require("awful")
 local module = {}
 
-local w = nil
+-- local w = nil
 
-local function init()
-  w = wibox{}
-  w.ontop = true
-  w.visible = true
-end
+-- local function init()
+--   w = wibox{}
+--   w.ontop = true
+--   w.visible = true
+-- end
 
 local margin = 15
-
-local pango_l = nil
 
 local function change_tag(s,direction,is_swap)
   local s = capi.client.focus and capi.client.focus.screen or capi.mouse.screen
@@ -36,13 +27,12 @@ local function change_tag(s,direction,is_swap)
   end
   local tags = capi.screen[s].tags
   local fk = awful.util.table.hasitem(tags,capi.screen[s].selected_tag)
-  -- draw_shape(s,tags,fk,tag_icon,capi.screen[s].workarea.y + 15,20)
 end
 
 function module.display_tags(s,direction,c,is_swap,is_max)
-  if not w then
-    init()
-  end
+  -- if not w then
+  --   init()
+  -- end
   change_tag(s,direction,is_swap)
 end
 

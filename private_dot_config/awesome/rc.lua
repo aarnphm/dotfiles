@@ -27,6 +27,8 @@ local sleep                     = "systemctl suspend"
 local reboot                    = "systemctl reboot"
 local poweroff                  = "systemctl poweroff"
 local cycle_prev                = true
+-- fancy tag switching
+require("collision")()
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
 -- Enable hotkeys help widget for VIM and other apps when client with a matching name is opened:
@@ -82,7 +84,6 @@ end
 local apps = {
     terminal     = "kitty",
     editor       = "nvim",
-    gui_editor   = os.getenv("GUI_EDITOR") or "code",
     browser      = os.getenv("BROWSER") or "firefox",
     spotify      = "kdocker -qi /usr/share/icons/ePapirus/16x16/apps/spotify.svg spotify",
     zotero       = "kdocker -qi /usr/share/icons/ePapirus/32x32/apps/zotero.svg zotero",
@@ -625,15 +626,6 @@ awful.screen.connect_for_each_screen(
             end,
             {description = "decrement useless gaps", group = "tag"}
             ),
-        -- Standard program
-        awful.key(
-            {"Shift", altkey},
-            "t",
-            function()
-                awful.spawn("alacritty")
-            end,
-            {description = "open a terminal", group = "launcher"}
-            ),
         awful.key(
             {"Control", altkey},
             "t",
@@ -829,24 +821,6 @@ awful.screen.connect_for_each_screen(
             end,
             {description = "toggle mute", group = "volume"}
             ),
-        awful.key(
-            {altkey, "Control"},
-            "Up",
-            function()
-                os.execute(string.format("amixer -q set %s 100%%", volume.channel))
-                volume.update()
-            end,
-            {description = "volume 100%", group = "volume"}
-            ),
-        awful.key(
-            {altkey, "Control"},
-            "Down",
-            function()
-                os.execute(string.format("amixer -q set %s 0%%", volume.channel))
-                volume.update()
-            end,
-            {description = "volume 0%", group = "volume"}
-            )
         )
 
     -- Bind all key numbers to tags.
@@ -904,20 +878,6 @@ awful.screen.connect_for_each_screen(
                 end,
                 descr_move
                 ),
-            -- Toggle tag on focused client.
-            awful.key(
-                {modkey, "Control", "Shift"},
-                "#" .. i + 9,
-                function()
-                    if client.focus then
-                        local tag = client.focus.screen.tags[i]
-                        if tag then
-                            client.focus:toggle_tag(tag)
-                        end
-                    end
-                end,
-                descr_toggle_focus
-                )
             )
     end
     -- global keys
@@ -1011,9 +971,6 @@ awful.screen.connect_for_each_screen(
             properties = {floating = true, width = screen_width * 0.55, height = screen_height * 0.65}
         }
     }
-
-    -- fancy tag switching
-    require("collision")()
 
     awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 

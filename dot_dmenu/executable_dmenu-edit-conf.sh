@@ -2,7 +2,7 @@
 
 declare -a options=("alacritty
 kitty
-instarch
+.dotfiles
 lightdm
 lightdm-greeter
 awesome
@@ -16,7 +16,6 @@ aliases
 exports
 dmenu-scripts
 rofi
-install
 mimeapps
 quit"
 )
@@ -34,7 +33,7 @@ case "$choice" in
 	lightdm-greeter)
 		choice="/etc/lightdm/lightdm-mini-greeter.conf"
 	;;
-    instarch)
+    .dotfiles)
 		choice="$chez_path/init.sh"
 	;;
 	alacritty)
