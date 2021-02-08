@@ -97,7 +97,6 @@ else
 fi
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec -l ${SHELL}"
-# alias ca="source $HOME/.localrc && $CHEZMOI_BIN apply --verbose --debug"
 alias ca="${CHEZMOI_BIN:-chezmoi} apply --verbose --debug --color on"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/awesome/*.lua"
