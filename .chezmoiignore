@@ -3,6 +3,7 @@ Makefile
 Dockerfile
 *.sh
 *.deb
+*.png
 install*
 *.tar.gz
 
@@ -33,6 +34,7 @@ Brewfile
 .Xresources
 .dmenu/
 .screenlayout/
+.zsh/post/ssh-agent-start
 Pacfile
 Aurfile
 {{ end  }}

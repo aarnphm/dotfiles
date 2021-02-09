@@ -14,9 +14,9 @@
 # setopt XTRACE
 
 {{- if eq .chezmoi.os "linux" }}
-    if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-    exec startx
-    fi
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+exec startx
+fi
 {{- end }}
 
 fn=${HOME}/.local/bin

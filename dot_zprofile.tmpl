@@ -1,35 +1,64 @@
 #!/usr/bin/env zsh
 
-{{ $pyenv := `command -v pyenv` }}
-{{- if $pyenv}}
-# export python
-export PYENV_ROOT="$HOME/.pyenv"
-export PYENV_SHELL=$SHELL
-{{- end }}
-# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
-export PYTHONIOENCODING='UTF-8';
-export PYTHONDONTWRITEBYTECODE=1
-
 # XDG  config
 export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CONFIG_DOCUMENTS="$HOME/documents"
 
+# Increase Bash history size. Allow 32³ entries; the default is 500.
+export HISTFILE=~/.histfile
+export HISTSIZE='32768';
+export HISTFILESIZE="${HISTSIZE}";
+# Omit duplicates and commands that begin with a space from history.
+export HISTCONTROL='ignoreboth';
+
+# Prefer CA English and use UTF-8.
+export LANGUAGE='en';
+export HOST='{{ .chezmoi.fullHostname }}';
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+
+# Highlight section titles in manual pages.
+export LESS_TERMCAP_md="${yellow}";
+# Don’t clear the screen after quitting a manual page.
+export MANPAGER='less -X';
+
+# define PATH
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:${PATH}"
+
+{{ $pyenv := `command -v pyenv` }}
+{{- if $pyenv}}
+# export python
+export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_SHELL=$SHELL
+export PATH="{{ .chezmoi.homedir }}/.pyenv/shims:$PYENV_ROOT/bin:${PATH}"
+{{- end }}
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING='UTF-8';
+export PYTHONDONTWRITEBYTECODE=1
+
+{{- if `command -v npm` }}
 # npm config
 export NPM_PACKAGES="${HOME}/.npm-packages"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+export PATH="$NPM_PACKAGES/bin:${PATH}"
+{{- end }}
 
+{{- if `command -v go` }}
 # defined go path
 export GOPATH="$HOME/go"
 export GOPROXY="https://proxy.golang.org/,direct"
+export PATH="$GOPATH/bin:$GOPATH/src:${PATH}"
+{{- end }}
 
+{{- if `command -v gem` }}
 # define Gem path
 export GEMPATH="$HOME/.gem/ruby/2.7.0"
+export PATH="$GEMPATH/bin:${PATH}"
+{{- end }}
 
-# define PATH
-export PATH="{{ .chezmoi.homedir }}/.pyenv/shims:$NPM_PACKAGES/bin:$HOME/google-cloud-sdk/bin:$GEMPATH/bin:$GOPATH/bin:$GOPATH/src:$PYENV_ROOT/bin:$HOME/.local/bin:$HOME/.cargo/bin:${PATH}"
-{{- if eq .chezmoi.os "darwin" }}
-export PATH="/usr/local/bin:$JAVA_HOME/bin:${PATH}"
+{{- if `command -v gcloud` }}
+export PATH="{{ .chezmoi.homedir }}/google-cloud-sdk/bin:${PATH}"
 {{- end }}
 
 {{- if .personal }}
@@ -38,8 +67,11 @@ if [[ ! `command -v nvim` ]]; then
 else
     export EDITOR=$(which nvim)
 fi
-{{-   if eq .chezmoi.os "darwin" }}
 export VISUAL=$EDITOR
+export LS_COLORS="${LS_COLORS}:ow=01;33"
+export BROWSER='/usr/bin/firefox'
+{{-   if eq .chezmoi.os "darwin" }}
+export PATH="/usr/local/bin:$JAVA_HOME/bin:${PATH}"
 export CHEZMOI_BIN=$(which chezmoi)
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 export BASH_SILENCE_DEPRECATION_WARNING=1;
@@ -54,14 +86,12 @@ export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 export QT_QPA_PLATFORMTHEME="qt5ct"
+export SSH_ENV="$HOME/.ssh/agent-environment"
 export PKGMN=pacman
 [[ `command -v yay` ]] && PKGMN=yay
 {{-   end }}
+export CHEZMOI_DIR=$HOME/.local/share/chezmoi
 {{- end }}
-
-export BROWSER='/usr/bin/firefox'
-export LS_COLORS="${LS_COLORS}:ow=01;33"
-export SSH_ENV="$HOME/.ssh/agent-environment"
 
 {{ $fzf := `command -v fzf` }}
 {{- if $fzf }}
@@ -83,9 +113,8 @@ export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
 export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
 {{- end }}
 
-{{ $fzf := `command -v nnn` }}
-{{- if $fzf }}
-#nnn
+{{ $nnn := `command -v nnn` }}
+{{- if $nnn }}
 export NNN_BMS='u:~/Documents;D:~/Downloads/'
 export NNN_SSHFS="sshfs -o follow_symlinks"
 export NNN_COLORS="2134"
@@ -93,21 +122,3 @@ export NNN_TRASH=1
 export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview'
 export NNN_FIFO=/tmp/nnn.fifo
 {{- end }}
-
-# Increase Bash history size. Allow 32³ entries; the default is 500.
-export HISTFILE=~/.histfile
-export HISTSIZE='32768';
-export HISTFILESIZE="${HISTSIZE}";
-# Omit duplicates and commands that begin with a space from history.
-export HISTCONTROL='ignoreboth';
-
-# Prefer CA English and use UTF-8.
-export LANGUAGE='en';
-export HOST='{{ .chezmoi.fullHostname }}';
-export LC_ALL="en_US.UTF-8"
-export LANG="en_US.UTF-8"
-
-# Highlight section titles in manual pages.
-export LESS_TERMCAP_md="${yellow}";
-# Don’t clear the screen after quitting a manual page.
-export MANPAGER='less -X';
