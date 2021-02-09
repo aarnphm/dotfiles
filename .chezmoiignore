@@ -6,11 +6,14 @@ Dockerfile
 install*
 *.tar.gz
 
+bootstrap
 config
 screenshots
 
 .ssh/known_hosts
 .ssh/agent-environment
+.vim/undo
+.vim/plugins
 
 {{ if ne .chezmoi.os "darwin" }}
 Brewfile
@@ -30,4 +33,6 @@ Brewfile
 .Xresources
 .dmenu/
 .screenlayout/
+Pacfile
+Aurfile
 {{ end  }}

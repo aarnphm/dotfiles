@@ -11,8 +11,10 @@ alias -- -="cd -"
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
 # chezmoi
-alias e="$CHEZMOI_BIN edit --apply $@"
+alias e="$CHEZMOI_BIN edit $@"
 alias o="xdg-open $@"
+# alias for pacman for arch linux
+alias packages="$PKGMN -Qqen >| $HOME/Pacfile && $PKGMN -Qqem >| $HOME/Aurfile"
 alias dotfiles="cd $HOME/.local/share/chezmoi"
 alias cr="crontab $HOME/.local/share/chezmoi/config/cronfile"
 alias h2s="$HOME/.scripts/http-to-ssh.sh"
@@ -98,7 +100,7 @@ fi
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec -l ${SHELL}"
 # alias ca="source $HOME/.localrc && $CHEZMOI_BIN apply --verbose --debug"
-alias ca="exec -l ${SHELL} && $CHEZMOI_BIN apply --verbose --debug --color on"
+alias ca="$CHEZMOI_BIN apply --verbose --debug --color on"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias aconf="$VISUAL -p $XDG_CONFIG_HOME/awesome/*.lua && $CHEZMOI_BIN add -r $XDG_CONFIG_HOME/awesome"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test -D 2 -S 1024x764"

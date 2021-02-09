@@ -7,9 +7,11 @@ isavailable() {
     type "$1" &>/dev/null
 }
 
-if [[ `$OSTYPE` == "linux-gnu"* ]]; then
+echo "Install reqquired dependencies"
+if [[ `$OSTYPE` == "darwin"* ]]; then
+    make homebrew-install
+elif [[ `$OSTYPE` == "linux-gnu"* ]]; then
     is available chezmoi || sudo pacman -S chezmoi --noconfirm
-    ./arch_bootstrap.sh
 fi
 
-./chezmoi_bootstrap.sh
+make all
