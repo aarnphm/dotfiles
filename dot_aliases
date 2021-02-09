@@ -11,10 +11,15 @@ alias -- -="cd -"
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
 # chezmoi
-alias e="$CHEZMOI_BIN edit --apply $@"
+alias e="$CHEZMOI_BIN edit $@"
 alias o="xdg-open $@"
+alias dotfiles="cd $HOME/.local/share/chezmoi"
+alias cr="crontab $HOME/.local/share/chezmoi/config/cronfile"
 alias dotfiles="cd $CHEZMOI_DIR"
 alias cr="crontab $CHEZMOI_DIR/config/cronfile"
+# alias for pacman for arch linux
+alias packages="$PKGMN -Qqen >| $HOME/Pacfile && $PKGMN -Qqem >| $HOME/Aurfile"
+
 alias h2s="$HOME/.scripts/http-to-ssh.sh"
 
 # mcmaster vpn
