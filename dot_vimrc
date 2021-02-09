@@ -269,7 +269,7 @@ let g:UltiSnipsJumpForwardTrigger='<M-j>'
 " shortcut to go to previous position
 let g:UltiSnipsJumpBackwardTrigger='<M-k>'
 let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetDirectories=[$CHEZMOI_DIR . "dot_vim/UltiSnips"]
+let g:UltiSnipsSnippetDirectories=[$CHEZMOI_DIR . "/dot_vim/exact_UltiSnips"]
 
 " indent guides
 let g:indentguides_spacechar = '┆'
@@ -364,7 +364,7 @@ let g:go_auto_type_info = 1
 let g:go_fmt_autosave = 1
 let g:go_def_mapping_enabled = 0
 
-let g:coc_global_extensions = ['coc-json', 'coc-python', 'coc-java', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-texlab', 'coc-json', 'coc-python', 'coc-java', 'coc-tsserver']
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
