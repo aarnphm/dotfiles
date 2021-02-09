@@ -21,4 +21,4 @@ RUN mkdir /home/arch/dotfiles
 COPY  --chown=arch:users . ./home/arch/dotfiles
 WORKDIR /home/arch/dotfiles
 
-ENTRYPOINT ["sh", "docker-entrypoint.sh"]
+ENTRYPOINT ["sh", ".dotfiles.sh"]

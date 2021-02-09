@@ -42,11 +42,13 @@ alias net="ping google.com | grep -E --only-match --color=never '[0-9\.]+ ms'"
 alias odoo="$XDG_CONFIG_DOCUMENTS/cs/odoo/odoo-bin $@"
 # git
 alias g="git"
+
 # nnn intensifies
 alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"
-alias N='sudo -E nnn -dH'
 alias np="nnn-preview"
-alias nn="nnn -dH"
+alias N="sudo -E nnn -dDH"
+alias ls="n -dDeUHatT"
+
 alias dockerprune="docker system prune -a -f"
 alias kubesecret="kubectl get secret regcred --output=yaml"
 alias iwctl="sudo wifi-menu"
@@ -55,17 +57,13 @@ alias iwctl="sudo wifi-menu"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
 # List all files colorized in long format
-alias l="ls -lF ${colorflag}"
+alias l="\ls -lF ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
 if [ "$(uname -s)" = "Darwin" ]; then
-    alias la="ls -laF -G"
+    alias la="\ls -laF -G"
 else
-    alias la="ls -laF --color"
-fi
-
-if [ "$(command -v colorls)" ]; then
-    alias lc='colorls -lA --sd'
+    alias la="\ls -laF --color"
 fi
 
 # Enable aliases to be sudo’ed

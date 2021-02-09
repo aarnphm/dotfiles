@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+if [ "$(command -v git)" --eq "0" ]; then
+    git clone git@github.com:aarnphm/dotfiles.git ${CHEZMOI_DIR:-$HOME/.local/share/chezmoi}
+    ./.dotfiles.sh
+else
+    echo "git hasn't installed on the system yet. Install git before procedding"
+    exit 1
+fi
+

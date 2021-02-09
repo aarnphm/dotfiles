@@ -116,7 +116,7 @@ export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
 {{ $nnn := `command -v nnn` }}
 {{- if $nnn }}
 export NNN_BMS='u:~/Documents;D:~/Downloads/'
-export NNN_SSHFS="sshfs -o follow_symlinks"
+export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
 export NNN_COLORS="2134"
 export NNN_TRASH=1
 export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview'

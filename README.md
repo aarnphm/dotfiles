@@ -9,7 +9,7 @@
 # Installation
 
 ```sh 
-    $ sh -c "https://raw.githubusercontent.com/aarnphm/dotfiles/main/install.sh"
+    $ curl -O "https://raw.githubusercontent.com/aarnphm/dotfiles/main/install.sh" | sh
 ```
 - for first time installer do `make install`
 A more responsible options:
@@ -17,4 +17,4 @@ A more responsible options:
 - `chezmoi diff -v` to see different files, `chezmoi apply -v --dry-run` to check for errors
 - then run `chezmoi apply -v` to see the magic happens
 - Runtime goes zoooom
-![runtime vrom vrom](./runtime.png)
+![runtime vrom vrom](./screenshots/runtime.png)
