@@ -3,6 +3,7 @@
 {{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
 {{- $isovalent := false -}}{{/* true if this machine should have Isovalent secrets from 1Password */}}
 {{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
+{{- $dockerdot := false -}}{{/* true if this machine is used for testing dotfiles */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets from LastPass */}}
 {{- $wm := "awesome" }}
 {{- "" -}}
@@ -24,6 +25,7 @@
 {{-   else -}}
 {{-     $headless = promptBool "headless" -}}
 {{-     $transient = promptBool "transient" -}}
+{{-     $dockerdot = promptBool "dockerdot" -}}
 {{-     $kubernetes = promptBool "kubernetes" -}}
 {{-   end -}}
 {{- end -}}
@@ -32,6 +34,7 @@
   headless = {{ $headless }}
   hostname = {{ $hostname | quote }}
   wm = {{ $wm | quote }}
+  dockerdot = {{ $dockerdot }}
   transient = {{ $transient }}
   isovalent = {{ $isovalent }}
   kubernetes = {{ $kubernetes }}

@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 set -euo pipefail
+trap "exit" INT
 
 # Test if $1 is available
 isavailable() {
@@ -8,10 +9,10 @@ isavailable() {
 }
 
 echo "Install reqquired dependencies"
-if [[ `$OSTYPE` == "darwin"* ]]; then
+if [[ `uname -s` == "Darwin" ]]; then
     make homebrew-install
-elif [[ `$OSTYPE` == "linux-gnu"* ]]; then
-    is available chezmoi || sudo pacman -S chezmoi --noconfirm
+elif [[ `uname -s` == "Linux" ]]; then
+    isavailable chezmoi || sudo pacman -S chezmoi --noconfirm
 fi
 
-make all
+make run && make init

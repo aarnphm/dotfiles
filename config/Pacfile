@@ -80,7 +80,6 @@ net-tools
 netctl
 network-manager-applet
 networkmanager
-nftables
 nitrogen
 nm-connection-editor
 nnn
@@ -116,6 +115,18 @@ stow
 sudo
 termite
 texinfo
+texlive-bibtexextra
+texlive-core
+texlive-fontsextra
+texlive-formatsextra
+texlive-games
+texlive-humanities
+texlive-latexextra
+texlive-music
+texlive-pictures
+texlive-pstricks
+texlive-publishers
+texlive-science
 tmux
 tree
 unclutter

@@ -8,12 +8,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
-    echo "Updating pacman.conf.."
-    sudo sed -i '/Color$/s/^#//g' /etc/pacman.conf
-    sudo sed -i '/TotalDownload$/s/^#//g' /etc/pacman.conf
-    sudo sed -i '/CheckSpace$/s/^#//g' /etc/pacman.conf
-    sudo sed -i '/VerbosePkgLists$/s/^#//g' /etc/pacman.conf
-
     SERVICES=(docker cronie sshd postgresql optimus-manager lightdm)
 
     for services in "${SERVICES[@]}"; do

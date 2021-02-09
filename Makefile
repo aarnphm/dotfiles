@@ -1,4 +1,4 @@
-.PHONY: help init build run install
+.PHONY: help dpes services framework sys homebrew-install chez-apply chez-init init run docker-build docker-run
 
 .DEFAULT_GOAL := help
 
@@ -9,20 +9,44 @@ help: ## Display this help messages
 
 deps: ## setup proper dependencies for each system and chezmoi obviously
 	@echo "Install dependencies"
-	./bootstrap/0001_install_chezmoi.sh
-	./bootstrap/0002_install_deps.sh
+	./bootstrap/run_once_0001_install_chezmoi.sh
+	./bootstrap/run_once_0002_install_deps.sh
 
 services: ## setup services and systemd
 	@echo "Starting services and systemd"
-	./bootstrap/0003_install_services.sh
+	./bootstrap/run_once_0003_install_services.sh
 
 framework: ## framework for everything else since chezmoi are unable to store submoddules
 	@echo "Installing framework"
-	./bootstrap/0004_install_frameworks.sh
-homebrew-install:
+	./bootstrap/run_once_0004_install_frameworks.sh
+
+sys: ## configure system defaults
+	@echo "Configure system defaults"
+	./bootstrap/run_once_0005_install_defaults.sh
+
+homebrew-install: ## install homebrew
 	@echo "Installing homebrew"
-	./bootstrap/0008_install_homebrew.sh
+	./bootstrap/run_once_0008_install_homebrew.sh
 
+chez-apply: ## apply chezmoi after changes config file
+	chezmoi apply -v --debug --color on
 
-run: deps chez-init chez-apply
+chez-init: ## create chezmoi.toml for configuration
+	chezmoi init -S ${CURDIR} -v
 
+init: deps\
+	services\
+	sys\
+	homebrew-install\
+	framework\
+	chez-apply ## defaults to run all options	
+
+run: chez-init\
+	 chez-apply\
+	 deps ## casual run to apply changes
+
+docker-build: ## build docker images from Dockerfile
+	docker build -t aar0npham/dotfiles:latest .
+
+docker-run: ## test run docker
+	docker run -it aar0npham/dotfiles:latest
