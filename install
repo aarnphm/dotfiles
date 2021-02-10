@@ -2,7 +2,7 @@
 
 if [ "$(command -v git)" --eq "0" ]; then
     git clone --depth=1 --recursive git@github.com:aarnphm/dotfiles.git && cd dotfiles
-    ./.dotfiles.sh
+    ./install.pre
 else
     echo "git hasn't installed on the system yet. Install git before procedding"
     exit 1
