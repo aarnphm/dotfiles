@@ -5,6 +5,7 @@ Dockerfile
 *.deb
 *.png
 install*
+.*
 *.tar.gz
 
 bootstrap

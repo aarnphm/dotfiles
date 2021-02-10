@@ -32,9 +32,9 @@ chez-apply: ## apply chezmoi after changes config file
 chez-init: ## create chezmoi.toml for configuration
 	chezmoi init -S ${CURDIR} -v
 
-run: chez-init\
-	 chez-apply\
-	 deps ## run to check deps and apply changes 
+run: deps\
+	 chez-init\
+	 chez-apply ## run to check deps and apply changes 
 
 init: run\
 	services\
