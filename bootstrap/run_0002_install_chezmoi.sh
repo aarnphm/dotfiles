@@ -10,4 +10,4 @@ if [[ `command -v brew` ]]; then
     isavailable chezmoi || brew install chezmoi
 else
     isavailable chezmoi || sudo pacman -S chezmoi --noconfirm
-end
+fi
