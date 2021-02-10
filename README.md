@@ -9,7 +9,7 @@
 # Installation
 
 ```sh 
-    $ curl -O "https://raw.githubusercontent.com/aarnphm/dotfiles/main/install" | sh
+    $ curl -fsSL https://raw.githubusercontent.com/aarnphm/dotfiles/HEAD/install | bash
 ```
 - for first time installer do `make build`
 - the scripts will install a baseline, if you want a more rich experience take a look at [Pacfile.local](Pacfile.local) and [Aurfile.local](Aurfile.local) and run `make full-install`

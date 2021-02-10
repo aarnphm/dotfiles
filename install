@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-if [ "$(command -v git)" --eq "0" ]; then
+if [[ `command -v git` ]]; then
     git clone --depth=1 --recursive git@github.com:aarnphm/dotfiles.git && cd dotfiles
     ./install.pre
 else
