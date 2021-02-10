@@ -15,4 +15,4 @@ elif [[ `uname -s` == "Linux" ]]; then
     isavailable chezmoi || sudo pacman -S chezmoi --noconfirm
 fi
 
-make && make init
+make init

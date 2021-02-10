@@ -927,7 +927,7 @@ awful.screen.connect_for_each_screen(
             properties = {{floating = true}}
         },
         {
-            rule = {class = "spotify"},
+            rule_any = {class = "spotify", instance = "spotify-tray" },
             properties = {screen=screen.count()>1 and 2 or 1,tag = awful.util.tagnames[2], switchtotag=true}
         },
         {

@@ -32,6 +32,14 @@ chez-apply: ## apply chezmoi after changes config file
 chez-init: ## create chezmoi.toml for configuration
 	chezmoi init -S ${CURDIR} -v
 
+docker-build: ## build docker images from Dockerfile
+	docker build -t aar0npham/dotfiles:latest .
+
+docker-run: ## test run docker
+	docker run -it aar0npham/dotfiles:latest
+
+docker: docker-build docker-run ## build and run test code
+
 run: deps\
 	 chez-init\
 	 chez-apply ## run to check deps and apply changes 
@@ -42,10 +50,3 @@ init: run\
 	homebrew-install\
 	framework\
 	chez-apply ## defaults to run all options	
-
-
-docker-build: ## build docker images from Dockerfile
-	docker build -t aar0npham/dotfiles:latest .
-
-docker-run: ## test run docker
-	docker run -it aar0npham/dotfiles:latest

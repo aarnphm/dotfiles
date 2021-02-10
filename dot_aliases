@@ -18,7 +18,7 @@ alias cr="crontab $HOME/.local/share/chezmoi/config/cronfile"
 alias dotfiles="cd $CHEZMOI_DIR"
 alias cr="crontab $CHEZMOI_DIR/config/cronfile"
 # alias for pacman for arch linux
-alias packages="$PKGMN -Qqen >| $HOME/Pacfile && $PKGMN -Qqem >| $HOME/Aurfile"
+alias packages="$PKGMN -Qqen >| $HOME/Pacfile.local && $PKGMN -Qqem >| $HOME/Aurfile.local"
 
 alias h2s="$HOME/.scripts/http-to-ssh.sh"
 

@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IFS=$'\n\t'
+
+trap 'exit' INT
 
 ##############################################
 # Variables
 ##############################################
 
-{{- if .dockerdot }}
-SOURCE_DIR=$HOME/dotfiles
-{{- else }}
-SOURCE_DIR="${SOURCE_DIR:-$(chezmoi source-path)}"
-{{- end }}
+SOURCE_DIR="${SOURCE_DIR:-$(pwd)}"
 
-BUNDLE_FILE="$SOURCE_DIR/config/Brewfile"
-PACMAN_FILE="$SOURCE_DIR/config/Pacfile"
-AUR_FILE="$SOURCE_DIR/config/Aurfile"
+BUNDLE_FILE="$SOURCE_DIR/Brewfile"
+PACMAN_FILE="$SOURCE_DIR/Pacfile.in"
+AUR_FILE="$SOURCE_DIR/Aurfile.in"
 
 ##############################################
 # Functions
@@ -48,16 +45,22 @@ function echo_info() {
 function __install() {
     if [[ $1 == "core" ]]; then
         echo_info "Installing pacman packages from ${PACMAN_FILE}..."
-        if ! [ -x "$(command -v rainbow)" ]; then
-            sudo $PKGMN $PKGI $(< "$PACMAN_FILE") ${PKGOPT[@]}
-        else
-            rainbow --red=error --yellow=warning sudo $PKGMN $PKGI $(< "$PACMAN_FILE") ${PKGOPT[@]}
-        fi
-        echo_done "Finish installed!"
+        while IFS= read -r package
+        do 
+            if ! [ -x "$(command -v rainbow)" ]; then
+                sudo $PKGMN $PKGI ${PKGOPT[@]} $package
+            else
+                rainbow --red=error --yellow=warning sudo $PKGMN $PKGI ${PKGOPT[@]} $package
+            fi
+        done < $PACMAN_FILE
+        echo_done "Finished installing packages from ${PACMAN_FILE}"
     elif [[ $1 == "aur" ]]; then
         echo_info "Installing AUR packages from ${AUR_FILE} using yay ..."
-        yay $PKGI $(< "$AUR_FILE") ${PKGOPT[@]}
-        echo_done "Finish installed!"
+        while IFS= read -r package
+        do
+            yay $PKGI ${PKGOPT[@]} $package
+        done <  $AUR_FILE
+        echo_done "Finished installing packages from ${AUR_FILE}"
     else
         echo_info "Installing ${1} ..."
         sudo $PKGMN $PKGI $1
@@ -73,8 +76,8 @@ if [[ "$OSTYPE" == "darwin"* ]];then
     $PKGMN bundle
 elif [[ "$OSTYPE" == "linux-gnu"* ]];then
     echo "Using $PACMAN_FILE and $AUR_FILE"
-    if ! builtin type -p 'yay' >/dev/null 2>&1; then
-        echo 'Install yay.'
+    if ! command -v yay >/dev/null 2>&1; then
+        echo "Install yay"
         sudo $PKGMN $PKGI ${PKGOPT[@]} base base-devel wget
         tmpdir="$(command mktemp -d)"
         command cd "${tmpdir}" || return 1

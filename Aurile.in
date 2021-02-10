@@ -4,7 +4,6 @@ bitwarden
 cacheclean
 caffeine-ng
 dmenu-git
-dxvk-bin
 fet.sh-git
 fix-bt-a2dp
 gyazo
@@ -21,7 +20,6 @@ skypeforlinux-stable-bin
 slack-desktop
 spicetify-cli
 spicetify-themes-git
-spotify
 teams
 vmware-workstation
 winetricks-git

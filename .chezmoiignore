@@ -5,7 +5,6 @@ Dockerfile
 *.deb
 *.png
 install*
-.*
 *.tar.gz
 
 bootstrap
@@ -25,17 +24,17 @@ Brewfile
 .hushlogin
 {{ end  }}
 
-{{ if ne .chezmoi.os "linux" }}
+{{ if or (ne .chezmoi.os "linux") (not .personal) }}
 .config/awesome
 .config/picom
 .config/redshift
 .config/rofi
 .config/termite
 .config/conky
-.Xresources
 .dmenu/
 .screenlayout/
 .zsh/post/ssh-agent-start
-Pacfile
-Aurfile
+.Xresources
+Pacfile.*
+Aurfile.*
 {{ end  }}
