@@ -11,7 +11,8 @@
 ```sh 
     $ curl -O "https://raw.githubusercontent.com/aarnphm/dotfiles/main/install" | sh
 ```
-- for first time installer do `make install`
+- for first time installer do `make build`
+- the scripts will install a baseline, if you want a more rich experience take a look at [Pacfile.local](Pacfile.local) and [Aurfile.local](Aurfile.local) and run `make full-install`
 A more responsible options:
 - after installing chezmoi you can do `chezmoi init git@github.com:aarnphm/dotfiles.git`
 - `chezmoi diff -v` to see different files, `chezmoi apply -v --dry-run` to check for errors

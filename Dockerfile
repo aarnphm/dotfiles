@@ -6,10 +6,7 @@ RUN mkdir -p /var/lib/pacman/
 RUN pacman -Syu --noconfirm
 RUN pacman -S sudo git file awk gcc base-devel reflector --noconfirm
 
-RUN reflector --latest 5 \
-        --save "/etc/pacman.d/mirrorlist" \
-        --sort rate \
-        --verbose
+RUN reflector --latest 5 --save "/etc/pacman.d/mirrorlist" --sort rate --verbose
 
 RUN useradd -ms /bin/bash arch
 RUN gpasswd -a arch wheel
@@ -21,4 +18,6 @@ RUN mkdir /home/arch/dotfiles
 COPY  --chown=arch:users . ./home/arch/dotfiles
 WORKDIR /home/arch/dotfiles
 
-ENTRYPOINT ["sh", ".dotfiles.sh"]
+ENTRYPOINT ["sh", "install.pre"]
+
+CMD ["zsh"]

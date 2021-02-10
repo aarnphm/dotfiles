@@ -13,12 +13,7 @@ alias av="$EDITOR -p $@"
 # chezmoi
 alias e="$CHEZMOI_BIN edit $@"
 alias o="xdg-open $@"
-alias dotfiles="cd $HOME/.local/share/chezmoi"
-alias cr="crontab $HOME/.local/share/chezmoi/config/cronfile"
 alias dotfiles="cd $CHEZMOI_DIR"
-alias cr="crontab $CHEZMOI_DIR/config/cronfile"
-# alias for pacman for arch linux
-alias packages="$PKGMN -Qqen >| $HOME/Pacfile.local && $PKGMN -Qqem >| $HOME/Aurfile.local"
 
 alias h2s="$HOME/.scripts/http-to-ssh.sh"
 
@@ -65,6 +60,9 @@ if [ "$(uname -s)" = "Darwin" ]; then
 else
     alias la="\ls -laF --color"
 fi
+
+# sort la
+alias sla="la | grep '^d' && la | grep '^-' && la | grep '^l'"
 
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'

@@ -1,23 +1,24 @@
 README.md
 Makefile
 Dockerfile
+Pacfile.*
+Aurfile.*
 *.sh
 *.deb
 *.png
-install*
+install**
 *.tar.gz
 
-bootstrap
-config
 screenshots
 
 .ssh/known_hosts
 .ssh/agent-environment
 .vim/undo
 .vim/plugins
+private_dot_config/nvim/coc-settings.json
 
 {{ if ne .chezmoi.os "darwin" }}
-Brewfile
+Brewfile.*
 .config/yabai
 .config/skhd
 .config/spicetify_data
@@ -35,6 +36,4 @@ Brewfile
 .screenlayout/
 .zsh/post/ssh-agent-start
 .Xresources
-Pacfile.*
-Aurfile.*
 {{ end  }}
