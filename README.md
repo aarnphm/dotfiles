@@ -9,7 +9,7 @@
 # Installation
 
 ```sh 
-    $ curl -O "https://raw.githubusercontent.com/aarnphm/dotfiles/main/install.sh" | sh
+    $ curl -O "https://raw.githubusercontent.com/aarnphm/dotfiles/main/install" | sh
 ```
 - for first time installer do `make install`
 A more responsible options:
