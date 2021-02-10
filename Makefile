@@ -1,8 +1,6 @@
 .PHONY: help dpes services framework sys homebrew-install chez-apply chez-init init run docker-build docker-run
 
-.DEFAULT_GOAL := help
-
-.DEFAULT: run
+.DEFAULT_GOAL := run
 
 help: ## Display this help messages
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -34,16 +32,17 @@ chez-apply: ## apply chezmoi after changes config file
 chez-init: ## create chezmoi.toml for configuration
 	chezmoi init -S ${CURDIR} -v
 
-init: deps\
+run: chez-init\
+	 chez-apply\
+	 deps ## run to check deps and apply changes 
+
+init: run\
 	services\
 	sys\
 	homebrew-install\
 	framework\
 	chez-apply ## defaults to run all options	
 
-run: chez-init\
-	 chez-apply\
-	 deps ## casual run to apply changes
 
 docker-build: ## build docker images from Dockerfile
 	docker build -t aar0npham/dotfiles:latest .
