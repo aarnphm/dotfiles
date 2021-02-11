@@ -1,4 +1,4 @@
-.PHONY: help chez-apply chez-init run docker-build docker-run build
+.PHONY: help chez-apply chez-update chez-init full-install run docker-build docker-run build
 
 .DEFAULT_GOAL := run
 
