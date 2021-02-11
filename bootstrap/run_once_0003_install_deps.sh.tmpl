@@ -22,7 +22,7 @@ AUR_FILE="$SOURCE_DIR/Aurfile.in"
 
 {{- if eq .chezmoi.os "darwin" }}
 export PKGMN=brew
-{{- else if and((.personal) (eq .chezmoi.os "linux")) }}
+{{- else if and (.personal) (eq .chezmoi.os "linux") }}
 export PKGOPT=(--needed --noconfirm)
 export PKGI=-Sy
 export PKGR=-Rns
@@ -72,3 +72,4 @@ __install osx
 {{- else if eq .chezmoi.os "linux" }}
 echo "Using $PACMAN_FILE and $AUR_FILE"
 __install core && __install aur
+{{- end }}

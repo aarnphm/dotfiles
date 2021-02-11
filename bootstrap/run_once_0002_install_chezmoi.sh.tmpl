@@ -6,9 +6,8 @@ isavailable() {
     type "$1" &>/dev/null
 }
 
-{{- if and((not `command -v chezmoi`) (eq .chezmoi.os "darwin" )) -}}
-CI=1
+{{- if eq .chezmoi.os "darwin" }}
 isavailable chezmoi || brew install chezmoi
-{{- else if eq .chezmoi.os "linux" -}}
+{{- else if eq .chezmoi.os "linux" }}
 isavailable chezmoi || sudo pacman -S chezmoi --noconfirm
-{{- end -}}
+{{- end }}

@@ -1,4 +1,4 @@
-.PHONY: help chez-apply chez-init init run docker-build docker-run build
+.PHONY: help chez-apply chez-init run docker-build docker-run build
 
 .DEFAULT_GOAL := run
 
@@ -16,7 +16,6 @@ chez-apply: ## apply chezmoi after changes config file
 	chezmoi apply -v --debug --color on
 
 chez-init: ## create chezmoi.toml for configuration
-	./bootstrap/run_0002_install_chezmoi.sh
 	chezmoi init -S ${CURDIR} -v
 
 docker-build: ## build docker images from Dockerfile
@@ -29,4 +28,3 @@ build: docker-build docker-run ## build and run test code
 
 run: chez-init chez-apply 
 
-init: chez-update chez-apply

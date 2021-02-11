@@ -3,4 +3,4 @@
 set -euo pipefail
 trap "exit" INT
 
-make && make init
+make 
