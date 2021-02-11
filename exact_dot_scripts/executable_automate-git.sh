@@ -5,15 +5,10 @@ set -e
 # get datetime
 datetime=$(date +'%a:%m-%d:%R')
 
-cd $HOME/.local/share/chezmoi
+cd $(chezmoi source-path)
 
 # Check for new packages, and add it to both .local file
-PKGMN=
-if [[ ! `command -v yay` ]]; then
-    PKGMN="$(sudo pacman)"
-else
-    PKGMN=yay
-fi
+PKGMN=yay
 $PKGMN -Qqen >| $HOME/Pacfile.local && $PKGMN -Qqem >| $HOME/Aurfile.local
 
 # Check if upstream, else not pull

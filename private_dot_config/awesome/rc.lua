@@ -456,10 +456,10 @@ awful.screen.connect_for_each_screen(
                     -- Right widgets
                     layout = wibox.layout.fixed.horizontal,
                     s.systray,
-                    -- volicon,
+                    volicon,
                     volume.widget,
                     spr,
-                    -- baticon,
+                    baticon,
                     bat.widget,
                     spr,
                     clock,
