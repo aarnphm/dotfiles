@@ -209,14 +209,19 @@ nnoremap ; :
 nnoremap : ;
 imap jj <Esc>
 let mapleader=','
+" We don't use arrow key in vim
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+" manual folding
 inoremap <F9> <C-O>za
 nnoremap <F9> za
 onoremap <F9> <C-C>za
 vnoremap <F9> zf
+" quick resize for split
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 nnoremap <leader>S :SudaWrite<CR>
 nnoremap <leader>\ :let @/=''<CR>:noh<CR>
 nnoremap <silent> <leader>p :%s///g<CR>

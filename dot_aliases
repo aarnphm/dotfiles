@@ -56,13 +56,13 @@ alias l="\ls -lF ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
 if [ "$(uname -s)" = "Darwin" ]; then
-    alias la="\ls -laF -G"
+    alias _ta="\ls -laF -G"
 else
-    alias la="\ls -laF --color"
+    alias _ta="\ls -laF --color"
 fi
 
 # sort la
-alias sla="la | grep '^d' && la | grep '^-' && la | grep '^l'"
+alias la="_ta | grep '^d' && _ta | grep '^-' && _ta | grep '^l'"
 
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'

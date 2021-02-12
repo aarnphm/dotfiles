@@ -5,8 +5,6 @@ Host *
     AddKeysToAgent yes
 {{- end }}
     IdentityFile {{ .chezmoi.homedir }}/.ssh/id_rsa
-    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_dsa
-    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_ecdsa
     IdentityFile {{ .chezmoi.homedir }}/.ssh/id_ed25519
 
 {{ if eq .chezmoi.os "darwin" }}

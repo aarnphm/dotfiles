@@ -1,0 +1,6 @@
+require("components.battery")
+require("ears.volume")
+require("ears.brightness")
+require("ears.ram")
+require("ears.cpu")
+require("ears.temp")
