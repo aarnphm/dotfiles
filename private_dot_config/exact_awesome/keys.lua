@@ -9,11 +9,11 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 local naughty       = require("naughty")
 
 -- define defaults variables
-local defaults   = require("defaults")
-local modkey     = defaults.modkey
-local altkey     = defaults.altkey
-local ctrl       = defaults.ctrl
-local shift      = defaults.shift
+local def        = require("defaults")
+local modkey     = def.modkey
+local altkey     = def.altkey
+local ctrl       = def.ctrl
+local shift      = def.shift
 local cycle_prev = true
 
 -- ===================================================================
@@ -122,7 +122,7 @@ globalkeys = gears.table.join(
     awful.key({ctrl, altkey}, "\\",
         function()
             naughty.suspend()
-            os.execute(defaults.lock)
+            os.execute(def.lock)
         end,
         {description = "lock screen", group = "hotkeys"}
         ),
@@ -216,43 +216,43 @@ globalkeys = gears.table.join(
         ),
     awful.key({ctrl, altkey}, "t",
         function()
-            awful.spawn(defaults.terminal)
+            awful.spawn(def.terminal)
         end,
         {description = "open a kitty", group = "launcher"}
         ),
     awful.key({shift, modkey}, "m",
         function()
-            awful.spawn(defaults.spotify)
+            awful.spawn(def.spotify)
         end,
         {description = "run spotify", group = "launcher"}
         ),
     awful.key({shift, modkey}, "f",
         function()
-            awful.spawn(defaults.filebrowser)
+            awful.spawn(def.filebrowser)
         end,
         {description = "open explorer", group = "launcher"}
         ),
     awful.key({shift, modkey}, "z",
         function()
-            awful.spawn(defaults.zotero)
+            awful.spawn(def.zotero)
         end,
         {description = "run zotero", group = "launcher"}
         ),
     awful.key({modkey}, "p",
         function()
-            awful.spawn(defaults.screenshot)
+            awful.spawn(def.screenshot)
         end,
         {description = "take a screenshot", group = "launcher"}
         ),
     awful.key({modkey}, "b",
         function()
-            awful.spawn(defaults.browser)
+            awful.spawn(def.browser)
         end,
         {description = "open default browser", group = "launcher"}
         ),
     awful.key({ctrl}, "space",
         function()
-            awful.spawn(defaults.launcher)
+            awful.spawn(def.launcher)
         end,
         {description = "show rofi", group = "launcher"}
         ),

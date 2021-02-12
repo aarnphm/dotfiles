@@ -133,7 +133,7 @@ local taglist_buttons = gears.table.join(
 -- Tasklist widgets
 -- ===================================================================
 
-local tasklist_buttons = gears.tabl.join(
+local tasklist_buttons = gears.table.join(
     awful.button({}, 1, function(c)
         if c == client.focus then
             c.minimized = true

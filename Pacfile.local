@@ -1,4 +1,5 @@
 acpi
+acpid
 adobe-source-han-sans-otc-fonts
 adobe-source-han-serif-otc-fonts
 alacritty
@@ -68,6 +69,7 @@ lightdm
 linux
 linux-firmware
 linux-headers
+luarocks
 lxappearance
 m4
 make
@@ -97,6 +99,7 @@ patch
 pavucontrol
 pgadmin4
 pkgconf
+playerctl
 postgresql
 pulseaudio
 pulseaudio-alsa

@@ -9,11 +9,7 @@ local awful = require("awful")
 local update_interval = 15
 
 -- Subscribe to power supply status changes with acpi_listen
-local charger_script = [[
-    sh -c '
-    acpi_listen | grep --line-buffered ac_adapter
-    '
-]]
+local charger_script = [[sh -c 'acpi_listen | grep --line-buffered ac_adapter']]
 
 -- First get battery file path
 -- If there are multiple, only get the first one

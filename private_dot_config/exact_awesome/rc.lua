@@ -65,9 +65,9 @@ end
 -- Also import some custom modules
 -- ===================================================================
 
-local apps = require("defaults").defaults
+local def = require("defaults")
 -- Theme
-beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. apps.theme .. "/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. def.theme .. "/theme.lua")
 -- Layouts
 require("layouts")
 
@@ -90,10 +90,7 @@ end)
 -- Keys
 -- ===================================================================
 
-root.buttons(gears.table.join(awful.buttons({}, 4, awful.tag.viewnext),
-    awful.buttons({}, 5, awful.tag.viewprev)))
 require("keys")
-
 
 -- ===================================================================
 -- Rules setup
@@ -129,19 +126,19 @@ awful.rules.rules = {
     },
     {
         rule = {class = "Spotify"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = awful.util.tagnames[4], switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = "", switchtotag = true}
     },
     {
         rule = {class = "Kitty"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = awful.util.tagnames[1], switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = "", switchtotag = true}
     },
     {
         rule_any = {instance={"chromium","firefox"}},
-        properties = {tag = awful.util.tagnames[3], switchtotag = true}
+        properties = {tag = "", switchtotag = true}
     },
     {
         rule_any = {class="Microsoft Teams - Preview", instance = {"zoom", "discord", "slack", "skype","caprine"}},
-        properties = {screen=screen.count()>1 and 2 or 1, tag = awful.util.tagnames[5], switchtotag = true}
+        properties = {screen=screen.count()>1 and 2 or 1, tag="ﭮ", switchtotag = true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
     -- Rofi
@@ -151,7 +148,7 @@ awful.rules.rules = {
     -- File chooser dialog
     {
         rule_any = {role = "GtkFileChooserDialog"},
-        properties = {floating = true, width = apps.screen_width * 0.55, height = apps.screen_height * 0.65}
+        properties = {floating = true, width = def.screen_width * 0.55, height = def.screen_height * 0.65}
     }
 }
 
