@@ -50,7 +50,6 @@ alias ls="n -dDeUHatT"
 alias dockerprune="docker system prune -a -f"
 alias kubesecret="kubectl get secret regcred --output=yaml"
 
-# alias steam="flatpak run com.valvesoftware.Steam"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
 # List all files colorized in long format
@@ -64,7 +63,7 @@ else
 fi
 
 # sort la
-alias la="_ta | grep '^d' && _ta | grep '^-' && _ta | grep '^l'"
+alias la="_ta | grep '^d' && _ta | grep '.*' && _ta | grep '^-' && _ta | grep '^l'"
 
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'
