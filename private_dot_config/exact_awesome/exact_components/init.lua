@@ -1,8 +1,3 @@
 require("components.battery")
 require("components.volume")
 require("components.brightness")
-require("components.ram")
-require("components.cpu")
-require("components.temp")
-require("components.disk")
-require("components.weather")

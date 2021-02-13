@@ -4,6 +4,7 @@ local awful  = require( "awful")
 local glib   = require( "lgi").GLib
 local unpack = unpack or table.unpack -- luacheck: globals unpack (compatibility with Lua 5.1)
 local module = { _max = require("collision.max")}
+local defaults = require("defaults")
 
 local current_mode   = "focus"
 
@@ -63,7 +64,7 @@ local function new(k)
         for k,v in pairs(keys) do
             for _,key_name in ipairs(v) do
                 if key_name == "Left" or key_name == "Right" then
-                    aw[#aw+1] = awful.key({ "Mod1","Control"}, key_name, function () module.tag(k,nil ,true) end,
+                    aw[#aw+1] = awful.key({ defaults.altkey, defaults.ctrl}, key_name, function () module.tag(k,nil ,true) end,
                         { description = "Select tag to the "..key_name, group = "Collision" })
                 end
             end

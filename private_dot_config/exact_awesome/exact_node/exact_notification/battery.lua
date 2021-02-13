@@ -7,16 +7,16 @@ local display = true
 awesome.connect_signal("components::battery", function(value)
     if value < 11 then
         naughty.notify({
-            title = "Battery Status",
-            text = "Running low at " .. value .. "%",
+            title = "<c<",
+            text = "Low: " .. value .. "%",
             image = icons.battery
         })
     end
 
     if (value > 94 and display) then
         naughty.notify({
-            title = "Battery Status",
-            text = "Running high at " .. value .. "%",
+            title = "<c<",
+            text = "Percentage: " .. value .. "%",
             image = icons.battery
         })
         display = false
@@ -26,7 +26,7 @@ end)
 awesome.connect_signal("components::charger", function(plugged)
     if plugged then
         naughty.notify({
-            title = "Battery Status",
+            title = "¯\\_(ツ)_/¯",
             text = "Charging",
             image = icons.battery_charging
         })

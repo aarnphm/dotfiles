@@ -21,6 +21,7 @@
 {{-     $personal = true -}}
 {{-   else if eq $hostname "0x6161726E70" -}}
 {{-     $personal = true -}}
+{{-     $wm = promptString "wm [awesome | i3]"}}
 {{-   else -}}
 {{-     $headless = promptBool "headless" -}}
 {{-     $transient = promptBool "transient" -}}
@@ -30,9 +31,9 @@
 
 [data]
   headless = {{ $headless }}
+  wm = {{ $wm | quote }}
   hostname = {{ $hostname | quote }}
   transient = {{ $transient }}
   isovalent = {{ $isovalent }}
   kubernetes = {{ $kubernetes }}
   personal = {{ $personal }}
-  wm = {{ $wm | quote }}

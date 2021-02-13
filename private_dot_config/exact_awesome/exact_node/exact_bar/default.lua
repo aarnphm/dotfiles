@@ -1,4 +1,4 @@
--- def_bar.lua
+-- default.lua
 -- Wibar (top bar)
 local awful          = require("awful")
 local gears          = require("gears")
@@ -7,10 +7,8 @@ local beautiful      = require("beautiful")
 local xresources     = require("beautiful.xresources")
 local dpi            = xresources.apply_dpi
 local helpers        = require("helpers")
-local icon_theme     = "def"
-local icons          = require("icons")
-local systray_margin = (beautiful.wibar_height - beautiful.systray_icon_size) / 2
 local modkey         = require("defaults").modkey
+
 -- Helper function that changes the appearance of progress bars and their icons
 -- Create horizontal rounded bars
 local function format_progress_bar(bar)
@@ -22,80 +20,10 @@ local function format_progress_bar(bar)
 end
 
 -- ===================================================================
---  Awesome panel
--- ===================================================================
-
-local panelPop = require('nod.pop.bot_panel')
-local awesome_icon = wibox.widget {
-    {
-        {widget = wibox.widget.imagebox, image = icons.awesome, resize = true},
-        margins = 7,
-        widget = wibox.container.margin
-    },
-    bg = beautiful.xbackground,
-    widget = wibox.container.background
-}
-
-local sidebar_activator = wibox({
-        width = 1,
-        visible = true,
-        ontop = true,
-        opacity = 0,
-        below = true,
-        screen = screen.primary
-    })
-sidebar_activator.height = dpi(1000)
-sidebar_activator:connect_signal("mouse::enter",
-function() panelPop.visible = true end)
-
-awful.placement.left(sidebar_activator)
-
--- awesome_icon:connect_signal("mouse::enter",
---                            function() panelPop.visible = true end)
-
-awesome_icon:buttons(gears.table.join(awful.button({}, 1, function()
-    panelPop.visible = true
-    awesome_icon.bg = beautiful.xcolor0
-end)))
-
-panelPop:connect_signal("mouse::leave", function()
-    panelPop.visible = false
-    awesome_icon.bg = beautiful.xbackground
-end)
-
--- ===================================================================
--- Notification panel
--- ===================================================================
-
--- local notifPop = require("nod.pop.notification")
-local notif_icon = wibox.widget {
-    {
-        {widget = wibox.widget.imagebox, image = icons.notif, resize = true},
-        margins = dpi(4),
-        widget = wibox.container.margin
-    },
-    bg = beautiful.xbackground,
-    widget = wibox.container.background
-}
-
--- notif_icon:connect_signal("mouse::enter", function() notifPop.visible = true end)
--- notifPop:connect_signal("mouse::leave", function() notifPop.visible = false end)
-
--- notif_icon:buttons(gears.table.join(awful.button({}, 1, function()
---     notifPop.visible = true
---     notif_icon.bg = beautiful.xcolor0
--- end)))
-
--- notifPop:connect_signal("mouse::leave", function()
---     notifPop.visible = false
---     notif_icon.bg = beautiful.xbackground
--- end)
-
--- ===================================================================
 --  Battery Bar Widget
 -- ===================================================================
 
-local battery_bar = require("nod.widgets.battery_bar")
+local battery_bar = require("node.widgets.battery_bar")
 local battery = format_progress_bar(battery_bar)
 
 -- ===================================================================
@@ -107,8 +35,8 @@ mysystray:set_base_size(beautiful.systray_icon_size)
 
 local mysystray_container = {
     mysystray,
-    left = dpi(8),
-    right = dpi(8),
+    left = dpi(10),
+    right = dpi(10),
     widget = wibox.container.margin
 }
 
@@ -124,9 +52,7 @@ local taglist_buttons = gears.table.join(
     awful.button({modkey}, 3, function(t)
         if client.focus then client.focus:toggle_tag(t) end
     end), awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
-    awful.button({}, 5, function(t)
-        awful.tag.viewprev(t.screen)
-    end)
+    awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
     )
 
 -- ===================================================================
@@ -153,8 +79,6 @@ local tasklist_buttons = gears.table.join(
 -- ===================================================================
 
 awful.screen.connect_for_each_screen(function(s)
-    -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
 
     -- Create layoutbox widget
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -166,7 +90,7 @@ awful.screen.connect_for_each_screen(function(s)
     end
 
     -- Create the wibox
-    s.mywibox = awful.wibar({position = "bottom", screen = s, ontop = true})
+    s.mywibox = awful.wibar({position = "top", screen = s, ontop = true})
     s.mywibox:set_xproperty("WM_NAME", "panel")
 
     -- Remove wibar on full screen
@@ -247,13 +171,6 @@ awful.screen.connect_for_each_screen(function(s)
             {
                 layout = wibox.layout.fixed.horizontal,
                 {
-                    awesome_icon,
-                    top = 0,
-                    right = 5,
-                    left = 10,
-                    widget = wibox.container.margin
-                },
-                {
                     {
                         s.mytaglist,
                         bg = beautiful.xcolor0,
@@ -266,7 +183,6 @@ awful.screen.connect_for_each_screen(function(s)
                     left = 5,
                     widget = wibox.container.margin
                 },
-                s.mypromptbox
             },
             {
                 s.mytasklist,
@@ -303,7 +219,7 @@ awful.screen.connect_for_each_screen(function(s)
                     {
                         {
                             mysystray_container,
-                            top = dpi(4),
+                            top = dpi(3),
                             layout = wibox.container.margin
                         },
                         bg = beautiful.xcolor0,
@@ -336,14 +252,6 @@ awful.screen.connect_for_each_screen(function(s)
                     left = 5,
                     widget = wibox.container.margin
                 },
-
-                -- {
-                --     notif_icon,
-                --     top = 0,
-                --     right = 10,
-                --     left = 5,
-                --     widget = wibox.container.margin
-                -- },
 
                 layout = wibox.layout.fixed.horizontal
             }

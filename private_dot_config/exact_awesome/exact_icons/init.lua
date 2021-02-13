@@ -1,16 +1,5 @@
 local gears = require("gears")
 
-
-local function file_exists(path)
-    -- Try to open it
-    local f = io.open(path)
-    if f then
-        f:close()
-        return true
-    end
-    return false
-end
-
 local icons = {}
 
 -- Available icons

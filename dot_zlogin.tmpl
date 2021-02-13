@@ -13,6 +13,17 @@
     if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
         zrecompile -pq "$zcompdump"
     fi
+
+    # zcompile .zshrc
+    zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc
+    zrecompile -pq ${ZDOTDIR:-${HOME}}/.zprofile
+    zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshenv
+    # recompile all zsh or sh
+    for f in $ZSHCONFIG/**/*.*sh
+    do
+        zrecompile -pq $f
+    done
+
 ) &!
 
 # .localrc contains all the local dev variables

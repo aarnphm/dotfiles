@@ -1,9 +1,9 @@
-local awful = require("awful")
-local gears = require("gears")
-local wibox = require("wibox")
+local awful     = require("awful")
+local gears     = require("gears")
+local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
-local helpers = require("helpers")
+local dpi       = beautiful.xresources.apply_dpi
+local helpers   = require("helpers")
 
 local active_color = {
     type = 'linear',
@@ -20,8 +20,6 @@ local background_color = beautiful.xcolor0
 local battery_bar = wibox.widget {
     max_value = 100,
     value = 50,
-    -- forced_height = dpi(10),
-    -- margins = {top = dpi(8), bottom = dpi(8)},
     forced_width = dpi(200),
     shape = helpers.rrect(beautiful.border_radius - 3),
     bar_shape = helpers.rrect(beautiful.border_radius - 3),
