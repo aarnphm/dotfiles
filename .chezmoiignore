@@ -1,15 +1,15 @@
 README.md
 Makefile
 Dockerfile
-Pacfile.*
-Aurfile.*
 *.sh
 *.deb
 *.png
+*.in
 install**
 *.tar.gz
 
 screenshots
+bootstrap
 
 .ssh/known_hosts
 .ssh/agent-environment
@@ -26,13 +26,14 @@ Brewfile.*
 {{ end  }}
 
 {{ if or (ne .chezmoi.os "linux") (not .personal) }}
+Pacfile.*
+Aurfile.*
 .config/awesome
 .config/picom
 .config/redshift
 .config/rofi
 .config/termite
 .config/conky
-.dmenu/
 .screenlayout/
 .zsh/post/ssh-agent-start
 .Xresources

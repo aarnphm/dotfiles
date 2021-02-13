@@ -16,11 +16,11 @@ alias o="xdg-open $@"
 alias dotfiles="cd $CHEZMOI_DIR"
 alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 
-alias h2s="$HOME/.scripts/http-to-ssh.sh"
-
 # mcmaster vpn
-alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
-alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
+if [[ -d "/opt/anyconnect*" ]]; then
+    alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
+    alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
+fi
 
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
@@ -30,24 +30,25 @@ alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__p
 # some shortcut
 alias bento="$XDG_CONFIG_DOCUMENTS/cs/BentoML"
 alias cs="$XDG_CONFIG_DOCUMENTS/cs"
+# odoo
+alias odoo="$XDG_CONFIG_DOCUMENTS/cs/odoo/odoo-bin $@"
 
 # Shortcuts
 alias checkint="watch -n 1 ping -c 1 google.com"
 alias net="ping google.com | grep -E --only-match --color=never '[0-9\.]+ ms'"
-# odoo
-alias odoo="$XDG_CONFIG_DOCUMENTS/cs/odoo/odoo-bin $@"
 # git
 alias g="git"
 
+{{- if `command -v nnn` }}
 # nnn intensifies
 alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"
 alias np="nnn-preview"
 alias N="sudo -E nnn -dDH"
 alias ls="n -dDeUHatT"
+{{- end }}
 
 alias dockerprune="docker system prune -a -f"
 alias kubesecret="kubectl get secret regcred --output=yaml"
-alias iwctl="sudo wifi-menu"
 
 # alias steam="flatpak run com.valvesoftware.Steam"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
@@ -96,10 +97,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 else 
     alias afk="xsecurelock"
+    alias iwctl="sudo wifi-menu"
 fi
+
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec -l ${SHELL}"
-alias ca="${CHEZMOI_BIN:-chezmoi} apply --verbose --debug --color on"
+
+# allows ca to dry-run only
+alias dca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
+alias ca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"

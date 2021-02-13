@@ -9,9 +9,9 @@ echo "Put some defined system variables here, then run the scripts again"
 SERVICES=(docker cronie sshd postgresql optimus-manager lightdm acpid)
 
 for services in "${SERVICES[@]}"; do
-    sudo systemctl enable $services 
+    sudo systemctl enable $services
 done
 
-crontab $(chezmoi source-path)/private_cronfile
+crontab {{ .chezmoi.sourceDir }}/bootstrap/private_cronfile
 {{-   end }}
 {{- end }}

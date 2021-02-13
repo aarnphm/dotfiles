@@ -210,7 +210,7 @@ globalkeys = gears.table.join(
         ),
     awful.key({ctrl, altkey}, "e",
         function()
-            awful.spawn("./.dmenu/dmenu-edit-conf.sh")
+            awful.spawn(". $HOME/.local/bin/dmenu-edit-config")
         end,
         {description = "edit config files", group = "launcher"}
         ),

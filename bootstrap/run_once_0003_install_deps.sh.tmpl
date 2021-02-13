@@ -7,11 +7,7 @@ trap 'exit' INT
 # Variables
 ##############################################
 
-{{- if not .personal }}
-SOURCE_DIR="${SOURCE_DIR:-$(pwd)}"
-{{- else }}
-SOURCE_DIR="${SOURCE_DIR:-$(chezmoi source-path)}"
-{{- end }}
+SOURCE_DIR={{ .chezmoi.sourceDir }}/bootstrap
 BUNDLE_FILE="$SOURCE_DIR/Brewfile.in"
 PACMAN_FILE="$SOURCE_DIR/Pacfile.in"
 AUR_FILE="$SOURCE_DIR/Aurfile.in"

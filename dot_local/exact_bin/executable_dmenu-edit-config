@@ -33,7 +33,7 @@ case "$choice" in
 		choice="/etc/lightdm/lightdm-mini-greeter.conf"
 	;;
     .dotfiles)
-		choice="$CHEZMOI_DIR/init.sh"
+		choice="$CHEZMOI_DIR/bootstrap"
 	;;
 	alacritty)
 		choice="$CHEZMOI_DIR/private_dot_config/alacritty/alacritty.yml"
@@ -60,10 +60,10 @@ case "$choice" in
 		choice="$CHEZMOI_DIR/private_dot_config/termite/config"
 	;;
 	vim)
-		choice="$CHEZMOI_DIR/dot_vimrc"
+		choice="$CHEZMOI_DIR/dot_vim/vimrc"
 	;;
 	dmenu-scripts)
-		choice="$CHEZMOI_DIR/private_dot_dmenu/dmenu-edit-conf.sh"
+		choice="$CHEZMOI_DIR/dot_local/exact_bin/dmenu-edit-config"
 	;;
 	rofi)
 		choice="$CHEZMOI_DIR/private_dot_config/rofi/config.rasi"
@@ -72,7 +72,7 @@ case "$choice" in
 		choice="$CHEZMOI_DIR/dot_zshrc.tmpl"
 	;;
 	aliases)
-		choice="$CHEZMOI_DIR/dot_aliases"
+		choice="$CHEZMOI_DIR/exact_dot_zsh/aliases.zsh"
 	;;
 	exports)
 		choice="$CHEZMOI_DIR/dot_zshenv.tmpl"

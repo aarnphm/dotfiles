@@ -23,41 +23,40 @@ fn=${HOME}/.local/bin
 fpath=($HOME/.zsh/completion /usr/local/share/zsh/site-functions $fn $fpath)
 
 for function in $fn/*; do
-autoload -Uz ${function:t}
+    autoload -Uz ${function:t}
 done
 
 # extra files in ~/.zsh/configs/pre , ~/.zsh/configs , and ~/.zsh/configs/post
 # these are loaded first, second, and third, respectively.
 _load_settings() {
-_dir="$1"
-if [ -d "$_dir" ]; then
-for config in "$_dir"/**/*(N-.); do
-case "$config" in
-"$_dir"/(pre|post)/*|*.zwc)
-:
-;;
-*)
-. $config
-;;
-esac
-done
+    _dir="$1"
+    if [ -d "$_dir" ]; then
+        for config in "$_dir"/**/*(N-.); do
+            case "$config" in
+                "$_dir"/(pre|post)/*|*.zwc)
+                    :
+                    ;;
+                *)
+                    . $config
+                    ;;
+            esac
+        done
 
-if [ -d "$_dir/post" ]; then
-for config in "$_dir"/post/**/*~*.zwc(N-.); do
-. $config
-done
-fi
-fi
+        if [ -d "$_dir/post" ]; then
+            for config in "$_dir"/post/**/*~*.zwc(N-.); do
+                . $config
+            done
+        fi
+    fi
 }
 
 _load_settings "$HOME/.zsh"
 unset -f _load_settings
 
-# aliases
-[[ -f ~/.aliases ]] && source ~/.aliases
-
 # fixes for path
 typeset -U path cdpath fpath manpath
+
+[[ -f $HOME/.aliases ]] && source $HOME/.aliases
 
 # unsetopt XTRACE
 # exec 2>&3 3>&-

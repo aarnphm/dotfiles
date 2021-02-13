@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Put local env or secrets here
+
+# bitwarden-cli with a bit of a hack
+export BW_MASTER=
+export BW_CLIENTID=
+export BW_CLIENTSECRET=
+BW_HASH=$(bw unlock $BW_MASTER 2>/dev/null | grep 'export' | sed -E 's/.*export BW_SESSION="(.*==)"$/\1/')
+export BW_SESSION="$BW_HASH"
+
