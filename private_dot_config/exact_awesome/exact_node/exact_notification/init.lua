@@ -6,13 +6,9 @@ local awful     = require("awful")
 local dpi       = beautiful.xresources.apply_dpi
 local helpers   = require("helpers")
 
--- require("node.notification.brightness")
--- require("node.notification.volume")
-require("node.notification.battery")
 
 naughty.config.defaults.ontop               = true
 naughty.config.defaults.screen              = awful.screen.focused()
-naughty.config.defaults.title               = "system notification"
 naughty.config.defaults.border_color        = beautiful.widget_border_color
 naughty.config.defaults.position            = "top_right"
 naughty.config.defaults.shape               = helpers.rrect(beautiful.client_radius)
@@ -21,9 +17,9 @@ naughty.config.icon_formats                 = {"png", "svg"}
 naughty.config.defaults.border_width        = 1
 naughty.config.defaults.timeout             = 2
 naughty.config.defaults.notification_width  = 128
-naughty.config.defaults.notification_height = 128
-naughty.config.defaults.margin              = dpi(20)
-naughty.config.defaults.icon_size           = dpi(16)
+naughty.config.defaults.notification_height = 100
+naughty.config.defaults.margin              = dpi(10)
+naughty.config.defaults.icon_size           = dpi(32)
 naughty.config.padding                      = dpi(3)
 naughty.config.spacing                      = dpi(3)
 
@@ -44,7 +40,7 @@ naughty.config.presets.low = {
 }
 
 naughty.config.presets.critical = {
-    font    = beautiful.font_name .. "10",
+    font    = beautiful.font_alt .. "10",
     fg      = beautiful.xcolor1,
     bg      = beautiful.bg_normal,
     timeout = 0

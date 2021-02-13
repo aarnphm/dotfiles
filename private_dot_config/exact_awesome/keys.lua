@@ -196,21 +196,9 @@ globalkeys = gears.table.join(
     -- ===================================================================
     -- Application shortcut
     -- ===================================================================
-    awful.key({ctrl, altkey}, "1",
-        function()
-            awful.spawn(". $HOME/.screenlayout/one.sh")
-        end,
-        {description = "eDP scripts", group = "launcher"}
-        ),
-    awful.key({ctrl, altkey}, "2",
-        function()
-            awful.spawn(". $HOME/.screenlayout/dual-side.sh")
-        end,
-        {description = "dual monitor scripts", group = "launcher"}
-        ),
     awful.key({ctrl, altkey}, "e",
         function()
-            awful.spawn(". $HOME/.local/bin/dmenu-edit-config")
+            awful.util.spawn_with_shell("dmenu-edit-config")
         end,
         {description = "edit config files", group = "launcher"}
         ),
@@ -231,12 +219,6 @@ globalkeys = gears.table.join(
             awful.spawn(def.filebrowser)
         end,
         {description = "open explorer", group = "launcher"}
-        ),
-    awful.key({shift, modkey}, "z",
-        function()
-            awful.spawn(def.zotero)
-        end,
-        {description = "run zotero", group = "launcher"}
         ),
     awful.key({modkey}, "p",
         function()
@@ -262,13 +244,13 @@ globalkeys = gears.table.join(
     -- ===================================================================
     awful.key({}, "XF86AudioRaiseVolume",
         function()
-            os.execute("amixer -q set Master 3%%+")
+            awful.spawn("pamixer -i 3")
         end,
         {description = "volume up Master", group = "volume"}
         ),
     awful.key({}, "XF86AudioLowerVolume",
         function()
-            os.execute("amixer -q set Master 3%%-")
+            awful.spawn("pamixer -d 3")
         end,
         {description = "volume down Master", group = "volume"}
         ),

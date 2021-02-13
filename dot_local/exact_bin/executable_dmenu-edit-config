@@ -45,7 +45,7 @@ case "$choice" in
 		choice="$CHEZMOI_DIR/private_dot_config/mimeapps.list"
 	;;
 	awesome)
-		choice="$CHEZMOI_DIR/private_dot_config/awesome/rc.lua"
+		choice="$CHEZMOI_DIR/private_dot_config/exact_awesome/rc.lua"
 	;;
 	dunst)
 		choice="$CHEZMOI_DIR/private_dot_config/dunst/dunstrc"
@@ -63,7 +63,7 @@ case "$choice" in
 		choice="$CHEZMOI_DIR/dot_vim/vimrc"
 	;;
 	dmenu-scripts)
-		choice="$CHEZMOI_DIR/dot_local/exact_bin/dmenu-edit-config"
+		choice="$CHEZMOI_DIR/dot_local/exact_bin/executable_dmenu-edit-config"
 	;;
 	rofi)
 		choice="$CHEZMOI_DIR/private_dot_config/rofi/config.rasi"

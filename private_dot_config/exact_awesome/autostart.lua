@@ -13,6 +13,7 @@ local function run_once(cmd)
 end
 
 run_once("nm-applet")
+run_once("pasystray")
 run_once("ibus-daemon -drx")
 run_once("nitrogen --restore")
 run_once("unclutter -idle 1")

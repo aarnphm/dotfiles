@@ -49,9 +49,8 @@ theme.xcolor15    = xrdb.color15 or "#eaeaea"
 theme.font_name     = "Fira Code Nerd Font"
 theme.font_alt      = "mononoki Nerd Font"
 theme.font          = theme.font_name .. "9"
-theme.font_taglist  = theme.font_alt .. "10"
-theme.font_tasklist = theme.font_alt .. "10"
-theme.max_font      = theme.font_name .. "10"
+theme.font_taglist  = theme.font_alt .. "8"
+theme.font_tasklist = theme.font_alt .. "8"
 
 -- ===================================================================
 -- Background colors
@@ -80,16 +79,16 @@ theme.button_close = theme.xcolor1
 theme.border_width        = dpi(5)
 theme.border_normal       = theme.fg_normal
 theme.border_focus        = theme.bg_focus
-theme.border_radius       = dpi(12)
+theme.border_radius       = dpi(5)
 theme.client_radius       = dpi(12)
 theme.widget_border_width = dpi(2)
-theme.widget_border_color = theme.fg_focus
+theme.widget_border_color = theme.fg_normal
 
 -- ===================================================================
 -- Taglist
 -- ===================================================================
 
-local taglist_square_size   = dpi(0)
+local taglist_square_size   = dpi(1)
 theme.taglist_squares_sel   = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
 theme.taglist_font          = theme.font_taglist

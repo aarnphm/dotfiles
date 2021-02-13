@@ -75,9 +75,11 @@ export PATH="/usr/local/bin:$JAVA_HOME/bin:${PATH}"
 export CHEZMOI_BIN=$(which chezmoi)
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 export BASH_SILENCE_DEPRECATION_WARNING=1;
+export LS_OPTS="-laF --group-directories-first -G"
 {{-   else if eq .chezmoi.os "linux" }}
 export CHEZMOI_BIN=$(command -v chezmoi)
 export DISPLAY=:0
+export LS_OPTS="-laF --group-directories-first --color"
 # wine prefix
 export WINEPREFIX="$HOME/.wine32"
 export WINEARCH=win32

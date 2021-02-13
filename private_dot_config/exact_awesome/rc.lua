@@ -75,8 +75,7 @@ require("icons").init("default")
 awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
-    -- awful.tag({ "", "", "", "", "ﭮ", }, s, awful.layout.layouts[2])
-    awful.tag({ "1", "2", "3", "4", "5" }, s, awful.layout.layouts[2])
+    awful.tag({ "", " ", " ", " ", " " }, s, awful.layout.layouts[2])
 end)
 
 -- ===================================================================

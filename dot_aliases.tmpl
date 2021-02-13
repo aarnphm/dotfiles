@@ -53,17 +53,7 @@ alias kubesecret="kubectl get secret regcred --output=yaml"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
 # List all files colorized in long format
-alias l="\ls -lF ${colorflag}"
-
-# List all files colorized in long format, excluding . and ..
-if [ "$(uname -s)" = "Darwin" ]; then
-    alias _ta="\ls -laF -G"
-else
-    alias _ta="\ls -laF --color"
-fi
-
-# sort la
-alias la="_ta | grep '^d' && _ta | grep '^-' && _ta | grep '^l'"
+alias l="\ls ${LS_OPTS} ${colorflag}"
 
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'
@@ -104,7 +94,7 @@ alias reload="exec -l ${SHELL}"
 
 # allows ca to dry-run only
 alias dca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
-alias ca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
+alias ca="source $HOME/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
 alias vconf="$VISUAL $HOME/.vimrc"
 alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
