@@ -18,7 +18,7 @@ function nnn-preview(){
     (umask 077; mkfifo "$NNN_FIFO")
 
     # Preview command
-    preview_cmd="$HOME/.scripts/preview_cmd.sh"
+    preview_cmd="$HOME/.local/bin/nnn_preview_cmd"
 
     # Use `tmux` split as preview
     if [ -e "${TMUX%%,*}" ]; then
@@ -30,7 +30,7 @@ function nnn-preview(){
 
     # Unable to find a program to use as a preview window
     else
-        echo "unable to open preview, please install tmux or alacritty"
+        echo "unable to open preview, please install tmux or termite"
     fi
 
     nnn "$@"
