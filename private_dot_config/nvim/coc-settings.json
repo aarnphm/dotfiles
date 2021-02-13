@@ -3,6 +3,7 @@
   "python.linting.enabled": true,
   "python.jediEnabled":false,
   "json.format.enable":false,
+  "lua.enable":true,
   "languageserver": {
     "golang": {
       "command": "$HOME/go/bin/gopls",
@@ -25,5 +26,6 @@
                 ".hg/"
             ]
         }
-  }
+  },
+  "coc.preferences.extensionUpdateCheck": "daily"
 }

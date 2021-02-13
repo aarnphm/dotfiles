@@ -11,7 +11,7 @@ setopt hist_ignore_all_dups inc_append_history
 unsetopt clobber
 setopt prompt_subst
 # autoload -Uz vcs_info
-autoload -Uz colors && colors
+# autoload -Uz colors && colors
 
 # Prompt symbol
 COMMON_PROMPT_SYMBOL=">"
@@ -34,7 +34,6 @@ PROMPT='$(common_host)$(common_current_dir)$(common_git_status)$(common_return_s
 # Host
 # me="%n@%m"
 common_host() {
-    me="%n@%m"
     if [[ -n $me ]]; then
         echo "%{$fg[$COMMON_COLORS_HOST_ME]%}$me:"
     fi

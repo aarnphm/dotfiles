@@ -13,9 +13,9 @@
 
 # setopt XTRACE
 
-{{- if eq .chezmoi.os "linux" }}
+{{- if and (eq .chezmoi.os "linux") (.personal) }}
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-exec startx
+    exec startx
 fi
 {{- end }}
 
