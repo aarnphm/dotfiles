@@ -14,6 +14,7 @@ alias av="$EDITOR -p $@"
 alias e="$CHEZMOI_BIN edit $@"
 alias o="xdg-open $@"
 alias dotfiles="cd $CHEZMOI_DIR"
+alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 
 alias h2s="$HOME/.scripts/http-to-ssh.sh"
 

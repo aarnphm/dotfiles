@@ -11,7 +11,6 @@ asciinema
 autoconf
 autofs
 automake
-awesome
 base
 bbswitch-dkms
 bind
@@ -27,6 +26,7 @@ cmake
 cronie
 ctags
 dconf-editor
+dex
 dialog
 discord
 docker
@@ -36,6 +36,7 @@ fakeroot
 feh
 firefox
 flex
+fortune-mod
 fzf
 gcc
 git
@@ -55,6 +56,7 @@ ibus
 ibus-unikey
 imagemagick
 inkscape
+inotify-tools
 intel-ucode
 iwd
 jdk-openjdk
@@ -72,9 +74,12 @@ linux-headers
 luarocks
 lxappearance
 m4
+maim
 make
 mate-polkit
 materia-gtk-theme
+mpc
+mpd
 mtools
 ncdu
 neovim
@@ -107,6 +112,7 @@ pulseaudio-bluetooth
 pyenv
 qt5ct
 qt6-base
+redshift
 ripgrep
 rofi
 samba
@@ -140,6 +146,7 @@ which
 wine-staging
 wireless_tools
 xdg-user-dirs
+xdotool
 xf86-video-vesa
 xorg-bdftopcf
 xorg-docs

@@ -46,11 +46,12 @@ theme.xcolor15    = xrdb.color15 or "#eaeaea"
 -- Font
 -- ===================================================================
 
-theme.font_name    = "InconsolataGo Nerd Font"
-theme.font         = theme.font_name .. "9"
-theme.font_taglist = "mononoki Nerd Font 10" 
-theme.max_font     = theme.font_name .. "9"
--- can also use SFMono Nerd Font
+theme.font_name     = "Fira Code Nerd Font"
+theme.font_alt      = "mononoki Nerd Font"
+theme.font          = theme.font_name .. "9"
+theme.font_taglist  = theme.font_alt .. "10"
+theme.font_tasklist = theme.font_alt .. "10"
+theme.max_font      = theme.font_name .. "10"
 
 -- ===================================================================
 -- Background colors
@@ -77,12 +78,12 @@ theme.button_close = theme.xcolor1
 -- ===================================================================
 
 theme.border_width        = dpi(5)
-theme.border_normal       = theme.xcolor0
-theme.border_focus        = theme.xcolor0
+theme.border_normal       = theme.fg_normal
+theme.border_focus        = theme.bg_focus
 theme.border_radius       = dpi(12)
 theme.client_radius       = dpi(12)
 theme.widget_border_width = dpi(2)
-theme.widget_border_color = theme.xcolor0
+theme.widget_border_color = theme.fg_focus
 
 -- ===================================================================
 -- Taglist
@@ -110,7 +111,7 @@ theme.taglist_disable_icon  = true
 --  Tasklist
 -- ===================================================================
 
-theme.tasklist_font              = theme.font
+theme.tasklist_font              = theme.font_tasklist
 theme.tasklist_plain_task_name   = true
 theme.tasklist_bg_focus          = theme.xcolor0
 theme.tasklist_fg_focus          = theme.xcolor6
@@ -154,10 +155,9 @@ theme.prompt_fg = theme.xforeground
 -- Tooltips
 -- ===================================================================
 
-
+theme.tooltip_font         = theme.font_alt
 theme.tooltip_bg           = theme.xcolor0
 theme.tooltip_fg           = theme.xforeground
-theme.tooltip_font         = theme.font
 theme.tooltip_border_width = theme.border_width
 theme.tooltip_border_color = theme.xcolor0
 theme.tooltip_opacity      = 1
@@ -167,7 +167,7 @@ theme.tooltip_align        = "left"
 -- Menu
 -- ===================================================================
 
-theme.menu_font         = theme.font
+theme.menu_font         = theme.font_alt
 theme.menu_bg_focus     = theme.xcolor4
 theme.menu_fg_focus     = theme.xcolor7
 theme.menu_bg_normal    = theme.xbackground
@@ -189,7 +189,7 @@ theme.hotkeys_border_color = theme.xcolor0
 -- Gaps
 -- ===================================================================
 
-theme.useless_gap = dpi(3)
+theme.useless_gap = dpi(2)
 
 -- ===================================================================
 -- Wibar
@@ -204,7 +204,7 @@ theme.wibar_bg = theme.xbackground
 -- Systray
 -- ===================================================================
 
-theme.systray_icon_spacing = dpi(7)
+theme.systray_icon_spacing = dpi(5)
 theme.bg_systray = theme.xcolor0
 theme.systray_icon_size = dpi(13)
 
