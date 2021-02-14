@@ -122,7 +122,7 @@ globalkeys = gears.table.join(
     awful.key({ctrl, altkey}, "\\",
         function()
             naughty.suspend()
-            os.execute(def.lock)
+            awful.util.spawn_with_shell(def.lock)
         end,
         {description = "lock screen", group = "hotkeys"}
         ),
@@ -256,9 +256,27 @@ globalkeys = gears.table.join(
         ),
     awful.key({}, "XF86AudioMute",
         function()
-            os.execute("amixer -q set Master toggle")
+            awful.spawn("amixer -q set Master toggle")
         end,
         {description = "toggle mute Master", group = "volume"}
+        ),
+    awful.key({}, "XF86AudioPlay",
+        function() 
+            awful.spawn("playerctl play-pause") 
+        end,
+        {description = "Play/Pause current song", group = "volume"}
+        ),
+    awful.key({}, "XF86AudioPrev",
+        function() 
+            awful.spawn("playerctl previous") 
+        end,
+        {description = "Previous song", group="volume"}
+        ),
+    awful.key({}, "XF86AudioNext",
+        function() 
+            awful.spawn("playerctl next") 
+        end,
+        {description = "Next song", group="volume"}
         )
     )
 

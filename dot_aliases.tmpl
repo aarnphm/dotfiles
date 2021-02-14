@@ -11,7 +11,7 @@ alias -- -="cd -"
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
 # chezmoi
-alias e="$CHEZMOI_BIN edit $@"
+alias e="$CHEZMOI_BIN edit --apply $@"
 alias o="xdg-open $@"
 alias dotfiles="cd $CHEZMOI_DIR"
 alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
@@ -53,7 +53,7 @@ alias kubesecret="kubectl get secret regcred --output=yaml"
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
 # List all files colorized in long format
-alias l="\ls ${LS_OPTS} ${colorflag}"
+alias la="\ls ${LS_OPTS} ${colorflag}"
 
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'

@@ -24,8 +24,8 @@ rules = {
     {
         rule_any = {
             class = {"Nm-connection-editor", "Gnome-disks", "caffeine", "Arandr", "Zotero", "Blueman-manager",
-                     "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Skype", "Lxappearance", "Chatterino",
-                     "Zoom", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer"},
+                "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Skype", "Lxappearance", "Chatterino",
+            "Zoom", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"pop-up"},
             type  = {"dialog"}
@@ -34,25 +34,26 @@ rules = {
     },
     {
         rule = {class = "Spotify"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = "4", switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = " ", switchtotag = true}
     },
     {
         rule = {class = "Kitty"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = "1", switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = "", switchtotag = true}
     },
     {
         rule_any = {instance={"chromium","firefox"}},
-        properties = {tag = "3", switchtotag = true}
+        properties = {tag = " ", switchtotag = true}
     },
     {
         rule_any = {class="Microsoft Teams - Preview", instance = {"zoom", "discord", "slack", "skype","caprine"}},
-        properties = {screen=screen.count()>1 and 2 or 1, tag="5", switchtotag = true}
+        properties = {screen=screen.count()>1 and 2 or 1, tag=" ", switchtotag = true}
     },
     {rule = {class = "Gimp"}, properties = {maximized = true}},
+    {rule = {class = "obs"}, properties = {screen=screen.count()>1 and 2 or 1, tag=" ", switchtotag=true}},
     -- Rofi
     {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
     -- other terminal
-    {rule_any = {instance = {"termite","alacritty"}}, properties = {maximized = false, ontop = true, floating = true}},
+    {rule = {class = "Termite"}, properties = {maximized = false, ontop = true, floating = true}},
     -- File chooser dialog
     {
         rule_any = {role = "GtkFileChooserDialog"},

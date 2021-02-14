@@ -9,6 +9,7 @@ local wibox     = require("wibox")
 local beautiful = require("beautiful")
 local naughty   = require("naughty")
 local helpers   = require("helpers")
+local defaults  = require("defaults")
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
 
@@ -64,7 +65,7 @@ end
 -- Also import some custom modules
 -- ===================================================================
 
-beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. require("defaults").theme .. "/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. defaults.theme .. "/theme.lua")
 
 require("icons").init("default")
 
@@ -75,7 +76,7 @@ require("icons").init("default")
 awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "", " ", " ", " ", " " }, s, awful.layout.layouts[2])
+    awful.tag(defaults.tags[s.index].names, s, defaults.tags[s.index].layout)
 end)
 
 -- ===================================================================

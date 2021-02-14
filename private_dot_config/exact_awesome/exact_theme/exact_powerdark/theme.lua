@@ -17,7 +17,7 @@ local helpers      = require("helpers")
 
 -- Inherit default theme
 local theme     = dofile(themes_path .. "default/theme.lua")
-local icon_path = gears.filesystem.get_configuration_dir() .. "icons/"
+-- local theme     = {}
 
 -- ===================================================================
 -- Load $HOME/.Xresources colors and set fallback
@@ -43,14 +43,37 @@ theme.xcolor14    = xrdb.color14 or "#c7e5d6"
 theme.xcolor15    = xrdb.color15 or "#eaeaea"
 
 -- ===================================================================
+-- Layouts
+-- ===================================================================
+
+theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
+theme.layout_fairv = themes_path.."default/layouts/fairvw.png"
+theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
+theme.layout_magnifier = themes_path.."default/layouts/magnifierw.png"
+theme.layout_max = themes_path.."default/layouts/maxw.png"
+theme.layout_fullscreen = themes_path.."default/layouts/fullscreenw.png"
+theme.layout_tilebottom = themes_path.."default/layouts/tilebottomw.png"
+theme.layout_tileleft   = themes_path.."default/layouts/tileleftw.png"
+theme.layout_tile = themes_path.."default/layouts/tilew.png"
+theme.layout_tiletop = themes_path.."default/layouts/tiletopw.png"
+theme.layout_spiral  = themes_path.."default/layouts/spiralw.png"
+theme.layout_dwindle = themes_path.."default/layouts/dwindlew.png"
+theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
+theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
+theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
+theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+
+-- ===================================================================
 -- Font
 -- ===================================================================
 
-theme.font_name     = "Fira Code Nerd Font"
-theme.font_alt      = "mononoki Nerd Font"
-theme.font          = theme.font_name .. "9"
-theme.font_taglist  = theme.font_alt .. "8"
-theme.font_tasklist = theme.font_alt .. "8"
+theme.font_name                = "InconsolataGo Nerd Font"
+theme.font_alt                 = "mononoki Nerd Font"
+theme.font                     = theme.font_name .. "10"
+theme.font_taglist             = theme.font_alt .. "8"
+theme.font_tasklist            = theme.font_alt .. "8"
+theme.hotkeys_font             = theme.font .. "10"
+theme.hotkeys_description_font = theme.font_alt .. "8"
 
 -- ===================================================================
 -- Background colors
@@ -77,8 +100,8 @@ theme.button_close = theme.xcolor1
 -- ===================================================================
 
 theme.border_width        = dpi(5)
-theme.border_normal       = theme.fg_normal
-theme.border_focus        = theme.bg_focus
+theme.border_normal       = theme.bg_focus
+theme.border_focus        = theme.fg_normal
 theme.border_radius       = dpi(5)
 theme.client_radius       = dpi(12)
 theme.widget_border_width = dpi(2)
@@ -194,7 +217,7 @@ theme.useless_gap = dpi(2)
 -- Wibar
 -- ===================================================================
 
-theme.wibar_height = dpi(33)
+theme.wibar_height = dpi(30)
 theme.wibar_margin = dpi(15)
 theme.wibar_spacing = dpi(15)
 theme.wibar_bg = theme.xbackground

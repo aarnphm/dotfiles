@@ -1,4 +1,5 @@
 local awful = require("awful")
+local lay   = awful.layout.layouts
 local defaults = {
     -- ===================================================================
     -- modkey (Super) and altkey (Alt)
@@ -26,6 +27,19 @@ local defaults = {
     screenshot    = "gyazo",
     zotero        = "/opt/zotero/zotero",
     audiocontrol  = "pavucontrol",
-    bluetooth     = "blueman-manager"
+    bluetooth     = "blueman-manager",
+    -- ===================================================================
+    -- Tag definitions for screens
+    -- ===================================================================
+    tags = {
+        {
+            names = { "", " ", " ", " ", " " },
+            layout = {lay[2], lay[1], lay[8], lay[10], lay[13]},
+        },
+        {
+            names = { "", " ", " ", " ", " " },
+            layout = lay[4],
+        }
+    },
 }
 return defaults
