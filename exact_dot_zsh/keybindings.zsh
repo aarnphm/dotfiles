@@ -1,5 +1,7 @@
 # give us access to ^Q
-stty -ixon
+if [[ `uname -s`=="Linux"* ]]; then
+    stty -ixon
+fi
 
 # vi mode
 bindkey -v
