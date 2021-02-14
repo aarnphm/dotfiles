@@ -2,9 +2,9 @@
 
 # completion; use cache if updated within 24h
 {{- if eq .chezmoi.os "darwin" }}
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-fi
+#if type brew &>/dev/null; then
+#  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+#fi
 {{- end }}
 autoload -Uz compinit
 if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
@@ -13,8 +13,10 @@ else
   compinit -C;
 fi;
 
+{{- if and (eq .chezmoi.os "linux") (.personal) }}
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
+{{- end }}
 
 ################################################################################
 # Completion Module Options

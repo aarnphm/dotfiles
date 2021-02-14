@@ -64,18 +64,18 @@ typeset -a lines
 typeset -i prev_time=0
 typeset prev_command
 
+# Anything between the beginning of the line and the \"+\" is just ignored.
+#
+# In particular, in cases where one logging line stops abruptly and a new
+# one begins without an intervening newline, the \".*\" in this pattern
+# slurps up the incomplete logging line and leaves only the full line that
+# comes after. This kind of thing can happen if your zshrc contains an
+# assignment like now=$(date); the XTRACE module prints a line
+# corresponding to \"now=\" but then neglects to print a newline before the
+# line corresponding to the "date" command. The net effect is that the
+# report outputted by this script ignores the "now=" part, which shouldn\'t
+# have taken any time anyway.
 while read line; do
-    # Anything between the beginning of the line and the \"+\" is just ignored.
-    #
-    # In particular, in cases where one logging line stops abruptly and a new
-    # one begins without an intervening newline, the \".*\" in this pattern
-    # slurps up the incomplete logging line and leaves only the full line that
-    # comes after. This kind of thing can happen if your zshrc contains an
-    # assignment like now=$(date); the XTRACE module prints a line
-    # corresponding to \"now=\" but then neglects to print a newline before the
-    # line corresponding to the "date" command. The net effect is that the
-    # report outputted by this script ignores the "now=" part, which shouldn\'t
-    # have taken any time anyway.
     if [[ $line =~ '^.*\+([0-9]{10})\.([0-9]{6})[0-9]* (.+)' ]]; then
         # Form a time in microseconds by concatenating the digits before the
         # decimal point with the first six digits after the decimal point. 
@@ -95,8 +95,8 @@ while read line; do
         else
             prev_command="${this_command:0:77}..."
         fi
-    fi
-done < ${1:-/dev/stdin}
+        fi
+    done < ${1:-/dev/stdin}
 
 # The combination "On" means that the elements of $lines are sorted numerically
 # in descending order. The "-l" flag means that each element is printed on its
