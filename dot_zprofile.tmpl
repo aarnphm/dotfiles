@@ -48,7 +48,7 @@ export PATH="$NPM_PACKAGES/bin:${PATH}"
 # defined go path
 export GOPATH="$HOME/go"
 export GOPROXY="https://proxy.golang.org/,direct"
-export PATH="$GOPATH/bin:$GOPATH/src:${PATH}"
+export PATH="$GOPATH:$GOPATH/bin:$GOPATH/src:${PATH}"
 {{- end }}
 
 {{- if `command -v gem` }}

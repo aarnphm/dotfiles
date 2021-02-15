@@ -3,7 +3,7 @@
 set -e
 
 # get datetime
-datetime=$(date +'%a:%m-%d:%R')
+datetime=$(date +'%a %D %T %Z')
 
 cd $(chezmoi source-path)
 
