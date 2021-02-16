@@ -77,8 +77,6 @@ typeset prev_command
 # have taken any time anyway.
 while read line; do
     if [[ $line =~ '^.*\+([0-9]{10})\.([0-9]{6})[0-9]* (.+)' ]]; then
-        # Form a time in microseconds by concatenating the digits before the
-        # decimal point with the first six digits after the decimal point. 
         integer this_time=$match[1]$match[2]
 
         if [[ $prev_time -gt 0 ]]; then
@@ -88,7 +86,6 @@ while read line; do
 
         prev_time=$this_time
 
-        # If the command is longer than 80 characters, truncate it with "...".
         local this_command=$match[3]
         if [[ ${#this_command} -le 80 ]]; then
             prev_command=$this_command

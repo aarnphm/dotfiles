@@ -17,10 +17,8 @@ alias dotfiles="cd $CHEZMOI_DIR"
 alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 
 # mcmaster vpn
-if [[ -d "/opt/anyconnect*" ]]; then
-    alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
-    alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
-fi
+alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
+alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
 
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
@@ -28,7 +26,7 @@ alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
 
 # some shortcut
-alias bento="$XDG_CONFIG_DOCUMENTS/cs/BentoML"
+alias bentodir="$XDG_CONFIG_DOCUMENTS/cs/BentoML"
 alias cs="$XDG_CONFIG_DOCUMENTS/cs"
 # odoo
 alias odoo="$XDG_CONFIG_DOCUMENTS/cs/odoo/odoo-bin $@"
@@ -64,6 +62,7 @@ alias week='date +%V'
 # IP addresses
 alias ip4='dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com'
 alias ip6='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
+alias dlisten='ss -lntu | grep $1'
 
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'

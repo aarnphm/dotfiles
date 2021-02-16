@@ -48,7 +48,9 @@ gparted
 groff
 grub
 grub-customizer
+hspell
 htop
+hunspell
 i3-gaps
 i3lock
 i3status
@@ -67,6 +69,7 @@ lib32-libappindicator-gtk2
 lib32-libappindicator-gtk3
 libgnome-keyring
 libtool
+libvoikko
 lightdm
 linux
 linux-firmware
@@ -93,6 +96,7 @@ nnn
 nodejs
 noto-fonts-emoji
 npm
+nuspell
 nvidia
 nvidia-dkms
 nvidia-prime
