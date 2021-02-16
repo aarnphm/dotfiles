@@ -1,7 +1,7 @@
 # give us access to ^Q
-if [[ `uname -s`=="Linux"* ]]; then
-    stty -ixon
-fi
+{{- if eq .chezmoi.os "linux" }}
+stty -ixon
+{{- end }}
 
 # vi mode
 bindkey -v

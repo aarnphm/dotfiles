@@ -81,13 +81,13 @@ zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
 zstyle ':completion:*:rm:*' file-patterns '*:all-files'
 
 # ssh/scp/rsync
-# zstyle ':completion:*:(ssh|scp|ftp|sftp):*' hosts $hosts
-# zstyle ':completion:*:(ssh|scp|ftp|sftp):*' users $users
-h=()
-if [[ -r ~/.ssh/config ]]; then
-  h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
-fi
-if [[ $#h -gt 0 ]]; then
-  zstyle ':completion:*:ssh:*' hosts $h
-  zstyle ':completion:*:slogin:*' hosts $h
-fi
+zstyle ':completion:*:(ssh|scp|ftp|sftp):*' hosts $hosts
+zstyle ':completion:*:(ssh|scp|ftp|sftp):*' users $users
+#h=()
+#if [[ -r ~/.ssh/config ]]; then
+#  h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
+#fi
+#if [[ $#h -gt 0 ]]; then
+#  zstyle ':completion:*:ssh:*' hosts $h
+#  zstyle ':completion:*:slogin:*' hosts $h
+#fi
