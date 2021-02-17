@@ -48,7 +48,7 @@ rules = {
         rule_any = {class="Microsoft Teams - Preview", instance = {"zoom", "discord", "slack", "skype","caprine"}},
         properties = {screen=screen.count()>1 and 2 or 1, tag=" ", switchtotag = true}
     },
-    {rule = {class = "Gimp"}, properties = {maximized = true}},
+    {rule = {class = "Gimp"}, properties = {maximized = true, tag=" ", switchtotag=true}},
     {rule = {class = "obs"}, properties = {screen=screen.count()>1 and 2 or 1, tag=" ", switchtotag=true}},
     -- Rofi
     {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},

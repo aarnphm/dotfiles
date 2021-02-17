@@ -27,6 +27,7 @@ alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__p
 
 # some shortcut
 alias bentodir="$XDG_CONFIG_DOCUMENTS/cs/BentoML"
+alias bento="bentoml $@"
 alias cs="$XDG_CONFIG_DOCUMENTS/cs"
 # odoo
 alias odoo="$XDG_CONFIG_DOCUMENTS/cs/odoo/odoo-bin $@"
@@ -95,7 +96,7 @@ alias reload="exec -l ${SHELL}"
 alias dca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
 alias ca="source $HOME/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
 alias vconf="$VISUAL $HOME/.vimrc"
-alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/awesome/*.lua"
+alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'

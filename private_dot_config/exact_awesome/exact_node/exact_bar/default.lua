@@ -8,6 +8,7 @@ local xresources     = require("beautiful.xresources")
 local dpi            = xresources.apply_dpi
 local helpers        = require("helpers")
 local modkey         = require("defaults").modkey
+local common         = awful.widget.common 
 
 -- Helper function that changes the appearance of progress bars and their icons
 -- Create horizontal rounded bars
@@ -74,6 +75,11 @@ local tasklist_buttons = gears.table.join(
     end)
     )
 
+local function size_max(w, button, label, data, object)
+    common.list_update(w, button, label, data,object)
+    w:set_max_widget_size(30)
+end
+    
 -- ===================================================================
 -- Create wibar
 -- ===================================================================
@@ -90,7 +96,7 @@ awful.screen.connect_for_each_screen(function(s)
     end
 
     -- Create the wibox
-    s.mywibox = awful.wibar({position = "top", screen = s, ontop = true})
+    s.mywibox = awful.wibar({position = "top", screen = s, ontop = true, bg = beautiful.bg_normal .. 15})
     s.mywibox:set_xproperty("WM_NAME", "panel")
 
     -- Remove wibar on full screen
@@ -134,11 +140,10 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = tasklist_buttons,
         style = {
             bg = beautiful.xbackground,
-            shape = helpers.rrect(beautiful.border_radius - 3)
-            -- shape_border_width = beautiful.widget_border_width,
-            -- shape_border_color = beautiful.widget_border_color
+            font = beautiful.font_tasklist,
         },
         layout = {spacing = 10, layout = wibox.layout.fixed.horizontal},
+        update_function = size_max,
         widget_template = {
             {
                 {

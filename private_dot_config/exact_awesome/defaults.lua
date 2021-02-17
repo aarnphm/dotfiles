@@ -34,11 +34,11 @@ local defaults = {
     tags = {
         {
             names = { "", " ", " ", " ", " " },
-            layout = {lay[2], lay[1], lay[8], lay[10], lay[13]},
+            layout = {lay[2], lay[3], lay[8], lay[10], lay[13]},
         },
         {
             names = { "", " ", " ", " ", " " },
-            layout = lay[4],
+            layout = {lay[4],lay[4],lay[4],lay[10],lay[4]},
         }
     },
 }
