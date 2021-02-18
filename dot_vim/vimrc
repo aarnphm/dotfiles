@@ -26,8 +26,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'romainl/Apprentice'
 Plug 'rking/ag.vim'
-" ale for linting
-" Plug 'dense-analysis/ale'
 " Go support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Julia support
@@ -295,22 +293,6 @@ let g:tablineclosebutton=0
 " syntax settings
 let g:python_highlight_all = 1
 
-" ale
-let g:ale_enabled = 1
-nmap <silent> <F5> :ALEToggle<CR>
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-" let g:ale_lint_on_text_changed = 'normal'
-let g:ale_sign_column_always = 1
-let g:ale_set_highlights = 1
-" Specific to file types and are here for reference
-let g:ale_linters = { 'python' : ['pylint']}
-let g:ale_fixers = {'python': ['black','isort']}
-let g:ale_fix_on_save = 1
-" let g:ale_python_pylint_options= '--rcfile $HOME/.pylintrc'
-let g:ale_vim_vint_show_style_issues = 0
-
 " fzf
 " This is the default extra key bindings
 let g:fzf_tags_command = 'ctags -R'
@@ -373,7 +355,7 @@ let g:go_auto_type_info = 1
 let g:go_fmt_autosave = 1
 let g:go_def_mapping_enabled = 0
 
-let g:coc_global_extensions = ['coc-texlab', 'coc-json', 'coc-python', 'coc-java', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-texlab', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.

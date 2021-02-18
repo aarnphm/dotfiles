@@ -206,7 +206,13 @@ globalkeys = gears.table.join(
         function()
             awful.spawn(def.terminal)
         end,
-        {description = "open a kitty", group = "launcher"}
+        {description = "open kitty", group = "launcher"}
+        ),
+    awful.key({ctrl, altkey}, "p",
+        function()
+            awful.spawn("termite")
+        end,
+        {description = "open termite", group = "launcher"}
         ),
     awful.key({shift, modkey}, "m",
         function()

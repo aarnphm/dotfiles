@@ -8,7 +8,8 @@ local xresources     = require("beautiful.xresources")
 local dpi            = xresources.apply_dpi
 local helpers        = require("helpers")
 local modkey         = require("defaults").modkey
-local common         = awful.widget.common 
+local markup         = require("markup")
+local common         = awful.widget.common
 
 -- Helper function that changes the appearance of progress bars and their icons
 -- Create horizontal rounded bars
@@ -79,7 +80,13 @@ local function size_max(w, button, label, data, object)
     common.list_update(w, button, label, data,object)
     w:set_max_widget_size(30)
 end
-    
+
+local clock = awful.widget.watch("date + '%a %D %T %Z GMT'",60,
+    function(widget, stdout)
+        widget:set_markup(markup.font(beautiful.font, stdout))
+    end
+    )
+
 -- ===================================================================
 -- Create wibar
 -- ===================================================================
@@ -88,178 +95,183 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Create layoutbox widget
     s.mylayoutbox = awful.widget.layoutbox(s)
+    s.mylayoutbox:buttons(gears.table.join(
+            awful.button({}, 1, function () awful.layout.inc( 1) end),
+            awful.button({}, 3, function () awful.layout.inc(-1) end),
+            awful.button({}, 4, function () awful.layout.inc( 1) end),
+        awful.button({}, 5, function () awful.layout.inc(-1) end)))
 
-    if s.index == 1 then
-        mysystray_container.visible = true
-    else
-        mysystray_container.visible = false
-    end
-
-    -- Create the wibox
-    s.mywibox = awful.wibar({position = "top", screen = s, ontop = true, bg = beautiful.bg_normal .. 15})
-    s.mywibox:set_xproperty("WM_NAME", "panel")
-
-    -- Remove wibar on full screen
-    local function remove_wibar(c)
-        if c.fullscreen or c.maximized then
-            c.screen.mywibox.visible = false
+        if s.index == 1 then
+            mysystray_container.visible = true
         else
-            c.screen.mywibox.visible = true
+            mysystray_container.visible = false
         end
-    end
 
-    client.connect_signal("property::fullscreen", remove_wibar)
+        -- Create the wibox
+        s.mywibox = awful.wibar({position = "top", screen = s, ontop = true, bg = beautiful.bg_normal .. 15})
+        s.mywibox:set_xproperty("WM_NAME", "panel")
 
-    -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist {
-        screen = s,
-        filter = awful.widget.taglist.filter.all,
-        style = {shape = gears.shape.rectangle},
-        layout = {spacing = 0, layout = wibox.layout.fixed.horizontal},
-        widget_template = {
-            {
+        -- Remove wibar on full screen
+        local function remove_wibar(c)
+            if c.fullscreen or c.maximized then
+                c.screen.mywibox.visible = false
+            else
+                c.screen.mywibox.visible = true
+            end
+        end
+
+        client.connect_signal("property::fullscreen", remove_wibar)
+
+        -- Create a taglist widget
+        s.mytaglist = awful.widget.taglist {
+            screen = s,
+            filter = awful.widget.taglist.filter.all,
+            style = {shape = gears.shape.rectangle},
+            layout = {spacing = 0, layout = wibox.layout.fixed.horizontal},
+            widget_template = {
                 {
-                    {id = 'text_role', widget = wibox.widget.textbox},
-                    layout = wibox.layout.fixed.horizontal
+                    {
+                        {id = 'text_role', widget = wibox.widget.textbox},
+                        layout = wibox.layout.fixed.horizontal
+                    },
+                    left = 11,
+                    right = 11,
+                    top = 1,
+                    widget = wibox.container.margin
                 },
-                left = 11,
-                right = 11,
-                top = 1,
-                widget = wibox.container.margin
+                id = 'background_role',
+                widget = wibox.container.background
             },
-            id = 'background_role',
-            widget = wibox.container.background
-        },
-        buttons = taglist_buttons
-    }
-
-    -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist {
-        screen = s,
-        filter = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons,
-        style = {
-            bg = beautiful.xbackground,
-            font = beautiful.font_tasklist,
-        },
-        layout = {spacing = 10, layout = wibox.layout.fixed.horizontal},
-        update_function = size_max,
-        widget_template = {
-            {
-                {
-                    nil,
-                    {id = 'text_role', widget = wibox.widget.textbox},
-                    nil,
-                    layout = wibox.layout.fixed.horizontal
-                },
-                left = dpi(12),
-                right = dpi(12),
-                top = dpi(0),
-                widget = wibox.container.margin
-            },
-            id = 'background_role',
-            widget = wibox.container.background
+            buttons = taglist_buttons
         }
-    }
 
-    -- Add widgets to the wibox
-    s.mywibox:setup{
-        layout = wibox.layout.fixed.vertical,
-        {
-            widget = wibox.container.background,
-            bg = beautiful.xcolor0,
-            forced_height = 1
-        },
-        {
-            layout = wibox.layout.align.horizontal,
-            expand = "none",
-            {
-                layout = wibox.layout.fixed.horizontal,
-                {
-                    {
-                        s.mytaglist,
-                        bg = beautiful.xcolor0,
-                        shape = helpers.rrect(beautiful.border_radius - 3),
-                        widget = wibox.container.background
-                    },
-                    top = 5,
-                    bottom = 5,
-                    right = 5,
-                    left = 5,
-                    widget = wibox.container.margin
-                },
+        -- Create a tasklist widget
+        s.mytasklist = awful.widget.tasklist {
+            screen = s,
+            filter = awful.widget.tasklist.filter.currenttags,
+            buttons = tasklist_buttons,
+            style = {
+                bg = beautiful.xbackground,
+                font = beautiful.font_tasklist,
             },
-            {
-                s.mytasklist,
-                top = 5,
-                bottom = 5,
-                right = 5,
-                left = 5,
-                widget = wibox.container.margin
-            },
-            {
+            layout = {spacing = 10, layout = wibox.layout.fixed.horizontal},
+            update_function = size_max,
+            widget_template = {
                 {
                     {
-                        {
-                            battery,
-                            top = 5,
-                            bottom = 5,
-                            right = 5,
-                            left = 5,
-                            widget = wibox.container.margin
-                        },
-                        bg = beautiful.xcolor0,
-                        shape = helpers.rrect(beautiful.border_radius - 3),
-                        widget = wibox.container.background
+                        nil,
+                        {id = 'text_role', widget = wibox.widget.textbox},
+                        nil,
+                        layout = wibox.layout.fixed.horizontal
                     },
-                    top = 5,
-                    bottom = 5,
-                    right = 5,
-                    left = 5,
+                    left = dpi(12),
+                    right = dpi(12),
+                    top = dpi(0),
                     widget = wibox.container.margin
                 },
-                nil,
-                nil,
-                {
-                    {
-                        {
-                            mysystray_container,
-                            top = dpi(3),
-                            layout = wibox.container.margin
-                        },
-                        bg = beautiful.xcolor0,
-                        shape = helpers.rrect(beautiful.border_radius - 3),
-                        widget = wibox.container.background
-                    },
-                    top = 5,
-                    bottom = 5,
-                    right = 5,
-                    left = 5,
-                    widget = wibox.container.margin
-                },
-                {
-                    {
-                        {
-                            s.mylayoutbox,
-                            top = dpi(4),
-                            bottom = dpi(4),
-                            right = dpi(7),
-                            left = dpi(7),
-                            widget = wibox.container.margin
-                        },
-                        bg = beautiful.xcolor0,
-                        shape = helpers.rrect(beautiful.border_radius - 3),
-                        widget = wibox.container.background
-                    },
-                    top = 5,
-                    bottom = 5,
-                    right = 5,
-                    left = 5,
-                    widget = wibox.container.margin
-                },
-
-                layout = wibox.layout.fixed.horizontal
+                id = 'background_role',
+                widget = wibox.container.background
             }
         }
-    }
-end)
+
+        -- Add widgets to the wibox
+        s.mywibox:setup{
+            layout = wibox.layout.fixed.vertical,
+            {
+                widget = wibox.container.background,
+                bg = beautiful.xcolor0,
+                forced_height = 1
+            },
+            {
+                layout = wibox.layout.align.horizontal,
+                expand = "none",
+                {
+                    layout = wibox.layout.fixed.horizontal,
+                    {
+                        {
+                            s.mytaglist,
+                            bg = beautiful.xcolor0,
+                            shape = helpers.rrect(beautiful.border_radius - 3),
+                            widget = wibox.container.background
+                        },
+                        top = 5,
+                        bottom = 5,
+                        right = 5,
+                        left = 5,
+                        widget = wibox.container.margin
+                    },
+                },
+                {
+                    s.mytasklist,
+                    top = 5,
+                    bottom = 5,
+                    right = 5,
+                    left = 5,
+                    widget = wibox.container.margin
+                },
+                {
+                    {
+                        {
+                            {
+                                battery,
+                                top = 5,
+                                bottom = 5,
+                                right = 5,
+                                left = 5,
+                                widget = wibox.container.margin
+                            },
+                            bg = beautiful.xcolor0,
+                            shape = helpers.rrect(beautiful.border_radius - 3),
+                            widget = wibox.container.background
+                        },
+                        top = 5,
+                        bottom = 5,
+                        right = 5,
+                        left = 5,
+                        widget = wibox.container.margin
+                    },
+                    nil,
+                    nil,
+                    {
+                        {
+                            {
+                                mysystray_container,
+                                top = dpi(3),
+                                layout = wibox.container.margin
+                            },
+                            bg = beautiful.xcolor0,
+                            shape = helpers.rrect(beautiful.border_radius - 3),
+                            widget = wibox.container.background
+                        },
+                        top = 5,
+                        bottom = 5,
+                        right = 5,
+                        left = 5,
+                        widget = wibox.container.margin
+                    },
+                    {
+                        {
+                            {
+                                s.mylayoutbox,
+                                top = dpi(4),
+                                bottom = dpi(4),
+                                right = dpi(7),
+                                left = dpi(7),
+                                widget = wibox.container.margin
+                            },
+                            bg = beautiful.xcolor0,
+                            shape = helpers.rrect(beautiful.border_radius - 3),
+                            widget = wibox.container.background
+                        },
+                        top = 5,
+                        bottom = 5,
+                        right = 5,
+                        left = 5,
+                        widget = wibox.container.margin
+                    },
+
+                    layout = wibox.layout.fixed.horizontal
+                }
+            }
+        }
+    end)
