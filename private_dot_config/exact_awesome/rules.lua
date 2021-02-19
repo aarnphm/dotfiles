@@ -20,7 +20,7 @@ rules = {
             -- placement can also + awful.placement.no_overlap + awful.placement.no_offscreen
             placement = awful.placement.centered
         }
-    },
+    },{rule = {}, properties = {}, callback = awful.client.setslave}, -- so items in tasklist have the right order
     {
         rule_any = {
             class = {"Nm-connection-editor", "Gnome-disks", "caffeine", "Arandr", "Zotero", "Blueman-manager",
@@ -34,22 +34,22 @@ rules = {
     },
     {
         rule = {class = "Spotify"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = " ", switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = def.tags[1].names[4], switchtotag = true}
     },
     {
         rule = {class = "Kitty"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = "", switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = def.tags[1].names[1], switchtotag = true}
     },
     {
         rule_any = {instance={"chromium","firefox"}},
-        properties = {tag = " ", switchtotag = true}
+        properties = {tag = def.tags[1].names[3], switchtotag = true}
     },
     {
         rule_any = {class="Microsoft Teams - Preview", instance = {"zoom", "discord", "slack", "skype","caprine"}},
-        properties = {screen=screen.count()>1 and 2 or 1, tag=" ", switchtotag = true}
+        properties = {screen=screen.count()>1 and 2 or 1, tag = def.tags[1].names[5], switchtotag = true}
     },
-    {rule = {class = "Gimp"}, properties = {maximized = true, tag=" ", switchtotag=true}},
-    {rule = {class = "obs"}, properties = {screen=screen.count()>1 and 2 or 1, tag=" ", switchtotag=true}},
+    {rule = {class = "Gimp"}, properties = {maximized = true, tag=def.tags[1].names[2], switchtotag=true}},
+    {rule = {class = "obs"}, properties = {screen=screen.count()>1 and 2 or 1, tag=def.tags[1].names[2], switchtotag=true}},
     -- Rofi
     {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
     -- other terminal

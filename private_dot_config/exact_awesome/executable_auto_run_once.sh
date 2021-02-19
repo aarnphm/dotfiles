@@ -27,7 +27,7 @@ run unclutter -idle 1
 run blueman-tray
 run discord
 run caffeine
-# run kdocker -qi /usr/share/icons/ePapirus/32x32/apps/spotify.svg spotify 
+run playerctld daemon
 run spotify-tray -m -c spotify
 run picom -f
 run optimus-manager-qt

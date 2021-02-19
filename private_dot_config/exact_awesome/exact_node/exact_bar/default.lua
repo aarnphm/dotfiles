@@ -7,9 +7,9 @@ local beautiful      = require("beautiful")
 local xresources     = require("beautiful.xresources")
 local dpi            = xresources.apply_dpi
 local helpers        = require("helpers")
+local defaults       = require("defaults")
 local modkey         = require("defaults").modkey
-local markup         = require("markup")
-local common         = awful.widget.common
+local icons          = require("icons")
 
 -- Helper function that changes the appearance of progress bars and their icons
 -- Create horizontal rounded bars
@@ -20,6 +20,44 @@ local function format_progress_bar(bar)
     bar.background_color = beautiful.xcolor0
     return bar
 end
+
+-- ===================================================================
+-- Awesome panel
+-- ===================================================================
+
+local panelPop = require('node.popup.panel')
+local awesome_icon = wibox.widget {
+    {
+        {widget = wibox.widget.imagebox, image = icons.awesome, resize = true},
+        margins = 2,
+        widget = wibox.container.margin
+    },
+    bg = beautiful.xbackground,
+    widget = wibox.container.background
+}
+
+
+awesome_icon:buttons(gears.table.join(
+        awful.button({}, 1, function()
+            panelPop.visible = true
+            awesome_icon.bg = beautiful.xcolor0
+        end),
+        awful.button({}, 3, function()
+            panelPop.visible = false
+            awesome_icon.bg = beautiful.xbackground
+        end)
+        )
+    )
+
+awesome_icon:connect_signal("mouse::enter",
+function() panelPop.visible = true end)
+-- awesome_icon:connect_signal("mouse::leave",
+-- function() panelPop.visible = false end)
+
+panelPop:connect_signal("mouse::leave", function()
+    panelPop.visible = false
+    awesome_icon.bg = beautiful.xbackground
+end)
 
 -- ===================================================================
 --  Battery Bar Widget
@@ -76,23 +114,13 @@ local tasklist_buttons = gears.table.join(
     end)
     )
 
-local function size_max(w, button, label, data, object)
-    common.list_update(w, button, label, data,object)
-    w:set_max_widget_size(30)
-end
-
-local clock = awful.widget.watch("date + '%a %D %T %Z GMT'",60,
-    function(widget, stdout)
-        widget:set_markup(markup.font(beautiful.font, stdout))
-    end
-    )
-
 -- ===================================================================
 -- Create wibar
 -- ===================================================================
 
 awful.screen.connect_for_each_screen(function(s)
 
+    awful.tag(defaults.tags[s.index].names, s, defaults.tags[s.index].layout)
     -- Create layoutbox widget
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
@@ -123,27 +151,27 @@ awful.screen.connect_for_each_screen(function(s)
         client.connect_signal("property::fullscreen", remove_wibar)
 
         -- Create a taglist widget
-        s.mytaglist = awful.widget.taglist {
-            screen = s,
-            filter = awful.widget.taglist.filter.all,
-            style = {shape = gears.shape.rectangle},
-            layout = {spacing = 0, layout = wibox.layout.fixed.horizontal},
-            widget_template = {
-                {
+        s.mytaglist = awful.widget.taglist({
+                screen = s,
+                filter = awful.widget.taglist.filter.all,
+                style = {shape = gears.shape.rectangle},
+                layout = {spacing = 0, layout = wibox.layout.fixed.horizontal},
+                widget_template = {
                     {
-                        {id = 'text_role', widget = wibox.widget.textbox},
-                        layout = wibox.layout.fixed.horizontal
+                        {
+                            {id = 'text_role', widget = wibox.widget.textbox},
+                            layout = wibox.layout.fixed.horizontal
+                        },
+                        left = 11,
+                        right = 11,
+                        top = 1,
+                        widget = wibox.container.margin
                     },
-                    left = 11,
-                    right = 11,
-                    top = 1,
-                    widget = wibox.container.margin
+                    id = 'background_role',
+                    widget = wibox.container.background
                 },
-                id = 'background_role',
-                widget = wibox.container.background
-            },
-            buttons = taglist_buttons
-        }
+                buttons = taglist_buttons
+            })
 
         -- Create a tasklist widget
         s.mytasklist = awful.widget.tasklist {
@@ -152,10 +180,9 @@ awful.screen.connect_for_each_screen(function(s)
             buttons = tasklist_buttons,
             style = {
                 bg = beautiful.xbackground,
-                font = beautiful.font_tasklist,
+                font = beautiful.font,
             },
             layout = {spacing = 10, layout = wibox.layout.fixed.horizontal},
-            update_function = size_max,
             widget_template = {
                 {
                     {
@@ -189,6 +216,19 @@ awful.screen.connect_for_each_screen(function(s)
                     layout = wibox.layout.fixed.horizontal,
                     {
                         {
+                            awesome_icon,
+                            bg = beautiful.xcolor0,
+                            shape = helpers.rrect(beautiful.border_radius - 3),
+                            widget = wibox.container.background
+                        },
+                        top = 5,
+                        right = 5,
+                        left = 5,
+                        bottom = 5,
+                        widget = wibox.container.margin
+                    },
+                    {
+                        {
                             s.mytaglist,
                             bg = beautiful.xcolor0,
                             shape = helpers.rrect(beautiful.border_radius - 3),
@@ -207,7 +247,8 @@ awful.screen.connect_for_each_screen(function(s)
                     bottom = 5,
                     right = 5,
                     left = 5,
-                    widget = wibox.container.margin
+                    widget = wibox.container.margin,
+                    forced_width = 400
                 },
                 {
                     {

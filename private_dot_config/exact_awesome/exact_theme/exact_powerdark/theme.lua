@@ -64,18 +64,6 @@ theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
 theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
 
 -- ===================================================================
--- Font
--- ===================================================================
-
-theme.font_name                = "InconsolataGo Nerd Font"
-theme.font_alt                 = "mononoki Nerd Font"
-theme.font                     = theme.font_name .. "10"
-theme.font_taglist             = theme.font_name .. "8"
-theme.font_tasklist            = theme.font_name .. "8"
-theme.hotkeys_font             = theme.font .. "10"
-theme.hotkeys_description_font = theme.font_alt .. "8"
-
--- ===================================================================
 -- Background colors
 -- ===================================================================
 
@@ -102,19 +90,28 @@ theme.button_close = theme.xcolor1
 theme.border_width        = dpi(5)
 theme.border_normal       = theme.bg_focus
 theme.border_focus        = theme.fg_normal
-theme.border_radius       = dpi(5)
+theme.border_radius       = dpi(12)
 theme.client_radius       = dpi(12)
 theme.widget_border_width = dpi(2)
 theme.widget_border_color = theme.fg_normal
 
 -- ===================================================================
+-- Font
+-- ===================================================================
+theme.fontname                 = "InconsolataGo Nerd Font"
+theme.font                     = theme.fontname .. "9"
+theme.hotkeys_font             = "mononoki Nerd Font 8"
+theme.hotkeys_description_font = "mononoki Nerd Font 6"
+theme.hotkeys_shape            = helpers.rrect(theme.border_radius - 3)
+
+-- ===================================================================
 -- Taglist
 -- ===================================================================
 
+theme.taglist_font          = theme.font
 local taglist_square_size   = dpi(1)
 theme.taglist_squares_sel   = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
-theme.taglist_font          = theme.font_taglist
 theme.taglist_bg            = theme.wibar_bg
 theme.taglist_bg_focus      = theme.xcolor8
 theme.taglist_fg_focus      = theme.xcolor4
@@ -133,7 +130,7 @@ theme.taglist_disable_icon  = true
 --  Tasklist
 -- ===================================================================
 
-theme.tasklist_font              = theme.font_tasklist
+theme.tasklist_font              = theme.font
 theme.tasklist_plain_task_name   = true
 theme.tasklist_bg_focus          = theme.xcolor0
 theme.tasklist_fg_focus          = theme.xcolor6
@@ -163,7 +160,7 @@ theme.titlebar_fg_normal = theme.xbackground
 -- Edge snap
 -- ===================================================================
 
-theme.snap_bg = theme.xcolor4
+theme.snap_bg    = theme.xcolor4
 theme.snap_shape = helpers.rrect(theme.border_radius)
 
 -- ===================================================================
@@ -177,7 +174,7 @@ theme.prompt_fg = theme.xforeground
 -- Tooltips
 -- ===================================================================
 
-theme.tooltip_font         = theme.font_alt
+theme.tooltip_font         = theme.font
 theme.tooltip_bg           = theme.xcolor0
 theme.tooltip_fg           = theme.xforeground
 theme.tooltip_border_width = theme.border_width
@@ -189,14 +186,14 @@ theme.tooltip_align        = "left"
 -- Menu
 -- ===================================================================
 
-theme.menu_font         = theme.font_alt
+theme.menu_font         = theme.font
 theme.menu_bg_focus     = theme.xcolor4
 theme.menu_fg_focus     = theme.xcolor7
 theme.menu_bg_normal    = theme.xbackground
 theme.menu_fg_normal    = theme.xcolor7
 theme.menu_submenu_icon = gears.filesystem.get_configuration_dir() .. "theme/icons/submenu.png"
 theme.menu_height       = dpi(20)
-theme.menu_width        = dpi(130)
+theme.menu_width        = dpi(90)
 theme.menu_border_color = "#0000000"
 theme.menu_border_width = theme.border_width
 
@@ -204,7 +201,6 @@ theme.menu_border_width = theme.border_width
 -- Hotkeys Popup
 -- ===================================================================
 
-theme.hotkeys_font         = theme.font
 theme.hotkeys_border_color = theme.xcolor0
 
 -- ===================================================================
@@ -226,8 +222,9 @@ theme.wibar_bg = theme.xbackground
 -- Systray
 -- ===================================================================
 
-theme.systray_icon_spacing = dpi(5)
+theme.systray_icon_spacing = dpi(10)
 theme.bg_systray = theme.xcolor0
-theme.systray_icon_size = dpi(13)
+theme.systray_icon_size = dpi(15)
+theme.weather_city = "Hanoi"
 
 return theme

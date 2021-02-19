@@ -69,15 +69,10 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. defaults.
 
 require("icons").init("default")
 
--- ===================================================================
--- Screen connect
--- ===================================================================
-
-awful.screen.connect_for_each_screen(function(s)
-
-    -- Each screen has its own tag table.
-    awful.tag(defaults.tags[s.index].names, s, defaults.tags[s.index].layout)
-end)
+require("components")
+require("node")
+-- fancy tag switching
+require("collision")()
 
 -- ===================================================================
 -- Keys
@@ -117,11 +112,6 @@ function(c) c.border_color = beautiful.border_focus end)
 
 client.connect_signal("unfocus",
 function(c) c.border_color = beautiful.border_normal end)
-
-require("components")
-require("node")
--- fancy tag switching
-require("collision")()
 
 -- ===================================================================
 -- Garbage collection (allows for lower memory consumption)
