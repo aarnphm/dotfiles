@@ -29,7 +29,7 @@ local panelPop = require('node.popup.panel')
 local awesome_icon = wibox.widget {
     {
         {widget = wibox.widget.imagebox, image = icons.awesome, resize = true},
-        margins = 2,
+        margins = 4,
         widget = wibox.container.margin
     },
     bg = beautiful.xbackground,
@@ -49,8 +49,6 @@ awesome_icon:buttons(gears.table.join(
         )
     )
 
-awesome_icon:connect_signal("mouse::enter",
-function() panelPop.visible = true end)
 -- awesome_icon:connect_signal("mouse::leave",
 -- function() panelPop.visible = false end)
 
@@ -106,12 +104,12 @@ local tasklist_buttons = gears.table.join(
         else
             c:emit_signal("request::activate", "tasklist", {raise = true})
         end
-    end), awful.button({}, 3, function()
+    end),
+    awful.button({}, 3, function()
         awful.menu.client_list({theme = {width = 250}})
-    end), awful.button({}, 4, function() awful.client.focus.byidx(1) end),
-    awful.button({}, 5, function()
-        awful.client.focus.byidx(-1)
-    end)
+    end),
+    awful.button({}, 4, function() awful.client.focus.byidx(1) end),
+    awful.button({}, 5, function() awful.client.focus.byidx(-1) end)
     )
 
 -- ===================================================================

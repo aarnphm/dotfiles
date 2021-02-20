@@ -1,7 +1,8 @@
 {
   "python.linting.pylintEnabled": true,
   "python.linting.enabled": true,
-  "python.jediEnabled":false,
+  "suggest.enablePreview": true,
+  "tsserver.enable": true,
   "json.format.enable":false,
   "lua.enable":true,
   "languageserver": {

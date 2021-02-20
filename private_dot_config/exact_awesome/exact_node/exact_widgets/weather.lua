@@ -6,7 +6,7 @@ local helpers = require("helpers")
 local weather_heading = wibox.widget({
     align = "center",
     valign = "center",
-    font = beautiful.fontname .. "15",
+    font = "mononoki Nerd Font 15",
     markup = helpers.colorize_text("?", beautiful.xcolor4),
     widget = wibox.widget.textbox()
 })

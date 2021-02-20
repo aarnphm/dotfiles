@@ -98,10 +98,10 @@ theme.widget_border_color = theme.fg_normal
 -- ===================================================================
 -- Font
 -- ===================================================================
-theme.fontname                 = "InconsolataGo Nerd Font"
-theme.font                     = theme.fontname .. "9"
-theme.hotkeys_font             = "mononoki Nerd Font 8"
-theme.hotkeys_description_font = "mononoki Nerd Font 6"
+theme.fontname                 = "mononoki Nerd Font"
+theme.font                     = "mononoki Nerd Font 12"
+theme.hotkeys_font             = "mononoki Nerd Font 12"
+theme.hotkeys_description_font = "mononoki Nerd Font 10"
 theme.hotkeys_shape            = helpers.rrect(theme.border_radius - 3)
 
 -- ===================================================================

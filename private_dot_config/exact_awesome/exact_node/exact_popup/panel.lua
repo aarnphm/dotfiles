@@ -49,14 +49,14 @@ end
 local function format_progress_bar(bar, markup)
     local text = wibox.widget {
         markup = markup,
-        align = 'center',
+        align  = 'center',
         valign = 'center',
-        font =  beautiful.fontname .. '25',
+        font   = 'mononoki Nerd Font 12',
         widget = wibox.widget.textbox
     }
     text.forced_height = dpi(36)
-    text.forced_width = dpi(36)
-    text.resize = true
+    text.forced_width  = dpi(36)
+    text.resize        = true
 
     local w = wibox.widget {text, bar, layout = wibox.layout.stack}
     return w
@@ -65,38 +65,32 @@ end
 --- {{{ Volume Widget
 
 local volume_bar = require("node.widgets.volume_arc")
-local volume = format_progress_bar(volume_bar, "<span foreground='" .. beautiful.xcolor6 .. "'><b>  </b></span>")
+local volume = format_progress_bar(volume_bar, "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>")
 
 awesome.connect_signal("components::volume", function(vol, muted)
     if muted or vol == 0 then
-        volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b>  </b></span>"
+        volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>"
     else
         if vol > 50 then
-            volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b>  </b></span>"
+            volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>"
         else
-            volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b>  </b></span>"
+            volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>"
         end
     end
 end)
 
-local apps_volume = function()
-    helpers.run_or_raise({class = 'Pavucontrol'}, true, "pavucontrol")
-end
-
 volume:buttons(gears.table.join( -- Left click - Mute / Unmute
         awful.button({}, 1, function() helpers.volume_control(0) end),
-        awful.button({}, 2, apps_volume),
+        awful.button({}, 2, function() awful.spawn("pavucontrol") end),
         -- Scroll - Increase / Decrease volume
         awful.button({}, 4, function() helpers.volume_control(5) end),
-        awful.button({}, 5, function() helpers.volume_control(-5) end))
+    awful.button({}, 5, function() helpers.volume_control(-5) end))
     )
 
 --- {{{ Brightness Widget
 
 local brightness_bar = require("node.widgets.brightness_arc")
-local brightness = format_progress_bar(brightness_bar, "<span foreground='" ..
-    beautiful.xcolor5 ..
-    "'><b>  </b></span>")
+local brightness = format_progress_bar(brightness_bar, "<span foreground='"..beautiful.xcolor5.."'><b></b></span>")
 
 --- }}}
 
@@ -105,24 +99,21 @@ local brightness = format_progress_bar(brightness_bar, "<span foreground='" ..
 -- local ram = require("node.widgets.ram_arc")
 
 local ram_bar = require("node.widgets.ram_arc")
-local ram = format_progress_bar(ram_bar, "<span foreground='" ..
-    beautiful.xcolor3 .. "'><b>  </b></span>")
+local ram = format_progress_bar(ram_bar, "<span foreground='"..beautiful.xcolor3 .."'><b></b></span>")
 
 --- }}}
 
 --- {{{ Disk Widget
 
 local disk_bar = require("node.widgets.disk_arc")
-local disk = format_progress_bar(disk_bar, "<span foreground='" ..
-    beautiful.xcolor2 .. "'><b>  </b></span>")
+local disk = format_progress_bar(disk_bar, "<span foreground='"..beautiful.xcolor2.."'><b></b></span>")
 
 --- }}}
 
 --- {{{ Temp Widget
 
 local temp_bar = require("node.widgets.temp_arc")
-local temp = format_progress_bar(temp_bar, "<span foreground='" ..
-    beautiful.xcolor1 .. "'><b>  </b></span>")
+local temp = format_progress_bar(temp_bar, "<span foreground='"..beautiful.xcolor1.."'><b></b></span>")
 
 --- }}}
 
@@ -131,44 +122,27 @@ local temp = format_progress_bar(temp_bar, "<span foreground='" ..
 -- local cpu = require("node.widgets.cpu_arc")
 
 local cpu_bar = require("node.widgets.cpu_arc")
-local cpu = format_progress_bar(cpu_bar, "<span foreground='" ..
-    beautiful.xcolor4 .. "'><b>  </b></span>")
+local cpu = format_progress_bar(cpu_bar, "<span foreground='"..beautiful.xcolor4.."'><b></b></span>")
 
 --- }}}
 
 --- {{{ Clock
 
-local fancy_time_widget = wibox.widget.textclock("%H%M")
-fancy_time_widget.markup = fancy_time_widget.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. fancy_time_widget.text:sub(3, 4) .. "</span>"
-fancy_time_widget:connect_signal("widget::redraw_needed", function()
-    fancy_time_widget.markup = fancy_time_widget.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. fancy_time_widget.text:sub(3, 4) .. "</span>"
-end)
+local fancy_time_widget = wibox.widget.textclock("%H:%M")
+fancy_time_widget.markup = fancy_time_widget.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. fancy_time_widget.text:sub(3, 5) .. "</span>"
+fancy_time_widget:connect_signal("widget::redraw_needed", function() fancy_time_widget.markup = fancy_time_widget.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. fancy_time_widget.text:sub(3, 5) .. "</span>" end)
 fancy_time_widget.align = "center"
 fancy_time_widget.valign = "center"
-fancy_time_widget.font = beautiful.fontname .. "55"
+fancy_time_widget.font =  "mononoki Nerd Font 55"
 
 local fancy_time = {fancy_time_widget, layout = wibox.layout.fixed.vertical}
 
-local fancy_date_widget = wibox.widget.textclock("%m:%d:%Y")
-fancy_date_widget.markup = fancy_date_widget.text:sub(1, 3) ..
-"<span foreground='" .. beautiful.xcolor12 ..
-"'>" .. fancy_date_widget.text:sub(4, 6) ..
-"</span>" .. "<span foreground='" ..
-beautiful.xcolor6 .. "'>" ..
-fancy_date_widget.text:sub(7, 10) .. "</span>"
-fancy_date_widget:connect_signal("widget::redraw_needed", function()
-    fancy_date_widget.markup = fancy_date_widget.text:sub(1, 3) ..
-    "<span foreground='" .. beautiful.xcolor12 ..
-    "'>" .. fancy_date_widget.text:sub(4, 6) ..
-    "</span>" .. "<span foreground='" ..
-    beautiful.xcolor6 .. "'>" ..
-    fancy_date_widget.text:sub(7, 10) ..
-    "</span>"
-
-end)
+local fancy_date_widget = wibox.widget.textclock("%m-%d-%Y")
+fancy_date_widget.markup = fancy_date_widget.text:sub(1, 3) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. fancy_date_widget.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. beautiful.xcolor6 .. "'>" .. fancy_date_widget.text:sub(7, 10) .. "</span>"
+fancy_date_widget:connect_signal("widget::redraw_needed", function() fancy_date_widget.markup = fancy_date_widget.text:sub(1, 3) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. fancy_date_widget.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. beautiful.xcolor6 .. "'>" .. fancy_date_widget.text:sub(7, 10) .. "</span>" end)
 fancy_date_widget.align = "center"
 fancy_date_widget.valign = "center"
-fancy_date_widget.font = beautiful.fontname .. "12"
+fancy_date_widget.font =  "mononoki Nerd Font 12"
 
 local fancy_date = {fancy_date_widget, layout = wibox.layout.fixed.vertical}
 
@@ -192,52 +166,6 @@ local weather_box = create_boxed_widget(weather, 400, 125, beautiful.xcolor0)
 
 -- }}
 
-local function create_launcher(app_name, app_icon, color)
-
-    local icon = wibox.widget {
-        markup = helpers.colorize_text(app_icon, color),
-        font = "FiraCode Nerd Font Mono 70",
-        align = "center",
-        valigin = "center",
-        widget = wibox.widget.textbox()
-    }
-
-    local launcher = wibox.widget {icon, widget = wibox.container.background}
-
-    launcher:buttons(gears.table.join(awful.button({}, 1, function()
-        awful.spawn(app_name)
-    end)))
-
-    launcher:connect_signal("mouse::enter", function()
-        icon.markup = helpers.colorize_text(app_icon, beautiful.xbackground)
-    end)
-
-    launcher:connect_signal("mouse::leave", function()
-        icon.markup = helpers.colorize_text(app_icon, beautiful.xcolor8)
-    end)
-
-    return launcher
-
-end
-
--- {{{ App Launchers
-local app_launcher = wibox.widget {
-    create_launcher(default.terminal, "  ", beautiful.xcolor8),
-    create_launcher(default.filebrowser, "  ", beautiful.xcolor8),
-    create_launcher(default.browser, "  ", beautiful.xcolor8),
-    create_launcher("termite -e ncspot", "  ", beautiful.xcolor8),
-    forced_num_cols = 2,
-    forced_num_rows = 2,
-    homogeneous = true,
-    expand = true,
-    vertical_spacing = 35,
-    layout = wibox.layout.grid
-}
-
-local app_launcher_box = create_boxed_widget(app_launcher, 400, 341,
-    beautiful.xcolor0)
-
--- }}}
 
 local sys = wibox.widget {
     {
@@ -327,10 +255,11 @@ local panelWidget = wibox.widget {
 }
 
 local width = 1000
+local margin = 133
 
-local panelPop = popupLib.create(awful.screen.focused().geometry.width/2,
-                                 awful.screen.focused().geometry.height/2,
-                                 nil, width, panelWidget, dpi(25), true, true,false, false)
+local panelPop = popupLib.create(awful.screen.focused().geometry.width/2-width/2,
+    awful.screen.focused().geometry.height/2 - beautiful.wibar_height + margin*2,
+    nil, width, panelWidget, dpi(25), true, true,false, false)
 
 panelPop:set_xproperty("WM_NAME", "panel")
 

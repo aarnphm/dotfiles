@@ -24,7 +24,7 @@ rules = {
     {
         rule_any = {
             class = {"Nm-connection-editor", "Gnome-disks", "caffeine", "Arandr", "Zotero", "Blueman-manager",
-                "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Skype", "Lxappearance", "Chatterino",
+                "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino",
             "Zoom", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"pop-up"},

@@ -10,5 +10,6 @@ else
 fi
 
 [ -x "$dp" ] && . "$dp"
+rm -rf $xr
 unset dp
 

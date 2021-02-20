@@ -22,12 +22,14 @@ run nm-applet
 run pasystray
 run ibus-daemon -drx 
 run nitrogen --restore 
+run picom -f --experimental-backends
+run skype
 run redshift
 run unclutter -idle 1 
 run blueman-tray
 run discord
 run caffeine
 run playerctld daemon
+run spotify
 run spotify-tray -m -c spotify
-run picom -f
 run optimus-manager-qt

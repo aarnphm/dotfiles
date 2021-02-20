@@ -21,12 +21,6 @@ if [[ `command -v nnn` ]]; then
     git clone https://github.com/sebastiencs/icons-in-terminal.git && cd icons-in-terminal && ./install.sh
 fi
 
-TMUX_TPM_PATH="$HOME/.tmux/plugins/tpm"
-if [ ! -d "$TMUX_TPM_PATH" ]; then
-    mkdir -p "$TMUX_TPM_PATH"
-    git clone https://github.com/tmux-plugin/tpm "$TMUX_TPM_PATH"
-fi
-
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then
     cd $HOME && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-326.0.0-linux-x86_64.tar.gz
