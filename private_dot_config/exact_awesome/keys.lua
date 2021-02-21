@@ -209,6 +209,12 @@ globalkeys = gears.table.join(
         end,
         {description = "open kitty", group = "launcher"}
         ),
+    awful.key({altkey, shift}, "t",
+        function()
+            awful.spawn("alacritty -e tmux")
+        end,
+        {description = "open tmux on alacritty", group = "launcher"}
+        ),
     awful.key({ctrl, altkey}, "p",
         function()
             awful.spawn("termite")

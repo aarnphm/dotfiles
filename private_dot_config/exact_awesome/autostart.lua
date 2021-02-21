@@ -1,7 +1,7 @@
 local awful = require("awful")
 
 -- the shell scripts is used to run some daemon
-awful.spawn.with_shell("~/.config/awesome/auto_run_once.sh")
+awful.spawn.with_shell("~/.config/awesome/run_once.sh")
 
 -- run application here
 local function run_once(cmd)

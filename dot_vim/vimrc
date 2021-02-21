@@ -48,6 +48,7 @@ Plug 'lambdalisue/suda.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'preservim/nerdtree'
+Plug 'preservim/tagbar'
 Plug 'airblade/vim-gitgutter'
 Plug 'Rykka/InstantRst'
 Plug 'tpope/vim-sleuth'
@@ -259,6 +260,7 @@ nnoremap <leader>R :PlugInstall<cr>
 " use this when lightline is not in use for minimal
 nnoremap <F2> :set invpaste paste?<CR>
 imap <F2> <C-O>:set invpaste paste?<CR>
+nnoremap <F8> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins settings

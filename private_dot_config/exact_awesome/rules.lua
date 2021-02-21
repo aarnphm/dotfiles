@@ -25,7 +25,7 @@ rules = {
         rule_any = {
             class = {"Nm-connection-editor", "Gnome-disks", "caffeine", "Arandr", "Zotero", "Blueman-manager",
                 "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino",
-            "Zoom", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer"},
+            "Zoom", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer","Xscreensaver-Demo"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"pop-up"},
             type  = {"dialog"}
@@ -39,6 +39,10 @@ rules = {
     {
         rule = {class = "Kitty"},
         properties = {screen = screen.count()>1 and 2 or 1, tag = def.tags[1].names[1], switchtotag = true}
+    },
+    {
+        rule_any = {class = {"Alacritty", "Termite", "Kitty"}},
+        properties = {tag = def.tags[1].names[1], switchtotag = true}
     },
     {
         rule_any = {instance={"chromium","firefox"}},

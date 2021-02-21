@@ -19,6 +19,7 @@ if (command -v /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 && ! pgre
 fi
 
 run nm-applet
+run xscreensaver -no-splash
 run pasystray
 run ibus-daemon -drx 
 run nitrogen --restore 
@@ -30,6 +31,5 @@ run blueman-tray
 run discord
 run caffeine
 run playerctld daemon
-run spotify
 run spotify-tray -m -c spotify
 run optimus-manager-qt

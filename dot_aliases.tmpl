@@ -19,7 +19,7 @@ alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 # mcmaster vpn
 alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
 alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
-alias compeng="$HOME/documents/cs/mcmaster"
+alias compeng="cd $XDG_CONFIG_DOCUMENTS/cs/mcmaster && cd `\ls -t $XDG_CONFIG_DOCUMENTS/cs/mcmaster | head -n1`"
 
 # only when connecting k6 via cables
 alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
@@ -45,6 +45,10 @@ alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr
 alias np="nnn-preview"
 alias N="sudo -E nnn -dDH"
 alias ls="n -dDeUHatT"
+{{- end }}
+
+{{- if `command -v tmux` }}
+alias tmux="TERM=xterm-256color ${aliases[tmux]:-tmux}"
 {{- end }}
 
 alias dockerprune="docker system prune -a -f"

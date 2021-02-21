@@ -62,6 +62,7 @@ imagemagick
 inkscape
 inotify-tools
 intel-ucode
+iw
 iwd
 jdk-openjdk
 jre-openjdk
@@ -103,7 +104,6 @@ nvidia
 nvidia-dkms
 nvidia-prime
 nvidia-settings
-openvpn
 os-prober
 pamixer
 papirus-icon-theme

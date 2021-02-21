@@ -10,6 +10,7 @@ install**
 
 screenshots
 bootstrap
+xscreensaver
 
 .ssh/known_hosts
 .ssh/agent-environment
@@ -28,6 +29,7 @@ Brewfile.*
 {{ if or (ne .chezmoi.os "linux") (not .personal) }}
 Pacfile.*
 Aurfile.*
+.xscreensaver
 .config/awesome
 .config/picom
 .config/redshift
