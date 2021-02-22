@@ -1,4 +1,5 @@
 acpi
+acpi_call
 acpid
 adobe-source-han-sans-otc-fonts
 adobe-source-han-serif-otc-fonts
@@ -7,6 +8,7 @@ alsa-utils
 android-tools
 android-udev
 arandr
+archlinux-xdg-menu
 asciinema
 autoconf
 autofs
@@ -93,6 +95,7 @@ net-tools
 netctl
 network-manager-applet
 networkmanager
+nginx
 nitrogen
 nm-connection-editor
 nnn
@@ -125,6 +128,7 @@ redshift
 ripgrep
 rofi
 samba
+screen
 seahorse
 sshfs
 steam
@@ -145,16 +149,19 @@ texlive-pstricks
 texlive-publishers
 texlive-science
 tmux
+trash-cli
 tree
 unclutter
 vim
 vlc
+vulkan-intel
 wget
 which
 wine-staging
 wireless_tools
 xdg-user-dirs
 xdotool
+xf86-video-intel
 xf86-video-vesa
 xorg-bdftopcf
 xorg-docs
@@ -198,5 +205,6 @@ xorg-xwininfo
 xorg-xwud
 xsecurelock
 xsettingsd
+xterm
 zathura
 zsh
