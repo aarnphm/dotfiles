@@ -287,13 +287,3 @@ dashboard:setup{
 }
 
 return dash_manager
--- local width = dpi(1000)
--- local margin = dpi(100)
-
--- local panelPop = popupLib.create(awful.screen.focused().geometry.width/2-width/2,
---                                  awful.screen.focused().geometry.height/2 - beautiful.wibar_height - margin*5 + 35,
---                                  nil, width, panelWidget, dpi(30), true, true,false, false)
-
--- panelPop:set_xproperty("WM_NAME", "panel")
-
--- return panelPop
