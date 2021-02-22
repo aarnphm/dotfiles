@@ -7,18 +7,45 @@ local gears         = require("gears")
 local awful         = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local naughty       = require("naughty")
+local xdg_menu      = require("appmenu")
+local beautiful     = require("beautiful")
+local defaults      = require("defaults")
 require("awful.hotkeys_popup.keys")
 
 -- define defaults variables
-local def        = require("defaults")
-local modkey     = def.modkey
-local altkey     = def.altkey
-local ctrl       = def.ctrl
-local shift      = def.shift
+local modkey     = defaults.modkey
+local altkey     = defaults.altkey
+local ctrl       = defaults.ctrl
+local shift      = defaults.shift
+local sleep      = "systemctl suspend"
+local reboot     = "systemctl reboot"
+local poweroff   = "systemctl poweroff"
 local cycle_prev = true
 
+-- Building menus
+local myawesomemenu = {
+    {"restart", awesome.restart},
+    {
+        "quit",
+        function()
+            awesome.quit()
+        end
+    },
+    {"sleep", sleep, beautiful.sleep},
+    {"reboot", reboot, beautiful.reboot},
+    {"poweroff", poweroff, beautiful.poweroff}
+}
+
+mainmenu = awful.menu({
+        icon_size = beautiful.menu_height or dpi(16),
+        items = {
+            {"awesome", myawesomemenu, beautiful.awesome_icon },
+            {"Application", xdgmenu},
+            {"open terminal", defaults.terminal}
+        }
+    })
 -- ===================================================================
--- Client keys bindings, can be used to modify and move clients around 
+-- Client keys bindings, can be used to modify and move clients around
 -- screens in given tags
 -- ===================================================================
 
@@ -30,6 +57,12 @@ clientkeys = gears.table.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}
+        ),
+    awful.key({modkey},"w",
+        function()
+            mainmenu:show()
+        end,
+        {description = "show main menu", group = "client"}
         ),
     awful.key({modkey},"q",
         function(c)
@@ -61,8 +94,8 @@ clientkeys = gears.table.join(
         ),
     awful.key({modkey}, "n",
         function(c)
-        -- The client currently has the input focus, so it cannot be minimized, 
-        -- since minimized clients can't have the focus.
+            -- The client currently has the input focus, so it cannot be minimized,
+            -- since minimized clients can't have the focus.
             c.minimized = true
         end,
         {description = "minimize", group = "client"}
@@ -85,7 +118,10 @@ clientkeys = gears.table.join(
         end,
         {description = "maximize", group = "client"}
         ),
-        -- normal Alt-Tab behaviour
+    awful.key({altkey, shift}, "Tab", function() awful.client.focus.byidx(1) end,
+        {description = "cycle with prev/go back", group = "client"}
+        ),
+    -- normal Alt-Tab behaviour
     awful.key({altkey}, "Tab",
         function()
             if cycle_prev then
@@ -129,7 +165,7 @@ globalkeys = gears.table.join(
         ),
 
     -- ===================================================================
-    -- Default client focus and swap
+    -- defaults.ult client focus and swap
     -- ===================================================================
     awful.key({altkey, shift}, "j",
         function()
@@ -205,15 +241,15 @@ globalkeys = gears.table.join(
         ),
     awful.key({ctrl, altkey}, "t",
         function()
-            awful.spawn(def.terminal)
+            awful.spawn(defaults.terminal)
         end,
         {description = "open kitty", group = "launcher"}
         ),
     awful.key({altkey, shift}, "t",
         function()
-            awful.spawn("alacritty -e tmux")
+            awful.spawn("kitty -e tmux")
         end,
-        {description = "open tmux on alacritty", group = "launcher"}
+        {description = "open tmux", group = "launcher"}
         ),
     awful.key({ctrl, altkey}, "p",
         function()
@@ -223,31 +259,31 @@ globalkeys = gears.table.join(
         ),
     awful.key({shift, modkey}, "m",
         function()
-            awful.spawn(def.spotify)
+            awful.spawn(defaults.spotify)
         end,
         {description = "run spotify", group = "launcher"}
         ),
     awful.key({shift, modkey}, "f",
         function()
-            awful.spawn(def.filebrowser)
+            awful.spawn(defaults.filebrowser)
         end,
         {description = "open explorer", group = "launcher"}
         ),
     awful.key({modkey}, "p",
         function()
-            awful.spawn(def.screenshot)
+            awful.spawn(defaults.screenshot)
         end,
         {description = "take a screenshot", group = "launcher"}
         ),
     awful.key({modkey}, "b",
         function()
-            awful.spawn(def.browser)
+            awful.spawn(defaults.browser)
         end,
         {description = "open default browser", group = "launcher"}
         ),
     awful.key({ctrl}, "space",
         function()
-            awful.spawn(def.launcher)
+            awful.spawn(defaults.launcher)
         end,
         {description = "show rofi", group = "launcher"}
         ),
@@ -274,20 +310,20 @@ globalkeys = gears.table.join(
         {description = "toggle mute Master", group = "volume"}
         ),
     awful.key({}, "XF86AudioPlay",
-        function() 
-            awful.spawn("playerctl play-pause") 
+        function()
+            awful.spawn("playerctl play-pause")
         end,
         {description = "Play/Pause current song", group = "volume"}
         ),
     awful.key({}, "XF86AudioPrev",
-        function() 
-            awful.spawn("playerctl previous") 
+        function()
+            awful.spawn("playerctl previous")
         end,
         {description = "Previous song", group="volume"}
         ),
     awful.key({}, "XF86AudioNext",
-        function() 
-            awful.spawn("playerctl next") 
+        function()
+            awful.spawn("playerctl next")
         end,
         {description = "Next song", group="volume"}
         )

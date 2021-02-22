@@ -10,6 +10,7 @@ local helpers        = require("helpers")
 local defaults       = require("defaults")
 local modkey         = require("defaults").modkey
 local icons          = require("icons")
+local keys           = require("keys")
 
 -- Helper function that changes the appearance of progress bars and their icons
 -- Create horizontal rounded bars
@@ -36,26 +37,15 @@ local awesome_icon = wibox.widget {
     widget = wibox.container.background
 }
 
-
+awesome_icon:connect_signal("mouse::enter",
+function() panelPop.visible = true end)
+awesome_icon:connect_signal("mouse::leave",
+function() panelPop.visible = false end)
 awesome_icon:buttons(gears.table.join(
         awful.button({}, 1, function()
-            panelPop.visible = true
-            awesome_icon.bg = beautiful.xcolor0
-        end),
-        awful.button({}, 3, function()
-            panelPop.visible = false
-            awesome_icon.bg = beautiful.xbackground
+            mainmenu:show()
         end)
-        )
-    )
-
--- awesome_icon:connect_signal("mouse::leave",
--- function() panelPop.visible = false end)
-
-panelPop:connect_signal("mouse::leave", function()
-    panelPop.visible = false
-    awesome_icon.bg = beautiful.xbackground
-end)
+    ))
 
 -- ===================================================================
 --  Battery Bar Widget
@@ -246,7 +236,7 @@ awful.screen.connect_for_each_screen(function(s)
                     right = 5,
                     left = 5,
                     widget = wibox.container.margin,
-                    forced_width = 400
+                    -- forced_width = 800
                 },
                 {
                     {
