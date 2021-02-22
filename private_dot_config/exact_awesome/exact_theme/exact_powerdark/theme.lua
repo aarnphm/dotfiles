@@ -17,7 +17,18 @@ local helpers      = require("helpers")
 
 -- Inherit default theme
 local theme     = dofile(themes_path .. "default/theme.lua")
--- local theme     = {}
+local icon_path = gfs.get_configuration_dir() .. "icons/"
+
+-- ===================================================================
+-- Notification centre
+-- ===================================================================
+
+theme.clear_icon = icon_path .. "notification-centre/clear.png"
+theme.clear_grey_icon = icon_path .. "notification-centre/clear_grey.png"
+theme.notification_icon = icon_path .. "notification-centre/notification.png"
+theme.delete_icon = icon_path .. "notification-centre/delete.png"
+theme.delete_grey_icon = icon_path .. "notification-centre/delete_grey.png"
+theme.awesome_icon = icon_path .."default/awesome_menu.png"
 
 -- ===================================================================
 -- Load $HOME/.Xresources colors and set fallback

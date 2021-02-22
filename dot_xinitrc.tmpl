@@ -41,12 +41,19 @@ fi
 
 [ -f ~/.xprofile ] && . ~/.xprofile
 
-{{-     if eq .hostname "0x6161726E70" }}
-{{-       if eq .wm "awesome" }}
-exec awesome
-{{-       else if eq .wm "i3" }}
-exec i3
-{{-       end }}
-{{-     end }}
+# Here awesome is kept as default
+# try other wm by doing `xinit wm_name` or `startx ~/.xinitrc wm_name`
+session=${1:-{{ .wm }}}
+
+# No known session, try to run it as command
+case $session in
+    i3|i3wm           ) exec i3;;
+    kde               ) exec startplasma-x11;;
+    xfce|xfce4        ) exec startxfce4;;
+    awesome           ) exec awesome;;
+    xmonad            ) exec xmonad;;
+    *                 ) exec $1;;
+esac
+
 {{-   end }}
 {{- end }}

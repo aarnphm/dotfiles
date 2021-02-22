@@ -1,1 +1,1 @@
-require("node.bar.default")
+require("node.bar.wibar")

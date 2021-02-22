@@ -7,7 +7,7 @@ local gears         = require("gears")
 local awful         = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local naughty       = require("naughty")
-local xdg_menu      = require("appmenu")
+local dash_manager  = require("node.popup.dash")
 local beautiful     = require("beautiful")
 local defaults      = require("defaults")
 require("awful.hotkeys_popup.keys")
@@ -17,33 +17,8 @@ local modkey     = defaults.modkey
 local altkey     = defaults.altkey
 local ctrl       = defaults.ctrl
 local shift      = defaults.shift
-local sleep      = "systemctl suspend"
-local reboot     = "systemctl reboot"
-local poweroff   = "systemctl poweroff"
 local cycle_prev = true
 
--- Building menus
-local myawesomemenu = {
-    {"restart", awesome.restart},
-    {
-        "quit",
-        function()
-            awesome.quit()
-        end
-    },
-    {"sleep", sleep, beautiful.sleep},
-    {"reboot", reboot, beautiful.reboot},
-    {"poweroff", poweroff, beautiful.poweroff}
-}
-
-mainmenu = awful.menu({
-        icon_size = beautiful.menu_height or dpi(16),
-        items = {
-            {"awesome", myawesomemenu, beautiful.awesome_icon },
-            {"Application", xdgmenu},
-            {"open terminal", defaults.terminal}
-        }
-    })
 -- ===================================================================
 -- Client keys bindings, can be used to modify and move clients around
 -- screens in given tags
@@ -58,17 +33,17 @@ clientkeys = gears.table.join(
         end,
         {description = "toggle fullscreen", group = "client"}
         ),
-    awful.key({modkey},"w",
-        function()
-            mainmenu:show()
-        end,
-        {description = "show main menu", group = "client"}
-        ),
     awful.key({modkey},"q",
         function(c)
             c:kill()
         end,
         {description = "close", group = "client"}
+        ),
+    awful.key({modkey},"w",
+        function()
+            dash_manager.dash_show()
+        end,
+        {description = "show panel", group = "client"}
         ),
     awful.key({modkey, ctrl}, "space",
         awful.client.floating.toggle,

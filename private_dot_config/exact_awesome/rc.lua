@@ -67,10 +67,9 @@ end
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. defaults.theme .. "/theme.lua")
 
-require("icons").init("default")
-
 require("components")
 require("node")
+require("window")
 -- fancy tag switching
 require("collision")()
 
@@ -89,6 +88,13 @@ awful.rules.rules = require("rules")
 -- ===================================================================
 -- Signal and misc imports
 -- ===================================================================
+
+-- screen.connect_signal("request::desktop_decoration", function(s)
+
+--     screen[s].padding = {left = 0, right = 0, top = 0, bottom = 0}
+--     awful.tag(defaults.tags[s.index].names, s, defaults.tags[s.index].layout)
+
+-- end)
 
 client.connect_signal("manage", function(c)
     -- Set the windows at the slave,
