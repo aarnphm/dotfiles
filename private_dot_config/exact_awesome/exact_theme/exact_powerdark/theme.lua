@@ -30,6 +30,8 @@ theme.notification_icon = icon_path .. "notification-centre/notification.png"
 theme.delete_icon       = icon_path .. "notification-centre/delete.png"
 theme.delete_grey_icon  = icon_path .. "notification-centre/delete_grey.png"
 theme.awesome_icon      = icon_path .. "default/awesome.png"
+theme.terminal_icon     = icon_path .. "default/terminal.png"
+theme.application_icon  = icon_path .. "default/dot.png"
 
 -- ===================================================================
 -- Load $HOME/.Xresources colors and set fallback
@@ -191,8 +193,8 @@ theme.menu_bg_focus     = theme.xcolor4
 theme.menu_fg_focus     = theme.xcolor7
 theme.menu_bg_normal    = theme.xbackground
 theme.menu_fg_normal    = theme.xcolor7
-theme.menu_height       = dpi(20)
-theme.menu_width        = dpi(130)
+theme.menu_height       = dpi(80)
+theme.menu_width        = dpi(190)
 theme.menu_border_color = "#0000000"
 theme.menu_border_width = theme.border_width
 

@@ -47,7 +47,7 @@ mymainmenu = awful.menu({
         icon_size = beautiful.menu_height or dpi(16),
         items = {
             {"awesome", myawesomemenu, beautiful.awesome_icon },
-            {"Application", xdgmenu, beautiful.application_icon },
+            {"application", xdgmenu, beautiful.application_icon },
             {"open terminal", defaults.terminal, beautiful.terminal_icon }
         }
     })
