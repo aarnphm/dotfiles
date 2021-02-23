@@ -49,7 +49,7 @@ local function format_progress_bar(bar, markup)
         markup = markup,
         align = 'center',
         valign = 'center',
-        font = beautiful.fontname .. '25',
+        font = beautiful.fontname .. '16',
         widget = wibox.widget.textbox
     }
     text.forced_height = dpi(36)
@@ -85,16 +85,6 @@ volume:buttons(gears.table.join( -- Left click - Mute / Unmute
     awful.button({}, 5, function() helpers.volume_control(-5) end))
     )
 
-apps_volume = function()
-    helpers.run_or_raise({class = 'Pavucontrol'}, true, "pavucontrol")
-end
-
-volume:buttons(gears.table.join( -- Left click - Mute / Unmute
-                   awful.button({}, 1, function() helpers.volume_control(0) end),
-    -- Scroll - Increase / Decrease volume
-                   awful.button({}, 4, function() helpers.volume_control(5) end),
-                   awful.button({}, 5, function() helpers.volume_control(-5) end)))
-
 -- }}}
 --
 --- {{{ Brightness Widget
@@ -127,8 +117,6 @@ local temp = format_progress_bar(temp_bar, "<span foreground='"..beautiful.xcolo
 
 --- {{{ Cpu Widget
 
--- local cpu = require("bloat.widgets.cpu_arc")
-
 local cpu_bar = require("node.widgets.cpu_arc")
 local cpu = format_progress_bar(cpu_bar, "<span foreground='"..beautiful.xcolor4.."'><b></b></span>")
 
@@ -141,7 +129,7 @@ fancy_time_widget.markup = fancy_time_widget.text:sub(1, 2) .. "<span foreground
 fancy_time_widget:connect_signal("widget::redraw_needed", function() fancy_time_widget.markup = fancy_time_widget.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. fancy_time_widget.text:sub(3, 5) .. "</span>" end)
 fancy_time_widget.align = "center"
 fancy_time_widget.valign = "center"
-fancy_time_widget.font =  "mononoki Nerd Font 55"
+fancy_time_widget.font =  beautiful.fontname .. "55"
 
 local fancy_time = {fancy_time_widget, layout = wibox.layout.fixed.vertical}
 
@@ -150,7 +138,7 @@ fancy_date_widget.markup = fancy_date_widget.text:sub(1, 3) .. "<span foreground
 fancy_date_widget:connect_signal("widget::redraw_needed", function() fancy_date_widget.markup = fancy_date_widget.text:sub(1, 3) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. fancy_date_widget.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. beautiful.xcolor6 .. "'>" .. fancy_date_widget.text:sub(7, 10) .. "</span>" end)
 fancy_date_widget.align = "center"
 fancy_date_widget.valign = "center"
-fancy_date_widget.font =  "mononoki Nerd Font 12"
+fancy_date_widget.font =  beautiful.fontname .. "12"
 
 local fancy_date = {fancy_date_widget, layout = wibox.layout.fixed.vertical}
 

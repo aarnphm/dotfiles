@@ -7,7 +7,7 @@ local helpers = require('helpers')
 
 local popupLib = {}
 
-popupLib.create = function(x, y, height, width, widget, radius, tl, tr, bl, br)
+popupLib.create = function(placement, height, width, widget)
     local widgetContainer = wibox.widget {
         {widget, margins = dpi(10), widget = wibox.container.margin},
         forced_height = height,
@@ -20,7 +20,6 @@ popupLib.create = function(x, y, height, width, widget, radius, tl, tr, bl, br)
         bg = beautiful.xbackground,
         border_color = beautiful.widget_border_color,
         border_width = dpi(beautiful.widget_border_width),
-        -- shape = helpers.prrect(radius, tl, tr, bl, br),
         widget = wibox.container.background
     }
 
@@ -29,10 +28,9 @@ popupLib.create = function(x, y, height, width, widget, radius, tl, tr, bl, br)
         widget = widgetBG,
         visible = false,
         ontop = true,
-        x = x,
-        y = y,
+        placement = placement,
         bg = beautiful.xbackground .. "00",
-        -- shape = helpers.rrect(beautiful.client_radius-3),
+        shape = helpers.rrect(beautiful.client_radius-3),
         border_width = beautiful.widget_border_width,
         border_color = beautiful.widget_border_color
     }

@@ -30,7 +30,7 @@ align_vertical.expand = "none"
 local area = wibox.widget {
     {
         markup = "<span foreground='" .. beautiful.xcolor2 .. "'></span>",
-        font = "mononoki Nerd Font 40",
+        font = beautiful.fontname .. " 40",
         widget = wibox.widget.textbox
     },
     align_vertical,

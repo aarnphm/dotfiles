@@ -29,7 +29,7 @@ theme.clear_grey_icon   = icon_path .. "notification-centre/clear_grey.png"
 theme.notification_icon = icon_path .. "notification-centre/notification.png"
 theme.delete_icon       = icon_path .. "notification-centre/delete.png"
 theme.delete_grey_icon  = icon_path .. "notification-centre/delete_grey.png"
-theme.awesome_icon      = icon_path .."default/awesome.png"
+theme.awesome_icon      = icon_path .. "default/awesome.png"
 
 -- ===================================================================
 -- Load $HOME/.Xresources colors and set fallback
@@ -99,9 +99,9 @@ theme.button_close = theme.xcolor1
 -- Borders
 -- ===================================================================
 
-theme.border_width        = dpi(2)
+theme.border_width        = dpi(3)
 theme.border_normal       = theme.xcolor0
-theme.border_focus        = theme.xcolor0
+theme.border_focus        = theme.fg_normal
 theme.border_radius       = dpi(12)
 theme.client_radius       = dpi(12)
 theme.widget_border_width = dpi(2)
@@ -110,17 +110,17 @@ theme.widget_border_color = theme.xcolor0
 -- ===================================================================
 -- Font
 -- ===================================================================
-theme.fontname                 = "mononoki Nerd Font"
-theme.font                     = theme.fontname .. "12"
-theme.icon_font                = "InconsolataGo Nerd Font 18"
-theme.font_taglist             = "InconsolataGo Nerd Font 13"
-theme.max_font                 = "InconsolataGo Nerd Font 10"
+theme.fontname     = "mononoki Nerd Font "
+theme.font         = theme.fontname .. "12"
+theme.icon_font    = theme.fontname .. "10"
+theme.font_taglist = "InconsolataGo Nerd Font 18"
+theme.max_font     = "InconsolataGo Nerd Font 10"
 
 -- ===================================================================
 -- Taglist
 -- ===================================================================
 
-theme.taglist_font          = theme.font
+theme.taglist_font          = theme.font_taglist
 local taglist_square_size   = dpi(0)
 theme.taglist_squares_sel   = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
@@ -142,7 +142,7 @@ theme.taglist_disable_icon  = true
 --  Tasklist
 -- ===================================================================
 
-theme.tasklist_font              = theme.font
+theme.tasklist_font              = theme.fontname .. "18"
 theme.tasklist_plain_task_name   = true
 theme.tasklist_bg_focus          = theme.xcolor0
 theme.tasklist_fg_focus          = theme.xcolor6
@@ -191,7 +191,6 @@ theme.menu_bg_focus     = theme.xcolor4
 theme.menu_fg_focus     = theme.xcolor7
 theme.menu_bg_normal    = theme.xbackground
 theme.menu_fg_normal    = theme.xcolor7
-theme.menu_submenu_icon = gears.filesystem.get_configuration_dir() .. "theme/icons/submenu.png"
 theme.menu_height       = dpi(20)
 theme.menu_width        = dpi(130)
 theme.menu_border_color = "#0000000"
@@ -210,29 +209,13 @@ theme.tooltip_opacity      = 1
 theme.tooltip_align        = "left"
 
 -- ===================================================================
--- Menu
--- ===================================================================
-
-theme.menu_font         = theme.font
-theme.menu_bg_focus     = theme.xcolor4
-theme.menu_fg_focus     = theme.xcolor7
-theme.menu_bg_normal    = theme.xbackground
-theme.menu_fg_normal    = theme.xcolor7
-theme.menu_submenu_icon = gears.filesystem.get_configuration_dir() .. "theme/icons/submenu.png"
-theme.menu_height       = dpi(20)
-theme.menu_width        = dpi(90)
-theme.menu_border_color = "#0000000"
-theme.menu_border_width = theme.border_width
-
--- ===================================================================
 -- Hotkeys Popup
 -- ===================================================================
 
 theme.hotkeys_border_color     = theme.xcolor0
 theme.hotkeys_font             = "mononoki Nerd Font 12"
 theme.hotkeys_description_font = "mononoki Nerd Font 10"
-theme.hotkeys_shape = helpers.custom_shape
--- theme.hotkeys_shape            = helpers.rrect(theme.border_radius - 3)
+theme.hotkeys_shape            = helpers.rrect(theme.border_radius - 3)
 
 -- ===================================================================
 -- Layout List
@@ -253,7 +236,7 @@ theme.useless_gap = dpi(2)
 -- Wibar
 -- ===================================================================
 
-theme.wibar_height  = dpi(30)
+theme.wibar_height  = dpi(35)
 theme.wibar_margin  = dpi(15)
 theme.wibar_spacing = dpi(15)
 theme.wibar_bg      = theme.xbackground

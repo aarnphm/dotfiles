@@ -10,7 +10,7 @@ local naughty             = require("naughty")
 local dash_manager        = require("node.popup.dash")
 local notification_centre = require("node.popup.notification-centre")
 local defaults            = require("defaults")
-local helpers             = require("helpers")
+local helper              = require("helpers")
 local xdg_menu            = require("xdgmenu")
 local beautiful           = require("beautiful")
 local xresources          = require("beautiful.xresources")
@@ -43,12 +43,12 @@ local myawesomemenu = {
     {"poweroff", poweroff, beautiful.poweroff}
 }
 
-local mymainmenu = awful.menu({
+mymainmenu = awful.menu({
         icon_size = beautiful.menu_height or dpi(16),
         items = {
             {"awesome", myawesomemenu, beautiful.awesome_icon },
-            {"Application", xdgmenu},
-            {"open terminal", defaults.terminal}
+            {"Application", xdgmenu, beautiful.application_icon },
+            {"open terminal", defaults.terminal, beautiful.terminal_icon }
         }
     })
 
@@ -57,7 +57,7 @@ local mymainmenu = awful.menu({
 -- ===================================================================
 
 awful.mouse.append_global_mousebindings({
-        awful.button({}, 3, function() mymainmenu:toggle() end),
+        -- awful.button({}, 3, function() mymainmenu:toggle() end),
         awful.button({}, 4, awful.tag.viewprev),
         awful.button({}, 5, awful.tag.viewnext)
     })
@@ -67,7 +67,9 @@ awful.mouse.append_global_mousebindings({
 -- screens in given tags
 -- ===================================================================
 
-awful.keyboard.append_global_keybindings({
+client.connect_signal("request::default_keybindings", function()
+    awful.keyboard.append_client_keybindings(
+        {
         awful.key({modkey}, "f",
             function(c)
                 c.fullscreen = not c.fullscreen
@@ -81,10 +83,6 @@ awful.keyboard.append_global_keybindings({
             end,
             {description = "close", group = "client"}
             ),
-        awful.key({modkey, ctrl}, "space",
-            awful.client.floating.toggle,
-            {description = "toggle floating", group = "client"}
-            ),
         awful.key({modkey, ctrl}, "Return",
             function(c)
                 c:swap(awful.client.getmaster())
@@ -96,20 +94,6 @@ awful.keyboard.append_global_keybindings({
                 c:move_to_screen()
             end,
             {description = "move to screen", group = "client"}
-            ),
-        awful.key({modkey}, "t",
-            function(c)
-                c.ontop = not c.ontop
-            end,
-            {description = "toggle keep on top", group = "client"}
-            ),
-        awful.key({modkey}, "n",
-            function(c)
-                -- The client currently has the input focus, so it cannot be minimized,
-                -- since minimized clients can't have the focus.
-                c.minimized = true
-            end,
-            {description = "minimize", group = "client"}
             ),
         awful.key({modkey, ctrl}, "n",
             function()
@@ -128,6 +112,29 @@ awful.keyboard.append_global_keybindings({
                 c:raise()
             end,
             {description = "maximize", group = "client"}
+            ),
+        }
+    )
+end)
+
+awful.keyboard.append_global_keybindings({
+        awful.key({modkey, ctrl}, "space",
+            awful.client.floating.toggle,
+            {description = "toggle floating", group = "client"}
+            ),
+        awful.key({modkey}, "t",
+            function(c)
+                c.ontop = not c.ontop
+            end,
+            {description = "toggle keep on top", group = "client"}
+            ),
+        awful.key({modkey}, "n",
+            function(c)
+                -- The client currently has the input focus, so it cannot be minimized,
+                -- since minimized clients can't have the focus.
+                c.minimized = true
+            end,
+            {description = "minimize", group = "client"}
             ),
         awful.key({altkey, shift}, "Tab", function() awful.client.focus.byidx(1) end,
             {description = "cycle with prev/go back", group = "client"}
@@ -183,7 +190,6 @@ awful.keyboard.append_global_keybindings({
                 naughty.suspend()
                 awful.util.spawn_with_shell(defaults.lock)
             end,
--- helpers.lua
             {description = "lock screen", group = "awesome"}
             ),
 
@@ -436,21 +442,14 @@ awful.keyboard.append_global_keybindings(
 -- ===================================================================
 
 client.connect_signal("request::default_mousebindings", function()
-    awful.mouse.append_global_mousebindings(
+    awful.mouse.append_client_mousebindings(
         {
-        awful.button({}, 1,
-            function(c)
-                c:emit_signal("request::activate", "mouse_click", {raise = true})
-            end),
-        awful.button({modkey}, 1,
-            function(c)
-                c:emit_signal("request::activate", "mouse_click", {raise = true})
-                awful.mouse.client.move(c)
-            end),
-        awful.button({modkey}, 3,
-            function(c)
-                c:emit_signal("request::activate", "mouse_click", {raise = true})
-                awful.mouse.client.resize(c)
-            end)
-        })
+            awful.button({}, 1, function(c) 
+                c:activate{context = "mouse_click"} end), 
+            awful.button({modkey}, 1, function(c)
+                c:activate{context = "mouse_click", action = "mouse_move"} end),
+            awful.button({modkey}, 3, function(c)
+                c:activate{context = "mouse_click", action = "mouse_resize"} end)
+        }
+    )
 end)

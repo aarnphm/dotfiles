@@ -11,12 +11,7 @@ local city = beautiful.weather_city or "Hanoi"
 
 local update_interval = 60 * 60
 
-local disk_script = [[
-    sh -c '
-    wttr_str=`curl wttr.in/]] .. city .. [[?format=2`
-    echo $wttr_str
-    '
-]]
+local disk_script = [[sh -c 'wttr_str=`curl wttr.in/]] .. city .. [[?format=2` && echo $wttr_str']]
 
 -- Periodically get disk space info
 awful.widget.watch(disk_script, update_interval, function(_, stdout)

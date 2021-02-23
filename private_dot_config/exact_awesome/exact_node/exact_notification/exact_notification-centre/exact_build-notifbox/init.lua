@@ -5,12 +5,12 @@ local gears = require('gears')
 local beautiful = require('beautiful')
 
 local dpi = beautiful.xresources.apply_dpi
-local empty_notifbox = require('node/notification.notification-centre.build-notifbox.empty-notifbox')
+local empty_notifbox = require('node.notification.notification-centre.build-notifbox.empty-notifbox')
 
 local config_dir = gears.filesystem.get_configuration_dir()
 local widget_icon_dir = config_dir .. 'node/notification/notification-centre/icons/'
 
-local width = dpi(380)
+local width = dpi(250)
 
 local remove_notifbox_empty = true
 
@@ -50,7 +50,7 @@ naughty.connect_signal("added", function(n)
     local appicon = n.icon or n.app_icon
     if not appicon then appicon = beautiful.notification_icon end
 
-    local box = require("node/notification.notification-centre.build-notifbox.notifbox")
+    local box = require("node.notification.notification-centre.build-notifbox.notifbox")
     notifbox_layout:insert(1, box.create(appicon, n.title, n.message, width))
 end)
 

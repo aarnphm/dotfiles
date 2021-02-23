@@ -6,10 +6,6 @@ local dpi       = beautiful.xresources.apply_dpi
 local helpers   = require("helpers")
 local ruled     = require("ruled")
 
-require("node.notification.playerctl")
-require("node.notification.volume")
-require("node.notification.brightness")
-
 naughty.config.defaults.ontop           = true
 -- naughty.config.defaults.icon_size    = dpi(32)
 naughty.config.defaults.screen          = awful.screen.focused()
@@ -17,7 +13,7 @@ naughty.config.defaults.timeout         = 3
 naughty.config.defaults.title           = "System Notification"
 -- naughty.config.defaults.margin       = dpi(20)
 -- naughty.config.defaults.border_width = 0
--- naughty.config.defaults.border_color = beautiful.widget_border_color
+naughty.config.defaults.border_color    = beautiful.foreground
 naughty.config.defaults.position        = "top_right"
 -- naughty.config.defaults.shape        = helpers.rrect(beautiful.client_radius)
 
@@ -57,7 +53,7 @@ ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
     ruled.notification.append_rule {
         rule = {},
-        properties = {screen = awful.screen.preferred, implicit_timeout = 6}
+        properties = {screen = awful.screen.preferred, implicit_timeout = 2}
     }
 end)
 
@@ -71,7 +67,7 @@ naughty.connect_signal("request::display", function(n)
                 id = 'text_role',
                 align = "center",
                 valign = "center",
-                font = beautiful.font_name .. "8",
+                font = beautiful.fontname .. "8",
                 widget = wibox.widget.textbox
             },
             left = dpi(6),
@@ -100,6 +96,8 @@ naughty.connect_signal("request::display", function(n)
         notification = n,
         type = "notification",
         bg = beautiful.xbackground .. "00",
+        width = dpi(128),
+        height = dpi(128),
         widget_template = {
             {
                 {
@@ -115,7 +113,7 @@ naughty.connect_signal("request::display", function(n)
                                                 beautiful.border_radius - 3),
                                             widget = wibox.widget.imagebox
                                         },
-                                        -- bg = beautiful.xcolor1,
+                                        bg = beautiful.xcolor1,
                                         strategy = 'max',
                                         height = 40,
                                         width = 40,
@@ -143,7 +141,7 @@ naughty.connect_signal("request::display", function(n)
                                                     n.title .. "</span>",
                                                 font = beautiful.font,
                                                 align = "left",
-                                                -- visible = title_visible,
+                                                visible = title_visible,
                                                 widget = wibox.widget.textbox
                                             },
                                             forced_width = dpi(204),

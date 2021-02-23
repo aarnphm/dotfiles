@@ -48,7 +48,7 @@ tmp_cover_path=${tmp_dir}"cover.png"
 if [ ! -d $tmp_dir  ]; then
     mkdir -p $tmp_dir
 fi
-link="$(playerctl metadata mpris:artUrl)"
+link=`playerctl metadata mpris:artUrl`
 curl -s "$link" --output $tmp_cover_path
 echo "$tmp_cover_path"
 ']]

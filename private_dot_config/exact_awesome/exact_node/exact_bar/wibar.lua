@@ -1,13 +1,13 @@
 -- default.lua
 -- Wibar (top bar)
-local awful          = require("awful")
-local gears          = require("gears")
-local gfs            = require("gears.filesystem")
-local wibox          = require("wibox")
-local beautiful      = require("beautiful")
-local xresources     = require("beautiful.xresources")
-local helpers        = require("helpers")
-local dpi            = xresources.apply_dpi
+local awful      = require("awful")
+local gears      = require("gears")
+local gfs        = require("gears.filesystem")
+local wibox      = require("wibox")
+local beautiful  = require("beautiful")
+local xresources = require("beautiful.xresources")
+local helpers    = require("helpers")
+local dpi        = xresources.apply_dpi
 
 -- Helper function that changes the appearance of progress bars and their icons
 -- Create horizontal rounded bars
@@ -28,17 +28,18 @@ local awesome_icon = wibox.widget {
         {
             widget = wibox.widget.imagebox,
             image = gears.surface.load_uncached(
-                gfs.get_configuration_dir() .. "icons/ghosts/awesome.png"),
+                gfs.get_configuration_dir() .. "icons/default/awesome.png"),
             resize = true
         },
         margins = dpi(7),
         widget = wibox.container.margin
     },
-    bg = beautiful.xbackground,
+    -- bg = beautiful.xbackground,
     widget = wibox.container.background
 }
 
 awesome_icon:buttons(gears.table.join(awful.button({}, 1, function()
+    mymainmenu:toggle()
     awesome_icon.bg = beautiful.xcolor0
 end)))
 
@@ -53,19 +54,15 @@ local notif_icon = wibox.widget {
         {
             widget = wibox.widget.textbox,
             font = beautiful.icon_font,
-            markup = "<span foreground='" .. beautiful.xcolor4 .. "'>" .. "" ..
-                "</span>",
+            markup = "<span foreground='" .. beautiful.xforeground .. "'>" .. " " .. "</span>",
             resize = true
         },
         margins = dpi(4),
         widget = wibox.container.margin
     },
-    bg = beautiful.xbackground,
+    -- bg = beautiful.xbackground,
     widget = wibox.container.background
 }
-
--- notif_icon:connect_signal("mouse::enter", function() notifPop.visible = true end)
--- notifPop:connect_signal("mouse::leave", function() notifPop.visible = false end)
 
 notif_icon:buttons(gears.table.join(
         awful.button({}, 1, function()
@@ -200,8 +197,8 @@ mysystray:set_base_size(beautiful.systray_icon_size)
 
 local mysystray_container = {
     mysystray,
-    left = dpi(8),
-    right = dpi(8),
+    left = dpi(10),
+    right = dpi(10),
     widget = wibox.container.margin
 }
 
@@ -243,7 +240,7 @@ local song_artist = wibox.widget {
 }
 
 local song_logo = wibox.widget {
-    markup = '<span foreground="' .. beautiful.xcolor6 .. '"></span>',
+    markup = '<span foreground="' .. beautiful.xcolor6 .. '"> </span>',
     font = beautiful.icon_font,
     align = 'center',
     valign = 'center',
@@ -414,7 +411,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     margins = dpi(5),
                     widget = wibox.container.margin
                 },
-                s.mypromptbox,
                 {
                     playerctl_bar,
                     margins = dpi(5),
@@ -473,7 +469,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     margins = dpi(5),
                     widget = wibox.container.margin
                 },
-
                 {
                     notif_icon,
                     top = dpi(0),
@@ -481,7 +476,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     left = dpi(5),
                     widget = wibox.container.margin
                 },
-
                 layout = wibox.layout.fixed.horizontal
             }
         }

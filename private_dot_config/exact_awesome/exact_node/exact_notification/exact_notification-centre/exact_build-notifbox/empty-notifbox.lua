@@ -13,16 +13,16 @@ local empty_notifbox = wibox.widget {
             nil,
             {
                 image = beautiful.notification_none_icon,
+                forced_height = dpi(20),
+                forced_width = dpi(20),
                 resize = true,
-                forced_height = dpi(35),
-                forced_width = dpi(35),
                 widget = wibox.widget.imagebox
             },
             nil
         },
         {
-            markup = 'You have no notifs!',
-            font = beautiful.font .. '10',
+            markup = 'No new notification !',
+            font = beautiful.fontname .. '10',
             align = 'center',
             valign = 'center',
             widget = wibox.widget.textbox

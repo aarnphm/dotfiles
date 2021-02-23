@@ -7,7 +7,7 @@ local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
 local art = wibox.widget {
-    -- image = gears.filesystem.get_configuration_dir() .. "images/default.png",
+    image = gears.filesystem.get_configuration_dir() .. "images/default.png",
     resize = true,
     forced_height = dpi(80),
     forced_width = dpi(80),
@@ -19,7 +19,7 @@ local create_button = function(symbol, color, command, playpause)
 
     local icon = wibox.widget {
         markup = helpers.colorize_text(symbol, color),
-        font = "InconsolataGo Nerd Font 20",
+        font = beautiful.fontname .. " 20",
         align = "center",
         valigin = "center",
         widget = wibox.widget.textbox()
@@ -57,7 +57,7 @@ local create_button = function(symbol, color, command, playpause)
 end
 
 local title_widget = wibox.widget {
-    markup = 'Nothing Playing',
+    markup = '-----',
     align = 'center',
     valign = 'center',
     ellipsize = 'middle',
@@ -65,7 +65,7 @@ local title_widget = wibox.widget {
 }
 
 local artist_widget = wibox.widget {
-    markup = 'Nothing Playing',
+    markup = '-----',
     align = 'center',
     valign = 'center',
     ellipsize = 'middle',
@@ -168,4 +168,4 @@ local playerctl = wibox.widget {
     layout = wibox.layout.align.horizontal
 }
 
-return playerctl 
+return playerctl
