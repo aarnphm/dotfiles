@@ -7,9 +7,6 @@ local wibox          = require("wibox")
 local beautiful      = require("beautiful")
 local xresources     = require("beautiful.xresources")
 local helpers        = require("helpers")
-local defaults       = require("defaults")
-local modkey         = require("defaults").modkey
-local xdg_menu      = require("appmenu")
 local dpi            = xresources.apply_dpi
 
 -- Helper function that changes the appearance of progress bars and their icons
@@ -31,55 +28,64 @@ local awesome_icon = wibox.widget {
         {
             widget = wibox.widget.imagebox,
             image = gears.surface.load_uncached(
-                gfs.get_configuration_dir() .. "icons/default/awesome_menu.png"),
+                gfs.get_configuration_dir() .. "icons/ghosts/awesome.png"),
             resize = true
         },
-        margins = dpi(5),
+        margins = dpi(7),
         widget = wibox.container.margin
     },
     bg = beautiful.xbackground,
     widget = wibox.container.background
 }
 
--- local sleep      = "systemctl suspend"
--- local reboot     = "systemctl reboot"
--- local poweroff   = "systemctl poweroff"
+awesome_icon:buttons(gears.table.join(awful.button({}, 1, function()
+    awesome_icon.bg = beautiful.xcolor0
+end)))
 
--- -- Building menus
--- local myawesomemenu = {
---     {"restart", awesome.restart},
---     {
---         "quit",
---         function()
---             awesome.quit()
---         end
---     },
---     {"sleep", sleep, beautiful.sleep},
---     {"reboot", reboot, beautiful.reboot},
---     {"poweroff", poweroff, beautiful.poweroff}
--- }
+-- ===================================================================
+-- Notification panel
+-- ===================================================================
 
--- local mainmenu = awful.menu({
---         icon_size = beautiful.menu_height or dpi(16),
---         items = {
---             {"awesome", myawesomemenu, beautiful.awesome_icon },
---             {"Application", xdgmenu},
---             {"open terminal", defaults.terminal}
---         }
---     })
 
--- awesome_icon:buttons(gears.table.join(
---         awful.button({}, 1, function()
---             mainmenu:show()
---         end)
---     ))
+local notifPop = require("node.popup.notification-centre")
+local notif_icon = wibox.widget {
+    {
+        {
+            widget = wibox.widget.textbox,
+            font = beautiful.icon_font,
+            markup = "<span foreground='" .. beautiful.xcolor4 .. "'>" .. "" ..
+                "</span>",
+            resize = true
+        },
+        margins = dpi(4),
+        widget = wibox.container.margin
+    },
+    bg = beautiful.xbackground,
+    widget = wibox.container.background
+}
+
+-- notif_icon:connect_signal("mouse::enter", function() notifPop.visible = true end)
+-- notifPop:connect_signal("mouse::leave", function() notifPop.visible = false end)
+
+notif_icon:buttons(gears.table.join(
+        awful.button({}, 1, function()
+            notifPop.visible = true
+            notif_icon.bg = beautiful.xcolor0
+        end),
+        awful.button({}, 3, function()
+            notifPop.visible = false
+            notif_icon.bg = beautiful.background
+        end)
+))
+
+notifPop:connect_signal("mouse::leave", function()
+    notifPop.visible = false
+    notif_icon.bg = beautiful.xbackground
+end)
 
 -- ===================================================================
 --  Battery Bar Widget
 -- ===================================================================
-
--- local battery_bar = require("node.widgets.battery_bar")
--- local battery = format_progress_bar(battery_bar)
 
 local battery_bar = wibox.widget {
     max_value = 100,
@@ -200,41 +206,6 @@ local mysystray_container = {
 }
 
 -- ===================================================================
--- Notification panel
--- ===================================================================
-
-local notifPop = require("node.popup.notification-centre")
-local notif_icon = wibox.widget {
-    {
-        {
-            widget = wibox.widget.textbox,
-            font = beautiful.icon_font,
-            markup = "<span foreground='" .. beautiful.xcolor4 .. "'>" .. "" ..
-            "</span>",
-            resize = true
-        },
-        margins = dpi(4),
-        widget = wibox.container.margin
-    },
-    bg = beautiful.xbackground,
-    widget = wibox.container.background
-}
-
-notif_icon:connect_signal("mouse::enter", function() notifPop.visible = true end)
-notif_icon:connect_signal("mouse::leave", function() notifPop.visible = false end)
--- notifPop:connect_signal("mouse::leave", function() notifPop.visible = false end)
-
--- notif_icon:buttons(gears.table.join(awful.button({}, 1, function()
---     notifPop.visible = true
---     notif_icon.bg = beautiful.xcolor0
--- end)))
-
--- notifPop:connect_signal("mouse::leave", function()
---     notifPop.visible = false
---     notif_icon.bg = beautiful.xbackground
--- end)
-
--- ===================================================================
 -- Tasklist widgets
 -- ===================================================================
 
@@ -258,14 +229,14 @@ local tasklist_buttons = gears.table.join(
 -- ===================================================================
 
 local song_title = wibox.widget {
-    markup = 'Nothing Playing',
+    markup = '-------------------',
     align = 'center',
     valign = 'center',
     widget = wibox.widget.textbox
 }
 
 local song_artist = wibox.widget {
-    markup = 'nothing playing',
+    markup = '-------------------',
     align = 'center',
     valign = 'center',
     widget = wibox.widget.textbox
@@ -326,8 +297,7 @@ local playerctl_bar = wibox.widget {
 
 playerctl_bar.visible = false
 
-awesome.connect_signal("components::playerctl::player_stopped",
-function() playerctl_bar.visible = false end)
+awesome.connect_signal("components::playerctl::player_stopped", function() playerctl_bar.visible = false end)
 
 -- Get Title
 awesome.connect_signal("components::playerctl::title_artist_album",
@@ -339,186 +309,181 @@ awesome.connect_signal("components::playerctl::title_artist_album",
 
         song_artist.markup = '<span foreground="' .. beautiful.xcolor4 .. '">' ..
         artist .. '</span>'
-    end)
+    end
+)
 
     -- ===================================================================
     -- Create wibar
     -- ===================================================================
+screen.connect_signal("request::desktop_decoration", function(s)
+    -- Create a promptbox for each screen
+    s.mypromptbox = awful.widget.prompt()
 
-    screen.connect_signal("request::desktop_decoration", function(s)
+    -- Create layoutbox widget
+    s.mylayoutbox = awful.widget.layoutbox(s)
 
-        -- prompbox fallback
-        s.mypromptbox = awful.widget.prompt()
+    if s.index == 1 then
+        mysystray_container.visible = true
+    else
+        mysystray_container.visible = false
+    end
 
-        -- Create layoutbox widget
-        s.mylayoutbox = awful.widget.layoutbox(s)
-        s.mylayoutbox:buttons(gears.table.join(
-                awful.button({}, 1, function () awful.layout.inc( 1) end),
-                awful.button({}, 3, function () awful.layout.inc(-1) end),
-                awful.button({}, 4, function () awful.layout.inc( 1) end),
-                awful.button({}, 5, function () awful.layout.inc(-1) end)
-            ))
+    -- Create the wibox
+    s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal .. 15})
+    s.mywibox:set_xproperty("WM_NAME", "panel")
 
-        if s.index == 1 then
-            mysystray_container.visible = true
+    -- Remove wibar on full screen
+    local function remove_wibar(c)
+        if c.fullscreen or c.maximized then
+            c.screen.mywibox.visible = false
         else
-            mysystray_container.visible = false
+            c.screen.mywibox.visible = true
         end
+    end
 
-        -- Create the wibox
-        s.mywibox = awful.wibar({position = "top", screen = s, ontop = true, bg = beautiful.bg_normal .. 15})
-        s.mywibox:set_xproperty("WM_NAME", "panel")
-
-        awesome.connect_signal("widgets::splash::visibility",
+    -- Hide bar when a splash widget is visible
+    awesome.connect_signal("widgets::splash::visibility",
                            function(vis) s.mywibox.visible = not vis end)
-        -- Remove wibar on full screen
-        local function remove_wibar(c)
-            if c.fullscreen or c.maximized then
-                c.screen.mywibox.visible = false
-            else
-                c.screen.mywibox.visible = true
-            end
-        end
 
-        client.connect_signal("property::fullscreen", remove_wibar)
+    client.connect_signal("property::fullscreen", remove_wibar)
 
-        -- Create a taglist widget
-        s.mytaglist = require("node.widgets.taglist")(s)
+    -- Create the taglist widget
+    s.mytaglist = require("node.widgets.taglist")(s)
 
-        -- Create a tasklist widget
-        s.mytasklist = awful.widget.tasklist {
-            screen = s,
-            filter = awful.widget.tasklist.filter.currenttags,
-            buttons = tasklist_buttons,
-            style = {
-                bg = beautiful.xbackground,
-                font = beautiful.font,
-            },
-            layout = {spacing = 10, layout = wibox.layout.fixed.horizontal},
-            widget_template = {
+    -- Create a tasklist widget
+    s.mytasklist = awful.widget.tasklist {
+        screen = s,
+        filter = awful.widget.tasklist.filter.currenttags,
+        buttons = tasklist_buttons,
+        bg = beautiful.xcolor0,
+        style = {bg = beautiful.xcolor0},
+        layout = {spacing = dpi(0), layout = wibox.layout.fixed.horizontal},
+        widget_template = {
+            {
                 {
-                    {
-                        nil,
-                        {id = 'text_role', widget = wibox.widget.textbox},
-                        nil,
-                        layout = wibox.layout.fixed.horizontal
-                    },
-                    left = dpi(10),
-                    right = dpi(10),
-                    top = dpi(5),
-                    bottom = dpi(5),
-                    widget = wibox.container.margin
+                    nil,
+                    awful.widget.clienticon,
+                    nil,
+                    layout = wibox.layout.fixed.horizontal
                 },
-                id = 'background_role',
-                widget = wibox.container.background
-            }
-        }
-        local final_systray = wibox.widget {
-            {mysystray_container, top = dpi(5), layout = wibox.container.margin},
-            bg = beautiful.xcolor0,
-            shape = helpers.rrect(beautiful.border_radius - 3),
+                top = dpi(5),
+                bottom = dpi(5),
+                left = dpi(10),
+                right = dpi(10),
+                widget = wibox.container.margin
+            },
+            id = 'background_role',
             widget = wibox.container.background
         }
-        -- Add widgets to the wibox
-        s.mywibox:setup{
-            layout = wibox.layout.fixed.vertical,
+    }
+
+    local final_systray = wibox.widget {
+        {mysystray_container, top = dpi(5), layout = wibox.container.margin},
+        bg = beautiful.xcolor0,
+        shape = helpers.rrect(beautiful.border_radius - 3),
+        widget = wibox.container.background
+    }
+
+    -- Add widgets to the wibox
+    s.mywibox:setup{
+        layout = wibox.layout.fixed.vertical,
+        {
+            widget = wibox.container.background,
+            bg = beautiful.xcolor0,
+            forced_height = dpi(1)
+        },
+        {
+            layout = wibox.layout.align.horizontal,
+            expand = "none",
             {
-                widget = wibox.container.background,
-                bg = beautiful.xcolor0,
-                forced_height = dpi(1)
+                layout = wibox.layout.fixed.horizontal,
+                {
+                    awesome_icon,
+                    top = dpi(0),
+                    right = dpi(5),
+                    left = dpi(10),
+                    widget = wibox.container.margin
+                },
+                {
+                    {
+                        s.mytaglist,
+                        bg = beautiful.xcolor0,
+                        shape = helpers.rrect(beautiful.border_radius - 3),
+                        widget = wibox.container.background
+                    },
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                },
+                s.mypromptbox,
+                {
+                    playerctl_bar,
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                }
             },
             {
-                layout = wibox.layout.align.horizontal,
-                expand = "none",
                 {
-                    layout = wibox.layout.fixed.horizontal,
                     {
-                        awesome_icon,
-                        top = dpi(0),
-                        right = dpi(5),
-                        left = dpi(10),
-                        widget = wibox.container.margin
+                        s.mytasklist,
+                        bg = beautiful.xcolor0 .. "00",
+                        shape = helpers.rrect(beautiful.border_radius - 3),
+                        widget = wibox.container.background
                     },
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                },
+                widget = wibox.container.constraint
+            },
+            {
+                {
                     {
                         {
-                            s.mytaglist,
-                            bg = beautiful.xcolor0,
-                            shape = helpers.rrect(beautiful.border_radius - 3),
-                            widget = wibox.container.background
+                            battery,
+                            margins = dpi(5),
+                            widget = wibox.container.margin
                         },
-                        margins = dpi(5),
-                        widget = wibox.container.margin
+                        bg = beautiful.xcolor0,
+                        shape = helpers.rrect(beautiful.border_radius - 3),
+                        widget = wibox.container.background
                     },
-                    s.mypromptbox,
-                    {
-                        playerctl_bar,
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    }
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                },
+                nil,
+                nil,
+                {
+                    awful.widget.only_on_screen(final_systray, screen[1]),
+                    margins = dpi(5),
+                    widget = wibox.container.margin
                 },
                 {
                     {
                         {
-                            s.mytasklist,
-                            bg = beautiful.xcolor0 .. "00",
-                            shape = helpers.rrect(beautiful.border_radius - 3),
-                            widget = wibox.container.background
+                            s.mylayoutbox,
+                            top = dpi(4),
+                            bottom = dpi(4),
+                            right = dpi(7),
+                            left = dpi(7),
+                            widget = wibox.container.margin
                         },
-                        margins = dpi(5),
-                        widget = wibox.container.margin
+                        bg = beautiful.xcolor0,
+                        shape = helpers.rrect(beautiful.border_radius - 3),
+                        widget = wibox.container.background
                     },
-                    widget = wibox.container.constraint
+                    margins = dpi(5),
+                    widget = wibox.container.margin
                 },
+
                 {
-                    {
-                        {
-                            {
-                                battery,
-                                margins = dpi(5),
-                                widget = wibox.container.margin
-                            },
-                            bg = beautiful.xcolor0,
-                            shape = helpers.rrect(beautiful.border_radius - 3),
-                            widget = wibox.container.background
-                        },
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    },
-                    nil,
-                    nil,
-                    {
-                        awful.widget.only_on_screen(final_systray, screen[1]),
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    },
-                    {
-                        {
-                            {
-                                s.mylayoutbox,
-                                top = dpi(4),
-                                bottom = dpi(4),
-                                right = dpi(7),
-                                left = dpi(7),
-                                widget = wibox.container.margin
-                            },
-                            bg = beautiful.xcolor0,
-                            shape = helpers.rrect(beautiful.border_radius - 3),
-                            widget = wibox.container.background
-                        },
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    },
+                    notif_icon,
+                    top = dpi(0),
+                    right = dpi(10),
+                    left = dpi(5),
+                    widget = wibox.container.margin
+                },
 
-                    {
-                        notif_icon,
-                        top = dpi(0),
-                        right = dpi(10),
-                        left = dpi(5),
-                        widget = wibox.container.margin
-                    },
-
-                    layout = wibox.layout.fixed.horizontal
-                }
+                layout = wibox.layout.fixed.horizontal
             }
         }
-    end)
+    }
+end)

@@ -102,12 +102,12 @@ echo "$tmp_cover_path"
 end
 
 -- Emit info
--- emit_player_status()
--- emit_player_info()
+emit_player_status()
+emit_player_info()
 
-local enable = function()
-    emit_player_status()
-    emit_player_info()
-end
+-- local enable = function()
+--     emit_player_status()
+--     emit_player_info()
+-- end
 
-return {enable = enable}
+-- return {enable = enable}

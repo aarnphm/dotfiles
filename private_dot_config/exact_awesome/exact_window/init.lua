@@ -29,10 +29,8 @@ client.connect_signal("manage", function(c)
     end
 
     -- Give ST and icon
-    if c.class == "st-256color" or c.class == "st-dialog" or c.class ==
-        "st-float" then
-        local new_icon = gears.surface(gfs.get_configuration_dir() ..
-                                           "icons/default/terminal.png")
+    if c.class == "kitty" or c.class == "st" or c.class == "alacritty"  or c.class == "termite" then
+        local new_icon = gears.surface(gfs.get_configuration_dir() .. "icons/default/terminal.png")
         c.icon = new_icon._native
     end
 end)
@@ -48,8 +46,9 @@ client.connect_signal("focus",
 client.connect_signal("unfocus",
                       function(c) c.border_color = beautiful.border_normal end)
 
-
--- Layout List Widget ---------------------------------------------------------
+-- ===================================================================
+-- Layoutlist widget
+-- ===================================================================
 
 -- List
 local ll = awful.widget.layoutlist {
@@ -95,7 +94,9 @@ local layout_popup = awful.popup {
     bg = beautiful.bg_normal .. "00"
 }
 
--- Key Bindings for Widget ----------------------------------------------------
+-- ===================================================================
+-- keybinds for widget
+-- ===================================================================
 
 -- Make sure you remove the default `Mod4+Space` and `Mod4+Shift+Space`
 -- keybindings before adding this.

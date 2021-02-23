@@ -9,7 +9,6 @@ local default    = require("defaults")
 
 local popupLib   = require("utils.popupLib")
 
-
 local box_radius = beautiful.client_radius
 local box_gap = dpi(8)
 
@@ -19,6 +18,8 @@ local function create_boxed_widget(widget_to_be_boxed, width, height, bg_color)
     box_container.forced_height = height
     box_container.forced_width = width
     box_container.shape = helpers.rrect(box_radius)
+    box_container.border_width = beautiful.widget_border_width
+    box_container.border_color = beautiful.widget_border_color
 
     local boxed_widget = wibox.widget {
         {
@@ -46,14 +47,14 @@ end
 local function format_progress_bar(bar, markup)
     local text = wibox.widget {
         markup = markup,
-        align  = 'center',
+        align = 'center',
         valign = 'center',
-        font   = 'mononoki Nerd Font 12',
+        font = beautiful.fontname .. '25',
         widget = wibox.widget.textbox
     }
     text.forced_height = dpi(36)
-    text.forced_width  = dpi(36)
-    text.resize        = true
+    text.forced_width = dpi(36)
+    text.resize = true
 
     local w = wibox.widget {text, bar, layout = wibox.layout.stack}
     return w
@@ -84,6 +85,18 @@ volume:buttons(gears.table.join( -- Left click - Mute / Unmute
     awful.button({}, 5, function() helpers.volume_control(-5) end))
     )
 
+apps_volume = function()
+    helpers.run_or_raise({class = 'Pavucontrol'}, true, "pavucontrol")
+end
+
+volume:buttons(gears.table.join( -- Left click - Mute / Unmute
+                   awful.button({}, 1, function() helpers.volume_control(0) end),
+    -- Scroll - Increase / Decrease volume
+                   awful.button({}, 4, function() helpers.volume_control(5) end),
+                   awful.button({}, 5, function() helpers.volume_control(-5) end)))
+
+-- }}}
+--
 --- {{{ Brightness Widget
 
 local brightness_bar = require("node.widgets.brightness_arc")
@@ -92,8 +105,6 @@ local brightness = format_progress_bar(brightness_bar, "<span foreground='"..bea
 --- }}}
 
 --- {{{ Ram Widget
-
--- local ram = require("node.widgets.ram_arc")
 
 local ram_bar = require("node.widgets.ram_arc")
 local ram = format_progress_bar(ram_bar, "<span foreground='"..beautiful.xcolor3 .."'><b></b></span>")
@@ -116,7 +127,7 @@ local temp = format_progress_bar(temp_bar, "<span foreground='"..beautiful.xcolo
 
 --- {{{ Cpu Widget
 
--- local cpu = require("node.widgets.cpu_arc")
+-- local cpu = require("bloat.widgets.cpu_arc")
 
 local cpu_bar = require("node.widgets.cpu_arc")
 local cpu = format_progress_bar(cpu_bar, "<span foreground='"..beautiful.xcolor4.."'><b></b></span>")
@@ -145,24 +156,24 @@ local fancy_date = {fancy_date_widget, layout = wibox.layout.fixed.vertical}
 
 ---}}}
 
+-- {{{ Music Widget
 
 local playerctl = require("node.widgets.playerctl")
-local playerctl_box = create_boxed_widget(playerctl, 400, 125, beautiful.xcolor0)
+local playerctl_box = create_boxed_widget(playerctl, 400, 145, beautiful.xcolor0)
 
 -- {{{ Info Widget
 
 local info = require("node.widgets.info")
-local info_box = create_boxed_widget(info, 400, 125, beautiful.xbackground)
+local info_box = create_boxed_widget(info, 400, 145, beautiful.xbackground)
 
 -- }}}
 
 -- {{ Weather
 
 local weather = require("node.widgets.weather")
-local weather_box = create_boxed_widget(weather, 400, 125, beautiful.xcolor0)
+local weather_box = create_boxed_widget(weather, 400, 100, beautiful.xbackground)
 
 -- }}
-
 
 local sys = wibox.widget {
     {
@@ -178,7 +189,7 @@ local sys = wibox.widget {
             volume,
             top = dpi(0),
             bottom = dpi(20),
-            left = dpi(0),
+            left = dpi(10),
             right = dpi(0),
             widget = wibox.container.margin
         },
@@ -187,7 +198,7 @@ local sys = wibox.widget {
             top = dpi(0),
             bottom = dpi(20),
             left = dpi(0),
-            right = dpi(0),
+            right = dpi(10),
             widget = wibox.container.margin
         },
         layout = wibox.layout.flex.horizontal
@@ -210,7 +221,7 @@ local sys2 = wibox.widget {
             disk,
             top = dpi(0),
             bottom = dpi(20),
-            left = dpi(0),
+            left = dpi(10),
             right = dpi(0),
             widget = wibox.container.margin
         },
@@ -219,7 +230,7 @@ local sys2 = wibox.widget {
             top = dpi(0),
             bottom = dpi(20),
             left = dpi(0),
-            right = dpi(0),
+            right = dpi(10),
             widget = wibox.container.margin
         },
         layout = wibox.layout.flex.horizontal
@@ -230,8 +241,8 @@ local sys2 = wibox.widget {
 
 -- local sys2 = wibox.widget {ram, disk, temp, layout = wibox.layout.flex.vertical}
 
-local sys_box = create_boxed_widget(sys, 400, 200, beautiful.xcolor0)
-local sys_box2 = create_boxed_widget(sys2, 400, 200, beautiful.xcolor0)
+local sys_box = create_boxed_widget(sys, 400, 200, beautiful.xbackground)
+local sys_box2 = create_boxed_widget(sys2, 400, 200, beautiful.xbackground)
 
 local time = wibox.widget {
     {fancy_time, fancy_date, layout = wibox.layout.align.vertical},
@@ -242,11 +253,11 @@ local time = wibox.widget {
     widget = wibox.container.margin
 }
 
-local time_box = create_boxed_widget(time, 400, 159, beautiful.xcolor0)
+local time_box = create_boxed_widget(time, 400, 159, beautiful.xbackground)
 
 local panelWidget = wibox.widget {
-    {weather_box, sys_box, layout = wibox.layout.align.vertical},
-    {info_box, time_box, layout = wibox.layout.align.vertical},
+    {info_box, sys_box, layout = wibox.layout.align.vertical},
+    {weather_box, time_box, layout = wibox.layout.align.vertical},
     {playerctl_box, sys_box2, layout = wibox.layout.align.vertical},
     layout = wibox.layout.flex.horizontal
 }

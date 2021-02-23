@@ -5,8 +5,7 @@ local gears = require('gears')
 local beautiful = require('beautiful')
 
 local dpi = beautiful.xresources.apply_dpi
-local empty_notifbox = require(
-                           'node/notification.notification-centre.build-notifbox.empty-notifbox')
+local empty_notifbox = require('node/notification.notification-centre.build-notifbox.empty-notifbox')
 
 local config_dir = gears.filesystem.get_configuration_dir()
 local widget_icon_dir = config_dir .. 'node/notification/notification-centre/icons/'

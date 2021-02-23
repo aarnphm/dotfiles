@@ -6,8 +6,8 @@ local beautiful = require('beautiful')
 local button = require("node.widgets.button")
 local dpi = require('beautiful').xresources.apply_dpi
 
--- local config_dir = gears.filesystem.get_configuration_dir()
--- local widget_icon_dir = config_dir .. 'notification/notification-centre/icons/'
+local config_dir = gears.filesystem.get_configuration_dir()
+local widget_icon_dir = config_dir .. 'notification/notification-centre/icons/'
 
 local delete_button = button.create_image_onclick(beautiful.clear_grey_icon,
     beautiful.clear_icon,

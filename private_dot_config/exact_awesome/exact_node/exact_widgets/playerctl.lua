@@ -19,7 +19,7 @@ local create_button = function(symbol, color, command, playpause)
 
     local icon = wibox.widget {
         markup = helpers.colorize_text(symbol, color),
-        font = "FiraCode Nerd Font Mono 20",
+        font = "InconsolataGo Nerd Font 20",
         align = "center",
         valigin = "center",
         widget = wibox.widget.textbox()
