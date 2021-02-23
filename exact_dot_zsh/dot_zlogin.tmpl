@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+#
+# Execute code in the background to not affect the current session
+
+{{- if .personal }}
+(
+    setopt LOCAL_OPTIONS EXTENDED_GLOB
+    autoload -U zrecompile
+
+    # Compile zcompdump, if modified, to increase startup speed.
+    zcompdump="{{ .chezmoi.homedir }}/.zcompdump"
+    if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+        zrecompile -pq "$zcompdump"
+    fi
+) &!
+
+# .localrc contains all the local dev variables
+[[ -f {{ .chezmoi.homedir }}/.localrc ]] && source {{ .chezmoi.homedir }}/.localrc
+
+{{- end }}

@@ -10,32 +10,48 @@ alias -- -="cd -"
 # vim
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
-# chezmoi
+# probably the most important directories
+alias cs="cd $XDG_CONFIG_DOCUMENTS/cs"
+
+# chezmoi and awesome
 alias e="$CHEZMOI_BIN edit --apply $@"
+# allows ca to dry-run only
+alias dca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
+alias ca="source $HOME/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
+{{- if and (eq .chezmoi.os "linux") (.personal) }}
+alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
+alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
+{{- end }}
+
+# shortcut to open
 alias o="xdg-open $@"
 alias dotfiles="cd $CHEZMOI_DIR"
 alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 
 # mcmaster vpn
-alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
-alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
-alias compeng="cd $XDG_CONFIG_DOCUMENTS/cs/mcmaster && cd `\ls -t $XDG_CONFIG_DOCUMENTS/cs/mcmaster | head -n1`"
+# alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
+# alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
+alias compeng="$XDG_CONFIG_DOCUMENTS/cs/mcmaster && `\ls -t $XDG_CONFIG_DOCUMENTS/cs/mcmaster | head -n1`"
 
 # only when connecting k6 via cables
-alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
+# alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 # remove bytecode
 alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
 
 # some shortcut
 alias bentodir="$XDG_CONFIG_DOCUMENTS/cs/BentoML"
 alias bento="bentoml $@"
-alias cs="$XDG_CONFIG_DOCUMENTS/cs"
-# odoo
-alias odoo="$XDG_CONFIG_DOCUMENTS/cs/odoo/odoo-bin $@"
-
-# Shortcuts
+# check internet
 alias checkint="watch -n 1 ping -c 1 google.com"
 alias net="ping google.com | grep -E --only-match --color=never '[0-9\.]+ ms'"
+# docker and kubectl related
+alias dockerprune="docker system prune -a -f"
+alias kubesecret="kubectl get secret regcred --output=yaml"
+
+# odoo
+alias odoo-bin="${ODOO_PATH}/odoo-bin ${ODOO_OPTS}"
+
+
 # git
 alias g="git"
 
@@ -50,9 +66,6 @@ alias ls="n -dDeUHatT"
 {{- if `command -v tmux` }}
 alias tmux="TERM=xterm-256color ${aliases[tmux]:-tmux}"
 {{- end }}
-
-alias dockerprune="docker system prune -a -f"
-alias kubesecret="kubectl get secret regcred --output=yaml"
 
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
@@ -91,20 +104,11 @@ alias bat='upower -i /org/freedesktop/UPower/devices/battery_BAT1| grep -E "stat
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 {{- else if and (eq .chezmoi.os "linux") (.personal) }}
 alias afk="xsecurelock"
-alias iwctl="sudo wifi-menu"
 {{- end }}
 
 # Reload the shell (i.e. invoke as a login shell (-l))
 alias reload="exec -l ${SHELL}"
 
-# allows ca to dry-run only
-alias dca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
-alias ca="source $HOME/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
-alias vconf="${CHEZMOI_BIN} edit $HOME/.vim/vimrc"
-{{- if and (eq .chezmoi.os "linux") (.personal) }}
-alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
-alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
-{{- end }}
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
 

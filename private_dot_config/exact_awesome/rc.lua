@@ -3,13 +3,12 @@
 -- ===================================================================
 
 pcall(require, "luarocks.loader")
-local gears     = require("gears")
-local awful     = require("awful")
-local wibox     = require("wibox")
-local beautiful = require("beautiful")
-local naughty   = require("naughty")
-local helpers   = require("helpers")
-local defaults  = require("defaults")
+local gears      = require("gears")
+local awful      = require("awful")
+local beautiful  = require("beautiful")
+local naughty    = require("naughty")
+local defaults   = require("defaults")
+local components = require("components")
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
 
@@ -17,48 +16,20 @@ require("awful.autofocus")
 -- Autostart Error handling
 -- ===================================================================
 
-require("autostart")
+-- the shell scripts is used to run some daemon
+awful.spawn.with_shell("~/.config/awesome/run_once.sh")
 awesome.register_xproperty("WM_NAME", "string")
-
--- [DEPRECATED] spawn the shell scripts to run startup program
--- awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
-
-if awesome.startup_errors then
-    naughty.notify(
-        {
-            preset = naughty.config.presets.critical,
-            title = "Oops, there were errors during startup!",
-            text = awesome.startup_errors
-        }
-        )
-end
-
--- Handle runtime errors after startup
-do
-    local in_error = false
-    awesome.connect_signal(
-        "debug::error",
-        function(err)
-            -- Make sure we don't go into an endless error loop
-            if in_error then
-                return
-            end
-            in_error = true
-
-            naughty.notify(
-                {
-                    preset = naughty.config.presets.critical,
-                    title = "Oops, an error happened!",
-                    text = tostring(err)
-                }
-                )
-            in_error = false
-        end
-        )
-end
+naughty.connect_signal("request::display_error", function(message, startup)
+    naughty.notification {
+        urgency = "critical",
+        title = "Oops, an error happened" ..
+            (startup and " during startup!" or "!"),
+        message = message
+    }
+end)
 
 -- ===================================================================
 -- Apps & defaults
@@ -66,13 +37,20 @@ end
 -- ===================================================================
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. defaults.theme .. "/theme.lua")
+-- components.playerctl.enable()
+require("window")
 
-require("icons").init("default")
+-- ===================================================================
+-- Signal and misc imports
+-- ===================================================================
 
-require("components")
-require("node")
--- fancy tag switching
-require("collision")()
+screen.connect_signal("request::desktop_decoration", function(s)
+
+    screen[s].padding = {left = 0, right = 0, top = 0, bottom = 0}
+    awful.tag(defaults.tags[s.index].names, s, defaults.tags[s.index].layout)
+
+end)
+
 
 -- ===================================================================
 -- Keys
@@ -84,38 +62,16 @@ require("keys")
 -- Rules setup
 -- ===================================================================
 
-awful.rules.rules = require("rules")
-
--- ===================================================================
--- Signal and misc imports
--- ===================================================================
-
-client.connect_signal("manage", function(c)
-    -- Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
-    -- if not awesome.startup then awful.client.setslave(c) end
-
-    if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
-        -- Prevent clients from being unreachable after screen count changes.
-        awful.placement.no_offscreen(c)
-    end
-end
-)
-
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
-
-client.connect_signal("focus",
-function(c) c.border_color = beautiful.border_focus end)
-
-client.connect_signal("unfocus",
-function(c) c.border_color = beautiful.border_normal end)
+require("rules")
 
 -- ===================================================================
 -- Garbage collection (allows for lower memory consumption)
 -- ===================================================================
+
+require("components")
+require("node")
+-- fancy tag switching
+require("collision")()
 
 collectgarbage("setpause", 110)
 collectgarbage("setstepmul", 1000)

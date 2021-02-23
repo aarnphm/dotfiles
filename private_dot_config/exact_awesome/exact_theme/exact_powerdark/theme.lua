@@ -2,6 +2,7 @@
 -- Initialization
 -- ===================================================================
 
+local awful        = require("awful")
 local theme_assets = require("beautiful.theme_assets")
 local xresources   = require("beautiful.xresources")
 local dpi          = xresources.apply_dpi
@@ -17,51 +18,62 @@ local helpers      = require("helpers")
 
 -- Inherit default theme
 local theme     = dofile(themes_path .. "default/theme.lua")
--- local theme     = {}
+local icon_path = gfs.get_configuration_dir() .. "icons/"
+
+-- ===================================================================
+-- Notification centre
+-- ===================================================================
+
+theme.clear_icon        = icon_path .. "notification-centre/clear.png"
+theme.clear_grey_icon   = icon_path .. "notification-centre/clear_grey.png"
+theme.notification_icon = icon_path .. "notification-centre/notification.png"
+theme.delete_icon       = icon_path .. "notification-centre/delete.png"
+theme.delete_grey_icon  = icon_path .. "notification-centre/delete_grey.png"
+theme.awesome_icon      = icon_path .."default/awesome.png"
 
 -- ===================================================================
 -- Load $HOME/.Xresources colors and set fallback
 -- ===================================================================
 
-theme.xbackground = xrdb.background or "#30333d"
-theme.xforeground = xrdb.foreground or "#ffffff"
-theme.xcolor0     = xrdb.color0 or "#292b34"
-theme.xcolor1     = xrdb.color1 or "#f9929b"
-theme.xcolor2     = xrdb.color2 or "#7ed491"
-theme.xcolor3     = xrdb.color3 or "#fbdf90"
-theme.xcolor4     = xrdb.color4 or "#a3b8ef"
-theme.xcolor5     = xrdb.color5 or "#ccaced"
-theme.xcolor6     = xrdb.color6 or "#9ce5c0"
-theme.xcolor7     = xrdb.color7 or "#ffffff"
-theme.xcolor8     = xrdb.color8 or "#585e74"
-theme.xcolor9     = xrdb.color9 or "#fca2aa"
-theme.xcolor10    = xrdb.color10 or "#a5d4af"
-theme.xcolor11    = xrdb.color11 or "#fbeab9"
-theme.xcolor12    = xrdb.color12 or "#bac8ef"
-theme.xcolor13    = xrdb.color13 or "#d7c1ed"
-theme.xcolor14    = xrdb.color14 or "#c7e5d6"
-theme.xcolor15    = xrdb.color15 or "#eaeaea"
+theme.xbackground = xrdb.background  or "#30333d"
+theme.xforeground = xrdb.foreground  or "#ffffff"
+theme.xcolor0     = xrdb.color0      or "#292b34"
+theme.xcolor1     = xrdb.color1      or "#f9929b"
+theme.xcolor2     = xrdb.color2      or "#7ed491"
+theme.xcolor3     = xrdb.color3      or "#fbdf90"
+theme.xcolor4     = xrdb.color4      or "#a3b8ef"
+theme.xcolor5     = xrdb.color5      or "#ccaced"
+theme.xcolor6     = xrdb.color6      or "#9ce5c0"
+theme.xcolor7     = xrdb.color7      or "#ffffff"
+theme.xcolor8     = xrdb.color8      or "#585e74"
+theme.xcolor9     = xrdb.color9      or "#fca2aa"
+theme.xcolor10    = xrdb.color10     or "#a5d4af"
+theme.xcolor11    = xrdb.color11     or "#fbeab9"
+theme.xcolor12    = xrdb.color12     or "#bac8ef"
+theme.xcolor13    = xrdb.color13     or "#d7c1ed"
+theme.xcolor14    = xrdb.color14     or "#c7e5d6"
+theme.xcolor15    = xrdb.color15     or "#eaeaea"
 
 -- ===================================================================
 -- Layouts
 -- ===================================================================
 
-theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
-theme.layout_fairv = themes_path.."default/layouts/fairvw.png"
-theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
-theme.layout_magnifier = themes_path.."default/layouts/magnifierw.png"
-theme.layout_max = themes_path.."default/layouts/maxw.png"
+theme.layout_fairh      = themes_path.."default/layouts/fairhw.png"
+theme.layout_fairv      = themes_path.."default/layouts/fairvw.png"
+theme.layout_floating   = themes_path.."default/layouts/floatingw.png"
+theme.layout_magnifier  = themes_path.."default/layouts/magnifierw.png"
+theme.layout_max        = themes_path.."default/layouts/maxw.png"
 theme.layout_fullscreen = themes_path.."default/layouts/fullscreenw.png"
 theme.layout_tilebottom = themes_path.."default/layouts/tilebottomw.png"
 theme.layout_tileleft   = themes_path.."default/layouts/tileleftw.png"
-theme.layout_tile = themes_path.."default/layouts/tilew.png"
-theme.layout_tiletop = themes_path.."default/layouts/tiletopw.png"
-theme.layout_spiral  = themes_path.."default/layouts/spiralw.png"
-theme.layout_dwindle = themes_path.."default/layouts/dwindlew.png"
-theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
-theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
-theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
-theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+theme.layout_tile       = themes_path.."default/layouts/tilew.png"
+theme.layout_tiletop    = themes_path.."default/layouts/tiletopw.png"
+theme.layout_spiral     = themes_path.."default/layouts/spiralw.png"
+theme.layout_dwindle    = themes_path.."default/layouts/dwindlew.png"
+theme.layout_cornernw   = themes_path.."default/layouts/cornernww.png"
+theme.layout_cornerne   = themes_path.."default/layouts/cornernew.png"
+theme.layout_cornersw   = themes_path.."default/layouts/cornersww.png"
+theme.layout_cornerse   = themes_path.."default/layouts/cornersew.png"
 
 -- ===================================================================
 -- Background colors
@@ -87,29 +99,29 @@ theme.button_close = theme.xcolor1
 -- Borders
 -- ===================================================================
 
-theme.border_width        = dpi(5)
-theme.border_normal       = theme.bg_focus
-theme.border_focus        = theme.fg_normal
+theme.border_width        = dpi(2)
+theme.border_normal       = theme.xcolor0
+theme.border_focus        = theme.xcolor0
 theme.border_radius       = dpi(12)
 theme.client_radius       = dpi(12)
 theme.widget_border_width = dpi(2)
-theme.widget_border_color = theme.fg_normal
+theme.widget_border_color = theme.xcolor0
 
 -- ===================================================================
 -- Font
 -- ===================================================================
 theme.fontname                 = "mononoki Nerd Font"
-theme.font                     = "mononoki Nerd Font 12"
-theme.hotkeys_font             = "mononoki Nerd Font 12"
-theme.hotkeys_description_font = "mononoki Nerd Font 10"
-theme.hotkeys_shape            = helpers.rrect(theme.border_radius - 3)
+theme.font                     = theme.fontname .. "12"
+theme.icon_font                = "InconsolataGo Nerd Font 18"
+theme.font_taglist             = "InconsolataGo Nerd Font 13"
+theme.max_font                 = "InconsolataGo Nerd Font 10"
 
 -- ===================================================================
 -- Taglist
 -- ===================================================================
 
 theme.taglist_font          = theme.font
-local taglist_square_size   = dpi(1)
+local taglist_square_size   = dpi(0)
 theme.taglist_squares_sel   = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
 theme.taglist_bg            = theme.wibar_bg
@@ -173,10 +185,17 @@ theme.prompt_fg = theme.xforeground
 -- ===================================================================
 -- Menu
 -- ===================================================================
-
-theme.menu_font   = theme.font
-theme.menu_height = 100
-theme.menu_width  = 500
+--
+theme.menu_font         = theme.font
+theme.menu_bg_focus     = theme.xcolor4
+theme.menu_fg_focus     = theme.xcolor7
+theme.menu_bg_normal    = theme.xbackground
+theme.menu_fg_normal    = theme.xcolor7
+theme.menu_submenu_icon = gears.filesystem.get_configuration_dir() .. "theme/icons/submenu.png"
+theme.menu_height       = dpi(20)
+theme.menu_width        = dpi(130)
+theme.menu_border_color = "#0000000"
+theme.menu_border_width = theme.border_width
 
 -- ===================================================================
 -- Tooltips
@@ -209,7 +228,20 @@ theme.menu_border_width = theme.border_width
 -- Hotkeys Popup
 -- ===================================================================
 
-theme.hotkeys_border_color = theme.xcolor0
+theme.hotkeys_border_color     = theme.xcolor0
+theme.hotkeys_font             = "mononoki Nerd Font 12"
+theme.hotkeys_description_font = "mononoki Nerd Font 10"
+theme.hotkeys_shape = helpers.custom_shape
+-- theme.hotkeys_shape            = helpers.rrect(theme.border_radius - 3)
+
+-- ===================================================================
+-- Layout List
+-- ===================================================================
+
+theme.layoutlist_border_color = theme.xcolor8
+theme.layoutlist_border_width = theme.border_width
+-- Recolor Layout icons:
+theme = theme_assets.recolor_layout(theme, theme.xforeground)
 
 -- ===================================================================
 -- Gaps
@@ -221,18 +253,18 @@ theme.useless_gap = dpi(2)
 -- Wibar
 -- ===================================================================
 
-theme.wibar_height = dpi(30)
-theme.wibar_margin = dpi(15)
+theme.wibar_height  = dpi(30)
+theme.wibar_margin  = dpi(15)
 theme.wibar_spacing = dpi(15)
-theme.wibar_bg = theme.xbackground
+theme.wibar_bg      = theme.xbackground
 
 -- ===================================================================
--- Systray
+-- Systray - Weather
 -- ===================================================================
 
 theme.systray_icon_spacing = dpi(10)
-theme.bg_systray = theme.xcolor0
-theme.systray_icon_size = dpi(15)
-theme.weather_city = "Hanoi"
+theme.bg_systray           = theme.xcolor0
+theme.systray_icon_size    = dpi(15)
+theme.weather_city         = "Hanoi"
 
 return theme

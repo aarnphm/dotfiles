@@ -1,5 +1,6 @@
 -- helpers.lua
-
+-- Functions that you use more than once and in different files would
+-- be nice to define here.
 local awful      = require("awful")
 local gears      = require("gears")
 local beautiful  = require("beautiful")
@@ -7,8 +8,21 @@ local xresources = require("beautiful.xresources")
 local dpi        = xresources.apply_dpi
 local wibox      = require("wibox")
 local naughty    = require("naughty")
+local cairo      = require("lgi").cairo
+local helpers    = {}
 
-local helpers = {}
+function helpers.volume_control(step)
+    local cmd
+    if step == 0 then
+        cmd = "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    else
+        sign = step > 0 and "+" or ""
+        cmd =
+            "pactl set-sink-mute @DEFAULT_SINK@ 0 && pactl set-sink-volume @DEFAULT_SINK@ " ..
+                sign .. tostring(step) .. "%"
+    end
+    awful.spawn.with_shell(cmd)
+end
 
 -- Adds a maximized mask to a screen
 function helpers.screen_mask(s, bg)
@@ -21,6 +35,16 @@ function helpers.screen_mask(s, bg)
     awful.placement.maximize(mask)
     mask.bg = bg
     return mask
+end
+
+function helpers.custom_shape(cr, width, height)
+    cr:move_to(0, height / 25)
+    cr:line_to(height / 25, 0)
+    cr:line_to(width, 0)
+    cr:line_to(width, height - height / 25)
+    cr:line_to(width - height / 25, height)
+    cr:line_to(0, height)
+    cr:close_path()
 end
 
 -- Resize gaps on the fly
@@ -36,6 +60,14 @@ end
 helpers.rrect = function(radius)
     return function(cr, width, height)
         gears.shape.rounded_rect(cr, width, height, radius)
+    end
+end
+
+-- Create pi
+
+helpers.pie = function(width, height, start_angle, end_angle, radius)
+    return function(cr)
+        gears.shape.pie(cr, width, height, start_angle, end_angle, radius)
     end
 end
 
@@ -364,56 +396,9 @@ function helpers.round(number, decimals)
     return math.floor(number * power) / power
 end
 
-function helpers.volume_control(step)
-    local cmd
-    if step == 0 then
-        cmd = "pactl set-sink-mute @DEFAULT_SINK@ toggle"
-    else
-        sign = step > 0 and "+" or ""
-        cmd =
-            "pactl set-sink-mute @DEFAULT_SINK@ 0 && pactl set-sink-volume @DEFAULT_SINK@ " ..
-                sign .. tostring(step) .. "%"
-    end
-    awful.spawn.with_shell(cmd)
-end
-
 function helpers.fake_escape()
     root.fake_input('key_press', "Escape")
     root.fake_input('key_release', "Escape")
-end
-
-local prompt_font = beautiful.prompt_font or "sans bold 8"
-function helpers.prompt(action, textbox, prompt, callback)
-    if action == "run" then
-        awful.prompt.run {
-            prompt = prompt,
-            -- prompt       = "<b>Run: </b>",
-            textbox = textbox,
-            font = prompt_font,
-            done_callback = callback,
-            exe_callback = awful.spawn,
-            completion_callback = awful.completion.shell,
-            history_path = awful.util.get_cache_dir() .. "/history"
-        }
-    elseif action == "web_search" then
-        awful.prompt.run {
-            prompt = prompt,
-            -- prompt       = '<b>Web search: </b>',
-            textbox = textbox,
-            font = prompt_font,
-            history_path = awful.util.get_cache_dir() .. "/history_web",
-            done_callback = callback,
-            exe_callback = function(input)
-                if not input or #input == 0 then return end
-                awful.spawn(user.web_search_cmd .. "\"" .. input .. "\"")
-                naughty.notify {
-                    title = "Searching the web for",
-                    text = input,
-                    icon = icons.firefox
-                }
-            end
-        }
-    end
 end
 
 function helpers.run_or_raise(match, move, spawn_cmd, spawn_args)
@@ -438,6 +423,13 @@ function helpers.run_or_raise(match, move, spawn_cmd, spawn_args)
     if not found then awful.spawn(spawn_cmd, spawn_args) end
 end
 
+function helpers.pad(size)
+    local str = ""
+    for i = 1, size do str = str .. " " end
+    local pad = wibox.widget.textbox(str)
+    return pad
+end
+
 function helpers.float_and_resize(c, width, height)
     c.width = width
     c.height = height
@@ -447,12 +439,4 @@ function helpers.float_and_resize(c, width, height)
     c:raise()
 end
 
-function helpers.pad(size)
-    local str = ""
-    for i = 1, size do str = str .. " " end
-    local pad = wibox.widget.textbox(str)
-    return pad
-end
-
 return helpers
-

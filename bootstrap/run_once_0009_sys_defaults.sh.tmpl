@@ -51,6 +51,7 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 {{- else if eq .chezmoi.os "linux" }}
 if [ ! -f "/etc/arch-release" ]; then
 	echo "Not running arch. Skipping."
+    exit 1;
 fi
 
 echo "Updating pacman.conf.."
@@ -59,4 +60,5 @@ sudo sed -i '/TotalDownload$/s/^#//g' /etc/pacman.conf
 sudo sed -i '/CheckSpace$/s/^#//g' /etc/pacman.conf
 sudo sed -i '/VerbosePkgLists$/s/^#//g' /etc/pacman.conf
 sudo sed -i 's/Caps_Lock/Home  /' /usr/share/X11/xkb/symbols/pc
+sudo echo 'export ZDOTDIR="$HOME/.zsh"' >| /etc/zsh/zshenv
 {{- end }}

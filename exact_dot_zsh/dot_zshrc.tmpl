@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh
+
+# first way to profile zsh startup
+# zmodload zsh/zprof
+
+# Another way to profile zsh startup
+# zmodload zsh/datetime
+# setopt PROMPT_SUBST
+# PS4='+$EPOCHREALTIME %N:%i> '
+
+# logfile=$(mkdir -p $HOME/log_zsh && mktemp log_zsh/zsh_profile.XXXXXXXX)
+# exec 3>&2 2>>$logfile
+
+# setopt XTRACE
+
+{{- if and (eq .chezmoi.os "linux") (.personal) }}
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+    exec startx
+fi
+{{- end }}
+
+fn=${HOME}/.local/bin
+fpath=($HOME/.zsh/completion /usr/local/share/zsh/site-functions $fn $fpath)
+
+for function in $fn/*; do
+    autoload -Uz ${function:t}
+done
+
+# extra files in ~/.zsh/configs/pre , ~/.zsh/configs , and ~/.zsh/configs/post
+# these are loaded first, second, and third, respectively.
+_load_settings() {
+    _dir="$1"
+    if [ -d "$_dir" ]; then
+        for config in "$_dir"/**/*(N-.); do
+            case "$config" in
+                "$_dir"/(pre|post)/*|*.zwc)
+                    :
+                    ;;
+                *)
+                    . $config
+                    ;;
+            esac
+        done
+
+        if [ -d "$_dir/post" ]; then
+            for config in "$_dir"/post/**/*~*.zwc(N-.); do
+                . $config
+            done
+        fi
+    fi
+}
+
+_load_settings "{{ .chezmoi.homedir }}/.zsh/configs"
+unset -f _load_settings
+
+# fixes for path
+typeset -U path cdpath fpath manpath
+
+[[ -f {{ .chezmoi.homedir }}/.aliases ]] && source {{ .chezmoi.homedir }}/.aliases
+
+# unsetopt XTRACE
+# exec 2>&3 3>&-
+
+# zprof
