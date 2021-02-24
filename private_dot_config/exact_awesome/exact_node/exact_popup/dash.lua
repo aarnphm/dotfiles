@@ -67,19 +67,19 @@ local volume = format_progress_bar(volume_bar, "<span foreground='" .. beautiful
 
 awesome.connect_signal("components::volume", function(vol, muted)
     if muted or vol == 0 then
-        volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>"
+        volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b> </b></span>"
     else
         if vol > 50 then
-            volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>"
+            volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b> </b></span>"
         else
-            volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>"
+            volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b> </b></span>"
         end
     end
 end)
 
 volume:buttons(gears.table.join( -- Left click - Mute / Unmute
         awful.button({}, 1, function() helpers.volume_control(0) end),
-        awful.button({}, 2, function() awful.spawn("pavucontrol") end),
+        awful.button({}, 3, function() awful.spawn("pavucontrol") end),
         -- Scroll - Increase / Decrease volume
         awful.button({}, 4, function() helpers.volume_control(5) end),
     awful.button({}, 5, function() helpers.volume_control(-5) end))
@@ -90,21 +90,21 @@ volume:buttons(gears.table.join( -- Left click - Mute / Unmute
 --- {{{ Brightness Widget
 
 local brightness_bar = require("node.widgets.brightness_arc")
-local brightness = format_progress_bar(brightness_bar, "<span foreground='"..beautiful.xcolor5.."'><b></b></span>")
+local brightness = format_progress_bar(brightness_bar, "<span foreground='"..beautiful.xcolor5.."'><b> </b></span>")
 
 --- }}}
 
 --- {{{ Ram Widget
 
 local ram_bar = require("node.widgets.ram_arc")
-local ram = format_progress_bar(ram_bar, "<span foreground='"..beautiful.xcolor3 .."'><b></b></span>")
+local ram = format_progress_bar(ram_bar, "<span foreground='"..beautiful.xcolor3 .."'><b> </b></span>")
 
 --- }}}
 
 --- {{{ Disk Widget
 
 local disk_bar = require("node.widgets.disk_arc")
-local disk = format_progress_bar(disk_bar, "<span foreground='"..beautiful.xcolor2.."'><b></b></span>")
+local disk = format_progress_bar(disk_bar, "<span foreground='"..beautiful.xcolor2.."'><b> </b></span>")
 
 --- }}}
 
@@ -118,7 +118,7 @@ local temp = format_progress_bar(temp_bar, "<span foreground='"..beautiful.xcolo
 --- {{{ Cpu Widget
 
 local cpu_bar = require("node.widgets.cpu_arc")
-local cpu = format_progress_bar(cpu_bar, "<span foreground='"..beautiful.xcolor4.."'><b></b></span>")
+local cpu = format_progress_bar(cpu_bar, "<span foreground='"..beautiful.xcolor4.."'><b> </b></span>")
 
 --- }}}
 

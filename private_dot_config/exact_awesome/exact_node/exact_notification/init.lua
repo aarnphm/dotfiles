@@ -7,15 +7,10 @@ local helpers   = require("helpers")
 local ruled     = require("ruled")
 
 naughty.config.defaults.ontop           = true
--- naughty.config.defaults.icon_size    = dpi(32)
 naughty.config.defaults.screen          = awful.screen.focused()
-naughty.config.defaults.timeout         = 3
+naughty.config.defaults.timeout         = 2
 naughty.config.defaults.title           = "System Notification"
--- naughty.config.defaults.margin       = dpi(20)
--- naughty.config.defaults.border_width = 0
-naughty.config.defaults.border_color    = beautiful.foreground
-naughty.config.defaults.position        = "top_right"
--- naughty.config.defaults.shape        = helpers.rrect(beautiful.client_radius)
+naughty.config.defaults.border_color    = beautiful.xforeground
 
 naughty.config.padding                  = dpi(10)
 naughty.config.spacing                  = dpi(5)
@@ -53,7 +48,7 @@ ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
     ruled.notification.append_rule {
         rule = {},
-        properties = {screen = awful.screen.preferred, implicit_timeout = 2}
+        properties = {screen = awful.screen.preferred, implicit_timeout=6}
     }
 end)
 
@@ -109,8 +104,7 @@ naughty.connect_signal("request::display", function(n)
                                         {
                                             image = appicon,
                                             resize = true,
-                                            clip_shape = helpers.rrect(
-                                                beautiful.border_radius - 3),
+                                            clip_shape = helpers.rrect(beautiful.border_radius - 3),
                                             widget = wibox.widget.imagebox
                                         },
                                         bg = beautiful.xcolor1,
@@ -137,16 +131,14 @@ naughty.connect_signal("request::display", function(n)
                                                 .waiting_nonlinear_back_and_forth,
                                             speed = 50,
                                             {
-                                                markup = "<span weight='bold'>" ..
-                                                    n.title .. "</span>",
+                                                markup = "<span weight='bold'>" .. n.title .. "</span>",
                                                 font = beautiful.font,
                                                 align = "left",
                                                 visible = title_visible,
                                                 widget = wibox.widget.textbox
                                             },
                                             forced_width = dpi(204),
-                                            widget = wibox.container.scroll
-                                                .horizontal
+                                            widget = wibox.container.scroll.horizontal
                                         },
                                         {
                                             {
@@ -160,8 +152,7 @@ naughty.connect_signal("request::display", function(n)
                                         },
                                         {
                                             actions,
-                                            visible = n.actions and #n.actions >
-                                                0,
+                                            visible = n.actions and #n.actions > 0,
                                             layout = wibox.layout.fixed.vertical,
                                             forced_width = dpi(220)
                                         },

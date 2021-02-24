@@ -187,7 +187,7 @@ awful.keyboard.append_global_keybindings({
             awesome.quit, {description = "quit awesome", group = "awesome"}),
         awful.key({ctrl, altkey}, "\\",
             function()
-                naughty.suspend()
+                -- naughty.suspend()
                 awful.util.spawn_with_shell(defaults.lock)
             end,
             {description = "lock screen", group = "awesome"}
