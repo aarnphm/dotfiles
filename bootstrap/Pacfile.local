@@ -108,6 +108,7 @@ nvidia-dkms
 nvidia-prime
 nvidia-settings
 os-prober
+p7zip
 pamixer
 papirus-icon-theme
 paprefs

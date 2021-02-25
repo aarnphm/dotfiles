@@ -11,5 +11,6 @@ fi
 
 [ -x "$dp" ] && . "$dp"
 
+rm -rf $xr && unset xr
 unset dp
 

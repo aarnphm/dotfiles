@@ -21,6 +21,14 @@ if [[ `command -v nnn` ]]; then
     git clone https://github.com/sebastiencs/icons-in-terminal.git && cd icons-in-terminal && ./install.sh
 fi
 
+{{- if .personal }}
+# install lotion
+if [[ `command -v curl` ]]; then
+    curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
+    sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
+fi
+{{- end }}
+
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then
     cd $HOME && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-326.0.0-linux-x86_64.tar.gz

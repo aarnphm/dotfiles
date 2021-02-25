@@ -11,19 +11,15 @@ install**
 screenshots
 bootstrap
 xscreensaver
+private_dot_config/nvim/coc-settings.json
 
 .ssh/known_hosts
 .ssh/agent-environment
 .vim/undo
 .vim/plugins
-private_dot_config/nvim/coc-settings.json
 
 {{ if ne .chezmoi.os "darwin" }}
 Brewfile.*
-.config/yabai
-.config/skhd
-.config/spicetify_data
-.hushlogin
 {{ end  }}
 
 {{ if or (ne .chezmoi.os "linux") (not .personal) }}

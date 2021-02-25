@@ -17,7 +17,7 @@ require("awful.autofocus")
 -- ===================================================================
 
 -- the shell scripts is used to run some daemon
-awful.spawn.with_shell("~/.config/awesome/run_once.sh")
+awful.spawn.with_shell("~/.config/awesome/runonce.sh")
 awesome.register_xproperty("WM_NAME", "string")
 
 -- Check if awesome encountered an error during startup and fell back to

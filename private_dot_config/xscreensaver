@@ -1,0 +1,52 @@
+# XScreenSaver Preferences File
+# Written by xscreensaver-demo 5.44 for aarnphm on Sun Feb 21 15:55:10 2021.
+# https://www.jwz.org/xscreensaver/
+
+timeout:	0:05:00
+cycle:		0:05:00
+lock:		False
+lockTimeout:	0:00:00
+passwdTimeout:	0:00:30
+visualID:	default
+installColormap:    True
+verbose:	False
+timestamp:	True
+splash:		True
+splashDuration:	0:00:05
+demoCommand:	xscreensaver-demo
+prefsCommand:	
+nice:		10
+memoryLimit:	0
+fade:		False
+unfade:		False
+fadeSeconds:	0:00:03
+fadeTicks:	20
+captureStderr:	True
+ignoreUninstalledPrograms:False
+font:		*-medium-r-*-140-*-m-*
+dpmsEnabled:	False
+dpmsQuickOff:	False
+dpmsStandby:	0:30:00
+dpmsSuspend:	1:00:00
+dpmsOff:	1:30:00
+grabDesktopImages:  False
+grabVideoFrames:    False
+chooseRandomImages: False
+imageDirectory:	
+
+mode:		one
+selected:	1
+
+programs:								      \
+	"ATV4-2k" 	atv4-2k					    \n\
+
+pointerPollTime:    0:00:05
+pointerHysteresis:  10
+windowCreationTimeout:0:00:30
+initialDelay:	0:00:00
+GetViewPortIsFullOfLies:False
+procInterrupts:	True
+xinputExtensionDev: False
+overlayStderr:	True
+authWarningSlack:   20
+

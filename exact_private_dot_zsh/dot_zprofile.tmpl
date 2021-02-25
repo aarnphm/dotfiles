@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+
+###########################################################################
+#                            XDG - ZSH                                    #
+###########################################################################
+
 # XDG  config
 export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-{{ .chezmoi.homedir }}/.config}"
@@ -7,6 +12,7 @@ export XDG_CONFIG_DOCUMENTS="{{ .chezmoi.homedir }}/documents"
 
 # ZSH defaults
 export ZDOTDIR="${ZDOTDIR:-{{ .chezmoi.homedir }}/.zsh}"
+export CITY="{{ .city }}"
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
 export HISTFILE=~/.histfile
@@ -14,6 +20,10 @@ export HISTSIZE='32768';
 export HISTFILESIZE="${HISTSIZE}";
 # Omit duplicates and commands that begin with a space from history.
 export HISTCONTROL='ignoreboth';
+
+###########################################################################
+#                            System settings                              #
+###########################################################################
 
 # Prefer CA English and use UTF-8.
 export LANGUAGE='en';
@@ -26,19 +36,20 @@ export LESS_TERMCAP_md="${yellow}";
 # Don’t clear the screen after quitting a manual page.
 export MANPAGER='less -X';
 
+###########################################################################
+#                            PATH                                         #
+###########################################################################
+
 # define PATH
 export PATH="{{ .chezmoi.homedir }}/.local/bin:{{ .chezmoi.homedir }}/.cargo/bin:${PATH}"
 
 {{ $pyenv := `command -v pyenv` }}
 {{- if $pyenv}}
 # export python
-export PYENV_ROOT="{{ .chezmoi.homedir }}/.pyenv"
 export PYENV_SHELL=$SHELL
+export PYENV_ROOT="{{ .chezmoi.homedir }}/.pyenv"
 export PATH="{{ .chezmoi.homedir }}/.pyenv/shims:$PYENV_ROOT/bin:${PATH}"
 {{- end }}
-# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
-export PYTHONIOENCODING='UTF-8';
-export PYTHONDONTWRITEBYTECODE=1
 
 {{- if `command -v npm` }}
 # npm config
@@ -64,17 +75,29 @@ export PATH="$GEMPATH/bin:${PATH}"
 export PATH="{{ .chezmoi.homedir }}/google-cloud-sdk/bin:${PATH}"
 {{- end }}
 
-{{- if .personal }}
+###########################################################################
+#                            Editors and others                           #
+###########################################################################
+
 if [[ ! `command -v nvim` ]]; then
     export EDITOR=$(which vim)
 else
     export EDITOR=$(which nvim)
 fi
 export VISUAL=$EDITOR
+
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING='UTF-8';
+export PYTHONDONTWRITEBYTECODE=1
+
+# tmux opts
+export TMUX_OPTS="-u"
+
+{{- if .personal }}
 export LS_COLORS="${LS_COLORS}:ow=01;33"
 export BROWSER='/usr/bin/firefox'
 {{-   if eq .chezmoi.os "darwin" }}
-export LS_OPTS="-laF --group-directories-first -G"
+export LS_OPTS="-laF -G"
 
 # since java in macOS are handle very poorly
 export PATH="/usr/local/bin:$JAVA_HOME/bin:${PATH}"
@@ -109,15 +132,24 @@ export PKGOPTS="-Syuu --needed --noconfirm"
 
 # xscecurelock with xscreensaver
 export XSECURELOCK_SAVER=saver_xscreensaver xsecurelock
+
 {{-   end }}
-# chezmoi related
+{{- end }}
+
+###########################################################################
+#                            Chezmoi                                      #
+###########################################################################
+
 export CHEZMOI_BIN=$(which chezmoi)
 export CHEZMOI_DIR={{ .chezmoi.sourceDir }}
 export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
 export CHEZMOI_OPTS="--verbose --debug --color on"
-{{- end }}
 
-{{- if `command -v fzf` }}
+###########################################################################
+#                            Other shell application                      #
+###########################################################################
+
+{{ if `command -v fzf` }}
 export FZF_DEFAULT_OPTS="--layout=reverse
                          --info=inline
                          --height=80%
@@ -138,13 +170,13 @@ export FZF_DEFAULT_COMMAND='rg --files
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
 export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
-{{- end }}
+{{ end }}
 
-{{- if `command -v nnn` }}
+{{ if `command -v nnn` }}
 export NNN_BMS='U:${XDG_CONFIG_DOCUMENTS};D:{{ .chezmoi.homedir }}/downloads/'
 export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
 export NNN_COLORS="2134"
 export NNN_TRASH=1
 export NNN_PLUG='f:finder;o:fzopen;p:mocplay;d:diffs;t:nmount;v:imgview'
 export NNN_FIFO=/tmp/nnn.fifo
-{{- end }}
+{{ end }}

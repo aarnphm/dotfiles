@@ -20,7 +20,7 @@ fi
 {{- end }}
 
 fn=${HOME}/.local/bin
-fpath=($HOME/.zsh/completion /usr/local/share/zsh/site-functions $fn $fpath)
+fpath=($HOME/.zsh/configs/completion /usr/local/share/zsh/site-functions $fn $fpath)
 
 for function in $fn/*; do
     autoload -Uz ${function:t}
@@ -56,6 +56,7 @@ unset -f _load_settings
 # fixes for path
 typeset -U path cdpath fpath manpath
 
+# aliases
 [[ -f {{ .chezmoi.homedir }}/.aliases ]] && source {{ .chezmoi.homedir }}/.aliases
 
 # unsetopt XTRACE

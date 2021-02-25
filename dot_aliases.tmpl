@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+###########################################################################
+#                            navigation                                   #
+###########################################################################
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -7,50 +11,73 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias -- -="cd -"
 
+###########################################################################
+#                            vim                                          #
+###########################################################################
+
 # vim
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
-# probably the most important directories
-alias cs="cd $XDG_CONFIG_DOCUMENTS/cs"
 
+###########################################################################
+#                            chezmoi and awesome related                  #
+###########################################################################
+
+alias dotfiles="cd $CHEZMOI_DIR"
 # chezmoi and awesome
 alias e="$CHEZMOI_BIN edit --apply $@"
 # allows ca to dry-run only
 alias dca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
-alias ca="source $HOME/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
+alias ca="source {{ .chezmoi.homedir }}/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
+
 {{- if and (eq .chezmoi.os "linux") (.personal) }}
+alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 {{- end }}
 
-# shortcut to open
-alias o="xdg-open $@"
-alias dotfiles="cd $CHEZMOI_DIR"
-alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
+###########################################################################
+#                            file dir                                     #
+###########################################################################
 
-# mcmaster vpn
-# alias macvpn="/opt/anyconnect-linux64-4.9.04043/vpn/vpn connect studentvpn.mcmaster.ca"
-# alias macdc="/opt/anyconnect-linux64-4.9.04043/vpn/vpn disconnect"
+# shortcut to open
+# probably the most important directories
+alias cs="cd $XDG_CONFIG_DOCUMENTS/cs"
+alias o="xdg-open $@"
+
+# mcmaster vpn connect via studentvpn.mcmaster.ca
 alias compeng="$XDG_CONFIG_DOCUMENTS/cs/mcmaster && `\ls -t $XDG_CONFIG_DOCUMENTS/cs/mcmaster | head -n1`"
 
-# only when connecting k6 via cables
-# alias k6="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
-# remove bytecode
-alias pyclean="find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
-
-# some shortcut
 alias bentodir="$XDG_CONFIG_DOCUMENTS/cs/BentoML"
 alias bento="bentoml $@"
+
+###########################################################################
+#                            service related                              #
+###########################################################################
+
 # check internet
-alias checkint="watch -n 1 ping -c 1 google.com"
+alias speedtest="watch -n 1 ping -c 1 google.com"
 alias net="ping google.com | grep -E --only-match --color=never '[0-9\.]+ ms'"
-# docker and kubectl related
-alias dockerprune="docker system prune -a -f"
-alias kubesecret="kubectl get secret regcred --output=yaml"
+# IP addresses
+alias ip4='dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com'
+alias ip6='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
+alias dlisten='ss -lntu | grep $1'
+
+alias cryptoprice="curl rate.sx"
+alias weather="curl wttr.in/$CITY"
+
+###########################################################################
+#                            application                                  #
+###########################################################################
 
 # odoo
 alias odoo-bin="${ODOO_PATH}/odoo-bin ${ODOO_OPTS}"
 
+# docker and kubectl related
+alias dockerprune="docker system prune -a -f"
+{{- if `command -v kubectl` }}
+alias kubesecret="kubectl get secret regcred --output=yaml"
+{{- end }}
 
 # git
 alias g="git"
@@ -64,7 +91,7 @@ alias ls="n -dDeUHatT"
 {{- end }}
 
 {{- if `command -v tmux` }}
-alias tmux="TERM=xterm-256color ${aliases[tmux]:-tmux}"
+alias tmux="TERM=xterm-256color ${aliases[tmux]:-tmux} ${TMUX_OPTS}"
 {{- end }}
 
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
@@ -78,10 +105,6 @@ alias sudo='nocorrect sudo'
 # Get week number
 alias week='date +%V'
 
-# IP addresses
-alias ip4='dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com'
-alias ip6='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
-alias dlisten='ss -lntu | grep $1'
 
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'

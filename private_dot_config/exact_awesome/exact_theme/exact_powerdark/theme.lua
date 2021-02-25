@@ -238,7 +238,7 @@ theme.useless_gap = dpi(2)
 -- Wibar
 -- ===================================================================
 
-theme.wibar_height  = dpi(35)
+theme.wibar_height  = dpi(34)
 theme.wibar_margin  = dpi(15)
 theme.wibar_spacing = dpi(15)
 theme.wibar_bg      = theme.xbackground
