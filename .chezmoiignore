@@ -18,6 +18,8 @@ private_dot_config/nvim/coc-settings.json
 .vim/undo
 .vim/plugins
 
+.config/vifm/vifminfo.json
+
 {{ if ne .chezmoi.os "darwin" }}
 Brewfile.*
 {{ end  }}

@@ -122,6 +122,7 @@ set hidden
 set clipboard=unnamed,unnamedplus
 set mouse=a
 set foldmethod=manual "indent-syntax-manual
+set wildmenu
 set wildmode=longest:full,full
 set wildcharm=<Tab>
 set shortmess+=Ic

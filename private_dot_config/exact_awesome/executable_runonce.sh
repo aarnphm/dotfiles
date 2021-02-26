@@ -33,5 +33,5 @@ run unclutter -idle 1
 run blueman-tray
 run discord
 run caffeine
-run spotify-tray -m -c spotify
+run spotify
 run optimus-manager-qt

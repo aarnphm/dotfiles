@@ -57,7 +57,7 @@ alias bento="bentoml $@"
 
 # check internet
 alias speedtest="watch -n 1 ping -c 1 google.com"
-alias net="ping google.com | grep -E --only-match --color=never '[0-9\.]+ ms'"
+alias net="ping google.com | grep -E --only-matching --color '[0-9\.]+ ms'"
 # IP addresses
 alias ip4='dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com'
 alias ip6='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
