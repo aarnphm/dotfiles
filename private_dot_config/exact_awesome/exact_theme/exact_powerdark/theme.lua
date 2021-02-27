@@ -85,6 +85,8 @@ theme.bg_normal   = theme.xbackground
 theme.bg_focus    = theme.xcolor8
 theme.bg_urgent   = theme.xcolor8
 theme.bg_minimize = theme.xcolor8
+theme.exit_screen_fg = theme.xforeground
+theme.exit_screen_bg = theme.xcolor0 .. "55"
 
 -- ===================================================================
 -- Foreground colors

@@ -37,7 +37,6 @@ end)
 -- ===================================================================
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. defaults.theme .. "/theme.lua")
--- components.playerctl.enable()
 require("window")
 
 -- ===================================================================

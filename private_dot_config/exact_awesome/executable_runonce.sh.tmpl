@@ -2,9 +2,9 @@
 
 ## run (only once) processes which spawn with the same name
 function run {
-   if (command -v $1 && ! pgrep $1); then
-     $@&
-   fi
+    if (command -v $1 && ! pgrep $1); then
+        $@ &
+    fi
 }
 
 ## run (only once) processes which spawn with different name
@@ -14,24 +14,26 @@ fi
 if (command -v start-pulseaudio-x11 && ! pgrep pulseaudio); then
     start-pulseaudio-x11 &
 fi
-if (command -v /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 && ! pgrep polkit-mate-aut) ; then
+if (command -v /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 && ! pgrep polkit-mate-aut); then
     /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 fi
 
-[[ ! -f ${XDG_CONFIG_HOME:-$HOME/.config}/awesome/xdgmenu.lua ]] && xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu >${XDG_CONFIG_HOME}/awesome/xdgmenu.lua
+if (command -v xdg_menu && [[ ! -f ${XDG_CONFIG_HOME:-$HOME/.config}/awesome/xdgmenu.lua ]] ); then
+    xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu >{{ .chezmoi.sourceDir }}/private_dot_config/exact_awesome/xdgmenu.lua
+fi
 
 run nm-applet
 run xscreensaver -no-splash
 run playerctld daemon
 run pasystray
-run ibus-daemon -drx 
-run nitrogen --restore 
+run ibus-daemon -drx
+run nitrogen --restore
 run picom -f --experimental-backends
 run skype
 run redshift
-run unclutter -idle 1 
+run unclutter -idle 1
 run blueman-tray
 run discord
 run caffeine
-run spotify
+run spotify-tray --client-path=/usr/bin/spotify --minimized --class=spotify
 run optimus-manager-qt

@@ -62,7 +62,7 @@ end
 
 --- {{{ Volume Widget
 
-local volume_bar = require("node.widgets.volume_arc")
+local volume_bar = require("node.widgets.volume")
 local volume = format_progress_bar(volume_bar, "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>")
 
 awesome.connect_signal("components::volume", function(vol, muted)
@@ -89,35 +89,35 @@ volume:buttons(gears.table.join( -- Left click - Mute / Unmute
 --
 --- {{{ Brightness Widget
 
-local brightness_bar = require("node.widgets.brightness_arc")
+local brightness_bar = require("node.widgets.brightness")
 local brightness = format_progress_bar(brightness_bar, "<span foreground='"..beautiful.xcolor5.."'><b> </b></span>")
 
 --- }}}
 
 --- {{{ Ram Widget
 
-local ram_bar = require("node.widgets.ram_arc")
+local ram_bar = require("node.widgets.ram")
 local ram = format_progress_bar(ram_bar, "<span foreground='"..beautiful.xcolor3 .."'><b> </b></span>")
 
 --- }}}
 
 --- {{{ Disk Widget
 
-local disk_bar = require("node.widgets.disk_arc")
+local disk_bar = require("node.widgets.disk")
 local disk = format_progress_bar(disk_bar, "<span foreground='"..beautiful.xcolor2.."'><b> </b></span>")
 
 --- }}}
 
 --- {{{ Temp Widget
 
-local temp_bar = require("node.widgets.temp_arc")
+local temp_bar = require("node.widgets.temp")
 local temp = format_progress_bar(temp_bar, "<span foreground='"..beautiful.xcolor1.."'><b></b></span>")
 
 --- }}}
 
 --- {{{ Cpu Widget
 
-local cpu_bar = require("node.widgets.cpu_arc")
+local cpu_bar = require("node.widgets.cpu")
 local cpu = format_progress_bar(cpu_bar, "<span foreground='"..beautiful.xcolor4.."'><b> </b></span>")
 
 --- }}}
@@ -147,7 +147,7 @@ local fancy_date = {fancy_date_widget, layout = wibox.layout.fixed.vertical}
 -- {{{ Music Widget
 
 local playerctl = require("node.widgets.playerctl")
-local playerctl_box = create_boxed_widget(playerctl, 400, 145, beautiful.xcolor0)
+local playerctl_box = create_boxed_widget(playerctl, 400, 145, beautiful.xbackground)
 
 -- {{{ Info Widget
 
@@ -155,13 +155,6 @@ local info = require("node.widgets.info")
 local info_box = create_boxed_widget(info, 400, 145, beautiful.xbackground)
 
 -- }}}
-
--- {{ Weather
-
-local weather = require("node.widgets.weather")
-local weather_box = create_boxed_widget(weather, 400, 100, beautiful.xbackground)
-
--- }}
 
 local sys = wibox.widget {
     {
@@ -227,8 +220,6 @@ local sys2 = wibox.widget {
     layout = wibox.layout.flex.vertical
 }
 
--- local sys2 = wibox.widget {ram, disk, temp, layout = wibox.layout.flex.vertical}
-
 local sys_box = create_boxed_widget(sys, 400, 200, beautiful.xbackground)
 local sys_box2 = create_boxed_widget(sys2, 400, 200, beautiful.xbackground)
 
@@ -241,11 +232,11 @@ local time = wibox.widget {
     widget = wibox.container.margin
 }
 
-local time_box = create_boxed_widget(time, 400, 159, beautiful.xbackground)
+local time_box = create_boxed_widget(time, 400, 400, beautiful.xbackground)
 
 local panelWidget = wibox.widget {
     {info_box, sys_box, layout = wibox.layout.align.vertical},
-    {weather_box, time_box, layout = wibox.layout.align.vertical},
+    {time_box, layout = wibox.layout.align.vertical},
     {playerctl_box, sys_box2, layout = wibox.layout.align.vertical},
     layout = wibox.layout.flex.horizontal
 }
@@ -254,8 +245,8 @@ local dash_manager = {}
 local dashboard = wibox({visible = false, ontop = true, type = "splash"})
 awful.placement.maximize(dashboard)
 
-dashboard.bg = beautiful.exit_screen_bg or "#111111"
-dashboard.fg = beautiful.exit_screen_fg or "#FEFEFE"
+dashboard.bg = beautiful.exit_screen_bg
+dashboard.fg = beautiful.exit_screen_fg
 
 local dash_grabber
 

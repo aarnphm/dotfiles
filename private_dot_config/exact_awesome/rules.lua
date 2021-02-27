@@ -17,6 +17,8 @@ ruled.client.connect_signal("request::rules", function()
         id         = "global",
         rule       = {},
         properties = {
+            border_width     = beautiful.border_width,
+            border_color     = beautiful.border_normal,
             focus            = awful.client.focus,
             raise            = true,
             size_hints_honor = true,
@@ -42,31 +44,12 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule{
         id         = "floating",
         rule_any   = {
-            class = {"Nm-connection-editor", "caffeine", "Arandr", "Blueman-manager", "Nitrogen", "Nvidia-settings", 
-                     "Baobab", "Xmessage", "Lxappearance", "Chatterino", "Gparted", "Pavucontrol", "Qt5ct",
-                     "Kvantum", "Grub-customizer","xscreensaver-demo", "Termite"},
+            class = {"Nm-connection-editor", "caffeine", "Arandr", "Blueman-manager", "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer","xscreensaver-demo", "Termite"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"Popup"},
             type  = {"dialog"}
         },
         properties = {floating = true}
-    }
-
-    -- ===================================================================
-    -- Borders
-    -- ===================================================================
-    ruled.client.append_rule {
-        id = "borders",
-        rule_any = {type = {"normal", "dialog"}},
-        except_any = {
-            role = {"Popup"},
-            type = {"splash"},
-            name = {"^discord.com is sharing your screen.$"}
-        },
-        properties = {
-            border_width = beautiful.border_width,
-            border_color = beautiful.border_normal
-        }
     }
 
     -- ===================================================================
@@ -85,12 +68,6 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
-        id = "browser",
-        rule_any = {instance={"chromium","firefox"}, class="Firefox"},
-        properties = {tag = defaults.tags[1].names[3], switchtotag=true}
-    }
-
-    ruled.client.append_rule {
         id = "meeting",
         rule_any = {class={"Zoom","Microsoft Teams - Preview"}, instance = {"discord", "slack", "skype","caprine"}},
         properties = {screen=screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
@@ -98,19 +75,19 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule{
         id = "gimp",
-        rule = {class = "Gimp"}, 
+        rule = {class = "Gimp"},
         properties = {maximized = true, tag=defaults.tags[1].names[2], switchtotag=true}
     }
 
     ruled.client.append_rule{
         id = "obs",
-        rule = {class = "obs"}, 
+        rule = {class = "obs"},
         properties = {screen=screen.count()>1 and 2 or 1, tag=defaults.tags[1].names[2], switchtotag=true}
     }
     -- Rofi
     ruled.client.append_rule{
-        id = "rofi", 
-        rule = {instance = "rofi"}, 
+        id = "rofi",
+        rule = {instance = "rofi"},
         properties = {maximized = false, ontop = true},
     }
     -- File chooser dialog

@@ -48,37 +48,37 @@ end)))
 -- ===================================================================
 
 
-local notifPop = require("node.popup.notification-centre")
-local notif_icon = wibox.widget {
-    {
-        {
-            widget = wibox.widget.textbox,
-            font = beautiful.icon_font,
-            markup = "<span foreground='" .. beautiful.xforeground .. "'>" .. " " .. "</span>",
-            resize = true
-        },
-        margins = dpi(4),
-        widget = wibox.container.margin
-    },
-    -- bg = beautiful.xbackground,
-    widget = wibox.container.background
-}
+-- local notifPop = require("node.popup.notification-centre")
+-- local notif_icon = wibox.widget {
+--     {
+--         {
+--             widget = wibox.widget.textbox,
+--             font = beautiful.icon_font,
+--             markup = "<span foreground='" .. beautiful.xforeground .. "'>" .. " " .. "</span>",
+--             resize = true
+--         },
+--         margins = dpi(4),
+--         widget = wibox.container.margin
+--     },
+--     -- bg = beautiful.xbackground,
+--     widget = wibox.container.background
+-- }
 
-notif_icon:buttons(gears.table.join(
-        awful.button({}, 1, function()
-            notifPop.visible = true
-            notif_icon.bg = beautiful.xcolor0
-        end),
-        awful.button({}, 3, function()
-            notifPop.visible = false
-            notif_icon.bg = beautiful.background
-        end)
-))
+-- notif_icon:buttons(gears.table.join(
+--         awful.button({}, 1, function()
+--             notifPop.visible = true
+--             notif_icon.bg = beautiful.xcolor0
+--         end),
+--         awful.button({}, 3, function()
+--             notifPop.visible = false
+--             notif_icon.bg = beautiful.background
+--         end)
+-- ))
 
-notifPop:connect_signal("mouse::leave", function()
-    notifPop.visible = false
-    notif_icon.bg = beautiful.xbackground
-end)
+-- notifPop:connect_signal("mouse::leave", function()
+--     notifPop.visible = false
+--     notif_icon.bg = beautiful.xbackground
+-- end)
 
 -- ===================================================================
 --  Battery Bar Widget
@@ -294,11 +294,9 @@ local playerctl_bar = wibox.widget {
 
 playerctl_bar.visible = false
 
-awesome.connect_signal("components::playerctl::player_stopped", function() playerctl_bar.visible = false end)
-
 -- Get Title
-awesome.connect_signal("components::playerctl::title_artist_album",
-    function(title, artist, _)
+awesome.connect_signal("components::spotify",
+    function(artist,title,_)
 
         playerctl_bar.visible = true
         song_title.markup = '<span foreground="' .. beautiful.xcolor5 .. '">' ..
@@ -469,13 +467,13 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     margins = dpi(5),
                     widget = wibox.container.margin
                 },
-                {
-                    notif_icon,
-                    top = dpi(0),
-                    right = dpi(10),
-                    left = dpi(5),
-                    widget = wibox.container.margin
-                },
+                -- {
+                --     notif_icon,
+                --     top = dpi(0),
+                --     right = dpi(10),
+                --     left = dpi(5),
+                --     widget = wibox.container.margin
+                -- },
                 layout = wibox.layout.fixed.horizontal
             }
         }

@@ -6,6 +6,7 @@
      {"Gyazo", "gyazo", "/usr/share/pixmaps/gyazo.png" },
      {"KDocker", "kdocker", "/usr/share/pixmaps/kdocker.png" },
      {"Kvantum Manager", "kvantummanager"},
+     {"Lotion", "\"/usr/share/lotion/Lotion/Lotion\"", "///usr/share/lotion/icon.png" },
      {"Neovim", "xterm -e nvim ", "/usr/share/pixmaps/nvim.png" },
      {"Passwords and Keys", "seahorse"},
      {"Redshift", "redshift-gtk"},
@@ -20,6 +21,7 @@
  }
 
  local menud334dfcea59127bedfcdbe0a3ee7f494 = {
+     {"Figma Linux", "/opt/figma-linux/figma-linux --no-sandbox --enable-oop-rasterization --ignore-gpu-blacklist -enable-experimental-canvas-features --enable-accelerated-2d-canvas --force-gpu-rasterization --enable-fast-unload --enable-accelerated-vpx-decode=3 --enable-tcp-fastopen --javascript-harmony --enable-checker-imaging --v8-cache-options=code --v8-cache-strategies-for-cache-storage=aggressive --enable-zero-copy --ui-enable-zero-copy --enable-native-gpu-memory-buffers --enable-webgl-image-chromium --enable-accelerated-video --enable-gpu-rasterization ", "/usr/share/icons/hicolor/24x24/apps/figma-linux.png" },
      {"FontForge", "fontforge ", "/usr/share/icons/hicolor/16x16/apps/org.fontforge.FontForge.png" },
      {"GNU Image Manipulation Program", "gimp-2.10 ", "/usr/share/icons/hicolor/16x16/apps/gimp.png" },
      {"Gyazo", "gyazo", "/usr/share/pixmaps/gyazo.png" },
@@ -43,6 +45,7 @@
  }
 
  local menudf814135652a5a308fea15bff37ea284 = {
+     {"Lotion", "\"/usr/share/lotion/Lotion/Lotion\"", "///usr/share/lotion/icon.png" },
      {"Zathura", "zathura ", "/usr/share/icons/hicolor/16x16/apps/org.pwmt.zathura.png" },
      {"Zotero", "/usr/bin/zotero ", "/usr/share/icons/hicolor/16x16/apps/zotero.png" },
  }
@@ -85,6 +88,7 @@
      {"UXTerm", "uxterm", "/usr/share/pixmaps/xterm-color_48x48.xpm" },
      {"VMware Player", "/usr/bin/vmplayer ", "/usr/share/icons/hicolor/16x16/apps/vmware-player.png" },
      {"VMware Workstation", "/usr/bin/vmware ", "/usr/share/icons/hicolor/16x16/apps/vmware-workstation.png" },
+     {"Vifm", "xterm -e vifm ", "/usr/share/pixmaps/vifm.png" },
      {"Virtual Network Editor", "/usr/bin/vmware-netcfg", "/usr/share/icons/hicolor/16x16/apps/vmware-netcfg.png" },
      {"XTerm", "xterm", "/usr/share/pixmaps/xterm-color_48x48.xpm" },
      {"dconf Editor", "dconf-editor", "/usr/share/icons/hicolor/16x16/apps/ca.desrt.dconf-editor.png" },

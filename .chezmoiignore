@@ -12,6 +12,7 @@ screenshots
 bootstrap
 xscreensaver
 private_dot_config/nvim/coc-settings.json
+private_dot_config/exact_awesome/xdgmenu.lua
 
 .ssh/known_hosts
 .ssh/agent-environment

@@ -48,4 +48,3 @@ procInterrupts:	True
 xinputExtensionDev: False
 overlayStderr:	True
 authWarningSlack:   20
-

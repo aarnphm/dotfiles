@@ -106,7 +106,7 @@ export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 {{-   else if eq .chezmoi.os "linux" }}
 export LS_OPTS="-laF --group-directories-first --color"
 # deals with X server
-export DISPLAY=:0
+# export DISPLAY=:0
 
 # wine prefix
 export WINEPREFIX="{{ .chezmoi.homedir }}/.wine32"

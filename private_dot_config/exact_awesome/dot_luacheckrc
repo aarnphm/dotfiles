@@ -55,12 +55,8 @@ globals = {
     "context",
 }
 
-exclude_files = {
-    "third_party/*",
-    "actionless/menubar/*",
-    "misc/*",
-    "**/*lcars*", -- @TODO
-}
+-- exclude_files = {
+-- }
 
 codes = true
 

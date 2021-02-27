@@ -6,16 +6,15 @@ local dpi       = beautiful.xresources.apply_dpi
 local helpers   = require("helpers")
 local ruled     = require("ruled")
 
-naughty.config.defaults.ontop           = true
-naughty.config.defaults.screen          = awful.screen.focused()
-naughty.config.defaults.timeout         = 2
-naughty.config.defaults.title           = "System Notification"
-naughty.config.defaults.border_color    = beautiful.xforeground
+naughty.config.defaults.ontop        = true
+naughty.config.defaults.screen       = awful.screen.focused()
+naughty.config.defaults.timeout      = 2
+naughty.config.defaults.border_color = beautiful.xforeground
 
-naughty.config.padding                  = dpi(10)
-naughty.config.spacing                  = dpi(5)
-naughty.config.icon_dirs                = {"/usr/share/icons/Papirus-Dark/24x24/apps/", "/usr/share/pixmaps/"}
-naughty.config.icon_formats             = {"png", "svg"}
+naughty.config.padding               = dpi(10)
+naughty.config.spacing               = dpi(5)
+naughty.config.icon_dirs             = {"/usr/share/icons/Papirus-Dark/24x24/apps/", "/usr/share/pixmaps/"}
+naughty.config.icon_formats          = {"png", "svg"}
 
 -- Timeouts
 naughty.config.presets.low.timeout      = 3
@@ -48,13 +47,12 @@ ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
     ruled.notification.append_rule {
         rule = {},
-        properties = {screen = awful.screen.preferred, implicit_timeout=6}
+        properties = {screen = awful.screen.preferred, implicit_timeout=2}
     }
 end)
 
 naughty.connect_signal("request::display", function(n)
     local appicon = n.icon or n.app_icon
-    if not appicon then appicon = beautiful.notification_icon end
 
     local action_widget = {
         {
@@ -91,8 +89,6 @@ naughty.connect_signal("request::display", function(n)
         notification = n,
         type = "notification",
         bg = beautiful.xbackground .. "00",
-        width = dpi(128),
-        height = dpi(128),
         widget_template = {
             {
                 {
@@ -134,7 +130,6 @@ naughty.connect_signal("request::display", function(n)
                                                 markup = "<span weight='bold'>" .. n.title .. "</span>",
                                                 font = beautiful.font,
                                                 align = "left",
-                                                visible = title_visible,
                                                 widget = wibox.widget.textbox
                                             },
                                             forced_width = dpi(204),

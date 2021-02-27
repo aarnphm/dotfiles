@@ -32,7 +32,7 @@ local create_button = function(symbol, color, command, playpause)
         widget = wibox.container.background
     }
 
-    awesome.connect_signal("components::playerctl::status", function(playing)
+    awesome.connect_signal("components::spotify", function(_,_,playing)
         if playpause then
             if playing then
                 icon.markup = helpers.colorize_text("", color)
@@ -74,11 +74,7 @@ local artist_widget = wibox.widget {
 }
 
 -- Get Song Info 
-awesome.connect_signal("components::playerctl::title_artist_album",
-                       function(title, artist, art_path)
-    -- Set art widget
-    art:set_image(gears.surface.load_uncached(art_path))
-
+awesome.connect_signal("components::spotify", function(artist, title,_)
     title_widget:set_markup_silently(
         '<span foreground="' .. beautiful.xcolor5 .. '">' .. title .. '</span>')
     artist_widget:set_markup_silently(
@@ -113,10 +109,6 @@ local slider = wibox.widget {
     max_value = 100,
     widget = wibox.widget.progressbar
 }
-
-awesome.connect_signal("components::playerctl::position", function(pos, length)
-    slider.value = (pos / length) * 100
-end)
 
 local playerctl = wibox.widget {
     {
