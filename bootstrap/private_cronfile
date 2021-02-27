@@ -1,1 +1,1 @@
-00 00 * * * . $HOME/.local/bin/autopush-dotfiles &> $HOME/cron.log
+00 00 * * * . $HOME/.local/bin/autopush-dotfiles &> $HOME/.cron.log

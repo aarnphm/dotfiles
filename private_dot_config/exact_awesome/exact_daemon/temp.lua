@@ -1,5 +1,5 @@
 -- Provides:
--- components::temperature
+-- daemon::temperature
 --      temperature (integer - in Celcius)
 local awful = require("awful")
 
@@ -11,5 +11,5 @@ local temp_script = [[
 
 -- Periodically get temperature info
 awful.widget.watch(temp_script, update_interval, function(widget, stdout)
-    awesome.emit_signal("components::temp", tonumber(stdout))
+    awesome.emit_signal("daemon::temp", tonumber(stdout))
 end)

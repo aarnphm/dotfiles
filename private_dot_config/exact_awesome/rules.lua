@@ -21,8 +21,11 @@ ruled.client.connect_signal("request::rules", function()
             border_color     = beautiful.border_normal,
             focus            = awful.client.focus,
             raise            = true,
-            size_hints_honor = true,
-            screen           = awful.screen.preferred,
+            size_hints_honor = false,
+            honor_workarea   = true,
+            honor_padding    = true,
+            maximized        = false,
+            screen           = awful.screen.focused,
             placement        = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
             -- placement can also + awful.placement.no_overlap + awful.placement.no_offscreen
         }
@@ -44,7 +47,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule{
         id         = "floating",
         rule_any   = {
-            class = {"Nm-connection-editor", "caffeine", "Arandr", "Blueman-manager", "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer","xscreensaver-demo", "Termite"},
+            class = {"Nm-connection-editor", "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer","xscreensaver-demo", "Termite", "UXTerm", "XTerm"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"Popup"},
             type  = {"dialog"}
@@ -58,7 +61,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "spotify",
         rule = {class = "Spotify"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[4], switchtotag = true}
+        properties = {screen = 2, tag = awful.screen.focused().tags[4], switchtotag = true}
     }
 
     ruled.client.append_rule {

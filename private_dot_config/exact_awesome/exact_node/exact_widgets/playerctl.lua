@@ -1,10 +1,10 @@
-local gears = require("gears")
-local awful = require("awful")
-local wibox = require("wibox")
-local helpers = require("helpers")
-local beautiful = require("beautiful")
+local gears      = require("gears")
+local awful      = require("awful")
+local wibox      = require("wibox")
+local helpers    = require("helpers")
+local beautiful  = require("beautiful")
 local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
+local dpi        = xresources.apply_dpi
 
 local art = wibox.widget {
     image = gears.filesystem.get_configuration_dir() .. "images/default.png",
@@ -94,22 +94,6 @@ local playerctl_prev_symbol = create_button("玲", beautiful.xcolor4,
 local playerctl_next_symbol = create_button("怜", beautiful.xcolor4,
                                             next_command, false)
 
-local slider = wibox.widget {
-    forced_height = dpi(5),
-    bar_shape = helpers.rrect(beautiful.border_radius),
-    shape = helpers.rrect(beautiful.border_radius),
-    background_color = beautiful.xbackground,
-    color = {
-        type = 'linear',
-        from = {0, 0},
-        to = {200, 50},
-        stops = {{0, beautiful.xcolor0}, {0.75, beautiful.xcolor5}}
-    },
-    value = 25,
-    max_value = 100,
-    widget = wibox.widget.progressbar
-}
-
 local playerctl = wibox.widget {
     {
         art,
@@ -143,13 +127,6 @@ local playerctl = wibox.widget {
                 nil,
                 expand = "none",
                 layout = wibox.layout.align.horizontal
-            },
-            {
-                slider,
-                top = dpi(10),
-                left = dpi(25),
-                right = dpi(25),
-                widget = wibox.container.margin
             },
             layout = wibox.layout.align.vertical
         },

@@ -1,9 +1,6 @@
 #!/bin/bash
 
-xr=$HOME/xrandr.txt
-xrandr > $xr
-
-if (grep "^DP-0.8" $xr &>/dev/null); then
+if (xrandr | grep "^DP-0.8" &>/dev/null); then
 	dp=/home/aarnphm/.screenlayout/dual-side.sh
 else
 	dp=/home/aarnphm/.screenlayout/one.sh
@@ -11,6 +8,5 @@ fi
 
 [ -x "$dp" ] && . "$dp"
 
-rm -rf $xr && unset xr
 unset dp
 

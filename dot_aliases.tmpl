@@ -31,7 +31,8 @@ alias dca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
 alias ca="source {{ .chezmoi.homedir }}/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
 
 {{- if and (eq .chezmoi.os "linux") (.personal) }}
-alias awesomedir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
+alias awesomedir="cd {{ .chezmoi.sourceDir }}/private_dot_config/exact_awesome"
+alias vimdir="cd {{ .chezmoi.sourceDir }}/private_dot_config/vim"
 alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 {{- end }}
@@ -43,7 +44,6 @@ alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 # shortcut to open
 # probably the most important directories
 alias cs="cd $XDG_CONFIG_DOCUMENTS/cs"
-alias o="xdg-open $@"
 
 # mcmaster vpn connect via studentvpn.mcmaster.ca
 alias compeng="$XDG_CONFIG_DOCUMENTS/cs/mcmaster && `\ls -t $XDG_CONFIG_DOCUMENTS/cs/mcmaster | head -n1`"

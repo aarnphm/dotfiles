@@ -1,0 +1,56 @@
+{{- if .personal -}}
+{{-   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) -}}
+Xcursor.size: 12
+*.foreground: #BCBCBC
+*.background: #262626
+*.color0:     #1C1C1C
+*.color8:     #444444
+*.color1:     #AF5F5F
+*.color9:     #FF8700
+*.color2:     #5F875F
+*.color10:    #87AF87
+*.color3:     #87875F
+*.color11:    #FFFFAF
+*.color4:     #5F87AF
+*.color12:    #8FAFD7
+*.color5:     #5F5F87
+*.color13:    #8787AF
+*.color6:     #5F8787
+*.color14:    #5FAFAF
+*.color7:     #6C6C6C
+*.color15:    #FFFFFF
+
+! base
+URxvt.font: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
+URxvt.boldFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
+URxvt.italicFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
+URxvt.boldItalicFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
+URxvt.letterSpace: -6
+URxvt.cursorBlink: false
+URxvt.pointerBlank: true
+URxvt.fading: 5
+URxvt.depth: 32
+URxvt.saveLines: 10000
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+URxvt.cutchars: "`\"'&()*,:;<=>?@[\\]^{|}$"
+
+! Xft
+! Xft.dpi: 48
+! Xft.rgba: rgb
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintslight
+
+! Xterm
+xterm*utf8: 1
+XTerm.vt100.faceName: InconsolataGo Nerd Font:size=10:antialias=false
+XTerm.vt100.font: 7x13
+xterm*background: black
+xterm*foreground: white
+xterm*utf8Title: true
+xterm*boldMode: false
+XTerm*scrollBar:   on
+XTerm*saveLines:   5000
+{{-   end -}}
+{{- end -}}

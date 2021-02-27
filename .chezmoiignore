@@ -10,24 +10,21 @@ install**
 
 screenshots
 bootstrap
-xscreensaver
+Brewfile.*
+Pacfile.*
+Aurfile.*
 private_dot_config/nvim/coc-settings.json
 private_dot_config/exact_awesome/xdgmenu.lua
 
 .ssh/known_hosts
 .ssh/agent-environment
+.config/xscreensaver
 .vim/undo
 .vim/plugins
 
 .config/vifm/vifminfo.json
 
-{{ if ne .chezmoi.os "darwin" }}
-Brewfile.*
-{{ end  }}
-
 {{ if or (ne .chezmoi.os "linux") (not .personal) }}
-Pacfile.*
-Aurfile.*
 .xscreensaver
 .config/awesome
 .config/picom
@@ -35,7 +32,7 @@ Aurfile.*
 .config/rofi
 .config/termite
 .config/conky
+.config/X11
 .screenlayout/
 .zsh/post/ssh-agent-start
-.Xresources
 {{ end  }}

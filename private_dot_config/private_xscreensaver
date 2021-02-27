@@ -23,7 +23,6 @@ fadeSeconds:	0:00:03
 fadeTicks:	20
 captureStderr:	True
 ignoreUninstalledPrograms:False
-font:		*-medium-r-*-140-*-m-*
 dpmsEnabled:	False
 dpmsQuickOff:	False
 dpmsStandby:	0:30:00
@@ -37,7 +36,8 @@ imageDirectory:
 mode:		one
 selected:	1
 
-programs:	"ATV4-2k" 	atv4-2k
+programs:	
+"ATV4-2k" 	atv4-2k \n\
 
 pointerPollTime:    0:00:05
 pointerHysteresis:  10

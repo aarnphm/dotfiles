@@ -1,5 +1,5 @@
 -- Provides:
--- components::ram
+-- daemon::ram
 --      used (integer - mega bytes)
 --      total (integer - mega bytes)
 local awful = require("awful")
@@ -19,5 +19,5 @@ awful.widget.watch(ram_script, update_interval, function(widget, stdout)
     local available = stdout:match('(.*)@@')
     local total = stdout:match('@@(.*)@')
     local used = tonumber(total) - tonumber(available)
-    awesome.emit_signal("components::ram", used, total)
+    awesome.emit_signal("daemon::ram", used, total)
 end)

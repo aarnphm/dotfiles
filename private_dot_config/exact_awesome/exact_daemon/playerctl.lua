@@ -1,5 +1,5 @@
 -- Provides:
--- components::spotify
+-- daemon::spotify
 --   artist (string)
 --   title  (string)
 --   status (string)
@@ -13,7 +13,7 @@ local function emit_info(playerctl_output)
     local status = playerctl_output:match('status_start(.*)'):lower()
     status = string.gsub(status, '^%s*(.-)%s*$', '%1')
 
-    awesome.emit_signal("components::spotify", artist, title, status)
+    awesome.emit_signal("daemon::spotify", artist, title, status)
 end
 
 -- Sleeps until spotify changes state (pause/play/next/prev)

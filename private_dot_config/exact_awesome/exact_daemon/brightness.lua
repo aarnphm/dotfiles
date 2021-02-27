@@ -1,5 +1,5 @@
 -- Provides:
--- components::brightness
+-- daemon::brightness
 --      percentage (integer)
 local awful = require("awful")
 
@@ -19,7 +19,7 @@ local emit_brightness_info = function()
     awful.spawn.with_line_callback(brightness_script, {
         stdout = function(line)
             percentage = math.floor(tonumber(line))
-            awesome.emit_signal("components::brightness", percentage)
+            awesome.emit_signal("daemon::brightness", percentage)
         end
     })
 end

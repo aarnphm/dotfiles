@@ -8,18 +8,20 @@
 # XDG  config
 export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-{{ .chezmoi.homedir }}/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-{{ .chezmoi.homedir }}/.local/share}"
 export XDG_CONFIG_DOCUMENTS="{{ .chezmoi.homedir }}/documents"
 
 # ZSH defaults
 export ZDOTDIR="${ZDOTDIR:-{{ .chezmoi.homedir }}/.zsh}"
+export ZHOMEDIR="$XDG_CONFIG_HOME/zsh"
+export ZRCDIR=$ZHOMEDIR/rc
+export ZDATADIR=$XDG_DATA_HOME/zsh
+
 export CITY="{{ .city }}"
 
-# Increase Bash history size. Allow 32³ entries; the default is 500.
-export HISTFILE=~/.histfile
-export HISTSIZE='32768';
-export HISTFILESIZE="${HISTSIZE}";
-# Omit duplicates and commands that begin with a space from history.
-export HISTCONTROL='ignoreboth';
+typeset -fuz zkbd
+typeset -U path PATH manpath sudo_path
+typeset -xT SUDO_PATH sudo_path
 
 ###########################################################################
 #                            System settings                              #
@@ -104,7 +106,7 @@ export PATH="/usr/local/bin:$JAVA_HOME/bin:${PATH}"
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 
 {{-   else if eq .chezmoi.os "linux" }}
-export LS_OPTS="-laF --group-directories-first --color"
+export LS_OPTS="-laFh --group-directories-first --color"
 # deals with X server
 # export DISPLAY=:0
 
@@ -122,14 +124,6 @@ export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 export QT_QPA_PLATFORMTHEME="qt5ct"
 
-# pacman options
-{{-     if `command -v yay` }}
-export PKGMN=yay
-{{-     else }}
-export PKGMN=pacman
-{{-     end }}
-export PKGOPTS="-Syuu --needed --noconfirm"
-
 # xscecurelock with xscreensaver
 export XSECURELOCK_SAVER=saver_xscreensaver xsecurelock
 
@@ -141,7 +135,7 @@ export XSECURELOCK_SAVER=saver_xscreensaver xsecurelock
 ###########################################################################
 
 export CHEZMOI_BIN=$(which chezmoi)
-export CHEZMOI_DIR={{ .chezmoi.sourceDir }}
+export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
 export CHEZMOI_OPTS="--verbose --debug --color on"
 

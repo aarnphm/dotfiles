@@ -1,7 +1,7 @@
 -- Provides:
--- components::battery
+-- daemon::battery
 --      percentage (integer)
--- components::charger
+-- daemon::charger
 --      plugged (boolean)
 local awful = require("awful")
 
@@ -25,7 +25,7 @@ awful.spawn.easy_async_with_shell(
         -- Periodically get battery info
         awful.widget.watch("cat " .. battery_file, update_interval,
                            function(_, stdout)
-            awesome.emit_signal("components::battery", tonumber(stdout))
+            awesome.emit_signal("daemon::battery", tonumber(stdout))
         end)
     end)
 
@@ -40,7 +40,7 @@ awful.spawn.easy_async_with_shell(
             awful.spawn.easy_async_with_shell("cat " .. charger_file,
                                               function(out)
                 local status = tonumber(out) == 1
-                awesome.emit_signal("components::charger", status)
+                awesome.emit_signal("daemon::charger", status)
             end)
         end
 

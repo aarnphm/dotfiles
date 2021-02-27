@@ -1,5 +1,5 @@
 -- Provides:
--- components::disk
+-- daemon::disk
 --      used (integer - mega bytes)
 --      total (integer - mega bytes)
 local awful = require("awful")
@@ -18,5 +18,5 @@ local disk_script = [[
 awful.widget.watch(disk_script, update_interval, function(_, stdout)
     local available = tonumber(stdout:match('^(.*)@')) / 1000
     local used = tonumber(stdout:match('@(.*)$')) / 1000
-    awesome.emit_signal("components::disk", used, available + used)
+    awesome.emit_signal("daemon::disk", used, available + used)
 end)
