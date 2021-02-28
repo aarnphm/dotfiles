@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Put local env or secrets here
+
+{{- if `command -v bw` }}
+# bitwarden-cli with a bit of a hack
+export BW_MASTER=
+export BW_CLIENTID=
+export BW_CLIENTSECRET=
+export BW_SESSION="$(bw unlock $BW_MASTER 2>/dev/null | grep 'export' | sed -E 's/.*export BW_SESSION="(.*==)"$/\1/')"
+{{- end }}
