@@ -1,7 +1,7 @@
-local awful = require("awful")
-local wibox = require("wibox")
+local awful     = require("awful")
+local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local dpi = require("beautiful.xresources").apply_dpi
+local dpi       = require("beautiful.xresources").apply_dpi
 
 local ll = awful.widget.layoutlist {
     source = awful.widget.layoutlist.source.default_layouts, -- DOC_HIDE

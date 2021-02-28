@@ -161,6 +161,7 @@ wget
 which
 wine-staging
 wireless_tools
+wpa_supplicant
 xdg-user-dirs
 xdotool
 xf86-video-intel
@@ -206,7 +207,6 @@ xorg-xwd
 xorg-xwininfo
 xorg-xwud
 xsecurelock
-xsettingsd
 xterm
 zathura
 zsh

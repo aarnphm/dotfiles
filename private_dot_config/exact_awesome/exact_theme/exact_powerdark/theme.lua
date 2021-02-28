@@ -5,8 +5,8 @@
 local awful        = require("awful")
 local theme_assets = require("beautiful.theme_assets")
 local xresources   = require("beautiful.xresources")
-local dpi          = xresources.apply_dpi
 local xrdb         = xresources.get_current_theme()
+local dpi          = xresources.apply_dpi
 local gears        = require("gears")
 local gfs          = require("gears.filesystem")
 local themes_path  = gfs.get_themes_dir()
@@ -36,24 +36,24 @@ theme.terminal_icon     = icon_path .. "default/terminal.png"
 -- Load $HOME/.Xresources colors and set fallback
 -- ===================================================================
 
-theme.xbackground = xrdb.background  or "#30333d"
-theme.xforeground = xrdb.foreground  or "#ffffff"
-theme.xcolor0     = xrdb.color0      or "#292b34"
-theme.xcolor1     = xrdb.color1      or "#f9929b"
-theme.xcolor2     = xrdb.color2      or "#7ed491"
-theme.xcolor3     = xrdb.color3      or "#fbdf90"
-theme.xcolor4     = xrdb.color4      or "#a3b8ef"
-theme.xcolor5     = xrdb.color5      or "#ccaced"
-theme.xcolor6     = xrdb.color6      or "#9ce5c0"
-theme.xcolor7     = xrdb.color7      or "#ffffff"
-theme.xcolor8     = xrdb.color8      or "#585e74"
-theme.xcolor9     = xrdb.color9      or "#fca2aa"
-theme.xcolor10    = xrdb.color10     or "#a5d4af"
-theme.xcolor11    = xrdb.color11     or "#fbeab9"
-theme.xcolor12    = xrdb.color12     or "#bac8ef"
-theme.xcolor13    = xrdb.color13     or "#d7c1ed"
-theme.xcolor14    = xrdb.color14     or "#c7e5d6"
-theme.xcolor15    = xrdb.color15     or "#eaeaea"
+theme.xforeground = xrdb.foreground  or "#BCBCBC"
+theme.xbackground = xrdb.background  or "#262626"
+theme.xcolor0     = xrdb.color0      or "#1C1C1C"
+theme.xcolor8     = xrdb.color8      or "#444444"
+theme.xcolor1     = xrdb.color1      or "#AF5F5F"
+theme.xcolor9     = xrdb.color9      or "#FF8700"
+theme.xcolor2     = xrdb.color2      or "#5F875F"
+theme.xcolor10    = xrdb.color10     or "#87AF87"
+theme.xcolor3     = xrdb.color3      or "#87875F"
+theme.xcolor11    = xrdb.color11     or "#FFFFAF"
+theme.xcolor4     = xrdb.color4      or "#5F87AF"
+theme.xcolor12    = xrdb.color12     or "#8FAFD7"
+theme.xcolor5     = xrdb.color5      or "#5F5F87"
+theme.xcolor13    = xrdb.color13     or "#8787AF"
+theme.xcolor6     = xrdb.color6      or "#5F8787"
+theme.xcolor14    = xrdb.color14     or "#5FAFAF"
+theme.xcolor7     = xrdb.color7      or "#6C6C6C"
+theme.xcolor15    = xrdb.color15     or "#FFFFFF"
 
 -- ===================================================================
 -- Layouts
@@ -196,7 +196,7 @@ theme.menu_bg_normal    = theme.xbackground
 theme.menu_fg_normal    = theme.xcolor7
 theme.menu_height       = dpi(20)
 theme.menu_width        = dpi(190)
-theme.menu_border_color = "#0000000"
+theme.menu_border_color = "#000000"
 theme.menu_border_width = theme.border_width
 theme.menu_submenu_icon = icon_path .. "default/submenu.png"
 

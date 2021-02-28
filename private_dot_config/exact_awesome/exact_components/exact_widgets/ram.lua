@@ -7,10 +7,10 @@ local active_color = {
     type = 'linear',
     from = {0, 0},
     to = {150, 50}, -- replace with w,h later
-    stops = {{0, beautiful.xcolor1}, {0.75, beautiful.xcolor9}}
+    stops = {{0, beautiful.xcolor3}, {0.75, beautiful.xcolor11}}
 }
 
-local temp_arc = wibox.widget {
+local ram_arc = wibox.widget {
     max_value = 100,
     thickness = 8,
     start_angle = 4.71238898, -- 2pi*3/4
@@ -18,16 +18,12 @@ local temp_arc = wibox.widget {
     bg = beautiful.xbackground,
     paddings = 10,
     colors = {active_color},
-    value = 10,
     widget = wibox.container.arcchart
 }
 
-awesome.connect_signal("components::temp", function(temp)
-    if temp == nil then
-        temp_arc.value = 10
-    else
-        temp_arc.value = temp
-    end
+awesome.connect_signal("daemon::ram", function(used, total)
+    local used_ram_percentage = (used / total) * 100
+    ram_arc.value = used_ram_percentage
 end)
 
-return temp_arc
+return ram_arc

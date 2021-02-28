@@ -27,7 +27,7 @@ alias dotfiles="cd $CHEZMOI_DIR"
 # chezmoi and awesome
 alias e="$CHEZMOI_BIN edit --apply $@"
 # allows ca to dry-run only
-alias dca="${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
+alias dca="source {{ .chezmoi.homedir }}/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS_DRY}"
 alias ca="source {{ .chezmoi.homedir }}/.localrc && ${CHEZMOI_BIN} apply ${CHEZMOI_OPTS}"
 
 {{- if and (eq .chezmoi.os "linux") (.personal) }}

@@ -36,9 +36,7 @@ imageDirectory:
 mode:		one
 selected:	1
 
-programs:	
-"ATV4-2k" 	atv4-2k \n\
-
+programs:"ATV4-2k" 	atv4-2k
 pointerPollTime:    0:00:05
 pointerHysteresis:  10
 windowCreationTimeout:0:00:30

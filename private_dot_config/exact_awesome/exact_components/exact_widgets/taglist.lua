@@ -1,11 +1,11 @@
-local awful = require("awful")
-local gears = require("gears")
-local gfs = gears.filesystem
-local wibox = require("wibox")
-local beautiful = require("beautiful")
+local awful      = require("awful")
+local gears      = require("gears")
+local gfs        = gears.filesystem
+local wibox      = require("wibox")
+local beautiful  = require("beautiful")
 local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
-local modkey = require("defaults").modkey
+local dpi        = xresources.apply_dpi
+local modkey     = require("defaults").modkey
 
 -- ===================================================================
 -- Taglist widgets
@@ -16,39 +16,28 @@ local get_taglist = function(s)
     -- Taglist buttons
     local taglist_buttons = gears.table.join(
         awful.button({}, 1, function(t) t:view_only() end),
-        awful.button({modkey}, 1,
-            function(t)
-                if client.focus then client.focus:move_to_tag(t) end
-            end
-            ),
+        awful.button({modkey}, 1, function(t)
+            if client.focus then client.focus:move_to_tag(t) end
+        end),
         awful.button({}, 3, awful.tag.viewtoggle),
-        awful.button({modkey}, 3,
-            function(t)
-                if client.focus then client.focus:toggle_tag(t) end
-            end
-            ),
-        awful.button({}, 4,
-            function(t)
-                awful.tag.viewnext(t.screen)
-            end
-            ),
-        awful.button({}, 5,
-            function(t)
-                awful.tag.viewprev(t.screen)
-            end
-            )
+        awful.button({modkey}, 3, function(t)
+            if client.focus then client.focus:toggle_tag(t) end
+        end),
+        awful.button({}, 4, function(t)
+            awful.tag.viewnext(t.screen)
+        end),
+        awful.button({}, 5, function(t)
+            awful.tag.viewprev(t.screen)
+        end)
         )
 
     -- The actual png icons
     -- I do have the svgs, but inkscape does a better job of scaling
-    local ghost = gears.surface.load_uncached(
-        gfs.get_configuration_dir() .. "icons/default/ghost.png")
-    local ghost_icon = gears.color.recolor_image(ghost, beautiful.xcolor6)
-    local dot = gears.surface.load_uncached(
-        gfs.get_configuration_dir() .. "icons/default/dot.png")
-    local dot_icon = gears.color.recolor_image(dot, beautiful.xcolor8)
-    local pacman = gears.surface.load_uncached(
-        gfs.get_configuration_dir() .. "icons/default/pacman.png")
+    local ghost       = gears.surface.load_uncached(gfs.get_configuration_dir() .. "icons/default/ghost.png")
+    local dot         = gears.surface.load_uncached(gfs.get_configuration_dir() .. "icons/default/dot.png")
+    local pacman      = gears.surface.load_uncached(gfs.get_configuration_dir() .. "icons/default/pacman.png")
+    local ghost_icon  = gears.color.recolor_image(ghost, beautiful.xcolor6)
+    local dot_icon    = gears.color.recolor_image(dot, beautiful.xcolor8)
     local pacman_icon = gears.color.recolor_image(pacman, beautiful.xcolor3)
 
     -- Function to update the tags
@@ -63,14 +52,17 @@ local get_taglist = function(s)
         end
     end
 
-    local pac_taglist = awful.widget.taglist {
-        screen = s,
-        filter = awful.widget.taglist.filter.all,
-        style = {shape = gears.shape.rectangle},
-        layout = {spacing = 0, layout = wibox.layout.fixed.horizontal},
+    local pacman_taglist = awful.widget.taglist {
+        screen          = s,
+        filter          = awful.widget.taglist.filter.all,
+        style           = {shape = gears.shape.rectangle},
+        layout          = {spacing = 0, layout = wibox.layout.fixed.horizontal},
         widget_template = {
             {
-                {id = 'icon_role', widget = wibox.widget.imagebox},
+                {
+                    id = 'icon_role',
+                    widget = wibox.widget.imagebox
+                },
                 id = 'margin_role',
                 top = dpi(7),
                 bottom = dpi(7),
@@ -80,7 +72,7 @@ local get_taglist = function(s)
             },
             id = 'background_role',
             widget = wibox.container.background,
-            create_callback = function(self, c3, index, objects)
+            create_callback = function(self, c3, _,_)
                 update_tags(self, c3)
                 self:connect_signal('mouse::enter', function()
                     if self.bg ~= beautiful.xbackground .. "60" then
@@ -95,14 +87,14 @@ local get_taglist = function(s)
                     end
                 end)
             end,
-            update_callback = function(self, c3, index, objects)
+            update_callback = function(self, c3, _, _)
                 update_tags(self, c3)
             end
         },
         buttons = taglist_buttons
     }
 
-    return pac_taglist
+    return pacman_taglist
 end
 
 return get_taglist

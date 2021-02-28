@@ -5,19 +5,43 @@ local beautiful  = require("beautiful")
 local xresources = require("beautiful.xresources")
 local dpi        = xresources.apply_dpi
 local helpers    = require("helpers")
-local default    = require("defaults")
-
-local popupLib   = require("utils.popupLib")
+local defaults   = require("defaults")
 
 local box_radius = beautiful.client_radius
-local box_gap = dpi(8)
+local box_gap    = dpi(8)
+
+dashboard = wibox({visible = false, ontop = true, type = "splash"})
+awful.placement.maximize(dashboard)
+
+dashboard.bg = beautiful.exit_screen_bg
+dashboard.fg = beautiful.exit_screen_fg
+
+awful.screen.connect_for_each_screen(function(s)
+    if s == screen.primary then
+        s.dashboard = dashboard
+    else
+        s.dashboard = helpers.screen_mask(s, dashboard.bg)
+    end
+end)
+
+local function set_visibility(v)
+    for s in screen do
+        s.dashboard.visible = v
+    end
+end
+
+dashboard:buttons(gears.table.join(
+        awful.button({}, 2, function()
+            dashboard_hide()
+        end)
+    ))
 
 local function create_boxed_widget(widget_to_be_boxed, width, height, bg_color)
     local box_container = wibox.container.background()
     box_container.bg = bg_color
     box_container.forced_height = height
     box_container.forced_width = width
-    box_container.shape = helpers.rrect(box_radius)
+    box_container.shape = helpers.rrect(box_radius-3)
     box_container.border_width = beautiful.widget_border_width
     box_container.border_color = beautiful.widget_border_color
 
@@ -36,7 +60,6 @@ local function create_boxed_widget(widget_to_be_boxed, width, height, bg_color)
             widget = box_container
         },
         margins = box_gap,
-        color = "#FF000000",
         widget = wibox.container.margin
     }
     return boxed_widget
@@ -62,10 +85,10 @@ end
 
 --- {{{ Volume Widget
 
-local volume_bar = require("node.widgets.volume")
+local volume_bar = require("components.widgets.volume")
 local volume = format_progress_bar(volume_bar, "<span foreground='" .. beautiful.xcolor6 .. "'><b></b></span>")
 
-awesome.connect_signal("components::volume", function(vol, muted)
+awesome.connect_signal("daemon::volume", function(vol, muted)
     if muted or vol == 0 then
         volume.children[1].markup = "<span foreground='" .. beautiful.xcolor6 .. "'><b> </b></span>"
     else
@@ -79,45 +102,48 @@ end)
 
 volume:buttons(gears.table.join( -- Left click - Mute / Unmute
         awful.button({}, 1, function() helpers.volume_control(0) end),
-        awful.button({}, 3, function() awful.spawn("pavucontrol") end),
+        awful.button({}, 3, function()
+            awful.spawn(defaults.audiocontrol)
+            dashboard_hide()
+        end),
         -- Scroll - Increase / Decrease volume
         awful.button({}, 4, function() helpers.volume_control(5) end),
-    awful.button({}, 5, function() helpers.volume_control(-5) end))
+        awful.button({}, 5, function() helpers.volume_control(-5) end))
     )
 
 -- }}}
 --
 --- {{{ Brightness Widget
 
-local brightness_bar = require("node.widgets.brightness")
+local brightness_bar = require("components.widgets.brightness")
 local brightness = format_progress_bar(brightness_bar, "<span foreground='"..beautiful.xcolor5.."'><b> </b></span>")
 
 --- }}}
 
 --- {{{ Ram Widget
 
-local ram_bar = require("node.widgets.ram")
+local ram_bar = require("components.widgets.ram")
 local ram = format_progress_bar(ram_bar, "<span foreground='"..beautiful.xcolor3 .."'><b> </b></span>")
 
 --- }}}
 
 --- {{{ Disk Widget
 
-local disk_bar = require("node.widgets.disk")
+local disk_bar = require("components.widgets.disk")
 local disk = format_progress_bar(disk_bar, "<span foreground='"..beautiful.xcolor2.."'><b> </b></span>")
 
 --- }}}
 
 --- {{{ Temp Widget
 
-local temp_bar = require("node.widgets.temp")
+local temp_bar = require("components.widgets.temp")
 local temp = format_progress_bar(temp_bar, "<span foreground='"..beautiful.xcolor1.."'><b></b></span>")
 
 --- }}}
 
 --- {{{ Cpu Widget
 
-local cpu_bar = require("node.widgets.cpu")
+local cpu_bar = require("components.widgets.cpu")
 local cpu = format_progress_bar(cpu_bar, "<span foreground='"..beautiful.xcolor4.."'><b> </b></span>")
 
 --- }}}
@@ -146,12 +172,12 @@ local fancy_date = {fancy_date_widget, layout = wibox.layout.fixed.vertical}
 
 -- {{{ Music Widget
 
-local playerctl = require("node.widgets.playerctl")
+local playerctl = require("components.widgets.playerctl")
 local playerctl_box = create_boxed_widget(playerctl, 400, 145, beautiful.xbackground)
 
 -- {{{ Info Widget
 
-local info = require("node.widgets.info")
+local info = require("components.widgets.info")
 local info_box = create_boxed_widget(info, 400, 145, beautiful.xbackground)
 
 -- }}}
@@ -241,34 +267,6 @@ local panelWidget = wibox.widget {
     layout = wibox.layout.flex.horizontal
 }
 
-local dash_manager = {}
-local dashboard = wibox({visible = false, ontop = true, type = "splash"})
-awful.placement.maximize(dashboard)
-
-dashboard.bg = beautiful.exit_screen_bg
-dashboard.fg = beautiful.exit_screen_fg
-
-local dash_grabber
-
-dash_manager.dash_hide = function()
-    awful.keygrabber.stop(dash_grabber)
-    dashboard.visible = false
-    awesome.emit_signal("widgets::splash::visibility", dashboard.visible)
-end
-
-dash_manager.dash_show = function()
-    dash_grabber = awful.keygrabber.run(function(_, key, event)
-        -- Ignore case
-        key = key:lower()
-        if event == "release" then return end
-        if key == 'escape' or key == 'q' or key == 'x' then
-            dash_manager.dash_hide()
-        end
-    end)
-    dashboard.visible = true
-    awesome.emit_signal("widgets::splash::visibility", dashboard.visible)
-end
-
 dashboard:setup{
     nil,
     {nil, panelWidget, expand = "none", layout = wibox.layout.align.horizontal},
@@ -276,4 +274,25 @@ dashboard:setup{
     layout = wibox.layout.align.vertical
 }
 
-return dash_manager
+local dashboard_grabber
+
+function dashboard_hide()
+    awful.keygrabber.stop(dashboard_grabber)
+    set_visibility(false)
+    -- dashboard.visible = false
+    -- awesome.emit_signal("widgets::splash::visibility", dashboard.visible)
+end
+
+function dashboard_show()
+    dashboard_grabber = awful.keygrabber.run(function(_, key, event)
+        -- Ignore case
+        key = key:lower()
+        if event == "release" then return end
+        if key == 'escape' or key == 'q' or key == 'x' or key == 'F1' then
+            dashboard_hide()
+        end
+    end)
+    set_visibility(true)
+    -- dashboard.visible = true
+    -- awesome.emit_signal("widgets::splash::visibility", dashboard.visible)
+end

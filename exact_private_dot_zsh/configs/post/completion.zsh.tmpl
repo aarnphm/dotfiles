@@ -1,11 +1,6 @@
 #!/usr/bin/env zsh
 
 # completion; use cache if updated within 24h
-{{- if eq .chezmoi.os "darwin" }}
-#if type brew &>/dev/null; then
-#  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-#fi
-{{- end }}
 autoload -Uz compinit
 if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
   compinit -d $HOME/.zcompdump;

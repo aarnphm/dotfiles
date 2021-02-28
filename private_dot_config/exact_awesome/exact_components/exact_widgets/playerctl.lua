@@ -6,15 +6,6 @@ local beautiful  = require("beautiful")
 local xresources = require("beautiful.xresources")
 local dpi        = xresources.apply_dpi
 
-local art = wibox.widget {
-    image = gears.filesystem.get_configuration_dir() .. "images/default.png",
-    resize = true,
-    forced_height = dpi(80),
-    forced_width = dpi(80),
-    clip_shape = helpers.rrect(beautiful.border_radius - 5),
-    widget = wibox.widget.imagebox
-}
-
 local create_button = function(symbol, color, command, playpause)
 
     local icon = wibox.widget {
@@ -32,7 +23,7 @@ local create_button = function(symbol, color, command, playpause)
         widget = wibox.container.background
     }
 
-    awesome.connect_signal("components::spotify", function(_,_,playing)
+    awesome.connect_signal("daemon::spotify", function(_,_,playing)
         if playpause then
             if playing then
                 icon.markup = helpers.colorize_text("", color)
@@ -74,7 +65,7 @@ local artist_widget = wibox.widget {
 }
 
 -- Get Song Info 
-awesome.connect_signal("components::spotify", function(artist, title,_)
+awesome.connect_signal("daemon::spotify", function(artist, title,_)
     title_widget:set_markup_silently(
         '<span foreground="' .. beautiful.xcolor5 .. '">' .. title .. '</span>')
     artist_widget:set_markup_silently(
@@ -96,7 +87,7 @@ local playerctl_next_symbol = create_button("怜", beautiful.xcolor4,
 
 local playerctl = wibox.widget {
     {
-        art,
+        nil,
         left = dpi(22),
         top = dpi(17),
         bottom = dpi(17),

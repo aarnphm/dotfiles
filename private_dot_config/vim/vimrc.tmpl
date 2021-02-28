@@ -120,7 +120,12 @@ set showmatch
 set showmode
 set hidden
 set clipboard=unnamed,unnamedplus
+{{ $sshd := `cat /proc/${PPID}/status | head -1 | cut -f2` }}
+{{ if eq $sshd "sshd" -}}
+set mouse=i
+{{ else -}}
 set mouse=a
+{{ end -}}
 set foldmethod=manual "indent-syntax-manual
 set wildmenu
 set wildmode=longest:full,full

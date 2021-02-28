@@ -7,7 +7,6 @@ local gears               = require("gears")
 local awful               = require("awful")
 local hotkeys_popup       = require("awful.hotkeys_popup").widget
 local naughty             = require("naughty")
-local dash_manager        = require("node.popup.dash")
 local defaults            = require("defaults")
 local helper              = require("helpers")
 local xdg_menu            = require("xdgmenu")
@@ -56,6 +55,7 @@ mymainmenu = awful.menu({
 -- ===================================================================
 
 awful.mouse.append_global_mousebindings({
+        awful.button({}, 2, function() if dashboard_show then dashboard_show() end end),
         -- awful.button({}, 3, function() mymainmenu:toggle() end),
         -- awful.button({}, 4, awful.tag.viewprev),
         -- awful.button({}, 5, awful.tag.viewnext)
@@ -169,16 +169,10 @@ client.connect_signal("request::default_keybindings", function()
                 ),
             awful.key({modkey},"w",
                 function()
-                    dash_manager.dash_show()
+                    if dashboard_show then dashboard_show() end
                 end,
                 {description = "show panel", group = "awesome"}
                 ),
-            -- awful.key({modkey,shift},"w",
-            --     function()
-            --         notification_centre.visible = not notification_centre.visible
-            --     end,
-            --     {description = "show notification center", group = "awesome"}
-            --     ),
             awful.key({ctrl, modkey}, "r",
                 awesome.restart,
                 {description = "reload awesome", group = "awesome"}),

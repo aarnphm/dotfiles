@@ -4,6 +4,7 @@ CURRENT=$(pwd)
 
 if [[ `command -v git` ]]; then
     git clone --depth=1 --recursive https://github.com/aarnphm/dotfiles.git $CURRENT/dotfiles && cd $CURRENT/dotfiles
+    git update-index --skip-worktree $(pwd)/exact_private_dot_zsh/dot_zshenv.local.tmpl
     ./install.pre
     ./install.post
 else

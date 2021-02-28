@@ -37,6 +37,7 @@ end)
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/" .. defaults.theme .. "/theme.lua")
 require("windows")
+require("daemon")
 
 -- ===================================================================
 -- Signal and misc imports
@@ -66,7 +67,6 @@ require("rules")
 -- ===================================================================
 
 require("components")
-require("node")
 -- fancy tag switching
 require("collision")()
 

@@ -21,6 +21,6 @@ local cpu_arc = wibox.widget {
     widget = wibox.container.arcchart
 }
 
-awesome.connect_signal("components::cpu", function(value) cpu_arc.value = value end)
+awesome.connect_signal("daemon::cpu", function(value) cpu_arc.value = value end)
 
 return cpu_arc

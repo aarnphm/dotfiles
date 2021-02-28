@@ -44,43 +44,6 @@ awesome_icon:buttons(gears.table.join(awful.button({}, 1, function()
 end)))
 
 -- ===================================================================
--- Notification panel
--- ===================================================================
-
-
--- local notifPop = require("node.popup.notification-centre")
--- local notif_icon = wibox.widget {
---     {
---         {
---             widget = wibox.widget.textbox,
---             font = beautiful.icon_font,
---             markup = "<span foreground='" .. beautiful.xforeground .. "'>" .. " " .. "</span>",
---             resize = true
---         },
---         margins = dpi(4),
---         widget = wibox.container.margin
---     },
---     -- bg = beautiful.xbackground,
---     widget = wibox.container.background
--- }
-
--- notif_icon:buttons(gears.table.join(
---         awful.button({}, 1, function()
---             notifPop.visible = true
---             notif_icon.bg = beautiful.xcolor0
---         end),
---         awful.button({}, 3, function()
---             notifPop.visible = false
---             notif_icon.bg = beautiful.background
---         end)
--- ))
-
--- notifPop:connect_signal("mouse::leave", function()
---     notifPop.visible = false
---     notif_icon.bg = beautiful.xbackground
--- end)
-
--- ===================================================================
 --  Battery Bar Widget
 -- ===================================================================
 
@@ -113,7 +76,7 @@ battery_tooltip.mode = "outside"
 battery_tooltip:add_to_object(battery_bar)
 battery_tooltip.text = 'Not Updated'
 
-awesome.connect_signal("components::battery", function(value)
+awesome.connect_signal("daemon::battery", function(value)
     battery_bar.value = value
     battery_bar.color = {
         type = 'linear',
@@ -174,7 +137,7 @@ local g = gears.timer {
 
 -- The charging animation
 local running = false
-awesome.connect_signal("components::charger", function(plugged)
+awesome.connect_signal("daemon::charger", function(plugged)
     if plugged then
         g:start()
         running = true
@@ -295,7 +258,7 @@ local playerctl_bar = wibox.widget {
 playerctl_bar.visible = false
 
 -- Get Title
-awesome.connect_signal("components::spotify",
+awesome.connect_signal("daemon::spotify",
     function(artist,title,_)
 
         playerctl_bar.visible = true
@@ -305,11 +268,11 @@ awesome.connect_signal("components::spotify",
         song_artist.markup = '<span foreground="' .. beautiful.xcolor4 .. '">' ..
         artist .. '</span>'
     end
-)
+    )
 
-    -- ===================================================================
-    -- Create wibar
-    -- ===================================================================
+-- ===================================================================
+-- Create wibar
+-- ===================================================================
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -338,12 +301,12 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
     -- Hide bar when a splash widget is visible
     awesome.connect_signal("widgets::splash::visibility",
-                           function(vis) s.mywibox.visible = not vis end)
+    function(vis) s.mywibox.visible = not vis end)
 
     client.connect_signal("property::fullscreen", remove_wibar)
 
     -- Create the taglist widget
-    s.mytaglist = require("node.widgets.taglist")(s)
+    s.mytaglist = require("components.widgets.taglist")(s)
 
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist {
@@ -467,13 +430,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     margins = dpi(5),
                     widget = wibox.container.margin
                 },
-                -- {
-                --     notif_icon,
-                --     top = dpi(0),
-                --     right = dpi(10),
-                --     left = dpi(5),
-                --     widget = wibox.container.margin
-                -- },
                 layout = wibox.layout.fixed.horizontal
             }
         }

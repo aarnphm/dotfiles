@@ -1,0 +1,42 @@
+{{- if .personal }}
+{{-   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) }}
+# Prefer CA English and use UTF-8.
+export LANGUAGE='en';
+export HOST='{{ .chezmoi.fullHostname }}';
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+
+# qt fix
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+export QT_QPA_PLATFORMTHEME="qt5ct"
+
+{{ if `builtin command -v xscreensaver` }}
+# xscecurelock with xscreensaver
+export XSECURELOCK_SAVER=saver_xscreensaver xsecurelock
+{{ end }}
+
+xset -b
+# xset s blank
+xset s off
+# xset s 900 1200
+xset +dpms
+xset dpms 900 1200 1800
+
+# Here awesome is kept as default
+# try other wm by doing `xinit wm_name` or `startx ~/.xinitrc wm_name`
+session=${1:-{{ .wm }}}
+
+# No known session, try to run it as command
+case $session in
+    i3|i3wm           ) exec i3;;
+    kde               ) exec startplasma-x11;;
+    xfce|xfce4        ) exec startxfce4;;
+    awesome           ) exec awesome;;
+    xmonad            ) exec xmonad;;
+    *                 ) exec $1;;
+esac
+
+{{-   end }}
+{{- end }}

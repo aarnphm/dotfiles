@@ -1,28 +1,28 @@
 local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
 
 local active_color = {
     type = 'linear',
     from = {0, 0},
     to = {150, 50}, -- replace with w,h later
-    stops = {{0, beautiful.xcolor2}, {0.75, beautiful.xcolor10}}
+    stops = {{0, beautiful.xcolor5}, {0.75, beautiful.xcolor13}}
 }
 
-local disk_arc = wibox.widget {
-    max_value = 100,
+local brightness_arc = wibox.widget {
     thickness = 8,
     start_angle = 4.71238898, -- 2pi*3/4
     rounded_edge = true,
     bg = beautiful.xbackground,
     paddings = 10,
+    min_value = 0,
+    max_value = 100,
+    value = 25,
     colors = {active_color},
     widget = wibox.container.arcchart
 }
 
-awesome.connect_signal("components::disk", function(used, total)
-    disk_arc.value = tonumber(100 * used / total)
+awesome.connect_signal("daemon::brightness", function(value)
+    if value >= 0 then brightness_arc.value = value end
 end)
-
-return disk_arc
+return brightness_arc

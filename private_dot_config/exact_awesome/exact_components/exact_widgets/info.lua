@@ -1,10 +1,8 @@
-local wibox = require("wibox")
-local beautiful = require("beautiful")
+local wibox      = require("wibox")
+local beautiful  = require("beautiful")
 local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
-
-local helpers = require("helpers")
-local pad = helpers.pad
+local dpi        = xresources.apply_dpi
+local helpers    = require("helpers")
 
 local user = wibox.widget {
     markup = "<span foreground='" .. beautiful.xcolor6 .. "'>aarnphm</span>",

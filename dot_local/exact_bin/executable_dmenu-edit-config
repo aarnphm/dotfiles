@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+trap "SIGINT" exit
 
 declare -a options=("alacritty
 kitty
