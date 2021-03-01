@@ -1,6 +1,7 @@
 # aaron does dotfiles
 
 <div align="center"><p>automated deployment for <code>!~</code> across Unix-like devices.(<i>currently Arch and MacOS</i>)</p></div>
+
 ![desktop](./bootstrap/screenshots/desktop.png)
 
 - managed with [chezmoi](https://www.chezmoi.io/) 
