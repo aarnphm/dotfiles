@@ -27,7 +27,6 @@ ruled.client.connect_signal("request::rules", function()
             maximized        = false,
             screen           = awful.screen.focused,
             placement        = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
-            -- placement can also + awful.placement.no_overlap + awful.placement.no_offscreen
         }
     }
 
@@ -72,7 +71,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "terminal",
         rule = {class = "Termite"},
-        properties = {ontop=true, tag = awful.screen.focused().tags[1], switchtotag = true}
+        properties = {ontop=true, screen = awful.screen.focused(), switchtotag = true}
     }
 
     ruled.client.append_rule {

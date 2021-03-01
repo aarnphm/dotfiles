@@ -2,18 +2,13 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+{{ if .personal }}
 # bitwarden cli yarn and typescript
-[[ `command -v npm` ]] && npm install -g @bitwarden/cli yarn typescript
+[[ `builtin command -v npm` ]] && npm install -g @bitwarden/cli yarn typescript
 
 if [[ ! -f $HOME/.vim/autoload/plug.vim ]]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim;
 fi
-
-# zinit
-if [[ ! -d $HOME/.zinit ]]; then
-    mkdir $HOME/.zinit
-    git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
-fi;
 
 # nnn plugins install
 if [[ `command -v nnn` ]]; then
@@ -21,13 +16,11 @@ if [[ `command -v nnn` ]]; then
     git clone https://github.com/sebastiencs/icons-in-terminal.git && cd icons-in-terminal && ./install.sh
 fi
 
-{{- if .personal }}
 # install lotion
 if [[ `command -v curl` ]]; then
     curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
     sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
 fi
-{{- end }}
 
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then
@@ -36,3 +29,4 @@ if [[ ! -d $HOME/google-cloud-sdk ]]; then
     $HOME/google-cloud-sdk/install.sh --quiet --path-update false --command-completion false --usage-reporting false
     $HOME/google-cloud-sdk/bin/gcloud init
 fi;
+{{ end }}

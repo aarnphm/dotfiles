@@ -1,5 +1,5 @@
-{{- if .personal -}}
-{{-   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) -}}
+{{ if .personal }}
+{{   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) }}
 Xcursor.size: 12
 *.foreground: #BCBCBC
 *.background: #262626
@@ -21,10 +21,10 @@ Xcursor.size: 12
 *.color15:    #FFFFFF
 
 ! base
-! URxvt.font: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
-! URxvt.boldFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
-! URxvt.italicFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
-!URxvt.boldItalicFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
+URxvt.font: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
+URxvt.boldFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
+URxvt.italicFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
+URxvt.boldItalicFont: xft:mononoki Nerd Font:pixelsize=13:antialiasing=true
 URxvt.letterSpace: -6
 URxvt.cursorBlink: false
 URxvt.pointerBlank: true
@@ -52,5 +52,5 @@ xterm*utf8Title: true
 xterm*boldMode: false
 XTerm*scrollBar:   on
 XTerm*saveLines:   5000
-{{-   end -}}
-{{- end -}}
+{{   end }}
+{{ end }}

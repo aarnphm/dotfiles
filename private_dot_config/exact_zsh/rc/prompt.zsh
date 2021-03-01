@@ -3,7 +3,7 @@
 # autoload -Uz colors && colors
 
 # Prompt symbol
-COMMON_PROMPT_SYMBOL=">"
+COMMON_PROMPT_SYMBOL="%B>"
 
 # Colors
 COMMON_COLORS_HOST_ME=green

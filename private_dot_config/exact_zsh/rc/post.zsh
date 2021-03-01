@@ -3,6 +3,17 @@
 ##          Post Execution                                    ##
 #--------------------------------------------------------------#
 
+(
+    setopt LOCAL_OPTIONS EXTENDED_GLOB
+    autoload -U zrecompile
+
+    # Compile zcompdump, if modified, to increase startup speed.
+    zcompdump="$ZDOTDIR/.zcompdump"
+    if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+        zrecompile -pq "$zcompdump"
+    fi
+) &!
+
 if ! builtin command -v compinit > /dev/null 2>&1; then
   autoload -Uz compinit && compinit -u
 fi

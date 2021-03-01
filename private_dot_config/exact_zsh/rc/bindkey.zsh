@@ -55,14 +55,6 @@ zle -N insert-prev-arg
 bindkey '^^' insert-prev-arg
 bindkey '\e#' pound-insert
 
-## cd ##
-function cd-up { zle push-line && LBUFFER='builtin cd ..' && zle accept-line }
-zle -N cd-up
-zle -N dir_forward
-zle -N dir_back
-bindkey '[1;6C' dir_forward
-bindkey '[1;6D' dir_back
-
 ## completion ##
 # shift-tab
 zmodload zsh/complist

@@ -7,14 +7,14 @@ if [ -z "$ZPLG_HOME" ]; then
 fi
 
 if ! test -d "$ZPLG_HOME"; then
-  mkdir -p "$ZPLG_HOME"
-  chmod g-rwX "$ZPLG_HOME"
-  git clone --depth 10 https://github.com/zdharma/zinit.git ${ZPLG_HOME}/bin
+    mkdir -p "$ZPLG_HOME"
+    chmod g-rwX "$ZPLG_HOME"
+    git clone https://github.com/zdharma/zinit.git ${ZPLG_HOME}/bin
 fi
 
 typeset -gAH ZPLGM
 ZPLGM[HOME_DIR]="${ZPLG_HOME}"
-source "$HOME/.zinit/bin/zinit.zsh"
+source "$ZPLG_HOME/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -208,15 +208,6 @@ elif builtin command -v tmux > /dev/null 2>&1 && test $(echo "$(tmux -V | cut -d
     from'gh-r' as'program' bpick'*AppImage*' mv'tmux* -> tmux' pick'tmux' \
     light-mode for @tmux/tmux
 fi
-
-# translation #
-zinit wait'1' lucid \
-  light-mode for @soimort/translate-shell
-
-zinit wait'1' lucid \
-  atclone"python setup.py install --prefix=${ZPLG_HOME}/polaris/" \
-  atpull'%atclone' \
-  light-mode for @nidhaloff/deep-translator
 
 zinit wait'1' lucid \
   from"gh-r" as"program" \

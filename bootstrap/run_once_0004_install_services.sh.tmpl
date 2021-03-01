@@ -5,8 +5,8 @@ IFS=$'\n\t'
 {{- if .personal }}
 {{-   if eq .chezmoi.os "darwin" }}
 echo "Put some defined system variables here, then run the scripts again"
-{{-   else if eq .chezmoi.os "linux" }}
-SERVICES=(docker cronie sshd postgresql optimus-manager lightdm acpid)
+{{-   else if and (eq .chezmoi.os "linux") (.personal) }}
+SERVICES=(docker cronie sshd bluetooth postgresql optimus-manager lightdm acpid)
 
 for services in "${SERVICES[@]}"; do
     sudo systemctl enable $services

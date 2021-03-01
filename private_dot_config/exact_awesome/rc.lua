@@ -3,11 +3,11 @@
 -- ===================================================================
 
 pcall(require, "luarocks.loader")
-local gears      = require("gears")
-local awful      = require("awful")
-local beautiful  = require("beautiful")
-local naughty    = require("naughty")
-local defaults   = require("defaults")
+local gears     = require("gears")
+local awful     = require("awful")
+local beautiful = require("beautiful")
+local naughty   = require("naughty")
+local defaults  = require("defaults")
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
 
@@ -16,7 +16,7 @@ require("awful.autofocus")
 -- ===================================================================
 
 -- the shell scripts is used to run some daemon
-awful.spawn.with_shell("~/.config/awesome/run_once.sh")
+awful.spawn.with_shell("${XDG_CONFIG_HOME}/awesome/run_once.sh")
 awesome.register_xproperty("WM_NAME", "string")
 
 -- Check if awesome encountered an error during startup and fell back to
