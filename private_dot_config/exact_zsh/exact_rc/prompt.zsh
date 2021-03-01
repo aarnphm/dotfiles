@@ -1,62 +1,62 @@
 #!/usr/bin/env zsh
-# autoload -Uz vcs_info
-# autoload -Uz colors && colors
 
-# Prompt symbol
-COMMON_PROMPT_SYMBOL="%B>"
+#==============================================================#
+##          Prompt Configuration                              ##
+#==============================================================#
 
-# Colors
-COMMON_COLORS_HOST_ME=green
-COMMON_COLORS_HOST_AWS_VAULT=yellow
-COMMON_COLORS_CURRENT_DIR=blue
-COMMON_COLORS_RETURN_STATUS_TRUE=yellow
-COMMON_COLORS_RETURN_STATUS_FALSE=red
-COMMON_COLORS_GIT_STATUS_DEFAULT=green
-COMMON_COLORS_GIT_STATUS_STAGED=red
-COMMON_COLORS_GIT_STATUS_UNSTAGED=yellow
-COMMON_COLORS_GIT_PROMPT_SHA=green
+###     git      ###
+autoload -Uz VCS_INFO_get_data_git; VCS_INFO_get_data_git 2> /dev/null
 
-# Left Prompt
-PROMPT='$(common_host)$(common_current_dir)$(common_git_status)$(common_return_status)'
-# RPROMPT='command_execution_time'
+function rprompt-git-current-branch {
+    local name st color gitdir action
+    if [[ "$PWD" =~ /\.git(/.*)?$ ]]; then
+        return
+    fi
+    name=$(git symbolic-ref HEAD 2> /dev/null)
+    name=${name##refs/heads/}
+    if [[ -z $name ]]; then
+        return
+    fi
 
-# Host
-# me="%n@%m"
-common_host() {
-    if [[ -n $me ]]; then
-        echo "%{$fg[$COMMON_COLORS_HOST_ME]%}$me:"
+    gitdir=$(git rev-parse --git-dir 2> /dev/null)
+    action=$(VCS_INFO_git_getaction "$gitdir") && action="($action)"
+
+    st=$(git status 2> /dev/null)
+    if echo "$st" | grep -q "^nothing to"; then
+        color=%F{green}
+    elif echo "$st" | grep -q "^nothing added"; then
+        color=%F{yellow}
+    elif echo "$st" | grep -q "^# Untracked"; then
+        color=%B%F{red}
+    else
+        color=%F{red}
+    fi
+    echo "($color$name$action%f%b)"
+}
+
+function __show_status() {
+    exit_status=${pipestatus[*]}
+    local SETCOLOR_DEFAULT="%f"
+    local SETCOLOR=${SETCOLOR_DEFAULT}
+    local s
+    for s in $(echo -en "${exit_status}"); do
+        if [ "${s}" -eq 147 ] ; then
+            SETCOLOR=${SETCOLOR_DEFAULT}
+            break
+        elif [ "${s}" -gt 100 ] ; then
+            SETCOLOR="%F{red}"
+            break
+        elif [ "${s}" -gt 0 ] ; then
+            SETCOLOR="%F{yellow}"
+        fi
+    done
+    if [ "${SETCOLOR}" != "${SETCOLOR_DEFAULT}" ]; then
+        echo -ne "${SETCOLOR}(${exit_status// /|})%f%b"
+    else
+        echo -ne "${SETCOLOR}%f%b"
     fi
 }
 
-# Current directory
-common_current_dir() {
-    echo -n "%{$fg[$COMMON_COLORS_CURRENT_DIR]%}%c "
-}
-
-# Prompt symbol
-common_return_status() {
-    echo -n "%(?.%F{$COMMON_COLORS_RETURN_STATUS_TRUE}.%F{$COMMON_COLORS_RETURN_STATUS_FALSE})$COMMON_PROMPT_SYMBOL%f "
-}
-
-# Git status
-common_git_status() {
-    local message=""
-    local message_color="%F{$COMMON_COLORS_GIT_STATUS_DEFAULT}"
-
-    # https://git-scm.com/docs/git-status#_short_format
-    local staged=$(git status --porcelain 2>/dev/null | grep -e "^[MADRCU]")
-    local unstaged=$(git status --porcelain 2>/dev/null | grep -e "^[MADRCU? ][MADRCU?]")
-
-    if [[ -n ${staged} ]]; then
-        message_color="%F{$COMMON_COLORS_GIT_STATUS_STAGED}"
-    elif [[ -n ${unstaged} ]]; then
-        message_color="%F{$COMMON_COLORS_GIT_STATUS_UNSTAGED}"
-    fi
-
-    local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    if [[ -n ${branch} ]]; then
-        message+="${message_color}${branch}%f "
-    fi
-
-    echo -n "${message}"
-}
+PROMPT='[%n@%m:%.$(rprompt-git-current-branch)]${WINDOW:+"[$WINDOW]"}$(__show_status)%B> '
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+export PROMPT4='+%N:%i> '

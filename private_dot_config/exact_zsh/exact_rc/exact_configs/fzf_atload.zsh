@@ -4,19 +4,7 @@
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 export FZF_PREVIEW_OPTS='--preview "$ZRCDIR/cplugins/fzf-preview.sh {}" --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up" --preview-window wrap'
-export FZF_DEFAULT_OPTS="--no-mouse --layout=reverse --info=inline
-                         --height=80% --multi
-                         --preview-window=:hidden
-                         --preview '([[ -f {} ]] && (bat --style=numbers {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
-                         --prompt='∼ ' --pointer='>' --marker='✓'
-                         --bind '?:toggle-preview'
-                         --bind 'ctrl-a:select-all'
-                         --bind 'ctrl-y:execute-silent(echo {+} | pbcopy)'
-                         --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
-                         --bind 'ctrl-d:preview-page-down'
-                         --bind 'ctrl-u:preview-page-up'
-                         --bind 'ctrl-v:execute(code {+})'";
-# export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
+export FZF_DEFAULT_OPTS='--no-mouse --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up"'
 export FZF_ALT_C_OPTS=''
 export FZF_CTRL_R_OPTS='--preview "$ZRCDIR/cplugins/fzf-preview.sh {}" --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up" --preview-window up:30%:wrap --height 50%'
 export FZF_CTRL_T_OPTS="--keep-right $FZF_PREVIEW_OPTS"
