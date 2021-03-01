@@ -132,13 +132,8 @@ zinit wait'1' lucid \
   light-mode for @dalance/procs
 
 zinit wait'1' lucid \
-  from"gh-r" as"program" pick"delta*/delta" \
-  light-mode for @dandavison/delta
-
-zinit wait'1' lucid \
   from"gh-r" as"program" pick"mmv*/mmv" \
   light-mode for @itchyny/mmv
-
 
 #--------------------------------#
 # program
@@ -208,11 +203,6 @@ elif builtin command -v tmux > /dev/null 2>&1 && test $(echo "$(tmux -V | cut -d
     from'gh-r' as'program' bpick'*AppImage*' mv'tmux* -> tmux' pick'tmux' \
     light-mode for @tmux/tmux
 fi
-
-zinit wait'1' lucid \
-  from"gh-r" as"program" \
-  atload"source $ZHOMEDIR/rc/configs/nextword_atload.zsh" \
-  light-mode for @high-moctane/nextword
 
 # env #
 zinit wait'1' lucid \

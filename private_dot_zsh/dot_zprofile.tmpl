@@ -149,11 +149,7 @@ export ODOO_OPTS="--addons-path=${XDG_CONFIG_DOCUMENTS}/cs/odoo/addons --dev=rel
 #                    source some local env                                #
 ###########################################################################
 
-if [ -f "$ZDOTDIR/.zshenv.local" ]; then
-  source "$ZDOTDIR/.zshenv.local"
-fi
-if [ -f "$ZHOMEDIR/.zshenv.local" ]; then
-  source "$ZHOMEDIR/.zshenv.local"
-fi
+if [ -f "$ZDOTDIR/.zshenv.local" ]; then source "$ZDOTDIR/.zshenv.local"; fi
+if [ -f "$ZHOMEDIR/.zshenv.local" ]; then source "$ZHOMEDIR/.zshenv.local"; fi
 
 export PS4='+%N:%i> '
