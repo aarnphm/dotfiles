@@ -61,13 +61,18 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "spotify",
         rule = {class = "Spotify"},
-        properties = {screen = 2, tag = awful.screen.focused().tags[4], switchtotag = true}
+        properties = {screen = 2, tag = defaults.tags[1].names[4], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "terminal",
         rule_any = {class = {"Alacritty", "Kitty", "St", "UXTerm", "XTerm"}},
         properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[1], switchtotag = true}
+    }
+    ruled.client.append_rule {
+        id = "terminal",
+        rule = {class = "Termite"},
+        properties = {ontop=true, tag = awful.screen.focused().tags[1], switchtotag = true}
     }
 
     ruled.client.append_rule {

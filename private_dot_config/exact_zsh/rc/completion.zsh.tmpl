@@ -1,25 +1,18 @@
 #!/usr/bin/env zsh
 
-# completion; use cache if updated within 24h
-autoload -Uz compinit
-if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
-  compinit -d $HOME/.zcompdump;
-else
-  compinit -C;
-fi;
-
-{{- if and (eq .chezmoi.os "linux") (.personal) }}
+{{ if and (eq .chezmoi.os "linux") (.personal) }}
 # The next line enables shell command completion for gcloud.
-if [ -f '/home/aarnphm/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/aarnphm/google-cloud-sdk/completion.zsh.inc'; fi
-{{- end }}
+if [ -f '{{ .chezmoi.homedir }}/google-cloud-sdk/completion.zsh.inc' ]; then . '{{ .chezmoi.homedir }}/google-cloud-sdk/completion.zsh.inc'; fi
+{{ end }}
 
-################################################################################
-# Completion Module Options
-#
+##==============================================================#
+##          Completion                                        ##
+#==============================================================#
 # https://grml.org/zsh/zsh-lovers.html#_completion
 # Using zstyle: <https://unix.stackexchange.com/a/214699>
 
 # complete . and .. special directories
+zstyle ':completion:*' verbose yes
 zstyle ':completion:*' special-dirs true
 
 # enable caching to make completion for commands such as dpkg and apt usable
@@ -65,6 +58,11 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections true
 
+# make completion is slow
+zstyle ':completion:*:make:*:targets' call-command true
+zstyle ':completion:*:make::' tag-order targets:
+zstyle ':completion:*:*:*make:*:targets' command awk \''/^[a-zA-Z0-9][^\/\t=]+:/ {print $1}'\' \$file
+
 # history
 zstyle ':completion:*:history-words' stop yes
 zstyle ':completion:*:history-words' remove-all-dups yes
@@ -78,11 +76,3 @@ zstyle ':completion:*:rm:*' file-patterns '*:all-files'
 # ssh/scp/rsync
 zstyle ':completion:*:(ssh|scp|ftp|sftp):*' hosts $hosts
 zstyle ':completion:*:(ssh|scp|ftp|sftp):*' users $users
-#h=()
-#if [[ -r ~/.ssh/config ]]; then
-#  h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
-#fi
-#if [[ $#h -gt 0 ]]; then
-#  zstyle ':completion:*:ssh:*' hosts $h
-#  zstyle ':completion:*:slogin:*' hosts $h
-#fi

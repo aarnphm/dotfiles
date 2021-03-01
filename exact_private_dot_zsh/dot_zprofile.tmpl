@@ -138,8 +138,10 @@ path=(
 )
 
 fpath=(
+    {{ .chezmoi.homedir }}/.local/bin(N-/)
     $ZHOMEDIR/functions(N-/)
     $ZHOMEDIR/completion(N-/)
+    $ZHOMEDIR/completion.local(N-/)
     /usr/local/share/zsh/site-functions
     /usr/share/zsh/site-functions
     $fpath

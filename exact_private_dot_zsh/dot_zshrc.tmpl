@@ -1,14 +1,79 @@
 #!/usr/bin/env zsh
 
-{{- if and (eq .chezmoi.os "linux") (.personal) }}
+{{ if and (eq .chezmoi.os "linux") (.personal) }}
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     exec startx
 fi
-{{- end }}
+{{ end }}
 
-for function in {{ .chezmoi.homedir }}/.local/bin/*; do
+# lazy loading some functions
+for function in ${HOME}/.local/bin/*; do
     autoload -Uz ${function:t}
 done
 
-# aliases
-[[ -f {{ .chezmoi.homedir }}/.aliases ]] && source {{ .chezmoi.homedir }}/.aliases
+source-safe() { if [ -f "$1" ]; then source "$1"; fi }
+
+#--------------------------------------------------------------#
+##          Base Configuration                                ##
+#--------------------------------------------------------------#
+source-safe() { if [ -f "$1" ]; then source "$1"; fi }
+source "$ZRCDIR/base.zsh"
+
+
+#--------------------------------------------------------------#
+##          Options                                           ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/option.zsh"
+
+
+#--------------------------------------------------------------#
+##          Completion                                        ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/completion.zsh"
+
+
+#--------------------------------------------------------------#
+##          Prompt Configuration                              ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/prompt.zsh"
+
+
+#--------------------------------------------------------------#
+##          Function                                          ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/function.zsh"
+
+
+#--------------------------------------------------------------#
+##          Aliases                                           ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/alias.zsh"
+
+
+#--------------------------------------------------------------#
+##          Key Bindings                                      ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/bindkey.zsh"
+
+#source-safe "$ZHOMEDIR/zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}"
+#source "$ZHOMEDIR/zkbd/bindkey.zsh"
+
+
+#--------------------------------------------------------------#
+##          Plugin                                            ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/plugins.zsh"
+
+
+#--------------------------------------------------------------#
+##          Post Execution                                    ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/post.zsh"
+
+source-safe "$ZDOTDIR/.zshrc.local"
+source-safe "$ZHOMEDIR/.zshrc.local"
+
+if [ -n "$ZSHRC_CI_TEST" ]; then
+  echo "zshrc load complete"
+  exit
+fi

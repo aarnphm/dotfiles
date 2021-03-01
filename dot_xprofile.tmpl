@@ -17,13 +17,6 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 export XSECURELOCK_SAVER=saver_xscreensaver xsecurelock
 {{ end }}
 
-xset -b
-# xset s blank
-xset s off
-# xset s 900 1200
-xset +dpms
-xset dpms 900 1200 1800
-
 # Here awesome is kept as default
 # try other wm by doing `xinit wm_name` or `startx ~/.xinitrc wm_name`
 session=${1:-{{ .wm }}}
