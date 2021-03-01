@@ -120,12 +120,8 @@ set showmatch
 set showmode
 set hidden
 set clipboard=unnamed,unnamedplus
-{{ $sshd := env "ISSSHD" | not | not }}
-{{ if eq $sshd "sshd" -}}
-set mouse=i
-{{ else -}}
 set mouse=a
-{{ end -}}
+" set mouse=i
 set foldmethod=manual "indent-syntax-manual
 set wildmenu
 set wildmode=longest:full,full

@@ -23,16 +23,15 @@ if (command -v xdg_menu && [[ ! -f ${XDG_CONFIG_HOME:-$HOME/.config}/awesome/xdg
 fi
 
 run nm-applet
+run blueman-applet
 run xscreensaver -no-splash
 run playerctld daemon
 run pasystray
 run ibus-daemon -drx
 run nitrogen --restore
 run picom -f --experimental-backends
-run caprine
 run redshift
 run unclutter -idle 1
-run blueman-tray
 run discord
 run caffeine
 run spotify-tray --client-path=/usr/bin/spotify --minimized --class=spotify

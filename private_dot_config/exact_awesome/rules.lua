@@ -25,7 +25,6 @@ ruled.client.connect_signal("request::rules", function()
             honor_workarea   = true,
             honor_padding    = true,
             maximized        = false,
-            screen           = awful.screen.focused,
             placement        = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
         }
     }

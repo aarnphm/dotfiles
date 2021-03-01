@@ -1,14 +1,11 @@
 
-# export FZF_DEFAULT_COMMAND='find . -type f -not -path "*/\.*" -printf "%T@\t%p\n" | sort -rn | cut -f 2-'
 # export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 export FZF_PREVIEW_OPTS='--preview "$ZRCDIR/cplugins/fzf-preview.sh {}" --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up" --preview-window wrap'
-export FZF_DEFAULT_OPTS='--no-mouse --bind "?:toggle-preview,ctrl-a:select-all,"'
-export FZF_DEFAULT_OPTS="--layout=reverse
-                         --info=inline
-                         --height=80%
-                         --multi
+export FZF_DEFAULT_OPTS="--no-mouse --layout=reverse --info=inline
+                         --height=80% --multi
                          --preview-window=:hidden
                          --preview '([[ -f {} ]] && (bat --style=numbers {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
                          --prompt='∼ ' --pointer='>' --marker='✓'
@@ -19,10 +16,10 @@ export FZF_DEFAULT_OPTS="--layout=reverse
                          --bind 'ctrl-d:preview-page-down'
                          --bind 'ctrl-u:preview-page-up'
                          --bind 'ctrl-v:execute(code {+})'";
-export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
+# export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
+export FZF_ALT_C_OPTS=''
 export FZF_CTRL_R_OPTS='--preview "$ZRCDIR/cplugins/fzf-preview.sh {}" --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up" --preview-window up:30%:wrap --height 50%'
 export FZF_CTRL_T_OPTS="--keep-right $FZF_PREVIEW_OPTS"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 alias -g F="--line-number --no-heading --case-sensitive --hidden --follow 2>/dev/null | fzf -d ':' --ansi --prompt 'Rg> ' --height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS --bind=ctrl-r:toggle-sort $FZF_PREVIEW_OPTS --bind \"enter:execute(nvim {1} +{2} </dev/tty)\""
 

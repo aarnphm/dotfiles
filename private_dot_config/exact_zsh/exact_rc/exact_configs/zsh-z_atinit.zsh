@@ -1,3 +1,0 @@
-ZSHZ_CMD=j
-ZSHZ_DATA="$ZDATADIR/.z"
-

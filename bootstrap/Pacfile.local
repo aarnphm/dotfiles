@@ -39,7 +39,6 @@ feh
 firefox
 flex
 fortune-mod
-fzf
 gcc
 gimp
 git
@@ -112,9 +111,11 @@ p7zip
 pamixer
 papirus-icon-theme
 paprefs
+pass
 pasystray
 patch
 pavucontrol
+pcmanfm
 pgadmin4
 pkgconf
 playerctl
@@ -207,6 +208,5 @@ xorg-xwd
 xorg-xwininfo
 xorg-xwud
 xsecurelock
-xterm
 zathura
 zsh

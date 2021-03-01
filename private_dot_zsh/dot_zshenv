@@ -8,9 +8,6 @@ setopt noglobalrcs
 
 export SYSTEM=$(uname -s)
 
-# get sshd
-export ISSSHD=$(cat /proc/${PPID}/status | head -1 | cut -f2)
-
 # https://github.com/sorin-ionescu/prezto/blob/master/runcoms/zshenv
 # Ensure that a non-login, non-interactive shell has a defined environment.
 if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR}/.zprofile" ]]; then
