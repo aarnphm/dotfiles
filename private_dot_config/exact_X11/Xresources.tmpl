@@ -1,6 +1,15 @@
-{{ if .personal }}
-{{   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) }}
-Xcursor.size: 12
+{{- if .personal -}}
+{{-   if (and (eq .chezmoi.os "linux") (eq .hostname "0x6161726E70")) -}}
+! Xft
+!Xft.rgba: rgb
+!Xft.dpi: 48
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+Xft.autohint: 0
+
+Xcursor.size: 10
 *.foreground: #BCBCBC
 *.background: #262626
 *.color0:     #1C1C1C
@@ -35,13 +44,6 @@ URxvt.iso14755: false
 URxvt.iso14755_52: false
 URxvt.cutchars: "`\"'&()*,:;<=>?@[\\]^{|}$"
 
-! Xft
-! Xft.dpi: 48
-! Xft.rgba: rgb
-Xft.antialias: true
-Xft.hinting: true
-Xft.hintstyle: hintslight
-
 ! Xterm
 xterm*utf8: 1
 XTerm.vt100.faceName: InconsolataGo Nerd Font:size=10:antialias=false
@@ -52,5 +54,5 @@ xterm*utf8Title: true
 xterm*boldMode: false
 XTerm*scrollBar:   on
 XTerm*saveLines:   5000
-{{   end }}
-{{ end }}
+{{-   end -}}
+{{- end -}}

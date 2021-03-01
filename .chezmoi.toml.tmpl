@@ -3,8 +3,8 @@
 {{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
 {{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets from BitWarden */}}
-{{- $wm := "awesome" }}{{/* current windows manager in use (default to awesome) */}}
-{{- $city := "Hanoi" }}{{/* city inputs for weather */}}
+{{- $wm := "awesome" -}}{{/* current windows manager in use (default to awesome) */}}
+{{- $city := "Hanoi" -}}{{/* city inputs for weather */}}
 
 {{/* work around unreliable hostname on darwin */}}
 {{- $hostname := .chezmoi.hostname -}}
@@ -18,10 +18,11 @@
 {{- if not $transient -}}
 {{-   if eq $hostname "APPL-AIR12" -}}
 {{-     $personal = true -}}
+{{-     $city = promptString "City weather"}}
 {{-   else if eq $hostname "0x6161726E70" -}}
 {{-     $personal = true -}}
-{{-     $wm = promptString "wm [awesome | i3]"}}
-{{-     $city = promptString "City weather"}}
+{{-     $wm = promptString "wm [awesome | i3]" -}}
+{{-     $city = promptString "City weather" -}}
 {{-   else -}}
 {{-     $headless = promptBool "headless" -}}
 {{-     $transient = promptBool "transient" -}}

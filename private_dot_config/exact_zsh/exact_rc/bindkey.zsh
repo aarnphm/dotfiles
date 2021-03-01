@@ -74,24 +74,10 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
+bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 
 ## etc ##
 bindkey '^X*' expand-word
 # stack command
 zle -N show_buffer_stack
-
-## backup ##
-# bindkey '^Q' show_buffer_stack
-# bindkey "^F" vi-cmd-mode
-
-# # handy keybindings
-# bindkey "^A" beginning-of-line
-# bindkey "^E" end-of-line
-# bindkey "^K" kill-line
-# # bindkey "^R" history-incremental-search-backward
-# bindkey "^P" history-search-backward
-# bindkey "^Y" accept-and-hold
-# bindkey "^N" insert-last-word
-# bindkey "^Q" push-line-or-edit
-# bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 

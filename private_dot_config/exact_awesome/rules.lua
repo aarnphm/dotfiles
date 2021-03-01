@@ -20,7 +20,7 @@ ruled.client.connect_signal("request::rules", function()
             border_width     = beautiful.border_width,
             border_color     = beautiful.border_normal,
             focus            = awful.client.focus,
-            raise            = true,
+            raise            = false,
             size_hints_honor = false,
             honor_workarea   = true,
             honor_padding    = true,

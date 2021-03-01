@@ -120,7 +120,7 @@ set showmatch
 set showmode
 set hidden
 set clipboard=unnamed,unnamedplus
-{{ $sshd := `cat /proc/${PPID}/status | head -1 | cut -f2` }}
+{{ $sshd := env "ISSSHD" | not | not }}
 {{ if eq $sshd "sshd" -}}
 set mouse=i
 {{ else -}}

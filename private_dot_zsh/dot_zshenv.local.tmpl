@@ -10,4 +10,4 @@ export BW_SESSION="$(bw unlock $BW_MASTER 2>/dev/null | grep 'export' | sed -E '
 {{- end }}
 
 # docker PAT
-export DOCKER_PAT={{ (bitwarden "item" "docker_pat_aar0npham").notes }}
+export DOCKER_PAT="{{ (bitwarden "item" "docker_pat_aar0npham").notes }}"
