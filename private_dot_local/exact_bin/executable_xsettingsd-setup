@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+DISPLAY=${DISPLAY%.0}
+
+# get dpis for each screen
+dpis=""
+for info in $(xrandr --current | sed -n 's/^\([^ ]\{1,\}\)* connected.* \([0-9]\{1,\}\)x.* \([0-9]\{1,\}\)mm x .*/\1,\2,\3/p'); do
+    output=${info%%,*}
+    pixels=${info#*,}
+    pixels=${pixels%%,*}
+    mm=${info##*,}
+    dpi=$(($pixels * 254 / 10 / $mm))
+    # For laptop screens, we need to apply a correction factor
+    case $output in
+        eDP-1|eDP1) corrected=$(($dpi * 96/144)) ;;
+        *) corrected=$dpi ;;
+    esac
+    # Authorized factors: 1, 1.5, 2, 3, 4, ...
+    rounded=$(((corrected + 24) / 48 * 48))
+    [ $rounded -gt 192 ] && rounded=$(((corrected + 48) / 96 * 96))
+    [ $rounded -lt 96 ] && rounded=96
+    dpis="$dpis$rounded "
+    echo "$output: ${dpi}dpi (corrected to ${corrected}dpi, rounded to ${rounded}dpi)" >&2
+done
+
+# Use first screen DPI
+dpi=${dpis%% *}
+dpi=${dpi:-82}
+
+echo "using ${dpi}dpi" >&2
+xrandr --dpi $dpi
+
+# Build xsettingsd
+{
+    cat  ~/.config/awesome/xsettingsd
+    echo Xft/DPI $(( $dpi ))
+    echo Xft/RGBA \"$( [ $dpi -gt 144 ] && echo none || echo rgb )\"
+    echo Gdk/WindowScalingFactor $(( $dpi/117 ))
+} > ~/.xsettingsd
+
+# Signal xsettingsd
+# systemctl --user reload xsettingsd@$(systemd-escape -- "$DISPLAY").service
+
+# Also use xrdb for very old stuff
+echo Xft.dpi: $dpi | xrdb -merge

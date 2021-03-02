@@ -48,6 +48,9 @@ echo "Avoid creating .DS_Store files on network or USB volumes"
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
+# defaults zsh location
+sudo echo 'export ZDOTDIR="$HOME/.zsh"' >| /etc/zshenv
+
 {{- else if eq .chezmoi.os "linux" }}
 if [ ! -f "/etc/arch-release" ]; then
 	echo "Not running arch. Skipping."
@@ -63,4 +66,14 @@ echo "Changes CapsLocks to Home (tmux binding)"
 sudo sed -i 's/Caps_Lock/Home  /' /usr/share/X11/xkb/symbols/pc
 echo "export ZDOTDIR=$HOME/.zsh"
 sudo echo 'export ZDOTDIR="$HOME/.zsh"' >| /etc/zsh/zshenv
+echo "Disable hiberation and suspend"
+sudo echo 'polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.login1.suspend" ||
+        action.id == "org.freedesktop.login1.suspend-multiple-sessions" ||
+        action.id == "org.freedesktop.login1.hibernate" ||
+        action.id == "org.freedesktop.login1.hibernate-multiple-sessions")
+    {
+        return polkit.Result.NO;
+    }
+    });' >| /etc/polkit-1/rules.d/10-disable-suspend.rules
 {{- end }}

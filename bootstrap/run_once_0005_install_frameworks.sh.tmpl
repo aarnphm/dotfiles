@@ -2,6 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+git config --global include.path $HOME/.config/git/gitconfig
+
 {{ if .personal }}
 # bitwarden cli yarn and typescript
 [[ `builtin command -v npm` ]] && npm install -g @bitwarden/cli yarn typescript

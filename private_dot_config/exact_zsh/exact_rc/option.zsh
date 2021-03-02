@@ -32,9 +32,6 @@ setopt auto_resume
 setopt correct_all
 setopt correct
 
-
-setopt auto_cd
-setopt no_beep
 setopt complete_in_word
 setopt equals
 setopt nonomatch

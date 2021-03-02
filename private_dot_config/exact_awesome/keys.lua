@@ -3,16 +3,16 @@
 -- ===================================================================
 -- Default variable
 -- ===================================================================
-local gears               = require("gears")
-local awful               = require("awful")
-local hotkeys_popup       = require("awful.hotkeys_popup").widget
-local naughty             = require("naughty")
-local defaults            = require("defaults")
-local helper              = require("helpers")
-local xdg_menu            = require("xdgmenu")
-local beautiful           = require("beautiful")
-local xresources          = require("beautiful.xresources")
-local dpi                 = xresources.apply_dpi
+local gears         = require("gears")
+local awful         = require("awful")
+local hotkeys_popup = require("awful.hotkeys_popup").widget
+local naughty       = require("naughty")
+local defaults      = require("defaults")
+local helper        = require("helpers")
+local xdg_menu      = require("xdgmenu")
+local beautiful     = require("beautiful")
+local xresources    = require("beautiful.xresources")
+local dpi           = xresources.apply_dpi
 require("awful.hotkeys_popup.keys")
 
 -- define defaults variables

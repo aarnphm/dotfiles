@@ -374,6 +374,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 },
                 {
                     playerctl_bar,
+                    -- nil,
                     margins = dpi(5),
                     widget = wibox.container.margin
                 }

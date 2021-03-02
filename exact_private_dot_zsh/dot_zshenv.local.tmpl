@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Put local env or secrets here
+
+{{- if `command -v bw` }}
+# bitwarden-cli with a bit of a hack
+export BW_MASTER="#defineasdf1"
+export BW_CLIENTID="user.77480542-f422-4e8b-a43a-acc501739202"
+export BW_CLIENTSECRET="bbOv8mTgu7F4jKEmUkiTrDGpRii3Ry"
+export BW_SESSION="$(bw unlock $BW_MASTER 2>/dev/null | grep 'export' | sed -E 's/.*export BW_SESSION="(.*==)"$/\1/')"
+{{- end }}
+
+# docker PAT
+export DOCKER_PAT="{{ (bitwarden "item" "docker_pat_aar0npham").notes }}"

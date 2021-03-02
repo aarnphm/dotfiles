@@ -21,9 +21,7 @@ ruled.client.connect_signal("request::rules", function()
             border_color     = beautiful.border_normal,
             focus            = awful.client.focus,
             raise            = false,
-            size_hints_honor = false,
-            honor_workarea   = true,
-            honor_padding    = true,
+            size_hints_honor = true,
             maximized        = false,
             placement        = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
         }

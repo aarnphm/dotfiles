@@ -1,0 +1,1 @@
+/home/aarnphm/.local/share/chezmoi/private_dot_config/exact_zsh/rc/cplugins/fzf-preview.sh

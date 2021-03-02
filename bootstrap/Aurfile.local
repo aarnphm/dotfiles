@@ -1,10 +1,10 @@
-aerial-2k-videos
 awesome-git
 awmtt
 balena-etcher
 bitwarden
 cacheclean
 caffeine-ng-git
+cef-minimal
 chatterino2-git
 curl-git
 dmenu2
@@ -24,11 +24,12 @@ lightdm-mini-greeter
 ncspot-git
 ncurses5-compat-libs
 numix-circle-icon-theme-git
-obs-studio-browser
+obs-linuxbrowser-bin
 optimus-manager-qt
 picom-git
 rainbow
 rxvt-unicode-truecolor-wide-glyphs
+shell-color-scripts
 skypeforlinux-stable-bin
 slack-desktop
 spotify
@@ -39,7 +40,7 @@ visual-studio-code-bin
 vmware-workstation
 winetricks-git
 xcursor-breeze
-xscreensaver-aerial
+xss-lock-git
 yay-git
 zoom
 zotero

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-function fe(){
-    current_dir=`pwd`;
-    $BROWSER --new-window file://$current_dir
-}

@@ -1,0 +1,7 @@
+[Unit]
+Description=XSETTINGS daemon for %I
+
+[Service]
+Environment=DISPLAY=%I
+ExecStart=/usr/bin/xsettingsd -c %h/.xsettingsd
+#ExecReload=/usr/bin/kill -HUP $MAINPID

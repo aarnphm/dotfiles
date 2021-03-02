@@ -14,6 +14,8 @@
      {"Visual Studio Code", "/opt/visual-studio-code/code --no-sandbox --unity-launch ", "/usr/share/icons/visual-studio-code.png" },
      {"Winetricks", "winetricks --gui"},
      {"nitrogen", "nitrogen", "/usr/share/icons/hicolor/16x16/apps/nitrogen.png" },
+     {"xgps", "xgps"},
+     {"xgpsspeed", "xgpsspeed"},
  }
 
  local menu251bd8143891238ecedc306508e29017 = {
@@ -79,7 +81,6 @@
      {"Alacritty", "alacritty", "/usr/share/pixmaps/Alacritty.svg" },
      {"Avahi Zeroconf Browser", "/usr/bin/avahi-discover"},
      {"BleachBit", "bleachbit", "/usr/share/pixmaps/bleachbit.png" },
-     {"File Manager PCManFM", "pcmanfm "},
      {"GParted", "/usr/bin/gparted ", "/usr/share/icons/hicolor/16x16/apps/gparted.png" },
      {"Hardware Locality lstopo", "lstopo"},
      {"Htop", "xterm -e htop", "/usr/share/pixmaps/htop.png" },

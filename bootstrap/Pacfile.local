@@ -13,7 +13,9 @@ asciinema
 autoconf
 autofs
 automake
+autorandr
 base
+bat
 bbswitch-dkms
 bind
 binutils
@@ -39,6 +41,7 @@ feh
 firefox
 flex
 fortune-mod
+fzf
 gcc
 gimp
 git
@@ -47,6 +50,7 @@ github-cli
 gnome-disk-utility
 gnome-keyring
 gparted
+gpsd
 groff
 grub
 grub-customizer
@@ -80,10 +84,10 @@ linux-firmware
 linux-headers
 luarocks
 lxappearance
+lxsession
 m4
 maim
 make
-mate-polkit
 materia-gtk-theme
 mpc
 mpd
@@ -106,6 +110,7 @@ nvidia
 nvidia-dkms
 nvidia-prime
 nvidia-settings
+obs-studio
 os-prober
 p7zip
 pamixer
@@ -115,7 +120,6 @@ pass
 pasystray
 patch
 pavucontrol
-pcmanfm
 pgadmin4
 pkgconf
 playerctl
@@ -208,5 +212,6 @@ xorg-xwd
 xorg-xwininfo
 xorg-xwud
 xsecurelock
+xsettingsd
 zathura
 zsh

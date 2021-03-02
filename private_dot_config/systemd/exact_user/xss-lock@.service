@@ -1,0 +1,7 @@
+[Unit]
+Description=Manage X screen saver on %I
+
+[Service]
+Environment=DISPLAY=%I
+ExecStart=%h/.local/bin/xss-lock start
+Restart=on-failure

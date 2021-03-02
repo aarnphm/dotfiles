@@ -6,8 +6,6 @@
 
 export CHEZMOI_BIN=$(which chezmoi)
 export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
-export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
-export CHEZMOI_OPTS="--verbose --debug --color on"
 
 ###########################################################################
 #                            XDG - ZSH                                    #
@@ -132,7 +130,10 @@ fpath=(
 #                             OPTS                                        #
 ###########################################################################
 
-export TMUX_OPTS="-u"
+export TMUX_OPTS=""
+
+export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
+export CHEZMOI_OPTS="--verbose --debug --color on"
 
 {{- if .personal }}
 {{-   if eq .chezmoi.os "darwin" }}
@@ -149,7 +150,7 @@ export ODOO_OPTS="--addons-path=${XDG_CONFIG_DOCUMENTS}/cs/odoo/addons --dev=rel
 #                    source some local env                                #
 ###########################################################################
 
-if [ -f "$ZDOTDIR/.zshenv.local" ]; then source "$ZDOTDIR/.zshenv.local"; fi
-if [ -f "$ZHOMEDIR/.zshenv.local" ]; then source "$ZHOMEDIR/.zshenv.local"; fi
+[ -f $ZDOTDIR/.zshenv.local ] && source $ZDOTDIR/.zshenv.local
+[ -f $ZHOMEDIR/.zshenv.local ] && source $ZHOMEDIR/.zshenv.local
 
 export PS4='+%N:%i> '

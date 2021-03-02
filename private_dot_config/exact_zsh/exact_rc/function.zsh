@@ -142,7 +142,6 @@ function show_buffer_stack() {
 
 function precmd_prompt() {
     [[ -t 1 ]] || return
-    # ターミナルのウィンドウ・タイトルを動的に変更
     case $TERM in
         *xterm*|rxvt*|(dt|k|E)term|screen*)
             print -Pn "\e]2;[%n@%m %d]\a"
@@ -258,6 +257,168 @@ function zsh-profiler() {
     ZSHRC_PROFILE=1 zsh -i -c zprof
 }
 
+function timeshell() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do time $shell -i -c exit; done
+}
+
 function zsh-detailed() {
     ZSHRC_DETAILED=1 zsh -i
+}
+
+## nnn ##
+function nnn-preview(){
+    # Block nesting of nnn in subshells
+    if [ -n "$NNNLVL" ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # To cd on quit only on ^G, remove the "export" as in:
+    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    # NOTE: NNN_TMPFILE is fixed, should not be modified
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # This will create a fifo where all nnn selections will be written to
+    NNN_FIFO="$(mktemp --suffix=-nnn -u)"
+    export NNN_FIFO
+    (umask 077; mkfifo "$NNN_FIFO")
+
+    # Preview command
+    preview_cmd="$HOME/.local/bin/nnn-preview-cmd"
+
+    # Use `tmux` split as preview
+    if [ -e "${TMUX%%,*}" ]; then
+        tmux split-window -e "NNN_FIFO=$NNN_FIFO" -dh "$preview_cmd"
+
+    # Use `alacritty` as a preview window
+    elif (which termite &> /dev/null); then
+        termite --exec="$preview_cmd"
+
+    # Unable to find a program to use as a preview window
+    else
+        echo "unable to open preview, please install tmux or termite"
+    fi
+
+    nnn "$@"
+
+    rm -f "$NNN_FIFO"
+}
+
+n ()
+{
+    # Block nesting of nnn in subshells
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # To cd on quit only on ^G, remove the "export" as in:
+    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    # NOTE: NNN_TMPFILE is fixed, should not be modified
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
+    # stty start undef
+    # stty stop undef
+    # stty lwrap undef
+    # stty lnext undef
+
+    nnn "$@"
+
+    if [ -f "$NNN_TMPFILE" ]; then
+            . "$NNN_TMPFILE"
+            rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre() {
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
+
+function change-extension() {
+    foreach f (**/*.$1)
+        mv $f $f:r.$2
+    end
+}
+
+hash git &>/dev/null;
+if [ $? -eq 0 ]; then
+	function diff() {
+		git diff --no-index --color-words "$@";
+	}
+fi;
+
+## docker ##
+function dockerclean {
+    # remove first none images
+    docker rmi -f $(docker images -a | grep "^<none>" | awk '{print $3}') 2> /dev/null;
+    # now remove none container
+    docker rmi -f $(docker ps -a -f status=exited -q) 2> /dev/null;
+}
+
+# Select a docker container to remove
+function drm() {
+  local cid
+  cid=$(docker ps -a | sed 1d | fzf -q "$1" | awk '{print $1}')
+
+  [ -n "$cid" ] && docker rm "$cid"
+}
+
+# Select a running docker container to stop
+function ds() {
+  local cid
+  cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
+
+  [ -n "$cid" ] && docker stop "$cid"
+}
+
+# Load .env file into shell session for environment variables
+
+function envup() {
+  if [ -f .env ]; then
+    export $(sed '/^ *#/ d' .env)
+  else
+    echo 'No .env file found' 1>&2
+    return 1
+  fi
+}
+
+# Displays user owned processes status.
+function psu {
+  ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${(@)argv[2,-1]}"
+}
+
+# Create a new directory and enter it
+function mkd() {
+	mkdir -p "$@" && cd "$_";
+}
+
+function listen {
+    sudo lsof -iTCP:"$@" -sTCP:LISTEN;
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh;
+	else
+		local arg=-sh;
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@";
+	else
+		du $arg .[^.]* ./*;
+	fi;
+}
+
+function fe(){
+    current_dir=`pwd`;
+    [[ -x `builtin command -v firefox` ]] &&${BROWSER:=firefox} --new-window file://$current_dir
 }
