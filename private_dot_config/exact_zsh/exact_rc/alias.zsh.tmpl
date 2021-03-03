@@ -15,10 +15,10 @@ alias -- -="cd -"
 
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'
-alias detailed-time='sort-timings-zsh $HOME/log_zsh/$(ls -tm $HOME/log_zsh | head -n 1) | head'
 
 # git
 alias g="git"
+alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 
 # List all files colorized in long format
 {{ if .personal }}
@@ -30,7 +30,6 @@ alias la="{{ $local_ls }} ${LS_OPTS} ${colorflag}"
 {{ end -}}
 {{ if `command -v nnn` }}
 # nnn intensifies
-alias ncp="cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} | tr '\0' '\n'"
 alias np="nnn-preview"
 alias N="sudo -E nnn -dDH"
 alias nl="n -dDeUHatT"
@@ -40,14 +39,15 @@ alias nl="n -dDeUHatT"
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
 alias e="$CHEZMOI_BIN edit --apply $@"
-alias ca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
-alias dca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
+alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
+alias dca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
 alias vdir="$CHEZMOI_DIR/private_dot_config/vim"
 alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl"
 
 #chmod
 alias 644='chmod 644'
 alias 755='chmod 755'
+alias 700='chmod 700'
 alias 777='chmod 777'
 
 #==============================================================#
@@ -112,8 +112,6 @@ alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 ##          App                                               ##
 #==============================================================#
 
-# urxvt
-alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
 # bento
 alias bento="bentoml $@"
 # odoo
@@ -140,6 +138,44 @@ alias dockerprune="docker system prune -a -f"
 alias kubesecret="kubectl get secret regcred --output=yaml"
 {{- end }}
 
+{{ if eq .chezmoi.os "linux" }}
+# urxvt
+alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
+
+# arch
+if [ -f /etc/arch-release ] ;then
+    # install
+    alias pac-update='sudo pacman -Sy'
+    alias pac-upgrade='sudo pacman -Syu'
+    alias pac-upgrade-force='sudo pacman -Syyu'
+    alias pac-install='sudo pacman -S'
+    alias pac-remove='sudo pacman -Rs'
+    # search remote package
+    alias pac-search='pacman -Ss'
+    alias pac-package-info='pacman -Si'
+    # search local package
+    alias pac-installed-list='pacman -Qs'
+    alias pac-installed-package-info='pacman -Qi'
+    # import: sudo pacman -S pkglist.txt
+    alias pac-installed-list-export='pacman -Qqen' 
+    alias pac-installed-files='pacman -Ql'
+    alias pac-unused-list='pacman -Qtdq'
+    alias pac-search-from-path='pacman -Qqo'
+    # search package from filename
+    alias pac-included-files='pacman -Fl'
+    alias pac-search-by-filename='pkgfile'
+    # log
+    alias pac-log='cat /var/log/pacman.log | \grep "installed\|removed\|upgraded"'
+    alias pac-aur-packages='pacman -Qm'
+    # etc
+    alias pac-clean='sudo pacman -Sc'
+    # aur
+    if builtin command -v yay > /dev/null 2>&1; then
+        alias yay-installed-list='yay -Qm'
+        alias yay-clean='yay -Sc'
+    fi
+fi
+{{ end }}
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
 # Intuitive map function
@@ -185,43 +221,6 @@ alias rmi="${aliases[rm]:-rm} -i"
 alias mvi="${aliases[mv]:-mv} -i"
 alias cpi="${aliases[cp]:-cp} -i"
 alias lni="${aliases[ln]:-ln} -i"
-
-#==============================================================#
-##          ArchLinux                                         ##
-#==============================================================#
-
-if [ -f /etc/arch-release ] ;then
-    # install
-    alias pac-update='sudo pacman -Sy'
-    alias pac-upgrade='sudo pacman -Syu'
-    alias pac-upgrade-force='sudo pacman -Syyu'
-    alias pac-install='sudo pacman -S'
-    alias pac-remove='sudo pacman -Rs'
-    # search remote package
-    alias pac-search='pacman -Ss'
-    alias pac-package-info='pacman -Si'
-    # search local package
-    alias pac-installed-list='pacman -Qs'
-    alias pac-installed-package-info='pacman -Qi'
-    # import: sudo pacman -S pkglist.txt
-    alias pac-installed-list-export='pacman -Qqen' 
-    alias pac-installed-files='pacman -Ql'
-    alias pac-unused-list='pacman -Qtdq'
-    alias pac-search-from-path='pacman -Qqo'
-    # search package from filename
-    alias pac-included-files='pacman -Fl'
-    alias pac-search-by-filename='pkgfile'
-    # log
-    alias pac-log='cat /var/log/pacman.log | \grep "installed\|removed\|upgraded"'
-    alias pac-aur-packages='pacman -Qm'
-    # etc
-    alias pac-clean='sudo pacman -Sc'
-    # aur
-    if builtin command -v yay > /dev/null 2>&1; then
-        alias yay-installed-list='yay -Qm'
-        alias yay-clean='yay -Sc'
-    fi
-fi
 
 #==============================================================#
 ##          Hash                                              ##

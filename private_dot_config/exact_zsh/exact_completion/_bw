@@ -264,5 +264,4 @@ function _bw_completion {
 }
 
 function _bw_status {
-  
 }

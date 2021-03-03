@@ -13,7 +13,6 @@ asciinema
 autoconf
 autofs
 automake
-autorandr
 base
 bat
 bbswitch-dkms
@@ -22,7 +21,6 @@ binutils
 bison
 bleachbit
 blueman
-bluez-utils
 caprine
 ccls
 chezmoi

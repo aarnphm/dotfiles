@@ -18,7 +18,9 @@ require("awful.autofocus")
 -- the shell scripts is used to run some daemon
 awful.spawn.with_shell("${XDG_CONFIG_HOME}/awesome/run_once.sh")
 awesome.register_xproperty("WM_NAME", "string")
-os.execute("$HOME/.local/bin/xsettingsd-setup")
+
+-- startup some applications
+os.execute("$HOME/.local/bin/ssh-add")
 
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)

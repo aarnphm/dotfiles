@@ -52,7 +52,6 @@ zinit wait'1' lucid \
 zinit wait'2' lucid \
     light-mode for @caarlos0/zsh-git-sync
 
-
 #--------------------------------#
 # fzf
 #--------------------------------#
@@ -89,10 +88,6 @@ zinit wait'1' lucid \
 #--------------------------------#
 # extension
 #--------------------------------#
-zinit wait'1' lucid \
-    atload"source $ZHOMEDIR/rc/configs/emoji-cli_atload.zsh" \
-    light-mode for @b4b4r07/emoji-cli
-
 zinit wait'0' lucid \
     light-mode for @mafredri/zsh-async
 
@@ -124,91 +119,25 @@ zinit wait'1' lucid \
 zinit wait'1' lucid \
     from"gh-r" as"program" pick"tldr" \
     light-mode for @dbrgn/tealdeer
-    zinit ice wait'1' lucid as"completion" mv'zsh_tealdeer -> _tldr'
-    zinit snippet https://github.com/dbrgn/tealdeer/blob/master/zsh_tealdeer
+zinit ice wait'1' lucid as"completion" mv'zsh_tealdeer -> _tldr'
+zinit snippet https://github.com/dbrgn/tealdeer/blob/master/zsh_tealdeer
 
-    zinit wait'1' lucid \
-        from"gh-r" as"program" bpick'*lnx*' \
-        light-mode for @dalance/procs
+zinit wait'1' lucid \
+    from"gh-r" as"program" bpick'*lnx*' \
+    light-mode for @dalance/procs
 
-    zinit wait'1' lucid \
-        from"gh-r" as"program" pick"mmv*/mmv" \
-        light-mode for @itchyny/mmv
+zinit wait'1' lucid \
+    from"gh-r" as"program" pick"mmv*/mmv" \
+    light-mode for @itchyny/mmv
 
 #--------------------------------#
 # program
 #--------------------------------#
-# zsh
-if [[ "${ZSH_INSTALL}" == "true" ]]; then
-    # zinit pack for zsh
-    if builtin command -v make > /dev/null 2>&1; then
-        zinit id-as=zsh as"null" lucid depth=1 \
-            atclone"./.preconfig; m {hi}Building Zsh...{rst}; \
-            CPPFLAGS='-I/usr/include -I/usr/local/include' CFLAGS='-g -O2 -Wall' LDFLAGS='-L/usr/libs -L/usr/local/libs' \
-            ./configure --prefix=\"$ZPFX\" \
-            --enable-multibyte \
-            --enable-function-subdirs \
-            --with-tcsetpgrp \
-            --enable-pcre \
-            --enable-cap \
-            --enable-zsh-secure-free \
-            >/dev/null && \
-            { type yodl &>/dev/null || \
-                { m -u2 {warn}WARNING{ehi}:{rst}{warn} No {cmd}yodl{warn}, manual pages will not be built.{rst}; ((0)); } && \
-                    { make install; ((1)); } || make install.bin install.fns install.modules } >/dev/null && \
-                        { type sudo &>/dev/null && sudo rm -f /bin/zsh && sudo cp -vf Src/zsh /bin/zsh; ((1)); } && \
-                            m {success}The build succeeded.{rst} || m {failure}The build failed.{rst}" \
-                            atpull"%atclone" nocompile countdown git \
-                            for @zsh-users/zsh
-    fi
-fi
 
-# git
-if builtin command -v make > /dev/null 2>&1; then
-    zinit wait'0' lucid nocompile \
-        id-as=git as='null|readurl' \
-        mv"%ID% -> git.tar.gz" \
-        atclone'ziextract --move --auto git.tar.gz && \
-        make -j $[$(grep cpu.cores /proc/cpuinfo | sort -u | sed "s/[^0-9]//g") + 1] prefix=$ZPFX all install && \
-        \rm -rf $ZINIT[SNIPPETS_DIR]/git/*' \
-        atpull"%atclone" \
-        dlink='/git/git/archive/v%VERSION%.tar.gz' \
-        for https://github.com/git/git/releases/
-fi
-
-{{ if eq .chezmoi.os "linux" }}
-# neovim
-zinit wait'0' lucid \
-    from'gh-r' ver'nightly' as'program' pick'nvim*/bin/nvim' \
-    atclone'echo "" > ._zinit/is_release' \
-    atpull'%atclone' \
-    run-atpull \
-    light-mode for @neovim/neovim
-# node (for coc.nvim)
-zinit wait'0' lucid id-as=node as='readurl|command' \
-    nocompletions extract \
-    pick'node*/bin/*' \
-    dlink='node-v%VERSION%-linux-x64.tar.gz' \
-    for https://nodejs.org/download/release/latest/
 zinit wait'1' lucid \
     from"gh-r" as'program' bpick'*linux_*.tar.gz' pick'gh*/**/gh' \
     atload"source $ZHOMEDIR/rc/configs/gh_atload.zsh" \
     light-mode for @cli/cli
-
-{{ end }}
-
-# tmux
-if ldconfig -p | grep -q 'libevent-' && ldconfig -p | grep -q 'libncurses'; then
-    zinit wait'0' lucid \
-        from"gh-r" as"program" bpick"tmux-*.tar.gz" pick"*/tmux" \
-        atclone"cd tmux*/; ./configure; make" \
-        atpull"%atclone" \
-        light-mode for @tmux/tmux
-elif builtin command -v tmux > /dev/null 2>&1 && test $(echo "$(tmux -V | cut -d' ' -f2) <= "2.5"" | tr -d '[:alpha:]' | bc) -eq 1; then
-    zinit wait'0' lucid \
-        from'gh-r' as'program' bpick'*AppImage*' mv'tmux* -> tmux' pick'tmux' \
-            light-mode for @tmux/tmux
-fi
 
 # env #
 zinit wait'1' lucid \
@@ -226,29 +155,6 @@ zinit wait'1' lucid \
     atload"source $ZHOMEDIR/rc/configs/hub_atload.zsh" \
     for @github/hub
 
-# snippet
-[[ $- == *i* ]] && stty -ixon
-zinit wait'1' lucid blockf nocompletions \
-    from"gh-r" as"program" pick"pet" bpick'*linux_amd64.tar.gz' \
-    atclone'chown -R $(id -nu):$(id -ng) .; zinit creinstall -q knqyf263/pet' \
-    atpull'%atclone' \
-    atload"source $ZHOMEDIR/rc/configs/pet_atload.zsh" \
-    for @knqyf263/pet
-
-# etc #
-zinit wait'1' lucid \
-    as"program" pick"emojify" \
-    light-mode for @mrowa44/emojify
-
-
-#==============================================================#
-# my plugins
-#==============================================================#
-zinit wait'1' lucid \
-    atload"source $ZHOMEDIR/rc/configs/mru.zsh_atload.zsh" \
-    light-mode for "$ZHOMEDIR/rc/cplugins/mru.zsh/"
-
-
 #==============================================================#
 # Analytics
 #==============================================================#
@@ -257,13 +163,6 @@ if [[ "${DISABLE_WAKATIME}" == "true" ]]; then
         atpull'pip install wakatime' \
         light-mode for @sobolevn/wakatime-zsh-plugin
 fi
-
-
-#==============================================================#
-# completion
-#==============================================================#
-zinit wait'2' lucid \
-    light-mode for "$ZHOMEDIR/rc/cplugins/command_config.zsh"
 
 #==============================================================#
 # local plugins

@@ -189,14 +189,14 @@ local tasklist_buttons = gears.table.join(
 -- ===================================================================
 
 local song_title = wibox.widget {
-    markup = '-------------------',
+    markup = '--',
     align = 'center',
     valign = 'center',
     widget = wibox.widget.textbox
 }
 
 local song_artist = wibox.widget {
-    markup = '-------------------',
+    markup = '--',
     align = 'center',
     valign = 'center',
     widget = wibox.widget.textbox
@@ -373,8 +373,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     widget = wibox.container.margin
                 },
                 {
-                    playerctl_bar,
-                    -- nil,
+                    -- playerctl_bar,
+                    nil,
                     margins = dpi(5),
                     widget = wibox.container.margin
                 }

@@ -2,6 +2,7 @@ awesome-git
 awmtt
 balena-etcher
 bitwarden
+bluez-git
 cacheclean
 caffeine-ng-git
 cef-minimal
@@ -12,7 +13,6 @@ dxvk-bin
 fet.sh-git
 figma-linux
 figma-linux-font-helper
-fix-bt-a2dp
 gofish
 gyazo
 ipscan
@@ -34,6 +34,7 @@ skypeforlinux-stable-bin
 slack-desktop
 spotify
 spotify-tray-git
+tealdeer-git
 teams
 ttf-mononoki
 visual-studio-code-bin

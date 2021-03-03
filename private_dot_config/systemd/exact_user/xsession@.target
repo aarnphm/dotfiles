@@ -1,4 +1,0 @@
-[Unit]
-Description=X session on %I
-Wants=xsettingsd@%i.service
-Wants=xss-lock@%i.service

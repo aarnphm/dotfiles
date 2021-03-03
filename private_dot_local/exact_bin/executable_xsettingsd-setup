@@ -3,6 +3,7 @@
 DISPLAY=${DISPLAY%.0}
 
 # get dpis for each screen
+cursors=12
 dpis=""
 for info in $(xrandr --current | sed -n 's/^\([^ ]\{1,\}\)* connected.* \([0-9]\{1,\}\)x.* \([0-9]\{1,\}\)mm x .*/\1,\2,\3/p'); do
     output=${info%%,*}
@@ -20,12 +21,12 @@ for info in $(xrandr --current | sed -n 's/^\([^ ]\{1,\}\)* connected.* \([0-9]\
     [ $rounded -gt 192 ] && rounded=$(((corrected + 48) / 96 * 96))
     [ $rounded -lt 96 ] && rounded=96
     dpis="$dpis$rounded "
-    echo "$output: ${dpi}dpi (corrected to ${corrected}dpi, rounded to ${rounded}dpi)" >&2
+    echo "$output: ${dpi}dpi [ corrected to ${corrected}dpi, rounded to ${rounded}dpi ]" >&2
 done
 
 # Use first screen DPI
 dpi=${dpis%% *}
-dpi=${dpi:-82}
+dpi=${dpi:-96}
 
 echo "using ${dpi}dpi" >&2
 xrandr --dpi $dpi
@@ -33,13 +34,11 @@ xrandr --dpi $dpi
 # Build xsettingsd
 {
     cat  ~/.config/awesome/xsettingsd
-    echo Xft/DPI $(( $dpi ))
+    echo Xft/DPI $(( $dpi/96 ))
     echo Xft/RGBA \"$( [ $dpi -gt 144 ] && echo none || echo rgb )\"
-    echo Gdk/WindowScalingFactor $(( $dpi/117 ))
+    echo Gdk/WindowScalingFactor $(( $dpi/96 ))
 } > ~/.xsettingsd
-
-# Signal xsettingsd
-# systemctl --user reload xsettingsd@$(systemd-escape -- "$DISPLAY").service
 
 # Also use xrdb for very old stuff
 echo Xft.dpi: $dpi | xrdb -merge
+echo Xcursor.size: $current | xrdb -merge

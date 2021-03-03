@@ -2,7 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-git config --global include.path $HOME/.config/git/gitconfig
+# git config that we can all agree about
+git config --global include.path ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig
+git config --global core.excludesFile '${XDG_CONFIG_HOME}/git/gitignore'
 
 {{ if .personal }}
 # bitwarden cli yarn and typescript
@@ -18,11 +20,13 @@ if [[ `command -v nnn` ]]; then
     git clone https://github.com/sebastiencs/icons-in-terminal.git && cd icons-in-terminal && ./install.sh
 fi
 
+{{   if eq .chezmoi.os "linux" }}
 # install lotion
 if [[ `command -v curl` ]]; then
     curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
     sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
 fi
+{{   end }}
 
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then

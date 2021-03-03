@@ -4,12 +4,7 @@
 
 ###     history     ###
 function history-all() {
-    history -E 1  
-}
-
-function zshaddhistory() {
-    emulate -L zsh
-    [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]]
+    history -E 1
 }
 
 function __exec_command_with_tmux() {
@@ -42,7 +37,7 @@ function ssh() {
     fi
 
     case $TERM in
-        *xterm*|rxvt*|(dt|k|E)term|screen*)
+        *xterm*|rxvt*|(dt|k|E)term|*kitty*|screen*)
             print -Pn "\e]2;ssh $@\a"
             ;;
     esac
@@ -82,10 +77,6 @@ function print_error() {
 function print_debug() {
     echo -e "\e[1;34m$*\e[m" # blue
 }
-
-###     delta      ###
-autoload -U delta
-
 
 #==============================================================#
 ##         Override Shell Functions                           ##
@@ -143,7 +134,7 @@ function show_buffer_stack() {
 function precmd_prompt() {
     [[ -t 1 ]] || return
     case $TERM in
-        *xterm*|rxvt*|(dt|k|E)term|screen*)
+        *xterm*|rxvt*|(dt|k|E)term|*kitty*|screen*)
             print -Pn "\e]2;[%n@%m %d]\a"
             ;;
     esac
@@ -257,13 +248,15 @@ function zsh-profiler() {
     ZSHRC_PROFILE=1 zsh -i -c zprof
 }
 
-function timeshell() {
-  shell=${1-$SHELL}
-  for i in $(seq 1 10); do time $shell -i -c exit; done
+function zsh-detailed() {
+    logf=$(ls -tm $ZDATADIR/logs | head -n 1)
+    sed -E -n '/PROFILE_STARTUP/s/false/true/' $ZDOTDIR/.zshrc
+    dtime="$HOME/.local/bin/sort-timings-zsh $ZDATADIR/logs/$logf | head"
+    builtin emulate zsh -i -c $dtime
 }
 
-function zsh-detailed() {
-    ZSHRC_DETAILED=1 zsh -i
+function timeshell() {
+    for i in $(seq 1 10); do time $SHELL -i -c exit; done
 }
 
 ## nnn ##
@@ -293,12 +286,12 @@ function nnn-preview(){
         tmux split-window -e "NNN_FIFO=$NNN_FIFO" -dh "$preview_cmd"
 
     # Use `alacritty` as a preview window
-    elif (which termite &> /dev/null); then
-        termite --exec="$preview_cmd"
+elif (which termite &> /dev/null); then
+    termite --exec="$preview_cmd"
 
     # Unable to find a program to use as a preview window
-    else
-        echo "unable to open preview, please install tmux or termite"
+else
+    echo "unable to open preview, please install tmux or termite"
     fi
 
     nnn "$@"
@@ -329,8 +322,8 @@ n ()
     nnn "$@"
 
     if [ -f "$NNN_TMPFILE" ]; then
-            . "$NNN_TMPFILE"
-            rm -f "$NNN_TMPFILE" > /dev/null
+        . "$NNN_TMPFILE"
+        rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
 
@@ -338,21 +331,16 @@ n ()
 # the `.git` directory, listing directories first. The output gets piped into
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
+# tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 function tre() {
-	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
-}
-
-function change-extension() {
-    foreach f (**/*.$1)
-        mv $f $f:r.$2
-    end
+    tree -aC -I $(cat $XDG_CONFIG_HOME/git/gitignore | egrep -v "^#.*$|^[[:space:]]*$" | tr "\\n" "|") --dirsfirst "$@" | less -FRX;
 }
 
 hash git &>/dev/null;
 if [ $? -eq 0 ]; then
-	function diff() {
-		git diff --no-index --color-words "$@";
-	}
+    function diff() {
+        git diff --no-index --color-words "$@";
+    }
 fi;
 
 ## docker ##
@@ -365,39 +353,39 @@ function dockerclean {
 
 # Select a docker container to remove
 function drm() {
-  local cid
-  cid=$(docker ps -a | sed 1d | fzf -q "$1" | awk '{print $1}')
+    local cid
+    cid=$(docker ps -a | sed 1d | fzf -q "$1" | awk '{print $1}')
 
-  [ -n "$cid" ] && docker rm "$cid"
+    [ -n "$cid" ] && docker rm "$cid"
 }
 
 # Select a running docker container to stop
 function ds() {
-  local cid
-  cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
+    local cid
+    cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
 
-  [ -n "$cid" ] && docker stop "$cid"
+    [ -n "$cid" ] && docker stop "$cid"
 }
 
 # Load .env file into shell session for environment variables
 
 function envup() {
-  if [ -f .env ]; then
-    export $(sed '/^ *#/ d' .env)
-  else
-    echo 'No .env file found' 1>&2
-    return 1
-  fi
+    if [ -f .env ]; then
+        export $(sed '/^ *#/ d' .env)
+    else
+        echo 'No .env file found' 1>&2
+        return 1
+    fi
 }
 
 # Displays user owned processes status.
 function psu {
-  ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${(@)argv[2,-1]}"
+    ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${(@)argv[2,-1]}"
 }
 
 # Create a new directory and enter it
 function mkd() {
-	mkdir -p "$@" && cd "$_";
+    mkdir -p "$@" && cd "$_";
 }
 
 function listen {
@@ -406,16 +394,16 @@ function listen {
 
 # Determine size of a file or total size of a directory
 function fs() {
-	if du -b /dev/null > /dev/null 2>&1; then
-		local arg=-sbh;
-	else
-		local arg=-sh;
-	fi
-	if [[ -n "$@" ]]; then
-		du $arg -- "$@";
-	else
-		du $arg .[^.]* ./*;
-	fi;
+    if du -b /dev/null > /dev/null 2>&1; then
+        local arg=-sbh;
+    else
+        local arg=-sh;
+    fi
+    if [[ -n "$@" ]]; then
+        du $arg -- "$@";
+    else
+        du $arg .[^.]* ./*;
+    fi;
 }
 
 function fe(){

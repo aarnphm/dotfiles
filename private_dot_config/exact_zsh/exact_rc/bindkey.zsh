@@ -80,4 +80,3 @@ bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 bindkey '^X*' expand-word
 # stack command
 zle -N show_buffer_stack
-
