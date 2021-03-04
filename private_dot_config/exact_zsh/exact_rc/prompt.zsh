@@ -1,9 +1,9 @@
 #==============================================================#
-##          Prompt Configuration                              ##
+##          default                                           ##
 #==============================================================#
 
 # Prompt symbol
-PROMPT_SYMBOL="➜"
+SIMPLE_PROMPT_SYMBOL="➜"
 VICMD_SYMBOL="[vi]"
 GIT_UP_ARROW="⇡"
 GIT_DOWN_ARROW="⇣"
@@ -18,7 +18,6 @@ GIT_STATUS_STAGED=red
 GIT_STATUS_UNSTAGED=yellow
 GIT_PROMPT_SHA=green
 
-# functions
 function __host {
     me="%n"
     if [[ -n $SSH_CONNECTION ]]; then

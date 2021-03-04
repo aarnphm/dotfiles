@@ -50,8 +50,13 @@ source "$ZRCDIR/completion.zsh"
 #--------------------------------------------------------------#
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
-source "$ZRCDIR/prompt.zsh"
-
+if [[ ! -d $ZRCDIR/simple ]]; then
+    source "$ZRCDIR/prompt.zsh"
+else
+    autoload -U promptinit
+    promptinit
+    prompt simple
+fi
 
 #--------------------------------------------------------------#
 ##          Function                                          ##

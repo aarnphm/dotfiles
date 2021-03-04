@@ -1,0 +1,8 @@
+require("daemon.battery")
+require("daemon.brightness")
+require("daemon.cpu")
+require("daemon.disk")
+require("daemon.playerctl")
+require("daemon.ram")
+require("daemon.temp")
+require("daemon.volume")

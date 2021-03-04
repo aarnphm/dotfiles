@@ -1,5 +1,5 @@
 local awful = require("awful")
-local lay   = awful.layout.layouts
+local layouts   = awful.layout.layouts
 local defaults = {
     -- ===================================================================
     -- modkey (Super) and altkey (Alt)
@@ -31,14 +31,15 @@ local defaults = {
     -- ===================================================================
     -- Tag definitions for screens
     -- ===================================================================
+    -- TODO: are there others way to do this without manual labour?
     tags = {
         {
-            names = { "", " ", " ", " ", " " },
-            layout = {lay[2], lay[3], lay[8], lay[10], lay[13]},
+            names  = { "", " ", " ", " ", " " },
+            layout = {layouts[2], layouts[3], layouts[8], layouts[10], layouts[13]},
         },
         {
-            names = { "", " ", " ", " ", " " },
-            layout = {lay[4],lay[4],lay[4],lay[10],lay[4]},
+            names  = { "", " ", " ", " ", " " },
+            layout = {layouts[4],layouts[4],layouts[4],layouts[10],layouts[4]},
         }
     },
 }

@@ -21,13 +21,7 @@ alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 
 # List all files colorized in long format
-{{ if .personal }}
-{{-   $local_ls:=`ls` -}}
-{{-   if eq .chezmoi.os "darwin" -}}
-{{-     $local_ls:=`gls` -}}
-{{-   end -}}
-alias la="{{ $local_ls }} ${LS_OPTS} ${colorflag}"
-{{ end -}}
+alias la="ls ${LS_OPTS} ${colorflag}"
 {{ if `command -v nnn` }}
 # nnn intensifies
 alias np="nnn-preview"
@@ -96,7 +90,9 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 # move to functions
 alias dotfiles="cd $CHEZMOI_DIR"
 # mcmaster vpn connect via studentvpn.mcmaster.ca
-alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | head -n1`"
+if [[ -d $CS_PATH/mcmaster ]]; then
+    alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | head -n1`"
+fi
 # bentoml
 alias bentodir="$CS_PATH/BentoML"
 # zsh config directory

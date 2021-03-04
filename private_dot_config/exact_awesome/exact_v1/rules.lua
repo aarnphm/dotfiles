@@ -1,68 +1,103 @@
 local awful     = require("awful")
 local beautiful = require("beautiful")
-local def       = require("defaults")
+local defaults  = require("defaults")
+-- updates to newer api
+local ruled     = require("ruled")
 
 -- ===================================================================
 -- Define sets rules
 -- ===================================================================
-rules = {
-    -- All clients will match this rule.
-    {
-        rule = {},
+
+ruled.client.connect_signal("request::rules", function()
+
+    -- ===================================================================
+    -- Global
+    -- ===================================================================
+    ruled.client.append_rule{
+        id         = "global",
+        rule       = {},
         properties = {
-            border_width = beautiful.border_width,
-            border_color = beautiful.border_normal,
-            focus = awful.client.focus,
-            raise = true,
-            keys = clientkeys,
-            buttons = clientbuttons,
-            screen = awful.screen.preferred,
-            -- placement can also + awful.placement.no_overlap + awful.placement.no_offscreen
-            placement = awful.placement.centered
+            border_width     = beautiful.border_width,
+            border_color     = beautiful.border_normal,
+            focus            = awful.client.focus,
+            raise            = false,
+            size_hints_honor = true,
+            maximized        = false,
+            placement        = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
         }
-    },{rule = {}, properties = {}, callback = awful.client.setslave}, -- so items in tasklist have the right order
-    {
-        rule_any = {
-            class = {"Nm-connection-editor", "Gnome-disks", "caffeine", "Arandr", "Zotero", "Blueman-manager",
-                "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino",
-            "Zoom", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer","Xscreensaver-Demo"},
+    }
+
+    -- ===================================================================
+    -- Tasklist order
+    -- ===================================================================
+    ruled.client.append_rule{
+        id         = "tasklist_order",
+        rule       = {},
+        properties = {},
+        callback   = awful.client.setslave
+    }
+
+    -- ===================================================================
+    -- Float clients
+    -- ===================================================================
+    ruled.client.append_rule{
+        id         = "floating",
+        rule_any   = {
+            class = {"Nm-connection-editor", "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer","xscreensaver-demo", "Termite", "UXTerm", "XTerm"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
-            role  = {"pop-up"},
+            role  = {"Popup"},
             type  = {"dialog"}
         },
         properties = {floating = true}
-    },
-    {
-        rule = {class = "Spotify"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = def.tags[1].names[4], switchtotag = true}
-    },
-    {
-        rule = {class = "Kitty"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = def.tags[1].names[1], switchtotag = true}
-    },
-    {
-        rule_any = {class = {"Alacritty", "Termite", "Kitty"}},
-        properties = {tag = def.tags[1].names[1], switchtotag = true}
-    },
-    {
-        rule_any = {instance={"chromium","firefox"}},
-        properties = {tag = def.tags[1].names[3], switchtotag = true}
-    },
-    {
-        rule_any = {class="Microsoft Teams - Preview", instance = {"zoom", "discord", "slack", "skype","caprine"}},
-        properties = {screen=screen.count()>1 and 2 or 1, tag = def.tags[1].names[5], switchtotag = true}
-    },
-    {rule = {class = "Gimp"}, properties = {maximized = true, tag=def.tags[1].names[2], switchtotag=true}},
-    {rule = {class = "obs"}, properties = {screen=screen.count()>1 and 2 or 1, tag=def.tags[1].names[2], switchtotag=true}},
-    -- Rofi
-    {rule = {instance = "rofi"}, properties = {maximized = false, ontop = true}},
-    -- other terminal
-    {rule = {class = "Termite"}, properties = {maximized = false, ontop = true, floating = true}},
-    -- File chooser dialog
-    {
-        rule_any = {role = "GtkFileChooserDialog"},
-        properties = {floating = true, width = def.screen_width * 0.55, height = def.screen_height * 0.65}
     }
-}
 
-return rules
+    -- ===================================================================
+    -- Application specific rules
+    -- ===================================================================
+    ruled.client.append_rule {
+        id = "spotify",
+        rule = {class = "Spotify"},
+        properties = {screen = 2, tag = defaults.tags[1].names[4], switchtotag = true}
+    }
+
+    ruled.client.append_rule {
+        id = "terminal",
+        rule_any = {class = {"Alacritty", "Kitty", "St", "UXTerm", "XTerm"}},
+        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[1], switchtotag = true}
+    }
+    ruled.client.append_rule {
+        id = "terminal",
+        rule = {class = "Termite"},
+        properties = {ontop=true, screen = awful.screen.focused(), switchtotag = true}
+    }
+
+    ruled.client.append_rule {
+        id = "meeting",
+        rule_any = {class={"Zoom","Microsoft Teams - Preview"}, instance = {"discord", "slack", "skype","caprine"}},
+        properties = {screen=screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
+    }
+
+    ruled.client.append_rule{
+        id = "gimp",
+        rule = {class = "Gimp"},
+        properties = {maximized = true, tag=defaults.tags[1].names[2], switchtotag=true}
+    }
+
+    ruled.client.append_rule{
+        id = "obs",
+        rule = {class = "obs"},
+        properties = {screen=screen.count()>1 and 2 or 1, tag=defaults.tags[1].names[2], switchtotag=true}
+    }
+    -- Rofi
+    ruled.client.append_rule{
+        id = "rofi",
+        rule = {instance = "rofi"},
+        properties = {maximized = false, ontop = true},
+    }
+    -- File chooser dialog
+    ruled.client.append_rule{
+        id = "chooser_dialog",
+        rule_any = {role = "GtkFileChooserDialog"},
+        properties = {floating = true, width = defaults.screen_width * 0.55, height = defaults.screen_height * 0.65}
+    }
+end)

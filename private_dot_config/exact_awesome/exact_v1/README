@@ -1,1 +1,8 @@
-backup v1
+awesome config
+
+TODO: 
+- move fallback to a separate git directory
+- show file config
+
+[exact_v1](https://github.com/aarnphm/dotfiles/tree/main/private_dot_config/exact_awesome/exact_v1) are for fallback when main config fails
+
