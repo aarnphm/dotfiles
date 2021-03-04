@@ -1,10 +1,10 @@
 {{/* boolean feature tags */}}
+{{- $personal := false -}}{{/* true if this machine should have personal secrets from BitWarden */}}
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
 {{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
-{{- $personal := false -}}{{/* true if this machine should have personal secrets from BitWarden */}}
-{{- $wm := "awesome" -}}{{/* current windows manager in use (default to awesome) */}}
 {{- $city := "Hanoi" -}}{{/* city inputs for weather */}}
+{{- $wm := env "XDG_SESSION_DESKTOP" -}}{{/* current windows manager in use (default to awesome) */}}
 
 {{/* work around unreliable hostname on darwin */}}
 {{- $hostname := .chezmoi.hostname -}}
@@ -14,15 +14,14 @@
 {{-     $hostname = "APPL-AIR12" -}}
 {{-   end -}}
 {{- end -}}
-
 {{- if not $transient -}}
 {{-   if eq $hostname "APPL-AIR12" -}}
 {{-     $personal = true -}}
-{{-     $city = promptString "City weather"}}
+{{-     $wm := "none" -}}
+{{-     $city = promptString "Current city"}}
 {{-   else if eq $hostname "0x6161726E70" -}}
 {{-     $personal = true -}}
-{{-     $wm = promptString "wm [awesome | i3]" -}}
-{{-     $city = promptString "City weather" -}}
+{{-     $city = promptString "Current city" -}}
 {{-   else -}}
 {{-     $headless = promptBool "headless" -}}
 {{-     $transient = promptBool "transient" -}}
@@ -31,10 +30,10 @@
 {{- end -}}
 
 [data]
-  headless = {{ $headless }}
   wm = {{ $wm | quote }}
   city = {{ $city | quote }}
   hostname = {{ $hostname | quote }}
+  personal = {{ $personal }}
+  headless = {{ $headless }}
   transient = {{ $transient }}
   kubernetes = {{ $kubernetes }}
-  personal = {{ $personal }}
