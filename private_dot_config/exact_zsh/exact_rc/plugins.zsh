@@ -147,10 +147,6 @@ zinit wait'1' lucid \
     light-mode for @direnv/direnv
 
 zinit wait'1' lucid \
-    pick"asdf.sh" \
-    light-mode for @asdf-vm/asdf
-
-zinit wait'1' lucid \
     from"gh-r" as"program" mv"hub-*/bin/hub -> hub" pick"hub" \
     atload"source $ZHOMEDIR/rc/configs/hub_atload.zsh" \
     for @github/hub

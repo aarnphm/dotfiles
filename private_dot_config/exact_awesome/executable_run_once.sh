@@ -23,11 +23,12 @@ if (builtin command -v xdg_menu); then
 fi
 
 # background daemon
-run picom -f --experimental-backends
+run redshift -v
 run playerctld daemon
 run ibus-daemon -drx
 run nitrogen --restore
 run unclutter -idle 1
+run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
 run nm-applet

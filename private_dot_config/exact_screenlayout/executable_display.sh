@@ -9,4 +9,3 @@ fi
 [ -x "$dp" ] && . "$dp"
 
 unset dp
-

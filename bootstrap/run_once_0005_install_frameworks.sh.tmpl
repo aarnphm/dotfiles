@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 # git config that we can all agree about
 git config --global include.path ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig
-git config --global core.excludesFile '${XDG_CONFIG_HOME}/git/gitignore'
+git config --global core.excludesFile ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitignore
 
 {{ if .personal }}
 # bitwarden cli yarn and typescript

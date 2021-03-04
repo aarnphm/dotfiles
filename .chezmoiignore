@@ -20,9 +20,9 @@ private_dot_config/exact_zsh/rc/cplugins/fzf-preview.sh
 .ssh/known_hosts
 .ssh/agent-environment
 .config/xscreensaver
-.vim/undo
-.vim/plugins
-
+.config/vim/undo
+.config/vim/plugins
+.config/nnn/.lastd
 .config/vifm/vifminfo.json
 
 {{ if or (ne .chezmoi.os "linux") (not .personal) }}

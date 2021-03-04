@@ -16,6 +16,7 @@ automake
 base
 bat
 bbswitch-dkms
+biber
 bind
 binutils
 bison
@@ -41,6 +42,7 @@ flex
 fortune-mod
 fzf
 gcc
+gcc-fortran
 gimp
 git
 git-lfs
@@ -99,7 +101,6 @@ networkmanager
 nginx
 nitrogen
 nm-connection-editor
-nnn
 nodejs
 noto-fonts-emoji
 npm
@@ -128,9 +129,11 @@ pulseaudio-bluetooth
 pyenv
 qt5ct
 qt6-base
+r
 redshift
 ripgrep
 rofi
+rsync
 samba
 screen
 seahorse
@@ -212,4 +215,8 @@ xorg-xwud
 xsecurelock
 xsettingsd
 zathura
+zathura-cb
+zathura-djvu
+zathura-pdf-mupdf
+zathura-ps
 zsh

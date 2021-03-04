@@ -24,9 +24,9 @@ alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 alias la="ls ${LS_OPTS} ${colorflag}"
 {{ if `command -v nnn` }}
 # nnn intensifies
-alias np="nnn-preview"
 alias N="sudo -E nnn -dDH"
-alias nl="n -dDeUHatT"
+alias l="n"
+alias lp="nnn -P p"
 {{ end }}
 
 # editors
@@ -100,7 +100,7 @@ alias zcdir="$CHEZMOI_DIR/private_dot_config/exact_zsh"
 alias zdir="$CHEZMOI_DIR/private_dot_zsh"
 {{- if and (eq .wm "awesome") (.personal) }}
 alias adir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
-alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
+alias aconf="$EDITOR -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 {{- end }}
 
@@ -210,7 +210,7 @@ fi
 alias tmux="TERM=xterm-256color ${aliases[tmux]:-tmux} ${TMUX_OPTS}"
 
 # Safe ops. Ask the user before doing anything destructive.
-alias rmi="${aliases[rm]:-rm} -i"
+alias rmi="/usr/bin/rm -i"
 alias mvi="${aliases[mv]:-mv} -i"
 alias cpi="${aliases[cp]:-cp} -i"
 alias lni="${aliases[ln]:-ln} -i"
