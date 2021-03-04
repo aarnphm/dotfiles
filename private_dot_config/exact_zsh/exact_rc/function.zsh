@@ -253,11 +253,12 @@ function zsh-detailed() {
     logf=$(ls -tm $ZDATADIR/logs | head -n 1)
     sed -E -n '/PROFILE_STARTUP/s/false/true/' $ZDOTDIR/.zshrc
     dtime="$HOME/.local/bin/sort-timings-zsh $ZDATADIR/logs/$logf | head"
+    echo "Getting runtime..."
     builtin emulate zsh -i -c $dtime
 }
 
 function timeshell() {
-    for i in $(seq 1 10); do time $SHELL -i -c exit; done
+    TIMESHELL=1 zsh -c 'for i in $(seq 1 10); do time ${SHELL} -i -c exit; done'
 }
 
 ## nnn ##

@@ -50,13 +50,16 @@ source "$ZRCDIR/completion.zsh"
 #--------------------------------------------------------------#
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
-if [[ ! -d $ZRCDIR/simple ]]; then
-    source "$ZRCDIR/prompt.zsh"
-else
-    autoload -U promptinit
-    promptinit
-    prompt simple
+if [[ "$TIMESHELL" == "" ]]; then
+    if [[ ! -d $ZRCDIR/simple ]]; then
+        source "$ZRCDIR/prompt.zsh"
+    else
+        autoload -U promptinit
+        promptinit
+        prompt simple
+    fi
 fi
+
 
 #--------------------------------------------------------------#
 ##          Function                                          ##

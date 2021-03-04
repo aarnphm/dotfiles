@@ -22,180 +22,9 @@
 # \e[K  => clears everything after the cursor on the current line
 # \e[2K => clear everything on the current line
 
-
-# Turns seconds into human readable time.
-# 165392 => 1d 21h 56m 32s
-# https://github.com/sindresorhus/pretty-time-zsh
-prompt_simple_human_time_to_var() {
-	local human total_seconds=$1 var=$2
-	local days=$(( total_seconds / 60 / 60 / 24 ))
-	local hours=$(( total_seconds / 60 / 60 % 24 ))
-	local minutes=$(( total_seconds / 60 % 60 ))
-	local seconds=$(( total_seconds % 60 ))
-	(( days > 0 )) && human+="${days}d "
-	(( hours > 0 )) && human+="${hours}h "
-	(( minutes > 0 )) && human+="${minutes}m "
-	human+="${seconds}s"
-
-	# Store human readable time in a variable as specified by the caller
-	typeset -g "${var}"="${human}"
-}
-
-# Stores (into prompt_simple_cmd_exec_time) the execution
-# time of the last command if set threshold was exceeded.
-# This will shows execution time regardless, turn it off 
-# with SIMPLE_CMD_MAX_EXEC_TIME
-prompt_simple_check_cmd_exec_time() {
-	integer elapsed
-	(( elapsed = EPOCHSECONDS - ${prompt_simple_cmd_timestamp:-$EPOCHSECONDS} ))
-	typeset -g prompt_simple_cmd_exec_time=
-	(( elapsed > ${SIMPLE_CMD_MAX_EXEC_TIME:-0} )) && {
-		prompt_simple_human_time_to_var $elapsed "prompt_simple_cmd_exec_time"
-	}
-}
-
-prompt_simple_reset_prompt() {
-	if [[ $CONTEXT == cont ]]; then
-		# When the context is "cont", PS2 is active and calling
-		# reset-prompt will have no effect on PS1, but it will
-		# reset the execution context (%_) of PS2 which we don't
-		# want. Unfortunately, we can't save the output of "%_"
-		# either because it is only ever rendered as part of the
-		# prompt, expanding in-place won't work.
-		return
-	fi
-
-	zle && zle .reset-prompt
-}
-
-prompt_simple_reset_prompt_symbol() {
-	prompt_simple_state[prompt]=${SIMPLE_PROMPT_SYMBOL:-➜}
-}
-
-prompt_simple_update_vim_prompt_widget() {
-	setopt localoptions noshwordsplit
-	prompt_simple_state[prompt]=${${KEYMAP/vicmd/${SIMPLE_PROMPT_VICMD_SYMBOL:-[vi]}}/(main|viins)/${SIMPLE_PROMPT_SYMBOL:-➜}}
-
-	prompt_simple_reset_prompt
-}
-
-prompt_simple_reset_vim_prompt_widget() {
-	setopt localoptions noshwordsplit
-	prompt_simple_reset_prompt_symbol
-
-	# We can't perform a prompt reset at this point because it
-	# removes the prompt marks inserted by macOS Terminal.
-}
-
-prompt_simple_preexec() {
-	if [[ -n $prompt_simple_git_fetch_pattern ]]; then
-		# Detect when Git is performing pull/fetch, including Git aliases.
-		local -H MATCH MBEGIN MEND match mbegin mend
-		if [[ $2 =~ (git|hub)\ (.*\ )?($prompt_simple_git_fetch_pattern)(\ .*)?$ ]]; then
-			# We must flush the async jobs to cancel our git fetch in order
-			# to avoid conflicts with the user issued pull / fetch.
-			async_flush_jobs 'prompt_simple'
-		fi
-	fi
-
-	typeset -g prompt_simple_cmd_timestamp=$EPOCHSECONDS
-}
-
-# Change the colors if their value are different from the current ones.
-prompt_simple_set_colors() {
-	local color_temp key value
-	for key value in ${(kv)prompt_simple_colors}; do
-		zstyle -t ":prompt:simple:$key" color "$value"
-		case $? in
-			1) # The current style is different from the one from zstyle.
-				zstyle -s ":prompt:simple:$key" color color_temp
-				prompt_simple_colors[$key]=$color_temp ;;
-			2) # No style is defined.
-				prompt_simple_colors[$key]=$prompt_simple_colors_default[$key] ;;
-		esac
-	done
-}
-
-prompt_simple_preprompt_render() {
-	setopt localoptions noshwordsplit
-
-	# Set color for Git branch/dirty status and change color if dirty checking has been delayed.
-	local git_color=$prompt_simple_colors[git:branch]
-	local git_dirty_color=$prompt_simple_colors[git:dirty]
-	[[ -n ${prompt_simple_git_last_dirty_check_timestamp+x} ]] && git_color=$prompt_simple_colors[git:branch:cached]
-
-	# Initialize the preprompt array.
-	local -a preprompt_parts
-
-	# Username and machine, if applicable.
-	[[ -n $prompt_simple_state[username] ]] && preprompt_parts+=($prompt_simple_state[username])
-
-	# Set the path.
-	preprompt_parts+=('%F{${prompt_simple_colors[path]}}%~%f')
-
-	# Git branch and dirty status info.
-	typeset -gA prompt_simple_vcs_info
-	if [[ -n $prompt_simple_vcs_info[branch] ]]; then
-		preprompt_parts+=("%F{$git_color}"'${prompt_simple_vcs_info[branch]}'"%F{$git_dirty_color}"'${prompt_simple_git_dirty}%f')
-	fi
-	# Git action (for example, merge).
-	if [[ -n prompt_simple_vcs_info[action] ]]; then
-		preprompt_parts+=("%F{$prompt_simple_colors[git:action]}"'$prompt_simple_vcs_info[action]%f')
-	fi
-	# Git pull/push arrows.
-	if [[ -n $prompt_simple_git_arrows ]]; then
-		preprompt_parts+=('%F{$prompt_simple_colors[git:arrow]}${prompt_simple_git_arrows}%f')
-	fi
-
-	# Execution time.
-	[[ -n $prompt_simple_cmd_exec_time ]] && preprompt_parts+=('%F{$prompt_simple_colors[execution_time]}${prompt_simple_cmd_exec_time}%f')
-
-	local cleaned_ps1=$PROMPT
-	local -H MATCH MBEGIN MEND
-	if [[ $PROMPT = *$prompt_newline* ]]; then
-		# Remove everything from the prompt until the newline. This
-		# removes the preprompt and only the original PROMPT remains.
-		cleaned_ps1=${PROMPT##*${prompt_newline}}
-	fi
-	unset MATCH MBEGIN MEND
-
-	# Construct the new prompt with a clean preprompt.
-	local -ah ps1
-	ps1=(
-		${(j. .)preprompt_parts}  # Join parts, space separated.
-		$prompt_newline           # Separate preprompt and prompt.
-		$cleaned_ps1
-	)
-
-	PROMPT="${(j..)ps1}"
-
-	# Expand the prompt for future comparision.
-	local expanded_prompt
-	expanded_prompt="${(S%%)PROMPT}"
-
-	typeset -g prompt_simple_last_prompt=$expanded_prompt
-}
-
-prompt_simple_precmd() {
-	setopt localoptions noshwordsplit
-
-	# Check execution time and store it in a variable.
-	prompt_simple_check_cmd_exec_time
-	unset prompt_simple_cmd_timestamp
-
-	# Modify the colors if some have changed..
-	prompt_simple_set_colors
-
-	# Perform async Git dirty check and fetch.
-	prompt_simple_async_tasks
-
-	# Make sure VIM prompt is reset.
-	prompt_simple_reset_prompt_symbol
-
-	# Print the preprompt.
-	prompt_simple_preprompt_render "precmd"
-
-}
+#==============================================================#
+##          Handles Git logics                                ##
+#==============================================================#
 
 prompt_simple_async_git_aliases() {
 	setopt localoptions noshwordsplit
@@ -325,7 +154,6 @@ prompt_simple_async_git_arrows() {
 	setopt localoptions noshwordsplit
 	command git rev-list --left-right --count HEAD...@'{u}'
 }
-
 
 # Try to lower the priority of the worker so that disk heavy operations
 # like `git status` has less impact on the system responsivity.
@@ -546,6 +374,152 @@ prompt_simple_async_callback() {
 	esac
 }
 
+#==============================================================#
+##         Drawing logics                                     ##
+#==============================================================#
+# Turns seconds into human readable time.
+# 165392 => 1d 21h 56m 32s
+# https://github.com/sindresorhus/pretty-time-zsh
+prompt_simple_human_time_to_var() {
+	local human total_seconds=$1 var=$2
+	local days=$(( total_seconds / 60 / 60 / 24 ))
+	local hours=$(( total_seconds / 60 / 60 % 24 ))
+	local minutes=$(( total_seconds / 60 % 60 ))
+	local seconds=$(( total_seconds % 60 ))
+	(( days > 0 )) && human+="${days}d "
+	(( hours > 0 )) && human+="${hours}h "
+	(( minutes > 0 )) && human+="${minutes}m "
+	human+="${seconds}s"
+
+	# Store human readable time in a variable as specified by the caller
+	typeset -g "${var}"="${human}"
+}
+
+# Stores (into prompt_simple_cmd_exec_time) the execution
+# time of the last command if set threshold was exceeded.
+# This will shows execution time regardless, turn it off 
+# with SIMPLE_CMD_MAX_EXEC_TIME
+prompt_simple_check_cmd_exec_time() {
+	integer elapsed
+	(( elapsed = EPOCHSECONDS - ${prompt_simple_cmd_timestamp:-$EPOCHSECONDS} ))
+	typeset -g prompt_simple_cmd_exec_time=
+	(( elapsed > ${SIMPLE_CMD_MAX_EXEC_TIME:-0} )) && {
+		prompt_simple_human_time_to_var $elapsed "prompt_simple_cmd_exec_time"
+	}
+}
+
+prompt_simple_reset_prompt() {
+	if [[ $CONTEXT == cont ]]; then
+		# When the context is "cont", PS2 is active and calling
+		# reset-prompt will have no effect on PS1, but it will
+		# reset the execution context (%_) of PS2 which we don't
+		# want. Unfortunately, we can't save the output of "%_"
+		# either because it is only ever rendered as part of the
+		# prompt, expanding in-place won't work.
+		return
+	fi
+
+	zle && zle .reset-prompt
+}
+
+prompt_simple_reset_prompt_symbol() {
+	prompt_simple_state[prompt]=${SIMPLE_PROMPT_SYMBOL:-➜}
+}
+
+prompt_simple_update_vim_prompt_widget() {
+	setopt localoptions noshwordsplit
+	prompt_simple_state[prompt]=${${KEYMAP/vicmd/${SIMPLE_PROMPT_VICMD_SYMBOL:-[vi]}}/(main|viins)/${SIMPLE_PROMPT_SYMBOL:-➜}}
+
+	prompt_simple_reset_prompt
+}
+
+prompt_simple_reset_vim_prompt_widget() {
+	setopt localoptions noshwordsplit
+	prompt_simple_reset_prompt_symbol
+
+	# We can't perform a prompt reset at this point because it
+	# removes the prompt marks inserted by macOS Terminal.
+}
+
+prompt_simple_preexec() {
+	if [[ -n $prompt_simple_git_fetch_pattern ]]; then
+		# Detect when Git is performing pull/fetch, including Git aliases.
+		local -H MATCH MBEGIN MEND match mbegin mend
+		if [[ $2 =~ (git|hub)\ (.*\ )?($prompt_simple_git_fetch_pattern)(\ .*)?$ ]]; then
+			# We must flush the async jobs to cancel our git fetch in order
+			# to avoid conflicts with the user issued pull / fetch.
+			async_flush_jobs 'prompt_simple'
+		fi
+	fi
+
+	typeset -g prompt_simple_cmd_timestamp=$EPOCHSECONDS
+}
+
+prompt_simple_precmd() {
+	setopt localoptions noshwordsplit
+
+	# Check execution time and store it in a variable.
+	prompt_simple_check_cmd_exec_time
+	unset prompt_simple_cmd_timestamp
+
+	# Modify the colors if some have changed..
+	prompt_simple_set_colors
+
+	# Perform async Git dirty check and fetch.
+	prompt_simple_async_tasks
+
+	# Make sure VIM prompt is reset.
+	prompt_simple_reset_prompt_symbol
+
+	# Print the preprompt.
+	prompt_simple_preprompt_render "precmd"
+}
+
+# Change the colors if their value are different from the current ones.
+prompt_simple_set_colors() {
+	local color_temp key value
+	for key value in ${(kv)prompt_simple_colors}; do
+		zstyle -t ":prompt:simple:$key" color "$value"
+		case $? in
+			1) # The current style is different from the one from zstyle.
+				zstyle -s ":prompt:simple:$key" color color_temp
+				prompt_simple_colors[$key]=$color_temp ;;
+			2) # No style is defined.
+				prompt_simple_colors[$key]=$prompt_simple_colors_default[$key] ;;
+		esac
+	done
+}
+
+prompt_simple_preprompt_render() {
+	setopt localoptions noshwordsplit
+
+	# Set color for Git branch/dirty status and change color if dirty checking has been delayed.
+	local git_color=$prompt_simple_colors[git:branch]
+	local git_dirty_color=$prompt_simple_colors[git:dirty]
+	[[ -n ${prompt_simple_git_last_dirty_check_timestamp+x} ]] && git_color=$prompt_simple_colors[git:branch:cached]
+
+	# Initialize the preprompt array.
+
+    local -a rpreprompt_parts
+	# Git branch and dirty status info.
+	typeset -gA prompt_simple_vcs_info
+	if [[ -n $prompt_simple_vcs_info[branch] ]]; then
+		rpreprompt_parts+=("%F{$git_color}"'${prompt_simple_vcs_info[branch]}'"%F{$git_dirty_color}"'${prompt_simple_git_dirty}%f')
+	fi
+	# Git action (for example, merge).
+	if [[ -n prompt_simple_vcs_info[action] ]]; then
+		rpreprompt_parts+=("%F{$prompt_simple_colors[git:action]}"'$prompt_simple_vcs_info[action]%f')
+	fi
+	# Git pull/push arrows.
+	if [[ -n $prompt_simple_git_arrows ]]; then
+		rpreprompt_parts+=('%F{$prompt_simple_colors[git:arrow]}${prompt_simple_git_arrows}%f')
+	fi
+	# Execution time. will be set for
+	[[ -n $prompt_simple_cmd_exec_time ]] && rpreprompt_parts+=(' %F{$prompt_simple_colors[execution_time]}${prompt_simple_cmd_exec_time}%f')
+
+    RPROMPT="${(j..)rpreprompt_parts}"
+}
+
 prompt_simple_state_setup() {
 	setopt localoptions noshwordsplit
 
@@ -585,18 +559,26 @@ prompt_simple_state_setup() {
 	fi
 
 	hostname='%F{$prompt_simple_colors[host]}@%m%f'
-	# Show `username@host` if logged in through SSH.
-	[[ -n $ssh_connection ]] && username='%F{$prompt_simple_colors[user]}%n%f'"$hostname"
-
+    username='%F{$prompt_simple_colors[user]}%n%f'
+	# Show `username@host` if logged in through
+    [[ -n $ssh_connection ]] && username='%F{$prompt_simple_colors[user]}%n%f'"$hostname"
 	# Show `username@host` if root, with username in default color.
 	[[ $UID -eq 0 ]] && username='%F{$prompt_simple_colors[user:root]}%n%f'"$hostname"
 
 	typeset -gA prompt_simple_state
-	prompt_simple_state[version]="1.13.0"
 	prompt_simple_state+=(
 		username "$username"
+        accent "${SIMPLE_PROMPT_ACCENT:-::}"
 		prompt	 "${SIMPLE_PROMPT_SYMBOL:-➜}"
 	)
+
+	# Username and machine, if applicable.
+	# Set the path.
+    local -a prompt_parts
+	[[ -n $prompt_simple_state[username] ]] && prompt_parts+=($prompt_simple_state[username]$prompt_simple_state[accent])
+	prompt_parts+=('%F{${prompt_simple_colors[path]}}%c%f${prompt_simple_state[accent]} ')
+
+    PROMPT=${(j..)prompt_parts}
 }
 
 
@@ -609,11 +591,6 @@ prompt_simple_setup() {
 	# Borrowed from `promptinit`. Sets the prompt options in case simple was not
 	# initialized via `promptinit`.
 	setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
-
-	if [[ -z $prompt_newline ]]; then
-		# This variable needs to be set, usually set by promptinit.
-		typeset -g prompt_newline=$'\n%{\r%}'
-	fi
 
 	zmodload zsh/datetime
 	zmodload zsh/zle
@@ -661,49 +638,8 @@ prompt_simple_setup() {
 		add-zle-hook-widget zle-keymap-select prompt_simple_update_vim_prompt_widget
 	fi
 
-	# If a virtualenv is activated, display it in grey.
-	PROMPT='%(12V.%F{$prompt_simple_colors[virtualenv]}%12v%f .)'
-
-	# Prompt turns red if the previous command didn't exit with 0.
 	local prompt_indicator='%(?.%F{$prompt_simple_colors[prompt:success]}.%F{$prompt_simple_colors[prompt:error]})${prompt_simple_state[prompt]}%f '
 	PROMPT+=$prompt_indicator
-
-	# Indicate continuation prompt by … and use a darker color for it.
-	PROMPT2='%F{$prompt_simple_colors[prompt:continuation]}… %(1_.%_ .%_)%f'$prompt_indicator
-
-	# Store prompt expansion symbols for in-place expansion via (%). For
-	# some reason it does not work without storing them in a variable first.
-	typeset -ga prompt_simple_debug_depth
-	prompt_simple_debug_depth=('%e' '%N' '%x')
-
-	# Compare is used to check if %N equals %x. When they differ, the main
-	# prompt is used to allow displaying both filename and function. When
-	# they match, we use the secondary prompt to avoid displaying duplicate
-	# information.
-	local -A ps4_parts
-	ps4_parts=(
-		depth 	  '%F{yellow}${(l:${(%)prompt_simple_debug_depth[1]}::+:)}%f'
-		compare   '${${(%)prompt_simple_debug_depth[2]}:#${(%)prompt_simple_debug_depth[3]}}'
-		main      '%F{blue}${${(%)prompt_simple_debug_depth[3]}:t}%f%F{242}:%I%f %F{242}@%f%F{blue}%N%f%F{242}:%i%f'
-		secondary '%F{blue}%N%f%F{242}:%i'
-		prompt 	  '%F{242}>%f '
-	)
-	# Combine the parts with conditional logic. First the `:+` operator is
-	# used to replace `compare` either with `main` or an ampty string. Then
-	# the `:-` operator is used so that if `compare` becomes an empty
-	# string, it is replaced with `secondary`.
-	local ps4_symbols='${${'${ps4_parts[compare]}':+"'${ps4_parts[main]}'"}:-"'${ps4_parts[secondary]}'"}'
-
-	# Improve the debug prompt (PS4), show depth by repeating the +-sign and
-	# add colors to highlight essential parts like file and function name.
-	PROMPT4="${ps4_parts[depth]} ${ps4_symbols}${ps4_parts[prompt]}"
-
-	# Guard against Oh My Zsh themes overriding simple.
-	unset ZSH_THEME
-
-	# Guard against (ana)conda changing the PS1 prompt
-	# (we manually insert the env when it's available).
-	export CONDA_CHANGEPS1=no
 }
 
 prompt_simple_setup "$@"
