@@ -16,6 +16,7 @@ export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-{{ .chezmoi.homedir }}/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-{{ .chezmoi.homedir }}/.local/share}"
 export XDG_CONFIG_DOCUMENTS="{{ .chezmoi.homedir }}/documents"
+export XDG_BIN_HOME="{{ .chezmoi.homedir }}/.local/bin"
 
 # ZSH defaults
 export ZDOTDIR="${ZDOTDIR:-{{ .chezmoi.homedir }}/.zsh}"
@@ -152,3 +153,4 @@ export ODOO_OPTS="--addons-path=${XDG_CONFIG_DOCUMENTS}/cs/odoo/addons --dev=rel
 
 [ -f $ZDOTDIR/.zshenv.local ] && source $ZDOTDIR/.zshenv.local
 [ -f $ZHOMEDIR/.zshenv.local ] && source $ZHOMEDIR/.zshenv.local
+

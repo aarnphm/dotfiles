@@ -37,7 +37,7 @@ xrandr --dpi $dpi
     echo Xft/DPI $(( $dpi/96 ))
     echo Xft/RGBA \"$( [ $dpi -gt 144 ] && echo none || echo rgb )\"
     echo Gdk/WindowScalingFactor $(( $dpi/96 ))
-} > ~/.xsettingsd
+} > $XDG_CONFIG_HOME/xsettingsd/xsettingsd.conf
 
 # Also use xrdb for very old stuff
 echo Xft.dpi: $dpi | xrdb -merge

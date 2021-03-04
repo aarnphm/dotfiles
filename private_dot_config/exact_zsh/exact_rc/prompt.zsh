@@ -19,7 +19,7 @@ GIT_STATUS_UNSTAGED=yellow
 GIT_PROMPT_SHA=green
 
 # functions
-function __host() {
+function __host {
     me="%n"
     if [[ -n $SSH_CONNECTION ]]; then
         me="%n@%m"
@@ -29,11 +29,11 @@ function __host() {
     fi
 }
 
-function __directory() {
+function __directory {
   echo "%{$fg[$CURRENT_DIR]%}%c%{$reset_color%}:"
 }
 
-function __git_status() {
+function __git_status {
     local message=""
     local message_color="%F{$GIT_STATUS_DEFAULT}"
 
@@ -55,11 +55,11 @@ function __git_status() {
     echo -n "${message}"
 }
 
-function __return_symbol() {
+function __return_symbol {
   echo -n " %(?.%F{$RETURN_STATUS_TRUE}.%F{$RETURN_STATUS_FALSE})$PROMPT_SYMBOL%f "
 }
 
-function __show_status() {
+function __show_status {
     exit_status=${pipestatus[*]}
     local SETCOLOR_DEFAULT="%F{green}"
     local SETCOLOR=${SETCOLOR_DEFAULT}
