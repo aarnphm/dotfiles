@@ -92,7 +92,7 @@ zinit wait'0' lucid \
     light-mode for @mafredri/zsh-async
 
 #--------------------------------#
-# enhancive command
+# enhanced command
 #--------------------------------#
 zinit wait'1' lucid \
     from"gh-r" as"program" mv"exa* -> exa" \

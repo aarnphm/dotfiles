@@ -98,7 +98,7 @@ alias bentodir="$CS_PATH/BentoML"
 # zsh config directory
 alias zcdir="$CHEZMOI_DIR/private_dot_config/exact_zsh"
 alias zdir="$CHEZMOI_DIR/private_dot_zsh"
-{{- if and (.wm) (.personal) }}
+{{- if and (eq .wm "awesome") (.personal) }}
 alias adir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 alias aconf="$VISUAL -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
@@ -207,10 +207,7 @@ fi
 #==============================================================#
 ##          safe opts                                         ##
 #==============================================================#
-
-{{ if `command -v tmux` }}
 alias tmux="TERM=xterm-256color ${aliases[tmux]:-tmux} ${TMUX_OPTS}"
-{{ end }}
 
 # Safe ops. Ask the user before doing anything destructive.
 alias rmi="${aliases[rm]:-rm} -i"

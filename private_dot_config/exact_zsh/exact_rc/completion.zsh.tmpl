@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 ##==============================================================#
-#          Completion                                        ##
-#==============================================================#
+#          Completion                                          ##
+#===============================================================#
 
-{{ if and (eq .chezmoi.os "linux") (.personal) }}
+{{ if `builtin command -v gcloud` }}
 # The next line enables shell command completion for gcloud.
 if [ -f '{{ .chezmoi.homedir }}/google-cloud-sdk/completion.zsh.inc' ]; then . '{{ .chezmoi.homedir }}/google-cloud-sdk/completion.zsh.inc'; fi
 {{ end }}
