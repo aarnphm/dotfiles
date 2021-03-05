@@ -9,13 +9,13 @@ set runtimepath+=~/.config/vim/
 " use vim-plug becauseof its minimalistic
 "¯\_(ツ)_/¯
 if empty(glob('~/.config/vim/autoload/plug.vim'))
-  silent call system('curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
-  execute 'source  ~/.config/vim/autoload/plug.vim'
-  augroup plugsetup
-    "
-    au!
-    autocmd VimEnter * PlugInstall
-  augroup end
+    silent call system('curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+    execute 'source  ~/.config/vim/autoload/plug.vim'
+    augroup plugsetup
+        "
+        au!
+        autocmd VimEnter * PlugInstall
+    augroup end
 endif
 
 " define vim-plug here
@@ -56,6 +56,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-apathy'
+Plug 'tpope/vim-obsession'
 Plug 'thaerkh/vim-indentguides'
 Plug 'wakatime/vim-wakatime'
 Plug 'lervag/vimtex'
@@ -83,12 +84,12 @@ let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 
 let g:has_job = has('job')
 let g:has_term = has('terminal')
 if has('vim')
-  set term=xterm-256color
+    set term=xterm-256color
 endif
 
 " Setup
 if g:is_termguicolors
-  set termguicolors
+    set termguicolors
 endif
 set background=dark
 " colorscheme onedark
@@ -107,8 +108,8 @@ set smarttab
 set nrformats-=octal
 
 if !has('nvim') && &ttimeoutlen == -1
-  set ttimeout
-  set ttimeoutlen=100
+    set ttimeout
+    set ttimeoutlen=100
 endif
 
 set conceallevel=0
@@ -130,7 +131,7 @@ set shortmess+=Ic
 set pastetoggle=<F2>
 
 if &encoding ==# 'latin1' && has('gui_running')
-  set encoding=utf-8
+    set encoding=utf-8
 endif
 
 exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
@@ -140,27 +141,27 @@ set list
 " endif
 
 if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j " Delete comment character when joining commented lines
+    set formatoptions+=j " Delete comment character when joining commented lines
 endif
 
 if has('path_extra')
-  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+    setglobal tags-=./tags tags-=./tags; tags^=./tags;
 endif
 
 if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
-  set shell=/usr/bin/env\ bash
+    set shell=/usr/bin/env\ bash
 endif
 
 set autoread
 
 if &history < 1000
-  set history=1000
+    set history=1000
 endif
 if &tabpagemax < 50
-  set tabpagemax=50
+    set tabpagemax=50
 endif
 if !empty(&viminfo)
-  set viminfo^=!
+    set viminfo^=!
 endif
 set sessionoptions-=options
 set viewoptions-=options
@@ -181,7 +182,7 @@ set nobackup
 set noswapfile
 set nowritebackup
 set undofile
-set undodir=~/.vim/undo
+set undodir=~/.config/vim/undo
 set undolevels=9999
 set tabstop=4
 set shiftwidth=4
@@ -191,14 +192,14 @@ command! Ev :e $HOME/.local/share/chezmoi/private_dot_config/vim/vimrc
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
 function! s:align()
-  let p = '^\s*|\s.*\s|\s*$'
-  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-    Tabularize/|/l1
-    normal! 0
-    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
+    let p = '^\s*|\s.*\s|\s*$'
+    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+        Tabularize/|/l1
+        normal! 0
+        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+    endif
 endfunction
 
 
@@ -217,15 +218,15 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 " manual folding
-inoremap <F9> <C-O>za
-nnoremap <F9> za
-onoremap <F9> <C-C>za
-vnoremap <F9> zf
+inoremap <F5> <C-O>za
+nnoremap <F5> za
+onoremap <F5> <C-C>za
+vnoremap <F5> zf
 " quick resize for split
 nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 nnoremap <leader>S :SudaWrite<CR>
-nnoremap <leader>\ :let @/=''<CR>:noh<CR>
+nnoremap \\ :let @/=''<CR>:noh<CR>
 nnoremap <silent> <leader>p :%s///g<CR>
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>
 nnoremap <leader>b :ls<CR>:buffer<space>
@@ -249,6 +250,8 @@ map <C-l> <C-W>l
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
+nnoremap <leader>t :tabedit <C-r>=expand("")<CR>/
+
 " remove Ex mode
 map Q <Nop>
 " added yank to clipboard shortcut
@@ -261,8 +264,8 @@ nnoremap <leader>C :PlugClean<cr>
 nnoremap <leader>R :PlugInstall<cr>
 " use this when lightline is not in use for minimal
 nnoremap <F2> :set invpaste paste?<CR>
-imap <F2> <C-O>:set invpaste paste?<CR>
-nnoremap <F8> :TagbarToggle<CR>
+imap <F2><C-O>:set invpaste paste?<CR>
+nnoremap <F3> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins settings
@@ -276,13 +279,21 @@ let g:vimtex_quickfix_mode=0
 " let g:tex_conceal='abdmg'
 
 let g:UltiSnipsExpandTrigger='<M-\>'
-" shortcut to go to next position
-let g:UltiSnipsJumpForwardTrigger='<M-j>'
-" shortcut to go to previous position
-let g:UltiSnipsJumpBackwardTrigger='<M-k>'
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories=[$CHEZMOI_DIR . "/private_dot_config/vim/exact_UltiSnips"]
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" obsession
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:session_dir='~/.config/vim/sessions'
+" Remaps for Sessions
+exec 'nnoremap <Leader>ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+nnoremap <Leader>sp :Obsession<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fzf - indentguides and more
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " indent guides
 let g:indentguides_spacechar = '┆'
 let g:indentguides_tabchar = '|'
@@ -302,22 +313,22 @@ let g:python_highlight_all = 1
 " This is the default extra key bindings
 let g:fzf_tags_command = 'ctags -R'
 let g:fzf_action = {
-      \ 'ctrl-t': 'tab split',
-      \ 'ctrl-x': 'split',
-      \ 'ctrl-v': 'vsplit' }
+            \ 'ctrl-t': 'tab split',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit' }
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
-  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-  copen
-  cc
+    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+    copen
+    cc
 endfunction
 
 let g:fzf_action = {
-      \ 'ctrl-q': function('s:build_quickfix_list'),
-      \ 'ctrl-t': 'tab split',
-      \ 'ctrl-x': 'split',
-      \ 'ctrl-v': 'vsplit' }
+            \ 'ctrl-q': function('s:build_quickfix_list'),
+            \ 'ctrl-t': 'tab split',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit' }
 
 " Default fzf layout
 " - down / up / left / right
@@ -331,19 +342,19 @@ let g:fzf_layout = { 'window': '10new' }
 " Customize fzf colors to match your color scheme
 " - fzf#wrap translates this to a set of `--color` options
 let g:fzf_colors =
-      \ { 'fg'    : ['fg', 'Normal'],
-      \ 'bg'      : ['bg', 'Normal'],
-      \ 'hl'      : ['fg', 'Comment'],
-      \ 'fg+'     : ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \ 'bg+'     : ['bg', 'CursorLine', 'CursorColumn'],
-      \ 'hl+'     : ['fg', 'Statement'],
-      \ 'info'    : ['fg', 'PreProc'],
-      \ 'border'  : ['fg', 'Ignore'],
-      \ 'prompt'  : ['fg', 'Conditional'],
-      \ 'pointer' : ['fg', 'Exception'],
-      \ 'marker'  : ['fg', 'Keyword'],
-      \ 'spinner' : ['fg', 'Label'],
-      \ 'header'  : ['fg', 'Comment'] }
+            \ { 'fg'    : ['fg', 'Normal'],
+            \ 'bg'      : ['bg', 'Normal'],
+            \ 'hl'      : ['fg', 'Comment'],
+            \ 'fg+'     : ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+            \ 'bg+'     : ['bg', 'CursorLine', 'CursorColumn'],
+            \ 'hl+'     : ['fg', 'Statement'],
+            \ 'info'    : ['fg', 'PreProc'],
+            \ 'border'  : ['fg', 'Ignore'],
+            \ 'prompt'  : ['fg', 'Conditional'],
+            \ 'pointer' : ['fg', 'Exception'],
+            \ 'marker'  : ['fg', 'Keyword'],
+            \ 'spinner' : ['fg', 'Label'],
+            \ 'header'  : ['fg', 'Comment'] }
 
 " Enable per-command history
 " History files will be stored in the specified directory
@@ -361,7 +372,7 @@ let g:go_fmt_autosave = 1
 let g:go_def_mapping_enabled = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" coc 
+" coc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:coc_global_extensions = ['coc-texlab', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
@@ -369,37 +380,32 @@ let g:coc_global_extensions = ['coc-texlab', 'coc-json', 'coc-pyright', 'coc-jav
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
+let g:coc_snippet_next = '<tab>'
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
 " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
 if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+            \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -416,58 +422,22 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+        call CocActionAsync('doHover')
+    else
+        execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
 endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
 augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -477,11 +447,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics.
@@ -502,7 +467,7 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" NerdTree 
+" NerdTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let NERDTreeShowHidden = 1
@@ -511,14 +476,14 @@ let NERDTreeDirArrows = 1
 let g:NERDTreeWinPos = "right"
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
-nnoremap <F3> :NERDTreeToggle<cr>
+nnoremap <F4> :NERDTreeToggle<cr>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) || &buftype == 'quickfix' | q | endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" gitgutter 
+" gitgutter
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " I - AM - SPEEEEEEEEED
 let g:gitgutter_enabled=1
@@ -532,22 +497,22 @@ let g:gitgutter_diff_args = '-w'
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! CmdLine(str)
-  call feedkeys(":" . a:str)
+    call feedkeys(":" . a:str)
 endfunction
 
 function! VisualSelection(direction, extra_filter) range
-  let l:saved_reg = @"
-  execute "normal! vgvy"
+    let l:saved_reg = @"
+    execute "normal! vgvy"
 
-  let l:pattern = escape(@", "\\/.*'$^~[]")
-  let l:pattern = substitute(l:pattern, "\n$", "", "")
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-  if a:direction == 'gv'
-    call CmdLine("Ack '" . l:pattern . "' " )
-  elseif a:direction == 'replace'
-    call CmdLine("%s" . '/'. l:pattern . '/')
-  endif
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
 
-  let @/ = l:pattern
-  let @" = l:saved_reg
+    let @/ = l:pattern
+    let @" = l:saved_reg
 endfunction

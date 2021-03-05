@@ -18,6 +18,10 @@
      {"xgpsspeed", "xgpsspeed"},
  }
 
+ local menude7a22a0c94aa64ba2449e520aa20c99 = {
+     {"R", "xterm -e R", "///usr/share/pixmaps/r.png" },
+ }
+
  local menu251bd8143891238ecedc306508e29017 = {
      {"Steam (Runtime)", "/usr/bin/steam-runtime ", "/usr/share/icons/hicolor/16x16/apps/steam.png" },
  }
@@ -101,6 +105,7 @@
 
 xdgmenu = {
     {"Accessories", menu98edb85b00d9527ad5acebe451b3fae6},
+    {"Education", menude7a22a0c94aa64ba2449e520aa20c99},
     {"Games", menu251bd8143891238ecedc306508e29017},
     {"Graphics", menud334dfcea59127bedfcdbe0a3ee7f494},
     {"Internet", menuc8205c7636e728d448c2774e6a4a944b},

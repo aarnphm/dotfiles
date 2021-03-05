@@ -34,10 +34,11 @@ xrandr --dpi $dpi
 # Build xsettingsd
 {
     cat  ~/.config/awesome/xsettingsd
-    echo Xft/DPI $(( $dpi/96 ))
+    echo Xft/DPI $(( $dpi*1024 ))
     echo Xft/RGBA \"$( [ $dpi -gt 144 ] && echo none || echo rgb )\"
     echo Gdk/WindowScalingFactor $(( $dpi/96 ))
-} > $XDG_CONFIG_HOME/xsettingsd/xsettingsd.conf
+    echo Gdk/UnscaledDPI $(( $dpi*1024/($dpi/96) ))
+} > ~/.config/xsettingsd/xsettingsd.conf
 
 # Also use xrdb for very old stuff
 echo Xft.dpi: $dpi | xrdb -merge

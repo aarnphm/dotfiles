@@ -207,7 +207,7 @@ fi
 #==============================================================#
 ##          safe opts                                         ##
 #==============================================================#
-alias tmux="TERM=xterm-256color ${aliases[tmux]:-tmux} ${TMUX_OPTS}"
+alias tmux="TERM=xterm-256color /usr/bin/tmux ${TMUX_OPTS}"
 
 # Safe ops. Ask the user before doing anything destructive.
 alias rmi="/usr/bin/rm -i"

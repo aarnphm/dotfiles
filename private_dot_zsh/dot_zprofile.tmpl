@@ -24,14 +24,29 @@ export ZHOMEDIR=$XDG_CONFIG_HOME/zsh
 export ZRCDIR=$ZHOMEDIR/rc
 export ZDATADIR=$XDG_DATA_HOME/zsh
 
+{{ if eq .hostname "0x6161726E70" }}
 # Probably one of the most important directory
 export CS_PATH="${XDG_CONFIG_DOCUMENTS}/cs"
 export ODOO_PATH="${CS_PATH}/odoo"
+{{ end }}
 export CITY="{{ .city }}"
 
 ###########################################################################
 #                            applications default                         #
 ###########################################################################
+
+# Don’t clear the screen after quitting a manual page.
+export MANPAGER='less -X';
+export PAGER=less
+# Highlight section titles in manual pages.
+export LESS_TERMCAP_md="${yellow}";
+export LESS='--no-init -R --shift 4 --LONG-PROMPT --quit-if-one-screen'
+{{- if `builtin command -v nvim` }}
+export EDITOR=nvim
+{{ else }}
+export EDITOR=vim
+{{ end }}
+export VISUAL=$EDITOR
 
 {{ if `builtin command -v npm` }}
 # npm config
@@ -45,25 +60,13 @@ export GOPROXY="https://proxy.golang.org/,direct"
 {{- if and (`builtin command -v java`) (eq .chezmoi.os "darwin") }}
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 {{- end }}
-# Don’t clear the screen after quitting a manual page.
-export MANPAGER='less -X';
-export PAGER=less
-# Highlight section titles in manual pages.
-export LESS_TERMCAP_md="${yellow}";
-export LESS='--no-init -R --shift 4 --LONG-PROMPT --quit-if-one-screen'
-{{- if `builtin command -v nvim` }}
-export EDITOR=$(which nvim)
-{{ else }}
-export EDITOR=$(which vim)
-{{ end }}
-export VISUAL=$EDITOR
 {{- if `builtin command -v wine` }}
 # wine prefix
 export WINEPREFIX="{{ .chezmoi.homedir }}/.wine32"
 export WINEARCH=win32
 {{- end }}
 {{- if `builtin command -v firefox` }}
-export BROWSER='/usr/bin/firefox'
+export BROWSER=/usr/bin/firefox
 {{ end }}
 {{- if `builtin command -v pyenv` }}
 export PYENV_SHELL=zsh
@@ -71,16 +74,15 @@ export PYENV_SHELL=zsh
 export LS_COLORS="${LS_COLORS}:ow=01;33:no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:"
 
 {{ if `command -v nnn` }}
-export NNN_OPTS="EDUHrxdeat"
-export NNN_BMS='U:${XDG_CONFIG_DOCUMENTS};D:{{ .chezmoi.homedir }}/downloads/'
-export NNN_PLUG='f:finder;o:fzopen;m:mocplay;d:diffs;t:nmount;p:preview-tui'
-export NNN_ARCHIVE="\\.(7z|bz2|gz|tar|tgz|zip)$"
-export NNN_COLORS="2134"
 export NNN_OPENER=nuke
-export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
+export NNN_COLORS="2134"
+export NNN_OPTS="EDUHrxdeat"
 export NNN_TRASH=trash-cli
 export NNN_SEL='/tmp/.sel'
 export NNN_FIFO=/tmp/nnn.fifo
+export NNN_ARCHIVE="\\.(7z|bz2|gz|tar|tgz|zip)$"
+export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
+export NNN_PLUG='f:finder;o:fzopen;m:mocplay;d:diffs;t:nmount;p:preview-tui'
 {{ end }}
 
 ###########################################################################
@@ -138,7 +140,7 @@ fpath=(
 #                             OPTS                                        #
 ###########################################################################
 
-export TMUX_OPTS=""
+export TMUX_OPTS="-2uf $XDG_CONFIG_HOME/tmux/tmux.conf"
 
 export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
 export CHEZMOI_OPTS="--verbose --debug --color on"
@@ -151,7 +153,7 @@ export LS_OPTS="--color -h --group-directories-first"
 export LS_OPTS="-laFh --group-directories-first --color=always"
 {{-   end }}
 # odoo
-export ODOO_OPTS="--addons-path=${XDG_CONFIG_DOCUMENTS}/cs/odoo/addons --dev=reload,all,pdb"
+export ODOO_OPTS="--addons-path=$XDG_CONFIG_DOCUMENTS/cs/odoo/addons --dev=reload,all,pdb"
 {{- end }}
 
 ###########################################################################

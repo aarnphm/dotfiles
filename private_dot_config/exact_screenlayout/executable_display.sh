@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if (xrandr | grep "^DP-0.8" &>/dev/null); then
 	dp=/home/aarnphm/.config/screenlayout/dual-side.sh
