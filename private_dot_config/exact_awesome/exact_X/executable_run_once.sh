@@ -19,7 +19,7 @@ if (builtin command -v /usr/bin/lxpolkit && ! pgrep lxpolkit); then
 fi
 
 if (builtin command -v xdg_menu); then
-    xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu > $CHEZMOI_DIR/private_dot_config/exact_awesome/xdgmenu.lua
+    xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu > $CHEZMOI_DIR/private_dot_config/exact_awesome/exact_X/xdgmenu.lua
 fi
 
 # background daemon

@@ -16,7 +16,7 @@ case "$1" in
         configure
         echo "Running xss-lock daemon..."
         export XSECURELOCK_SAVER=saver_blank
-        exec xss-lock -n /usr/lib/xsecurelock/dimmer - -- xsecurelock
+        exec xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock
         ;;
     dim|notify)
         echo "Running xss-lock notify..."

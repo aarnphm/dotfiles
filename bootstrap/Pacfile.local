@@ -34,6 +34,7 @@ dialog
 discord
 docker
 dosfstools
+easy-rsa
 efibootmgr
 fakeroot
 feh
@@ -93,11 +94,13 @@ mpc
 mpd
 mtools
 ncdu
+ncmpcpp
 neovim
 net-tools
 netctl
 network-manager-applet
 networkmanager
+networkmanager-openvpn
 nginx
 nitrogen
 nm-connection-editor
@@ -110,6 +113,8 @@ nvidia-dkms
 nvidia-prime
 nvidia-settings
 obs-studio
+openconnect
+openvpn
 os-prober
 p7zip
 pamixer
@@ -127,6 +132,7 @@ pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
 pyenv
+qopenvpn
 qt5ct
 qt6-base
 r
@@ -155,6 +161,7 @@ texlive-pictures
 texlive-pstricks
 texlive-publishers
 texlive-science
+tk
 tmux
 trash-cli
 tree

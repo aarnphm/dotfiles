@@ -43,7 +43,11 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule{
         id         = "floating",
         rule_any   = {
-            class = {"Nm-connection-editor", "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen", "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer","xscreensaver-demo", "Termite", "UXTerm", "XTerm"},
+            class = {"Nm-connection-editor", "Cisco AnyConnect Secure Mobility Client",
+                     "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen",
+                     "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", 
+                     "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer",
+                     "Termite", "URxvt", "XTerm"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"Popup"},
             type  = {"dialog"}
@@ -73,7 +77,7 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "meeting",
-        rule_any = {class={"Zoom","Microsoft Teams - Preview"}, instance = {"discord", "slack", "skype","caprine"}},
+        rule_any = {class={"Zoom","Microsoft Teams - Preview", "Whatsapp-for-linux"}, instance = {"discord", "slack", "skype","caprine"}},
         properties = {screen=screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
     }
 

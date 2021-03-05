@@ -4,10 +4,10 @@ local defaults = {
     -- ===================================================================
     -- modkey (Super) and altkey (Alt)
     -- ===================================================================
-    modkey        = "Mod4",
-    altkey        = "Mod1",
-    ctrl          = "Control",
-    shift         = "Shift",
+    modkey = "Mod4",
+    altkey = "Mod1",
+    ctrl   = "Control",
+    shift  = "Shift",
     -- ===================================================================
     -- screen defaults
     -- ===================================================================
@@ -17,17 +17,18 @@ local defaults = {
     -- ===================================================================
     -- default application
     -- ===================================================================
-    terminal      = "kitty",
-    editor        = "nvim",
-    filebrowser   = "firefox --new-window file:///home/aarnphm",
-    browser       = os.getenv("BROWSER") or "firefox",
-    spotify       = "spotify-tray",
-    launcher      = "rofi -modi drun -i -p -show drun -show-icons",
-    lock          = "xsecurelock",
-    screenshot    = "gyazo",
-    zotero        = "/opt/zotero/zotero",
-    audiocontrol  = "pavucontrol",
-    bluetooth     = "blueman-manager",
+    terminal     = "kitty",
+    editor       = "nvim",
+    filebrowser  = "firefox --new-window file:///home/aarnphm",
+    browser      = os.getenv("BROWSER") or "firefox",
+    spotify      = "spotify-tray",
+    launcher     = "rofi -modi drun -i -p -show drun -show-icons",
+    -- lock options uses xss-lock and xsecurelock
+    lock         = "xset s activate",
+    screenshot   = "gyazo",
+    zotero       = "/opt/zotero/zotero",
+    audiocontrol = "pavucontrol",
+    bluetooth    = "blueman-manager",
     -- ===================================================================
     -- Tag definitions for screens
     -- ===================================================================

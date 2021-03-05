@@ -2,15 +2,14 @@ local naughty   = require("naughty")
 local beautiful = require("beautiful")
 local wibox     = require("wibox")
 local awful     = require("awful")
-local dpi       = beautiful.xresources.apply_dpi
 local helpers   = require("helpers")
 local ruled     = require("ruled")
+local dpi       = beautiful.xresources.apply_dpi
 
 naughty.config.defaults.ontop        = true
 naughty.config.defaults.screen       = awful.screen.focused()
 naughty.config.defaults.timeout      = 2
 naughty.config.defaults.border_color = beautiful.xforeground
-
 naughty.config.padding               = dpi(10)
 naughty.config.spacing               = dpi(5)
 naughty.config.icon_dirs             = {"/usr/share/icons/Papirus-Dark/24x24/apps/", "/usr/share/pixmaps/"}

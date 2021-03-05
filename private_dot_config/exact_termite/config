@@ -3,9 +3,9 @@ allow_bold = true
 #audible_bell = false
 clickable_url = true
 #dynamic_title = true
-font = SFMono Nerd Font 14
+font = SFMono Nerd Font 12
 #fullscreen = true
-geometry = 700x520
+geometry = 800x600
 icon_name = terminal
 #mouse_autohide = false
 #scroll_on_output = false
@@ -118,4 +118,3 @@ color14 = #5fafaf
 color7  = #6c6c6c
 color15 = #ffffff
 # vim: ft=dosini cms=#%s
-
