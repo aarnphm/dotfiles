@@ -146,12 +146,7 @@ export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
 export CHEZMOI_OPTS="--verbose --debug --color on"
 
 {{- if .personal }}
-{{-   if eq .chezmoi.os "darwin" }}
-# will use gls from coreutils
-export LS_OPTS="--color -h --group-directories-first"
-{{-   else if eq .chezmoi.os "linux" }}
 export LS_OPTS="-laFh --group-directories-first --color=always"
-{{-   end }}
 # odoo
 export ODOO_OPTS="--addons-path=$XDG_CONFIG_DOCUMENTS/cs/odoo/addons --dev=reload,all,pdb"
 {{- end }}
