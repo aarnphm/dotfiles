@@ -207,7 +207,11 @@ fi
 #==============================================================#
 ##          safe opts                                         ##
 #==============================================================#
+{{ if eq .chezmoi.os "linux" }}
 alias tmux="TERM=xterm-256color /usr/bin/tmux ${TMUX_OPTS}"
+{{ else if eq .chezmoi.os "darwin" }}
+alias tmux="TERM=xterm-256color /usr/local/bin/tmux ${TMUX_OPTS}"
+{{ end }}
 
 # Safe ops. Ask the user before doing anything destructive.
 alias rmi="/usr/bin/rm -i"

@@ -4,7 +4,7 @@
 #                            Chezmoi                                      #
 ###########################################################################
 
-export CHEZMOI_BIN=$(which chezmoi)
+export CHEZMOI_BIN="$(which chezmoi)"
 export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 
 ###########################################################################
@@ -43,12 +43,12 @@ export LESS_TERMCAP_md="${yellow}";
 export LESS='--no-init -R --shift 4 --LONG-PROMPT --quit-if-one-screen'
 {{- if `builtin command -v nvim` }}
 export EDITOR=nvim
-{{ else }}
+{{- else }}
 export EDITOR=vim
-{{ end }}
+{{- end }}
 export VISUAL=$EDITOR
 
-{{ if `builtin command -v npm` }}
+{{if `builtin command -v npm` }}
 # npm config
 export NPM_PACKAGES="{{ .chezmoi.homedir }}/.npm-packages"
 {{ end }}
@@ -94,35 +94,35 @@ typeset -xT SUDO_PATH sudo_path
 
 path=(
     {{ .chezmoi.homedir }}/.local/bin(N-/)
-    {{ if `builtin command -v rustc` }}
+    {{- if `builtin command -v rustc` }}
     {{ .chezmoi.homedir }}/.cargo/bin(N-/)
     {{ .chezmoi.homedir }}/.rustup/toolchains/*/bin(N-/)
-    {{ end }}
-    {{ if `builtin command -v pyenv` }}
+    {{- end }}
+    {{- if `builtin command -v pyenv` }}
     {{ .chezmoi.homedir }}/.pyenv/shims(N-/)
     {{ .chezmoi.homedir }}/.pyenv/bin(N-/)
-    {{ end }}
-    {{ if eq .chezmoi.os "darwin" }}
+    {{- end }}
+    {{- if eq .chezmoi.os "darwin" }}
     /usr/local/bin(N-/)
     $JAVA_HOME/bin(N-/)
-    {{ end }}
-    {{ if `builtin command -v npm` }}
-    ${NPM_PACKAGES}/bin(N-/)
-    {{ end }}
-    {{ if `builtin command -v yarn` }}
+    {{- end }}
+    {{- if `builtin command -v npm` }}
+    $NPM_PACKAGES/bin(N-/)
+    {{- end }}
+    {{- if `builtin command -v yarn` }}
     {{ .chezmoi.homedir }}/.yarn/bin(N-/)
-    ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)
-    {{ end }}
-    {{ if `builtin command -v go` }}
-    ${GOPATH}/bin(N-/)
-    ${GOPATH}/src(N-/)
-    {{ end }}
-    {{ if `builtin command -v gcloud` }}
+    $XDG_CONFIG_HOME/yarn/global/node_modules/.bin(N-/)
+    {{- end }}
+    {{- if `builtin command -v go` }}
+    $GOPATH/bin(N-/)
+    $GOPATH/src(N-/)
+    {{- end }}
+    {{- if `builtin command -v gcloud` }}
     {{ .chezmoi.homedir }}/google-cloud-sdk/bin(N-/)
-    {{ end }}
+    {{- end }}
     {{ if `builtin command -v nnn` }}
-    {{ .chezmoi.homedir }}/.config/nnn/plugins(N-/)
-    {{ end }}
+    {{- .chezmoi.homedir }}/.config/nnn/plugins(N-/)
+    {{- end }}
     $path
 )
 
@@ -157,4 +157,3 @@ export ODOO_OPTS="--addons-path=$XDG_CONFIG_DOCUMENTS/cs/odoo/addons --dev=reloa
 
 [ -f $ZDOTDIR/.zshenv.local ] && source $ZDOTDIR/.zshenv.local
 [ -f $ZHOMEDIR/.zshenv.local ] && source $ZHOMEDIR/.zshenv.local
-
