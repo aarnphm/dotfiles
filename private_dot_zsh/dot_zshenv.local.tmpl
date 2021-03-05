@@ -3,9 +3,9 @@
 
 {{- if `command -v bw` }}
 # bitwarden-cli with a bit of a hack
-export BW_MASTER="C0passd30"
-export BW_CLIENTID="user.77480542-f422-4e8b-a43a-acc501739202"
-export BW_CLIENTSECRET="R35qeKDnc5K1x3YD3msq6vDmDG1T2M"
+export BW_MASTER=
+export BW_CLIENTID=
+export BW_CLIENTSECRET=
 export BW_SESSION="$(bw unlock $BW_MASTER 2>/dev/null | grep 'export' | sed -E 's/.*export BW_SESSION="(.*==)"$/\1/')"
 {{- end }}
 
