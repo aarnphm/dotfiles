@@ -50,6 +50,33 @@ ruled.notification.connect_signal('request::rules', function()
     }
 end)
 
+-- Check if awesome encountered an error during startup and fell back to
+-- another config (This code will only ever execute for the fallback config)
+naughty.connect_signal("request::display_error", function(message, startup)
+    naughty.notify {
+        urgency = "critical",
+        title = "Oops, an error happened" .. (startup and " during startup!" or "!"),
+        message = message,
+        app_name = 'System Notification',
+        icon = beautiful.awesome_icon
+    }
+end)
+
+-- XDG icon lookup
+naughty.connect_signal(
+	'request::icon',
+	function(n, context, hints)
+		if context ~= 'app_icon' then return end
+
+		local path = menubar.utils.lookup_icon(hints.app_icon) or
+		menubar.utils.lookup_icon(hints.app_icon:lower())
+
+		if path then
+			n.icon = path
+		end
+	end
+)
+
 naughty.connect_signal("request::display", function(n)
     local appicon = n.icon or n.app_icon
 
@@ -75,19 +102,21 @@ naughty.connect_signal("request::display", function(n)
 
     local actions = wibox.widget {
         notification = n,
-        base_layout = wibox.widget {
+        base_layout  = wibox.widget {
             spacing = dpi(8),
-            layout = wibox.layout.flex.horizontal
+            layout  = wibox.layout.flex.horizontal
         },
         widget_template = action_widget,
-        style = {underline_normal = false, underline_selected = true},
-        widget = naughty.list.actions
+        style           = {underline_normal = false, underline_selected = true},
+        widget          = naughty.list.actions
     }
 
     naughty.layout.box {
         notification = n,
-        type = "notification",
-        bg = beautiful.xbackground .. "00",
+        type            = "notification",
+        bg              = beautiful.xbackground .. "00",
+        width           = beautiful.notification_width,
+        height          = beautiful.notification_height,
         widget_template = {
             {
                 {

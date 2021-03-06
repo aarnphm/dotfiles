@@ -31,9 +31,9 @@ run unclutter -idle 1
 run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
+# run pasystray
 run nm-applet
 run blueman-applet
-run pasystray
 run discord
 run spotify-tray --client-path=/usr/bin/spotify --minimized --class=spotify
 run optimus-manager-qt

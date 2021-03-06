@@ -6,7 +6,6 @@ pcall(require, "luarocks.loader")
 local gears     = require("gears")
 local awful     = require("awful")
 local beautiful = require("beautiful")
-local naughty   = require("naughty")
 local defaults  = require("defaults")
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
@@ -15,25 +14,14 @@ require("awful.autofocus")
 -- Autostart Error handling
 -- ===================================================================
 
--- startup some applications
-os.execute("~/.local/bin/ssh-add")
-os.execute("~/.local/bin/xsettingsd-setup")
-os.execute("~/.local/bin/auto-lock start")
-
 -- the shell scripts is used to run some daemon
 awful.spawn.with_shell("$XDG_CONFIG_HOME/awesome/X/run_once.sh")
 awesome.register_xproperty("WM_NAME", "string")
 
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
-naughty.connect_signal("request::display_error", function(message, startup)
-    naughty.notification {
-        urgency = "critical",
-        title = "Oops, an error happened" ..
-            (startup and " during startup!" or "!"),
-        message = message
-    }
-end)
+-- startup some applications
+os.execute("~/.local/bin/xsettingsd-setup")
+os.execute("~/.local/bin/ssh-add")
+awful.spawn.with_shell("~/.local/bin/auto-lock start")
 
 -- ===================================================================
 -- Apps & defaults

@@ -40,6 +40,10 @@ local defaults = {
         },
         {
             names  = { "", " ", " ", " ", " " },
+            layout = {layouts[2], layouts[3], layouts[8], layouts[10], layouts[13]},
+        },
+        {
+            names  = { "", " ", " ", " ", " " },
             layout = {layouts[4],layouts[4],layouts[4],layouts[10],layouts[4]},
         }
     },

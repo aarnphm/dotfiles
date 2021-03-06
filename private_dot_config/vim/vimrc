@@ -38,6 +38,8 @@ Plug 'sheerun/vim-polyglot'
 " language syntax
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'vim-python/python-syntax'
+Plug 'leafgarland/typescript-vim'
+Plug 'jparise/vim-graphql'
 Plug 'mrk21/yaml-vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'SirVer/ultisnips'
@@ -73,6 +75,7 @@ autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType java setlocal foldmethod=syntax
 autocmd FileType zsh UltiSnipsAddFiletypes zsh
+au BufNewFile,BufRead *.prisma setfiletype graphql
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => init
@@ -250,7 +253,6 @@ map <C-l> <C-W>l
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
-nnoremap <leader>t :tabedit <C-r>=expand("")<CR>/
 
 " remove Ex mode
 map Q <Nop>
@@ -365,7 +367,9 @@ let g:go_def_mapping_enabled = 0
 " coc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:coc_global_extensions = ['coc-texlab', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-texlab', 'coc-graphql', 'coc-prettier', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -389,6 +393,8 @@ else
     inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
