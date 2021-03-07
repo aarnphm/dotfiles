@@ -191,6 +191,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 command! Ev :e $HOME/.local/share/chezmoi/private_dot_config/vim/vimrc
+command! Ca :!source $HOME/.zsh/.zshenv.local && chezmoi apply --verbose --debug
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
@@ -367,7 +368,7 @@ let g:go_def_mapping_enabled = 0
 " coc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:coc_global_extensions = ['coc-texlab', 'coc-graphql', 'coc-prettier', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-texlab', 'coc-prettier', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
 
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
@@ -387,11 +388,7 @@ inoremap <silent><expr> <Tab>
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
 " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
@@ -417,7 +414,7 @@ endfunction
 augroup mygroup
     autocmd!
     " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
     " Update signature help on jump placeholder.
     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end

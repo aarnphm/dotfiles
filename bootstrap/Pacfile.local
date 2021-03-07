@@ -136,6 +136,7 @@ qopenvpn
 qt5ct
 qt6-base
 r
+redis
 redshift
 ripgrep
 rofi

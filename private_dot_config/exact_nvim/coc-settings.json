@@ -28,5 +28,7 @@
             ]
         }
   },
-  "coc.preferences.extensionUpdateCheck": "daily"
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "typescript.suggest.autoImports":true,
+  "typescript.suggest.paths": true
 }
