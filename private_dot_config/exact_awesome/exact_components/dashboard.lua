@@ -17,11 +17,12 @@ dashboard.bg = beautiful.exit_screen_bg
 dashboard.fg = beautiful.exit_screen_fg
 
 awful.screen.connect_for_each_screen(function(s)
-    if s == screen.primary then
-        s.dashboard = dashboard
-    else
-        s.dashboard = helpers.screen_mask(s, dashboard.bg)
-    end
+    s.dashboard = dashboard
+    -- if s == screen.primary then
+    --     s.dashboard = dashboard
+    -- else
+    --     s.dashboard = helpers.screen_mask(s, dashboard.bg)
+    -- end
 end)
 
 local function set_visibility(v)

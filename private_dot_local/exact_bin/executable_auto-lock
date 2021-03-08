@@ -2,7 +2,7 @@
 
 me="$(readlink -f "$0")"
 echo $me
-timeout=300
+timeout=600
 notify=$((timeout/30))
 display=$(systemd-escape -- "$DISPLAY")
 
