@@ -1,3 +1,2 @@
-require("components.notification")
-require("components.dashboard")
 require("components.bar")
+require("components.notification")

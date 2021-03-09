@@ -11,5 +11,3 @@ setopt pushd_silent pushd_to_home cdable_vars
 setopt extendedglob extended_history append_history
 setopt hist_reduce_blanks hist_save_no_dups hist_no_store hist_expand
 setopt hist_ignore_all_dups inc_append_history
-setopt chase_links
-setopt nolistambiguous

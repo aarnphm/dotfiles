@@ -28,31 +28,35 @@ Plug 'romainl/Apprentice'
 Plug 'rking/ag.vim'
 " Go support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" Julia support
-" Plug 'JuliaEditorSupport/julia-vim'
+Plug 'Rykka/InstantRst'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jiangmiao/auto-pairs'
 " language packs
 Plug 'sheerun/vim-polyglot'
 " language syntax
+Plug 'lervag/vimtex'
+Plug 'mrk21/yaml-vim'
+Plug 'plasticboy/vim-markdown'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'vim-python/python-syntax'
+Plug 'styled-components/vim-styled-components'
+Plug 'ekalinin/Dockerfile.vim'
+" Typescripts-JSX
 Plug 'leafgarland/typescript-vim'
 Plug 'jparise/vim-graphql'
-Plug 'mrk21/yaml-vim'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'pangloss/vim-javascript'
 " UI related
 Plug 'mkitt/tabline.vim'
 Plug 'lambdalisue/suda.vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
 Plug 'airblade/vim-gitgutter'
-Plug 'Rykka/InstantRst'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
@@ -61,7 +65,6 @@ Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-obsession'
 Plug 'thaerkh/vim-indentguides'
 Plug 'wakatime/vim-wakatime'
-Plug 'lervag/vimtex'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -69,13 +72,16 @@ call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+au! BufNewFile,BufRead *.prisma setfiletype graphql
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType java setlocal foldmethod=syntax
-autocmd FileType zsh UltiSnipsAddFiletypes zsh
-au BufNewFile,BufRead *.prisma setfiletype graphql
+autocmd FileType zsh setlocal foldmethod=syntax
+autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => init
@@ -95,8 +101,8 @@ if g:is_termguicolors
     set termguicolors
 endif
 set background=dark
-" colorscheme onedark
-colorscheme apprentice
+colorscheme onedark
+" colorscheme apprentice
 
 " Minimal
 filetype plugin indent on
@@ -369,21 +375,28 @@ let g:go_def_mapping_enabled = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:coc_global_extensions = ['coc-texlab', 'coc-prettier', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+    let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+    let g:coc_global_extensions += ['coc-eslint']
+endif
 
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 
 inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<Tab>" :
+            \ coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
@@ -399,25 +412,7 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
             \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    elseif (coc#rpc#ready())
-        call CocActionAsync('doHover')
-    else
-        execute '!' . &keywordprg . " " . expand('<cword>')
-    endif
-endfunction
-
-augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    " autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder.
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+nnoremap <silent> K :call CocAction('doHover')<CR>
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -428,9 +423,16 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+" perform code action
+nmap <leader>ac <Plug>(coc-codeaction)
+
 " Mappings for CoCList
 " Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <space>d  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands.

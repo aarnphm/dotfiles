@@ -1,17 +1,17 @@
 {
-  "python.linting.pylintEnabled": true,
-  "python.linting.enabled": true,
-  "suggest.enablePreview": true,
-  "tsserver.enable": true,
-  "json.format.enable":false,
-  "lua.enable":true,
-  "languageserver": {
-    "golang": {
-      "command": "$HOME/go/bin/gopls",
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"]
-    },
-    "ccls": {
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "suggest.enablePreview": true,
+    "tsserver.enable": true,
+    "json.format.enable":false,
+    "lua.enable":true,
+    "languageserver": {
+        "golang": {
+            "command": "$HOME/go/bin/gopls",
+            "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+            "filetypes": ["go"]
+        },
+        "ccls": {
             "command": "ccls",
             "filetypes": [
                 "c",
@@ -27,8 +27,19 @@
                 ".hg/"
             ]
         }
-  },
-  "coc.preferences.extensionUpdateCheck": "daily",
-  "typescript.suggest.autoImports":true,
-  "typescript.suggest.paths": true
+    },
+    "coc.preferences.extensionUpdateCheck": "daily",
+    "typescript.suggest.autoImports":true,
+    "typescript.suggest.paths": true,
+    "coc.preferences.formatOnSaveFiletypes": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+    "eslint.autoFixOnSave": true,
+    "tsserver.formatOnType": true,
+    "coc.preferences.formatOnType": true,
+    "prettier.disableSuccessMessage": true
+
 }

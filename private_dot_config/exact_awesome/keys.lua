@@ -51,17 +51,6 @@ mymainmenu = awful.menu({
     })
 
 -- ===================================================================
--- Global mouse binding
--- ===================================================================
-
-awful.mouse.append_global_mousebindings({
-        awful.button({}, 2, function() if dashboard_show then dashboard_show() end end),
-        -- awful.button({}, 3, function() mymainmenu:toggle() end),
-        -- awful.button({}, 4, awful.tag.viewprev),
-        -- awful.button({}, 5, awful.tag.viewnext)
-    })
-
--- ===================================================================
 -- Client keys bindings, can be used to modify and move clients around
 -- screens in given tags
 -- ===================================================================
@@ -166,12 +155,6 @@ client.connect_signal("request::default_keybindings", function()
             awful.key({modkey}, "s",
                 hotkeys_popup.show_help,
                 {description = "show help", group = "awesome"}
-                ),
-            awful.key({modkey},"w",
-                function()
-                    if dashboard_show then dashboard_show() end
-                end,
-                {description = "show panel", group = "awesome"}
                 ),
             awful.key({ctrl, modkey}, "r",
                 awesome.restart,

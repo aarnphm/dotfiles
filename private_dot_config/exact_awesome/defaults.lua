@@ -36,15 +36,15 @@ local defaults = {
     tags = {
         {
             names  = { "", " ", " ", " ", " " },
-            layout = {layouts[2], layouts[3], layouts[8], layouts[10], layouts[13]},
+            layout = {layouts[2], layouts[2], layouts[8], layouts[10], layouts[10]},
         },
         {
             names  = { "", " ", " ", " ", " " },
-            layout = {layouts[2], layouts[3], layouts[8], layouts[10], layouts[13]},
+            layout = {layouts[2], layouts[2], layouts[8], layouts[10], layouts[10]},
         },
         {
             names  = { "", " ", " ", " ", " " },
-            layout = {layouts[4],layouts[4],layouts[4],layouts[10],layouts[4]},
+            layout = {layouts[4],layouts[4],layouts[4], layouts[10], layouts[4]},
         }
     },
 }

@@ -18,19 +18,14 @@ local helpers      = require("helpers")
 
 -- Inherit default theme
 local theme     = dofile(themes_path .. "default/theme.lua")
-local icon_path = gfs.get_configuration_dir() .. "icons/"
+local icon_path = gfs.get_configuration_dir() .. "decorations/icons/"
 
 -- ===================================================================
--- Notification centre
+-- icons 
 -- ===================================================================
 
-theme.clear_icon          = icon_path .. "notification-centre/clear.png"
-theme.clear_grey_icon     = icon_path .. "notification-centre/clear_grey.png"
-theme.notification_icon   = icon_path .. "notification-centre/notification.png"
-theme.delete_icon         = icon_path .. "notification-centre/delete.png"
-theme.delete_grey_icon    = icon_path .. "notification-centre/delete_grey.png"
-theme.awesome_icon        = icon_path .. "default/awesome.png"
-theme.terminal_icon       = icon_path .. "default/terminal.png"
+theme.awesome_icon        = icon_path .. "awesome.png"
+theme.terminal_icon       = icon_path .. "terminal.png"
 theme.notification_width  = dpi(150)
 theme.notification_height = dpi(300)
 
@@ -200,7 +195,7 @@ theme.menu_height       = dpi(20)
 theme.menu_width        = dpi(190)
 theme.menu_border_color = "#000000"
 theme.menu_border_width = theme.border_width
-theme.menu_submenu_icon = icon_path .. "default/submenu.png"
+theme.menu_submenu_icon = icon_path .. "submenu.png"
 
 -- ===================================================================
 -- Tooltips

@@ -21,7 +21,7 @@ ruled.client.connect_signal("request::rules", function()
             border_color     = beautiful.border_normal,
             focus            = awful.client.focus,
             raise            = false,
-            size_hints_honor = true,
+            size_hints_honor = false,
             maximized        = false,
             placement        = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
         }
@@ -65,9 +65,15 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+        id = "firefox",
+        rule = {class = "Firefox"},
+        properties = {screen = 1, tag = defaults.tags[1].names[2], switchtotag = true}
+    }
+
+    ruled.client.append_rule {
         id = "terminal",
         rule_any = {class = {"Alacritty", "Kitty", "St", "UXTerm", "XTerm"}},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
     ruled.client.append_rule {
         id = "terminal",

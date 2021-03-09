@@ -1,3 +1,4 @@
+{{- if .personal -}}
 Host *
 {{- if eq .chezmoi.os "darwin" }}
     IgnoreUnknown UseKeychain
@@ -6,7 +7,6 @@ Host *
 {{- end }}
     IdentityFile {{ .chezmoi.homedir }}/.ssh/id_rsa
     IdentityFile {{ .chezmoi.homedir }}/.ssh/id_ed25519
-
 {{ if eq .chezmoi.os "darwin" }}
 
 Host GGBBYAERO15W8
@@ -21,4 +21,4 @@ Host HOME
     User {{ .chezmoi.username }}
     IdentityFile {{ .chezmoi.homedir }}/.ssh/id_rsa
 {{- end }}
-
+{{- end }}

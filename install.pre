@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-
-set -euo pipefail
-trap "exit" INT
-
-exec make 

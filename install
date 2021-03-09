@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+trap "exit" INT
+
 CURRENT=$(pwd)
 
 if [[ `command -v git` ]]; then
     git clone --depth=1 --recursive https://github.com/aarnphm/dotfiles.git $CURRENT/dotfiles && cd $CURRENT/dotfiles
     git update-index --skip-worktree $(pwd)/exact_private_dot_zsh/dot_zshenv.local.tmpl
-    ./install.pre
-    ./install.post
+    exec make
+    if [[ "$(uname -s)" == "Linux" ]]; then
+        make full-install
+    else
+        xargs brew install < ${pwd}/Brewfile.local
+    fi
 else
     echo "git hasn't installed on the system yet. Install git before procedding"
     exit 1

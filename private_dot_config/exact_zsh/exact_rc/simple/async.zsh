@@ -45,8 +45,8 @@ _async_job() {
 			ret=$?
 			duration=$(( EPOCHREALTIME - duration ))  # Calculate duration.
 			print -r -n - $'\0'${(q)jobname} $ret ${(q)stdout} $duration
-		} 2> >(stderr=$(cat) && print -r -n - " "${(q)stderr}$'\0')
-	)"
+		} 2> >(stderr=$(cat) && print -r -n - " "${(q)stderr}$'\0'))"
+
 	if [[ $out != $'\0'*$'\0' ]]; then
 		# Corrupted output (aborted job?), skipping.
 		return
