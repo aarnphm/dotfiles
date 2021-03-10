@@ -6,6 +6,6 @@ awesome.register_xproperty("WM_NAME", "string")
 
 -- startup some applications
 os.execute("~/.local/bin/xsettingsd-setup")
+awful.spawn.with_shell("~/.local/bin/auto-lock")
 os.execute("~/.local/bin/ssh-add")
-awful.spawn.with_shell("~/.local/bin/auto-lock start")
 

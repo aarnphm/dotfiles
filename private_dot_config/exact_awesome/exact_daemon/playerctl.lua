@@ -12,6 +12,7 @@ local function emit_info(playerctl_output)
     -- Use the lower case of status
     local status = playerctl_output:match('status_start(.*)'):lower()
     status = string.gsub(status, '^%s*(.-)%s*$', '%1')
+    print(status)
 
     awesome.emit_signal("daemon::spotify", artist, title, status)
 end

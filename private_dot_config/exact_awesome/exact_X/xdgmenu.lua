@@ -1,6 +1,4 @@
  local menu98edb85b00d9527ad5acebe451b3fae6 = {
-     {"BalenaEtcher", "\"/usr/bin/balena-etcher-electron\" ", "/usr/share/icons/hicolor/16x16/apps/balena-etcher-electron.png" },
-     {"Bitwarden", "bitwarden-desktop", "/usr/share/icons/hicolor/16x16/apps/bitwarden.png" },
      {"Caffeine-ng", "/usr/bin/caffeine", "/usr/share/icons/hicolor/16x16/apps/caffeine.png" },
      {"Disks", "gnome-disks"},
      {"Gyazo", "gyazo", "/usr/share/pixmaps/gyazo.png" },
@@ -41,8 +39,6 @@
      {"Angry IP Scanner", "/usr/bin/ipscan", "/usr/share/pixmaps/ipscan.png" },
      {"Avahi SSH Server Browser", "/usr/bin/bssh"},
      {"Avahi VNC Server Browser", "/usr/bin/bvnc"},
-     {"Caprine", "caprine", "/usr/share/pixmaps/caprine.png" },
-     {"Chatterino", "chatterino", "/usr/share/pixmaps/chatterino.png" },
      {"Discord", "/usr/bin/discord", "/usr/share/pixmaps/discord.png" },
      {"Firefox", "/usr/lib/firefox/firefox ", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
      {"Microsoft Teams - Preview", "teams ", "/usr/share/pixmaps/teams.png" },
@@ -61,9 +57,6 @@
 
  local menue6f43c40ab1c07cd29e4e83e4ef6bf85 = {
      {"CMake", "cmake-gui ", "/usr/share/icons/hicolor/32x32/apps/CMakeSetup.png" },
-     {"Electron", "electron ", "/usr/share/pixmaps/electron.png" },
-     {"Electron", "electron6 ", "/usr/share/pixmaps/electron6.png" },
-     {"Electron 9", "electron9 ", "/usr/share/pixmaps/electron9.png" },
      {"Qt Assistant", "assistant", "/usr/share/icons/hicolor/32x32/apps/assistant.png" },
      {"Qt Designer", "designer ", "/usr/share/icons/hicolor/128x128/apps/QtProject-designer.png" },
      {"Qt Linguist", "linguist ", "/usr/share/icons/hicolor/16x16/apps/linguist.png" },

@@ -4,6 +4,7 @@ local wibox     = require("wibox")
 local awful     = require("awful")
 local helpers   = require("helpers")
 local ruled     = require("ruled")
+local menubar   = require("menubar")
 local dpi       = beautiful.xresources.apply_dpi
 
 naughty.config.defaults.ontop        = true

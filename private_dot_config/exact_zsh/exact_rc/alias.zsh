@@ -23,12 +23,10 @@ alias failed="journalctl -p 3 -xb"
 
 # List all files colorized in long format
 alias la="ls ${LS_OPTS} ${colorflag}"
-{{ if `command -v nnn` }}
 # nnn intensifies
 alias N="sudo -E nnn -dDH"
 alias l="n"
 alias lp="nnn -P p"
-{{ end }}
 
 # editors
 alias v="$EDITOR $@"
@@ -92,7 +90,7 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 alias dotfiles="cd $CHEZMOI_DIR"
 # mcmaster vpn connect via studentvpn.mcmaster.ca
 if [[ -d $CS_PATH/mcmaster ]]; then
-    alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | head -n1`"
+    alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | egrep 'compeng' | head -n1`"
 fi
 # bentoml
 alias bentodir="$CS_PATH/BentoML"
@@ -100,11 +98,9 @@ alias bentodir="$CS_PATH/BentoML"
 alias simpledir="$XDG_CONFIG_HOME/zsh/rc/simple"
 alias zcdir="$CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
 alias zdir="$CHEZMOI_DIR/private_dot_zsh"
-{{- if and (eq .wm "awesome") (.personal) }}
 alias adir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 alias aconf="$EDITOR -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
-{{- end }}
 
 #==============================================================#
 ##          App                                               ##
@@ -129,19 +125,13 @@ alias cryptoprice="curl rate.sx"
 alias weather="curl wttr.in/$CITY"
 
 # docker and kubectl related
-{{ if `builtin command -v docker` }}
 alias dockerprune="docker system prune -a -f"
-{{ end }}
-{{- if `builtin command -v kubectl` }}
 alias kubesecret="kubectl get secret regcred --output=yaml"
-{{- end }}
-
-{{ if eq .chezmoi.os "linux" }}
-# urxvt
-alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
 
 # arch
 if [ -f /etc/arch-release ] ;then
+    # urxvt
+    alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
     # install
     alias pac-update='sudo pacman -Sy'
     alias pac-upgrade='sudo pacman -Syu'
@@ -173,7 +163,7 @@ if [ -f /etc/arch-release ] ;then
         alias yay-clean='yay -Sc'
     fi
 fi
-{{ end }}
+
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
 # Intuitive map function
@@ -182,7 +172,7 @@ alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-pa
 alias map="xargs -n1"
 
 # URL-encode strings
-alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+alias urlencode='python -c "import sys, urllib.parse as ul; print(ul.quote(sys.argv[1]));"'
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
@@ -190,11 +180,15 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 done
 
 #Lock the screen (when going AFK)
-{{- if eq .chezmoi.os "darwin" }}
-alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-{{- else if and (eq .chezmoi.os "linux") (.personal) }}
-alias afk="xsecurelock"
-{{- end }}
+if [[ $SYSTEM == "Darwin" ]]; then
+    alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+else
+    if xset q | grep "DPMS is Enabled" &>/dev/null; then
+        alias afk="xset s activate"
+    else
+        alias afk="xsecurelock"
+    fi
+fi
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
@@ -209,11 +203,7 @@ fi
 #==============================================================#
 ##          safe opts                                         ##
 #==============================================================#
-{{ if eq .chezmoi.os "linux" }}
-alias tmux="TERM=xterm-256color /usr/bin/tmux ${TMUX_OPTS}"
-{{ else if eq .chezmoi.os "darwin" }}
-alias tmux="TERM=xterm-256color /usr/local/bin/tmux ${TMUX_OPTS}"
-{{ end }}
+alias tmux="TERM=xterm-256color $(which tmux) ${TMUX_OPTS}"
 
 # Safe ops. Ask the user before doing anything destructive.
 alias rmi="/usr/bin/rm -i"

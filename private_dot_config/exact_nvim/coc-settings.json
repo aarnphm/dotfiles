@@ -5,6 +5,9 @@
     "tsserver.enable": true,
     "json.format.enable":false,
     "lua.enable":true,
+    "Lua.hint.enable": true,
+    "Lua.completion.enable": true,
+    "Lua.workspace.library": {"awesome": "/usr/share/awesome/lib"},
     "languageserver": {
         "golang": {
             "command": "$HOME/go/bin/gopls",

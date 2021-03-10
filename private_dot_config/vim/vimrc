@@ -78,7 +78,7 @@ autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType java setlocal foldmethod=syntax
-autocmd FileType zsh setlocal foldmethod=syntax
+autocmd FileType zsh setlocal foldmethod=indent
 autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear

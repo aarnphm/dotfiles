@@ -76,7 +76,7 @@ ruled.client.connect_signal("request::rules", function()
         properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
     ruled.client.append_rule {
-        id = "terminal",
+        id = "termite",
         rule = {class = "Termite"},
         properties = {ontop=true, screen = awful.screen.focused(), switchtotag = true}
     }
@@ -84,7 +84,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "meeting",
         rule_any = {class={"Zoom","Microsoft Teams - Preview", "Whatsapp-for-linux"}, instance = {"discord", "slack", "skype","caprine"}},
-        properties = {screen=screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
+        properties = {screen = 2, tag = defaults.tags[1].names[5], switchtotag = true}
     }
 
     ruled.client.append_rule{

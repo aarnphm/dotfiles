@@ -3,10 +3,8 @@
 #          Completion                                          ##
 #===============================================================#
 
-{{ if `builtin command -v gcloud` }}
 # The next line enables shell command completion for gcloud.
-if [ -f '{{ .chezmoi.homedir }}/google-cloud-sdk/completion.zsh.inc' ]; then . '{{ .chezmoi.homedir }}/google-cloud-sdk/completion.zsh.inc'; fi
-{{ end }}
+if [ -f '$HOME/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/google-cloud-sdk/completion.zsh.inc'; fi
 
 # complete . and .. special directories
 zstyle ':completion:*' verbose yes

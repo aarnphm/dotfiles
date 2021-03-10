@@ -22,6 +22,9 @@ autoload -Uz is-at-least
 # core
 ulimit -c unlimited
 
+# sipmle colors
+zstyle ':prompt:simple:prompt:success' color white
+
 umask 022
 
 export DISABLE_DEVICONS=false

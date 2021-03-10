@@ -1,9 +1,8 @@
 #!/bin/bash
 
 me="$(readlink -f "$0")"
-echo $me
 timeout=600
-notify=$((timeout/30))
+notify=$((timeout/120))
 display=$(systemd-escape -- "$DISPLAY")
 
 configure() {
@@ -11,24 +10,7 @@ configure() {
     xset dpms $((timeout * 2)) $((timeout * 22 / 10)) $((timeout * 24 / 10))
 }
 
-case "$1" in
-    start)
-        configure
-        echo "Running xss-lock daemon..."
-        export XSECURELOCK_SAVER=saver_blank
-        exec xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock
-        ;;
-    dim|notify)
-        echo "Running xss-lock notify..."
-        echo "notify: start (idle: $(xprintidle))"
-        trap 'echo notify: user activity; kill %% 2> /dev/null; exit 0' HUP  # user activity
-        trap 'echo notify: locker started; kill %% 2> /dev/null; exit 0' TERM # locker started
-        outputs=($(xrandr --current | sed -n 's/\([^ ]*\) connected .*/\1/p'))
-        for out in ${outputs[@]}; do
-            xrandr --output $out --brightness 0.2
-        done
-        sleep infinity &
-        wait
-        echo "notify: end"
-        ;;
-esac
+echo "xss-lock: Running xss-lock daemon..." >&2
+configure
+export XSECURELOCK_SAVER=saver_blank
+exec xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock

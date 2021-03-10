@@ -117,7 +117,7 @@ prompt_simple_async_git_fetch() {
     # MONITOR mode we can notice when a child process prompts for user input
     # because it will be suspended. Since we are inside an async worker, we
     # have no way of transmitting the password and the only option is to
-    # kill it. If we don't do it this way, the process will corrupt with the
+    # kill it. If we don\'t do it this way, the process will corrupt with the
     # async worker.
     setopt localtraps monitor
 
@@ -412,10 +412,10 @@ prompt_simple_reset_prompt() {
     if [[ $CONTEXT == cont ]]; then
         # When the context is "cont", PS2 is active and calling
         # reset-prompt will have no effect on PS1, but it will
-        # reset the execution context (%_) of PS2 which we don't
-        # want. Unfortunately, we can't save the output of "%_"
+        # reset the execution context (%_) of PS2 which we don\'t
+        # want. Unfortunately, we can\'t save the output of "%_"
         # either because it is only ever rendered as part of the
-        # prompt, expanding in-place won't work.
+        # prompt, expanding in-place won\'t work.
         return
     fi
 
@@ -436,9 +436,6 @@ prompt_simple_update_vim_prompt_widget() {
 prompt_simple_reset_vim_prompt_widget() {
     setopt localoptions noshwordsplit
     prompt_simple_reset_prompt_symbol
-
-    # We can't perform a prompt reset at this point because it
-    # removes the prompt marks inserted by macOS Terminal.
 }
 
 prompt_simple_preexec() {
@@ -576,14 +573,14 @@ prompt_simple_state_setup() {
     # Set the path.
     local -a prompt_parts
     [[ -n $prompt_simple_state[username] ]] && prompt_parts+=($prompt_simple_state[username]$prompt_simple_state[accent])
-    prompt_parts+=('%F{${prompt_simple_colors[path]}}%c%f${prompt_simple_state[accent]} ')
+    prompt_parts+=('%F{${prompt_simple_colors[path]}}%c%f${prompt_simple_state[accent]}%f ')
 
     PROMPT=${(j..)prompt_parts}
 }
 
 
 prompt_simple_setup() {
-    # Prevent percentage showing up if output doesn't end with a newline.
+    # Prevent percentage showing up if output doesn\'t end with a newline.
     export PROMPT_EOL_MARK=''
 
     prompt_opts=(subst percent)

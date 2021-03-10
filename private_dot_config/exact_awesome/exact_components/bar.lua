@@ -30,7 +30,7 @@ local awesome_icon = wibox.widget {
             image = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/awesome.png"),
             resize = true
         },
-        margins = dpi(4),
+        margins = dpi(6),
         widget = wibox.container.margin
     },
     bg = beautiful.xcolor0,
@@ -42,6 +42,110 @@ awesome_icon:buttons(gears.table.join(awful.button({}, 1, function()
     mymainmenu:toggle()
     awesome_icon.bg = beautiful.xcolor0
 end)))
+
+-- ===================================================================
+-- Playerctl Bar widget
+-- ===================================================================
+
+local song_title = wibox.widget {
+    markup = '--',
+    align = 'center',
+    valign = 'center',
+    widget = wibox.widget.textbox
+}
+
+local song_artist = wibox.widget {
+    markup = '--',
+    align = 'center',
+    valign = 'center',
+    widget = wibox.widget.textbox
+}
+
+local song_logo = wibox.widget {
+    markup = '<span foreground="' .. beautiful.xcolor6 .. '"> </span>',
+    font = beautiful.icon_font,
+    align = 'center',
+    valign = 'center',
+    widget = wibox.widget.textbox
+}
+
+local playerctl_bar = wibox.widget {
+    {
+        {
+            {
+                song_logo,
+                left = dpi(3),
+                right = dpi(10),
+                widget = wibox.container.margin
+            },
+            {
+                {
+                    song_title,
+                    expand = "outside",
+                    layout = wibox.layout.align.vertical
+                },
+                left = dpi(10),
+                right = dpi(10),
+                widget = wibox.container.margin
+            },
+            {
+                {
+                    song_artist,
+                    expand = "outside",
+                    layout = wibox.layout.align.vertical
+                },
+                left = dpi(10),
+                widget = wibox.container.margin
+            },
+            spacing = 1,
+            spacing_widget = {
+                bg = beautiful.xcolor8,
+                widget = wibox.container.background
+            },
+            layout = wibox.layout.fixed.horizontal
+        },
+        left = dpi(10),
+        right = dpi(10),
+        widget = wibox.container.margin
+    },
+
+    bg = beautiful.xcolor0,
+    shape = helpers.rrect(beautiful.border_radius - 3),
+    widget = wibox.container.background
+}
+
+playerctl_bar.visible = false
+
+-- Get Title
+awesome.connect_signal("daemon::spotify", function(artist,title,playing)
+    playerctl_bar.visible = true
+    print(playing)
+    song_title.markup = '<span foreground="' .. beautiful.xcolor5 .. '">' ..
+    title .. '</span>'
+
+    song_artist.markup = '<span foreground="' .. beautiful.xcolor4 .. '">' ..
+    artist .. '</span>'
+end
+)
+
+-- ===================================================================
+-- Tasklist widgets
+-- ===================================================================
+
+local tasklist_buttons = gears.table.join(
+    awful.button({}, 1, function(c)
+        if c == client.focus then
+            c.minimized = true
+        else
+            c:emit_signal("request::activate", "tasklist", {raise = true})
+        end
+    end),
+    awful.button({}, 3, function()
+        awful.menu.client_list({theme = {width = 250}})
+    end),
+    awful.button({}, 4, function() awful.client.focus.byidx(1) end),
+    awful.button({}, 5, function() awful.client.focus.byidx(-1) end)
+    )
 
 -- ===================================================================
 --  Battery Bar Widget
@@ -128,116 +232,11 @@ local mysystray_container = {
 }
 
 -- ===================================================================
--- Tasklist widgets
--- ===================================================================
-
-local tasklist_buttons = gears.table.join(
-    awful.button({}, 1, function(c)
-        if c == client.focus then
-            c.minimized = true
-        else
-            c:emit_signal("request::activate", "tasklist", {raise = true})
-        end
-    end),
-    awful.button({}, 3, function()
-        awful.menu.client_list({theme = {width = 250}})
-    end),
-    awful.button({}, 4, function() awful.client.focus.byidx(1) end),
-    awful.button({}, 5, function() awful.client.focus.byidx(-1) end)
-    )
-
--- ===================================================================
--- Playerctl Bar widget
--- ===================================================================
-
-local song_title = wibox.widget {
-    markup = '--',
-    align = 'center',
-    valign = 'center',
-    widget = wibox.widget.textbox
-}
-
-local song_artist = wibox.widget {
-    markup = '--',
-    align = 'center',
-    valign = 'center',
-    widget = wibox.widget.textbox
-}
-
-local song_logo = wibox.widget {
-    markup = '<span foreground="' .. beautiful.xcolor6 .. '"> </span>',
-    font = beautiful.icon_font,
-    align = 'center',
-    valign = 'center',
-    widget = wibox.widget.textbox
-}
-
-local playerctl_bar = wibox.widget {
-    {
-        {
-            {
-                song_logo,
-                left = dpi(3),
-                right = dpi(10),
-                widget = wibox.container.margin
-            },
-            {
-                {
-                    song_title,
-                    expand = "outside",
-                    layout = wibox.layout.align.vertical
-                },
-                left = dpi(10),
-                right = dpi(10),
-                widget = wibox.container.margin
-            },
-            {
-                {
-                    song_artist,
-                    expand = "outside",
-                    layout = wibox.layout.align.vertical
-                },
-                left = dpi(10),
-                widget = wibox.container.margin
-            },
-            spacing = 1,
-            spacing_widget = {
-                bg = beautiful.xcolor8,
-                widget = wibox.container.background
-            },
-            layout = wibox.layout.fixed.horizontal
-        },
-        left = dpi(10),
-        right = dpi(10),
-        widget = wibox.container.margin
-    },
-
-    bg = beautiful.xcolor0,
-    shape = helpers.rrect(beautiful.border_radius - 3),
-    widget = wibox.container.background
-}
-
-playerctl_bar.visible = false
-
--- Get Title
-awesome.connect_signal("daemon::spotify",
-    function(artist,title,_)
-
-        playerctl_bar.visible = true
-        song_title.markup = '<span foreground="' .. beautiful.xcolor5 .. '">' ..
-        title .. '</span>'
-
-        song_artist.markup = '<span foreground="' .. beautiful.xcolor4 .. '">' ..
-        artist .. '</span>'
-    end
-    )
-
--- ===================================================================
 -- Clock widget
 -- ===================================================================
-local timestring = wibox.widget.textclock("%H:%M %Z")
-timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. timestring.text:sub(3, 5) .. "<span foreground='" .. beautiful.xcolor6 .. "'>" .. timestring.text:sub(6,8) .. "</span>"
-timestring:connect_signal("widget::redraw_needed", function() timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. timestring.text:sub(3, 5) ..  "<span foreground='" .. beautiful.xcolor6 .. "'>" .. timestring.text:sub(6,8) .. "</span>" end)
+local timestring = wibox.widget.textclock("%H:%M%Z")
+timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. timestring.text:sub(3, 5) .. "</span>" .. "<span foreground='" .. beautiful.xcolor6 .. "'>" .. timestring.text:sub(6,8) .. "</span>"
+timestring:connect_signal("widget::redraw_needed", function() timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. timestring.text:sub(3, 5) ..  "</span>" .."<span foreground='" .. beautiful.xcolor6 .. "'>" .. timestring.text:sub(6,8) .. "</span>" end)
 timestring.align = "center"
 timestring.valign = "center"
 local time = wibox.widget {
