@@ -24,6 +24,7 @@ bleachbit
 blueman
 ccls
 chezmoi
+chromium
 cmake
 cronie
 ctags
@@ -32,6 +33,7 @@ dex
 dialog
 discord
 docker
+docker-compose
 dosfstools
 easy-rsa
 efibootmgr
@@ -220,6 +222,7 @@ xorg-xwd
 xorg-xwininfo
 xorg-xwud
 xsecurelock
+xsel
 xsettingsd
 zathura
 zathura-cb

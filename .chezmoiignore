@@ -37,4 +37,5 @@ private_dot_config/exact_zsh/rc/cplugins/fzf-preview.sh
 .config/X11
 .screenlayout/
 .zsh/post/ssh-agent-start
+symlink_dot_Xresources.tmpl
 {{ end  }}

@@ -26,8 +26,8 @@ local icon_path = gfs.get_configuration_dir() .. "decorations/icons/"
 
 theme.awesome_icon        = icon_path .. "awesome.png"
 theme.terminal_icon       = icon_path .. "terminal.png"
-theme.notification_width  = dpi(150)
-theme.notification_height = dpi(300)
+theme.notification_width  = dpi(260)
+theme.notification_height = dpi(380)
 
 -- ===================================================================
 -- Load $HOME/.Xresources colors and set fallback

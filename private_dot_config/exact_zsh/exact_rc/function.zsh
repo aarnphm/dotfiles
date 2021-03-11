@@ -83,86 +83,8 @@ function print_debug() {
 }
 
 #==============================================================#
-##         Override Shell Functions                           ##
-#==============================================================#
-
-###     copy     ###
-function pbcopy() {
-    local input
-    if [ -p /dv/stdin ]; then
-        if [ "`echo $@`" == "" ]; then
-            input=`cat -`
-        else
-            input=$@
-        fi
-    else
-        input=$@
-    fi
-    if [ "$WAYLAND_DISPLAY" != "" ]; then
-        if builtin command -v wl-copy > /dev/null 2>&1; then
-            echo -n $input | wl-copy
-        fi
-    else
-        if builtin command -v xsel > /dev/null 2>&1; then
-            echo -n $input | xsel -i --primary
-            echo -n $input | xsel -i --clipboard
-        elif builtin command -v xclip > /dev/null 2>&1; then
-            echo -n $input | xclip -i -selection primary
-            echo -n $input | xclip -i -selection clipboard
-        fi
-    fi
-}
-
-###     paste     ###
-function pbpaste() {
-    if builtin command -v xsel > /dev/null 2>&1; then
-        xsel -o --clipboard
-    elif builtin command -v xclip > /dev/null 2>&1; then
-        xclip -o clipboard
-    fi
-}
-
-###     copy buffer     ###
-function pbcopy-buffer() {
-    print -rn $BUFFER | pbcopy
-    zle -M "pbcopy: ${BUFFER}"
-}
-
-###     stack command     ###
-function show_buffer_stack() {
-    POSTDISPLAY="
-    stack: $LBUFFER"
-    zle push-line-or-edit
-}
-
-function precmd_prompt() {
-    [[ -t 1 ]] || return
-    case $TERM in
-        *xterm*|rxvt*|(dt|k|E)term|*kitty*|screen*)
-            print -Pn "\e]2;[%n@%m %d]\a"
-            ;;
-    esac
-}
-
-autoload -Uz add-zsh-hook
-add-zsh-hook precmd precmd_prompt
-
-#==============================================================#
 ##         New Commands                                      ##
 #==============================================================#
-
-# move bottom
-function blank() {
-    local count=10
-    if [[ $@ -eq 0 ]]; then
-        count=$(($(stty size | cut -d' ' -f1)/2))
-    else
-        count=$1
-    fi
-    for i in $(seq $count); do
-        echo
-    done
-}
 
 function comment(){
     sed -i "$1"' s/^/#/' "$2"
@@ -178,7 +100,7 @@ function 256color() {
 }
 
 function ascii_color_code() {
-    seq 30 47 | xargs -n 1 -i{} printf "\x1b[%dm#\x1b[0m %d\n" {} {}
+    seq 30 47 | xargs -i{} printf "\x1b[%dm#\x1b[0m %d\n" {} {}
 }
 
 

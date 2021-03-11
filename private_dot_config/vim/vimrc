@@ -23,9 +23,11 @@ call plug#begin('~/.config/vim/plugins')
 " fzf with rg
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'rking/ag.vim'
+" Color scheme
 Plug 'joshdick/onedark.vim'
 Plug 'romainl/Apprentice'
-Plug 'rking/ag.vim'
+Plug 'ayu-theme/ayu-vim'
 " Go support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'Rykka/InstantRst'
@@ -97,12 +99,12 @@ if has('vim')
 endif
 
 " Setup
+let ayucolor="mirage"
 if g:is_termguicolors
     set termguicolors
 endif
 set background=dark
-colorscheme onedark
-" colorscheme apprentice
+colorscheme onedark 
 
 " Minimal
 filetype plugin indent on
@@ -374,13 +376,17 @@ let g:go_def_mapping_enabled = 0
 " coc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:coc_global_extensions = ['coc-texlab', 'coc-prettier', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-texlab', 'coc-lua', 'coc-prettier', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
     let g:coc_global_extensions += ['coc-prettier']
 endif
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
     let g:coc_global_extensions += ['coc-eslint']
+endif
+
+if isdirectory("$HOME/R")
+    let g:coc_global_extensions += ['coc-r-lsp']
 endif
 
 command! -nargs=0 Prettier :CocCommand prettier.formatFile

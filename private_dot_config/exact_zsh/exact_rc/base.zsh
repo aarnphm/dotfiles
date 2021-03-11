@@ -23,7 +23,9 @@ autoload -Uz is-at-least
 ulimit -c unlimited
 
 # sipmle colors
-zstyle ':prompt:simple:prompt:success' color white
+if [ $SYSTEM = "Linux" ]; then
+    zstyle ':prompt:simple:prompt:success' color 222
+fi
 
 umask 022
 

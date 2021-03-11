@@ -36,9 +36,9 @@ local get_taglist = function(s)
     local ghost       = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/ghost.png")
     local dot         = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/dot.png")
     local pacman      = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/pacman.png")
-    local ghost_icon  = gears.color.recolor_image(ghost, beautiful.xcolor6)
-    local dot_icon    = gears.color.recolor_image(dot, beautiful.xcolor8)
-    local pacman_icon = gears.color.recolor_image(pacman, beautiful.xcolor3)
+    local ghost_icon  = gears.color.recolor_image(ghost, x.color6)
+    local dot_icon    = gears.color.recolor_image(dot, x.color8)
+    local pacman_icon = gears.color.recolor_image(pacman, x.color3)
 
     -- Function to update the tags
     local update_tags = function(self, c3)
@@ -75,11 +75,11 @@ local get_taglist = function(s)
             create_callback = function(self, c3, _,_)
                 update_tags(self, c3)
                 self:connect_signal('mouse::enter', function()
-                    if self.bg ~= beautiful.xbackground .. "60" then
+                    if self.bg ~= x.background .. "60" then
                         self.backup = self.bg
                         self.has_backup = true
                     end
-                    self.bg = beautiful.xbackground .. "60"
+                    self.bg = x.background .. "60"
                 end)
                 self:connect_signal('mouse::leave', function()
                     if self.has_backup then

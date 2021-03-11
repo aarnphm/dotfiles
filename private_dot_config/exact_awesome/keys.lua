@@ -287,11 +287,15 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "take a screenshot", group = "launcher"}
                 ),
+            awful.key({modkey, shift}, "b",
+                function()
+                    awful.spawn("chromium")
+                end,
+                {description = "open chromium", group = "launcher"}
+                ),
             awful.key({modkey}, "b",
                 function()
-                    awful.spawn(defaults.browser, {
-                            tag = mouse.screen.selected_tag,
-                        })
+                    awful.spawn(defaults.browser)
                 end,
                 {description = "open default browser", group = "launcher"}
                 ),

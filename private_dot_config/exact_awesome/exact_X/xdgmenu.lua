@@ -39,6 +39,7 @@
      {"Angry IP Scanner", "/usr/bin/ipscan", "/usr/share/pixmaps/ipscan.png" },
      {"Avahi SSH Server Browser", "/usr/bin/bssh"},
      {"Avahi VNC Server Browser", "/usr/bin/bvnc"},
+     {"Chromium", "/usr/bin/chromium ", "/usr/share/icons/hicolor/16x16/apps/chromium.png" },
      {"Discord", "/usr/bin/discord", "/usr/share/pixmaps/discord.png" },
      {"Firefox", "/usr/lib/firefox/firefox ", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
      {"Microsoft Teams - Preview", "teams ", "/usr/share/pixmaps/teams.png" },

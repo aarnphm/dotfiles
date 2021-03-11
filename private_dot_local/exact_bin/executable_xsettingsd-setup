@@ -6,13 +6,11 @@ DISPLAY=${DISPLAY%.0}
 cursors=12
 dpis=""
 for info in $(xrandr --current | sed -n 's/^\([^ ]\{1,\}\)* connected.* \([0-9]\{1,\}\)x.* \([0-9]\{1,\}\)mm x .*/\1,\2,\3/p'); do
-    echo "info :$info" >&2
     output=${info%%,*}
     pixels=${info#*,}
     pixels=${pixels%%,*}
     mm=${info##*,}
     dpi=$(($pixels * 254 / 10 / $mm))
-    echo "$output $pixels $mm $dpi" >&2
     # For laptop screens, we need to apply a correction factor
     case $output in
         eDP-1|eDP1) corrected=$(($dpi * 96/144)) ;;
@@ -22,16 +20,14 @@ for info in $(xrandr --current | sed -n 's/^\([^ ]\{1,\}\)* connected.* \([0-9]\
     rounded=$(((corrected + 24) / 48 * 48))
     [ $rounded -gt 192 ] && rounded=$(((corrected + 48) / 96 * 96))
     [ $rounded -lt 96 ] && rounded=96
-    dpis="$dpis$rounded "
+    dpis="$dpis$rounded " 
+    # echo "$output $pixels $mm $dpi" >&2
     echo "$output: ${dpi}DPI [corrected to ${corrected}DPI, rounded to ${rounded}DPI]" >&2
 done
-
-# Use first screen DPI
 dpi=${dpis%%*}
 dpi=${dpi:-96}
-echo $dpis >&2
-
 xrandr --dpi $dpi
+
 
 # Build xsettingsd
 {

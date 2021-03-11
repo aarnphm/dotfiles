@@ -1,9 +1,9 @@
--- default.lua
--- Wibar (top bar)
+-- bar.lua
 local awful      = require("awful")
 local gears      = require("gears")
 local gfs        = require("gears.filesystem")
 local wibox      = require("wibox")
+local lain       = require("lain")
 local beautiful  = require("beautiful")
 local xresources = require("beautiful.xresources")
 local helpers    = require("helpers")
@@ -15,7 +15,7 @@ local function format_progress_bar(bar)
     bar.forced_width = dpi(100)
     bar.shape = helpers.rrect(beautiful.border_radius - 3)
     bar.bar_shape = helpers.rrect(beautiful.border_radius - 3)
-    bar.background_color = beautiful.xcolor0
+    bar.background_color = x.color0
     return bar
 end
 
@@ -33,14 +33,14 @@ local awesome_icon = wibox.widget {
         margins = dpi(6),
         widget = wibox.container.margin
     },
-    bg = beautiful.xcolor0,
+    bg = x.color0,
     shape = helpers.rrect(beautiful.border_radius - 3),
     widget = wibox.container.background
 }
 
 awesome_icon:buttons(gears.table.join(awful.button({}, 1, function()
     mymainmenu:toggle()
-    awesome_icon.bg = beautiful.xcolor0
+    awesome_icon.bg = x.color0
 end)))
 
 -- ===================================================================
@@ -62,7 +62,7 @@ local song_artist = wibox.widget {
 }
 
 local song_logo = wibox.widget {
-    markup = '<span foreground="' .. beautiful.xcolor6 .. '"> </span>',
+    markup = '<span foreground="' .. x.color6 .. '"> </span>',
     font = beautiful.icon_font,
     align = 'center',
     valign = 'center',
@@ -99,7 +99,7 @@ local playerctl_bar = wibox.widget {
             },
             spacing = 1,
             spacing_widget = {
-                bg = beautiful.xcolor8,
+                bg = x.color8,
                 widget = wibox.container.background
             },
             layout = wibox.layout.fixed.horizontal
@@ -108,8 +108,7 @@ local playerctl_bar = wibox.widget {
         right = dpi(10),
         widget = wibox.container.margin
     },
-
-    bg = beautiful.xcolor0,
+    bg = x.color0,
     shape = helpers.rrect(beautiful.border_radius - 3),
     widget = wibox.container.background
 }
@@ -119,12 +118,16 @@ playerctl_bar.visible = false
 -- Get Title
 awesome.connect_signal("daemon::spotify", function(artist,title,playing)
     playerctl_bar.visible = true
-    print(playing)
-    song_title.markup = '<span foreground="' .. beautiful.xcolor5 .. '">' ..
-    title .. '</span>'
+    if playing ~= "Playing" then
+        song_title.markup = '<span foreground="' .. x.color5 .. '">' ..
+        title .. '</span>'
 
-    song_artist.markup = '<span foreground="' .. beautiful.xcolor4 .. '">' ..
-    artist .. '</span>'
+        song_artist.markup = '<span foreground="' .. x.color4 .. '">' ..
+        artist .. '</span>'
+    else
+        song_title.markup = '--'
+        song_artist.markup = '--'
+    end
 end
 )
 
@@ -162,11 +165,11 @@ local battery_bar = wibox.widget {
         from = {0, 0},
         to = {75, 20},
         stops = {
-            {0, beautiful.xcolor9}, {0.5, beautiful.xcolor11},
-            {1, beautiful.xcolor10}
+            {0, x.color9}, {0.5, x.color11},
+            {1, x.color10}
         }
     },
-    background_color = beautiful.xcolor0,
+    background_color = x.color0,
     border_width = dpi(0),
     border_color = beautiful.border_color,
     widget = wibox.widget.progressbar
@@ -186,9 +189,9 @@ awesome.connect_signal("daemon::battery", function(value)
         from = {0, 0},
         to = {75 - (100 - value), 20},
         stops = {
-            {1 + (value) / 100, beautiful.xcolor10},
-            {0.75 - (value / 100), beautiful.xcolor9},
-            {1 - (value) / 100, beautiful.xcolor10}
+            {1 + (value) / 100, x.color10},
+            {0.75 - (value / 100), x.color9},
+            {1 - (value) / 100, x.color10}
         }
     }
 
@@ -211,7 +214,7 @@ awesome.connect_signal("daemon::battery", function(value)
     end
 
     battery_tooltip.markup =
-    " " .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. bat_icon ..
+    " " .. "<span foreground='" .. x.color12 .. "'>" .. bat_icon ..
     "</span>" .. value .. '% '
 end)
 
@@ -235,8 +238,8 @@ local mysystray_container = {
 -- Clock widget
 -- ===================================================================
 local timestring = wibox.widget.textclock("%H:%M%Z")
-timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. timestring.text:sub(3, 5) .. "</span>" .. "<span foreground='" .. beautiful.xcolor6 .. "'>" .. timestring.text:sub(6,8) .. "</span>"
-timestring:connect_signal("widget::redraw_needed", function() timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. timestring.text:sub(3, 5) ..  "</span>" .."<span foreground='" .. beautiful.xcolor6 .. "'>" .. timestring.text:sub(6,8) .. "</span>" end)
+timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. x.color12 .. "'>" .. timestring.text:sub(3, 5) .. "</span>" .. "<span foreground='" .. x.color6 .. "'>" .. timestring.text:sub(6,8) .. "</span>"
+timestring:connect_signal("widget::redraw_needed", function() timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. x.color12 .. "'>" .. timestring.text:sub(3, 5) ..  "</span>" .."<span foreground='" .. x.color6 .. "'>" .. timestring.text:sub(6,8) .. "</span>" end)
 timestring.align = "center"
 timestring.valign = "center"
 local time = wibox.widget {
@@ -247,8 +250,8 @@ local time = wibox.widget {
 }
 
 local datestring = wibox.widget.textclock("%m-%d-%Y")
-datestring.markup = datestring.text:sub(1, 3) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. datestring.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. beautiful.xcolor6 .. "'>" .. datestring.text:sub(7, 10) .. "</span>"
-datestring:connect_signal("widget::redraw_needed", function() datestring.markup = datestring.text:sub(1, 3) .. "<span foreground='" .. beautiful.xcolor12 .. "'>" .. datestring.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. beautiful.xcolor6 .. "'>" .. datestring.text:sub(7, 10) .. "</span>" end)
+datestring.markup = datestring.text:sub(1, 3) .. "<span foreground='" .. x.color12 .. "'>" .. datestring.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. x.color6 .. "'>" .. datestring.text:sub(7, 10) .. "</span>"
+datestring:connect_signal("widget::redraw_needed", function() datestring.markup = datestring.text:sub(1, 3) .. "<span foreground='" .. x.color12 .. "'>" .. datestring.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. x.color6 .. "'>" .. datestring.text:sub(7, 10) .. "</span>" end)
 datestring.align = "center"
 datestring.valign = "center"
 local date = wibox.widget {
@@ -279,7 +282,7 @@ local timedate_bar = wibox.widget{
             },
             spacing = 1,
             spacing_widget = {
-                bg = beautiful.xcolor8,
+                bg = x.color8,
                 widget = wibox.container.background
             },
             layout = wibox.layout.fixed.horizontal
@@ -288,10 +291,19 @@ local timedate_bar = wibox.widget{
         right = dpi(10),
         widget = wibox.container.margin
     },
-    bg = beautiful.xcolor0,
+    bg = x.color0,
     shape = helpers.rrect(beautiful.border_radius - 3),
     widget = wibox.container.background
 }
+
+local calendar = lain.widget.cal({
+        attach_to = {timedate_bar},
+        notification_preset = {
+            font = beautiful.font .. "10",
+            fg = beautiful.fg_normal,
+            bg = beautiful.bg_normal
+        }
+    })
 
 -- ===================================================================
 -- Create wibar
@@ -340,8 +352,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
             screen = s,
             filter = awful.widget.tasklist.filter.currenttags,
             buttons = tasklist_buttons,
-            bg = beautiful.xcolor0,
-            style = {bg = beautiful.xcolor0},
+            bg = x.color0,
+            style = {bg = x.color0},
             layout = {spacing = dpi(0), layout = wibox.layout.fixed.horizontal},
             widget_template = {
                 {
@@ -364,7 +376,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
         local final_systray = wibox.widget {
             {mysystray_container, top = dpi(5), layout = wibox.container.margin},
-            bg = beautiful.xcolor0,
+            bg = x.color0,
             shape = helpers.rrect(beautiful.border_radius - 3),
             widget = wibox.container.background
         }
@@ -374,7 +386,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             layout = wibox.layout.fixed.vertical,
             {
                 widget = wibox.container.background,
-                bg = beautiful.xcolor0,
+                bg = x.color0,
                 forced_height = dpi(1)
             },
             {
@@ -397,7 +409,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     {
                         {
                             s.mytaglist,
-                            bg = beautiful.xcolor0,
+                            bg = x.color0,
                             shape = helpers.rrect(beautiful.border_radius - 3),
                             widget = wibox.container.background
                         },
@@ -414,7 +426,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     {
                         {
                             s.mytasklist,
-                            bg = beautiful.xcolor0 .. "00",
+                            bg = x.color0 .. "00",
                             shape = helpers.rrect(beautiful.border_radius - 3),
                             widget = wibox.container.background
                         },
@@ -431,7 +443,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                                 margins = dpi(5),
                                 widget = wibox.container.margin
                             },
-                            bg = beautiful.xcolor0,
+                            bg = x.color0,
                             shape = helpers.rrect(beautiful.border_radius - 3),
                             widget = wibox.container.background
                         },
@@ -460,7 +472,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                                 left = dpi(7),
                                 widget = wibox.container.margin
                             },
-                            bg = beautiful.xcolor0,
+                            bg = x.color0,
                             shape = helpers.rrect(beautiful.border_radius - 3),
                             widget = wibox.container.background
                         },

@@ -22,6 +22,11 @@ if (builtin command -v xdg_menu); then
     xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu > $CHEZMOI_DIR/private_dot_config/exact_awesome/exact_X/xdgmenu.lua
 fi
 
+
+if (builtin command -v xsecurelock && ! ps aux | grep dimmer &>/dev/null); then
+    . $HOME/.local/bin/auto-lock
+fi
+
 # background daemon
 run redshift -v
 run playerctld daemon
