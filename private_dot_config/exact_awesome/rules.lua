@@ -73,7 +73,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "terminal",
         rule_any = {class = {"Alacritty", "Kitty", "St", "UXTerm", "XTerm"}},
-        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
     ruled.client.append_rule {
         id = "termite",
@@ -84,7 +84,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "meeting",
         rule_any = {class={"Zoom","Microsoft Teams - Preview", "Whatsapp-for-linux"}, instance = {"discord", "slack", "skype","caprine"}},
-        properties = {screen = 2, tag = defaults.tags[1].names[5], switchtotag = true}
+        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
     }
 
     ruled.client.append_rule{
@@ -96,7 +96,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule{
         id = "obs",
         rule = {class = "obs"},
-        properties = {screen=screen.count()>1 and 2 or 1, tag=defaults.tags[1].names[2], switchtotag=true}
+        properties = {screen=screen.count()>1 and 3 or 1, tag=defaults.tags[1].names[2], switchtotag=true}
     }
     -- Rofi
     ruled.client.append_rule{

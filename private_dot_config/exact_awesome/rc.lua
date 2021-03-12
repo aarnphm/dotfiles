@@ -50,7 +50,9 @@ require("windows")
 -- ===================================================================
 
 require("daemon")
-require("notifications")
+local notifications = require("notifications")
+notifications.init()
+require("components.window_switcher")
 
 -- ===================================================================
 -- Keys

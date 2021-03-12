@@ -1,4 +1,5 @@
-local naughty       = require("naughty")
+local naughty = require("naughty")
+local notifications = require("notifications")
 
 local notif
 local timeout = 1.5
@@ -8,7 +9,6 @@ awesome.connect_signal("components::volume", function (percentage, muted)
         first_time = false
     else
         if (client.focus and client.focus.class == "Pavucontrol") then
-            -- Sidebar and Pavucontrol already show volume, so
             -- destroy notification if it exists
             if notif then
                 notif:destroy()
@@ -24,7 +24,7 @@ awesome.connect_signal("components::volume", function (percentage, muted)
                 icon = ""
             end
 
-            notif = notify_dwim({ title = "Volume", message = message, icon = icon, timeout = timeout, app_name = "volume" }, notif)
+            notif = notifications.notify_dwim({ title = "Volume", message = message, icon = icon, timeout = timeout, app_name = "volume" }, notif)
         end
     end
 end)

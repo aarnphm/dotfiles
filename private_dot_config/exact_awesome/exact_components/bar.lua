@@ -135,7 +135,7 @@ end
 -- Tasklist widgets
 -- ===================================================================
 
-local tasklist_buttons = gears.table.join(
+tasklist_buttons = gears.table.join(
     awful.button({}, 1, function(c)
         if c == client.focus then
             c.minimized = true
@@ -287,6 +287,7 @@ local timedate_bar = wibox.widget{
             },
             layout = wibox.layout.fixed.horizontal
         },
+        top = dpi(2),
         left = dpi(10),
         right = dpi(10),
         widget = wibox.container.margin
@@ -309,9 +310,6 @@ local calendar = lain.widget.cal({
 -- Create wibar
 -- ===================================================================
 screen.connect_signal("request::desktop_decoration", function(s)
-    -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
-
     -- Create layoutbox widget
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
@@ -326,7 +324,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         end
 
         -- Create the wibox
-        s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal .. 15})
+        s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal .. 00})
         s.mywibox:set_xproperty("WM_NAME", "panel")
 
         -- Remove wibar on full screen

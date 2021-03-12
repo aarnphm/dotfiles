@@ -2,15 +2,10 @@
 -- Initialization
 -- ===================================================================
 
-local awful        = require("awful")
 local theme_assets = require("beautiful.theme_assets")
-local xresources   = require("beautiful.xresources")
-local xrdb         = xresources.get_current_theme()
-local dpi          = xresources.apply_dpi
-local gears        = require("gears")
 local gfs          = require("gears.filesystem")
-local themes_path  = gfs.get_themes_dir()
 local helpers      = require("helpers")
+local themes_path  = gfs.get_themes_dir()
 
 -- ===================================================================
 -- Theme Variables
@@ -26,31 +21,31 @@ local icon_path = gfs.get_configuration_dir() .. "decorations/icons/"
 
 theme.awesome_icon        = icon_path .. "awesome.png"
 theme.terminal_icon       = icon_path .. "terminal.png"
-theme.notification_width  = dpi(260)
+theme.notification_width  = dpi(230)
 theme.notification_height = dpi(380)
 
 -- ===================================================================
 -- Load $HOME/.Xresources colors and set fallback
 -- ===================================================================
 
-theme.xforeground = xrdb.foreground  or "#BCBCBC"
-theme.xbackground = xrdb.background  or "#262626"
-theme.xcolor0     = xrdb.color0      or "#1C1C1C"
-theme.xcolor8     = xrdb.color8      or "#444444"
-theme.xcolor1     = xrdb.color1      or "#AF5F5F"
-theme.xcolor9     = xrdb.color9      or "#FF8700"
-theme.xcolor2     = xrdb.color2      or "#5F875F"
-theme.xcolor10    = xrdb.color10     or "#87AF87"
-theme.xcolor3     = xrdb.color3      or "#87875F"
-theme.xcolor11    = xrdb.color11     or "#FFFFAF"
-theme.xcolor4     = xrdb.color4      or "#5F87AF"
-theme.xcolor12    = xrdb.color12     or "#8FAFD7"
-theme.xcolor5     = xrdb.color5      or "#5F5F87"
-theme.xcolor13    = xrdb.color13     or "#8787AF"
-theme.xcolor6     = xrdb.color6      or "#5F8787"
-theme.xcolor14    = xrdb.color14     or "#5FAFAF"
-theme.xcolor7     = xrdb.color7      or "#6C6C6C"
-theme.xcolor15    = xrdb.color15     or "#FFFFFF"
+theme.xforeground = x.foreground  or "#BCBCBC"
+theme.xbackground = x.background  or "#262626"
+theme.xcolor0     = x.color0      or "#1C1C1C"
+theme.xcolor8     = x.color8      or "#444444"
+theme.xcolor1     = x.color1      or "#AF5F5F"
+theme.xcolor9     = x.color9      or "#FF8700"
+theme.xcolor2     = x.color2      or "#5F875F"
+theme.xcolor10    = x.color10     or "#87AF87"
+theme.xcolor3     = x.color3      or "#87875F"
+theme.xcolor11    = x.color11     or "#FFFFAF"
+theme.xcolor4     = x.color4      or "#5F87AF"
+theme.xcolor12    = x.color12     or "#8FAFD7"
+theme.xcolor5     = x.color5      or "#5F5F87"
+theme.xcolor13    = x.color13     or "#8787AF"
+theme.xcolor6     = x.color6      or "#5F8787"
+theme.xcolor14    = x.color14     or "#5FAFAF"
+theme.xcolor7     = x.color7      or "#6C6C6C"
+theme.xcolor15    = x.color15     or "#FFFFFF"
 
 -- ===================================================================
 -- Layouts
@@ -101,7 +96,8 @@ theme.button_close = theme.xcolor1
 
 theme.border_width        = dpi(3)
 theme.border_normal       = theme.xcolor0
-theme.border_focus        = theme.fg_normal
+theme.border_focus        = transparent
+-- theme.border_focus        = theme.fg_normal
 theme.border_radius       = dpi(12)
 theme.client_radius       = dpi(12)
 theme.widget_border_width = dpi(2)
@@ -110,7 +106,7 @@ theme.widget_border_color = theme.xcolor0
 -- ===================================================================
 -- Font
 -- ===================================================================
-theme.fontname     = "mononoki Nerd Font "
+theme.fontname     = "InconsolataGo Nerd Font "
 theme.font         = theme.fontname .. "12"
 theme.icon_font    = theme.fontname .. "10"
 theme.font_taglist = "InconsolataGo Nerd Font 18"
@@ -214,8 +210,8 @@ theme.tooltip_align        = "left"
 -- ===================================================================
 
 theme.hotkeys_border_color     = theme.xcolor0
-theme.hotkeys_font             = "mononoki Nerd Font 12"
-theme.hotkeys_description_font = "mononoki Nerd Font 10"
+theme.hotkeys_font             = theme.fontname.."12"
+theme.hotkeys_description_font = theme.fontname.."10"
 theme.hotkeys_shape            = helpers.rrect(theme.border_radius - 3)
 
 -- ===================================================================
@@ -231,7 +227,7 @@ theme = theme_assets.recolor_layout(theme, theme.xforeground)
 -- Gaps
 -- ===================================================================
 
-theme.useless_gap = dpi(3)
+theme.useless_gap = dpi(0)
 
 -- ===================================================================
 -- Wibar

@@ -124,23 +124,12 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "minimize", group = "client"}
                 ),
-            awful.key({altkey, shift}, "Tab", function() awful.client.focus.byidx(1) end,
-                {description = "cycle with prev/go back", group = "client"}
-                ),
-            -- normal Alt-Tab behaviour
-            awful.key({altkey}, "Tab",
-                function()
-                    if cycle_prev then
-                        awful.client.focus.history.previous()
-                    else
-                        awful.client.focus.byidx(-1)
-                    end
-                    if client.focus then
-                        client.focus:raise()
-                    end
+            -- Window switcher
+            awful.key({ altkey }, "Tab",
+                function ()
+                    window_switcher_show(awful.screen.focused())
                 end,
-                {description = "cycle with previous/go back", group = "client"}
-                )
+                {description = "activate window switcher", group = "client"}),
         })
 
     -- ===================================================================
@@ -208,43 +197,49 @@ client.connect_signal("request::default_keybindings", function()
             -- Layout manipulation
             -- ===================================================================
             awful.key({modkey, shift}, "l",
-            function()
-            awful.tag.incmwfact(0.05)
-            end,
-            {description = "increase master width factor", group = "layout"}
-            ),
+                function()
+                    awful.tag.incmwfact(0.05)
+                end,
+                {description = "increase master width factor", group = "layout"}
+                ),
             awful.key({modkey, shift}, "h",
-            function()
-            awful.tag.incmwfact(-0.05)
-            end,
-            {description = "decrease master width factor", group = "layout"}
-            ),
+                function()
+                    awful.tag.incmwfact(-0.05)
+                end,
+                {description = "decrease master width factor", group = "layout"}
+                ),
             awful.key({modkey, shift}, "k",
-            function()
-            awful.tag.incnmaster(1, nil, true)
-            end,
-            {description = "increase the number of master clients", group = "layout"}
-            ),
+                function()
+                    awful.tag.incnmaster(1, nil, true)
+                end,
+                {description = "increase the number of master clients", group = "layout"}
+                ),
             awful.key({modkey, shift}, "j",
-            function()
-            awful.tag.incnmaster(-1, nil, true)
-            end,
-            {description = "decrease the number of master clients", group = "layout"}
-            ),
+                function()
+                    awful.tag.incnmaster(-1, nil, true)
+                end,
+                {description = "decrease the number of master clients", group = "layout"}
+                ),
 
             -- ===================================================================
             -- Switch screens focus
             -- ===================================================================
             awful.key({ctrl}, "\\",
-            function()
-            awful.screen.focus_relative(1)
-            end,
-            {description = "focus the next screen", group = "screen"}
-            ),
+                function()
+                    awful.screen.focus_relative(1)
+                end,
+                {description = "focus the next screen", group = "screen"}
+                ),
 
             -- ===================================================================
             -- Application shortcut
             -- ===================================================================
+            awful.key({modkey}, "r",
+                function()
+                    awful.spawn.easy_async_with_shell("rofi -show run")
+                end,
+                {description = "run programs", group = "launcher"}
+                ),
             awful.key({ctrl, altkey}, "e",
                 function()
                     awful.spawn.easy_async_with_shell("dmenu-edit-config")

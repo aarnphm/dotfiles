@@ -1,17 +1,20 @@
-local naughty       = require("naughty")
-local beautiful     = require("beautiful")
-local wibox         = require("wibox")
-local awful         = require("awful")
-local helpers       = require("helpers")
-local ruled         = require("ruled")
-local menubar       = require("menubar")
-local dpi           = beautiful.xresources.apply_dpi
+local naughty   = require("naughty")
+local beautiful = require("beautiful")
+local wibox     = require("wibox")
+local awful     = require("awful")
+local helpers   = require("helpers")
+local ruled     = require("ruled")
+local menubar   = require("menubar")
 
-require("notifications.volume")
+local notifications = {}
+
+function notifications.init()
+    require("notifications.volume")
+end
 
 naughty.config.defaults.ontop        = true
 naughty.config.defaults.screen       = awful.screen.focused()
-naughty.config.defaults.timeout      = 2
+naughty.config.defaults.timeout      = 6
 naughty.config.defaults.border_color = x.foreground
 naughty.config.padding               = dpi(10)
 naughty.config.spacing               = dpi(5)
@@ -49,7 +52,7 @@ ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
     ruled.notification.append_rule {
         rule = {},
-        properties = {screen = awful.screen.preferred, implicit_timeout=2}
+        properties = {screen = awful.screen.preferred, implicit_timeout=6}
     }
 end)
 
@@ -81,7 +84,7 @@ naughty.connect_signal(
     )
 
 -- Use XDG icon
-naughty.connect_signal("request::action_icon", function(a, context, hints)
+naughty.connect_signal("request::action_icon", function(a, _, hints)
     a.icon = menubar.utils.lookup_icon(hints.id)
 end)
 
@@ -212,7 +215,7 @@ naughty.connect_signal("request::display", function(n)
     }
 end)
 
-function notify_dwim(args, notification)
+function notifications.notify_dwim(args, notification)
     local n = notification
     if n and not n._private.is_destroyed and not n.is_expired then
         notification.title = args.title or notification.title
@@ -225,3 +228,5 @@ function notify_dwim(args, notification)
     end
     return n
 end
+
+return notifications

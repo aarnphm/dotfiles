@@ -2,7 +2,6 @@ local awful      = require("awful")
 local gears      = require("gears")
 local gfs        = gears.filesystem
 local wibox      = require("wibox")
-local beautiful  = require("beautiful")
 local xresources = require("beautiful.xresources")
 local dpi        = xresources.apply_dpi
 local modkey     = require("defaults").modkey
