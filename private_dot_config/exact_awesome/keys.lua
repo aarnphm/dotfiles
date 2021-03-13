@@ -3,16 +3,12 @@
 -- ===================================================================
 -- Default variable
 -- ===================================================================
-local gears         = require("gears")
 local awful         = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
-local naughty       = require("naughty")
 local defaults      = require("defaults")
-local helper        = require("helpers")
-local xdg_menu      = require("X.xdgmenu")
 local beautiful     = require("beautiful")
-local xresources    = require("beautiful.xresources")
-local dpi           = xresources.apply_dpi
+local lain          = require("lain")
+local freedesktop   = require("freedesktop")
 require("awful.hotkeys_popup.keys")
 
 -- define defaults variables
@@ -23,7 +19,6 @@ local shift      = defaults.shift
 local sleep      = "systemctl suspend"
 local reboot     = "systemctl reboot"
 local poweroff   = "systemctl poweroff"
-local cycle_prev = true
 
 -- ===================================================================
 -- Main menu
@@ -40,16 +35,14 @@ local myawesomemenu = {
     {"reboot", reboot, beautiful.reboot},
     {"poweroff", poweroff, beautiful.poweroff}
 }
-
-mymainmenu = awful.menu({
+awful.util.mymainmenu =
+freedesktop.menu.build(
+    {
         icon_size = beautiful.menu_height or dpi(16),
-        items = {
-            {"awesome", myawesomemenu, beautiful.awesome_icon },
-            {"application", xdgmenu, beautiful.application_icon },
-            {"open terminal", defaults.terminal, beautiful.terminal_icon }
-        }
-    })
-
+        before = {{"Awesome", myawesomemenu, beautiful.awesome_icon}},
+        after = {{"Open terminal", defaults.terminal}}
+    }
+    )
 -- ===================================================================
 -- Client keys bindings, can be used to modify and move clients around
 -- screens in given tags
@@ -220,6 +213,19 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "decrease the number of master clients", group = "layout"}
                 ),
+            -- On the fly useless gaps change
+            awful.key({modkey},"-",
+                function()
+                    lain.util.useless_gaps_resize(5)
+                end,
+                {description = "increment useless gaps", group = "layout"}
+                ),
+            awful.key({modkey},"=",
+                function()
+                    lain.util.useless_gaps_resize(-5)
+                end,
+                {description = "decrement useless gaps", group = "layout"}
+                ),
 
             -- ===================================================================
             -- Switch screens focus
@@ -240,7 +246,13 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "run programs", group = "launcher"}
                 ),
-            awful.key({ctrl, altkey}, "e",
+            awful.key({modkey}, "z",
+                function()
+                    awful.screen.focused().quake:toggle()
+                end,
+                {description = "dropdown application", group = "launcher"}
+                ),
+            awful.key({modkey}, "e",
                 function()
                     awful.spawn.easy_async_with_shell("dmenu-edit-config")
                 end,
@@ -306,13 +318,15 @@ client.connect_signal("request::default_keybindings", function()
             -- ===================================================================
             awful.key({}, "XF86AudioRaiseVolume",
                 function()
-                    awful.spawn("pamixer -i 3")
+                    -- pamixer -i 3
+                    awful.spawn("amixer set Master 1%+")
                 end,
                 {description = "volume up Master", group = "volume"}
                 ),
             awful.key({}, "XF86AudioLowerVolume",
                 function()
-                    awful.spawn("pamixer -d 3")
+                    -- pamixer -d 3
+                    awful.spawn("amixer set Master 1%-")
                 end,
                 {description = "volume down Master", group = "volume"}
                 ),

@@ -11,8 +11,6 @@ LISTMAX=1000
 KEYTIMEOUT=1
 WORDCHARS='*?_-.[]~&;!#$%^(){}<>|'
 
-cdpath=("$HOME" .. $HOME/*)
-
 # autoload
 autoload -Uz run-help
 autoload -Uz add-zsh-hook

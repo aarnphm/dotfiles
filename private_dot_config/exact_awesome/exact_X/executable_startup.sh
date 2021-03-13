@@ -23,10 +23,6 @@ fi
 if (builtin command -v xsecurelock && ! pgrep xss-lock); then
     . $HOME/.local/bin/auto-lock &
 fi
-if (builtin command -v xdg_menu); then
-    xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu > $CHEZMOI_DIR/private_dot_config/exact_awesome/exact_X/xdgmenu.lua
-fi
-
 
 # background daemon
 run redshift -v
@@ -39,7 +35,6 @@ run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 # tray apps
 run kitty tmux
 run nm-applet
-run pasystray
 run blueman-applet
 run discord
 run spotify-tray --client-path=/usr/bin/spotify --minimized --class=spotify

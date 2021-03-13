@@ -4,7 +4,7 @@ local notifications = require("notifications")
 local notif
 local timeout = 1.5
 local first_time = true
-awesome.connect_signal("components::volume", function (percentage, muted)
+awesome.connect_signal("daemon::volume", function (percentage, muted)
     if first_time then
         first_time = false
     else

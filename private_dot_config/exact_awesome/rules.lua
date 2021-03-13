@@ -66,7 +66,7 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "firefox",
-        rule = {class = "Firefox"},
+        rule_any = {class = {"Firefox","Chromium"}},
         properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
     }
 

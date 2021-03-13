@@ -5,9 +5,8 @@ local gfs        = require("gears.filesystem")
 local wibox      = require("wibox")
 local lain       = require("lain")
 local beautiful  = require("beautiful")
-local xresources = require("beautiful.xresources")
 local helpers    = require("helpers")
-local dpi        = xresources.apply_dpi
+local markup     = lain.util.markup
 
 -- Helper function that changes the appearance of progress bars and their icons
 -- Create horizontal rounded bars
@@ -18,6 +17,9 @@ local function format_progress_bar(bar)
     bar.background_color = x.color0
     return bar
 end
+
+markup.fg = x.color6
+markup.bg = x.background
 
 -- ===================================================================
 -- Awesome panel
@@ -39,7 +41,7 @@ local awesome_icon = wibox.widget {
 }
 
 awesome_icon:buttons(gears.table.join(awful.button({}, 1, function()
-    mymainmenu:toggle()
+    awful.util.mymainmenu:show()
     awesome_icon.bg = x.color0
 end)))
 
@@ -115,7 +117,6 @@ local playerctl_bar = wibox.widget {
 
 playerctl_bar.visible = false
 
--- Get Title
 awesome.connect_signal("daemon::spotify", function(artist,title,playing)
     playerctl_bar.visible = true
     if playing ~= "Playing" then
@@ -125,6 +126,7 @@ awesome.connect_signal("daemon::spotify", function(artist,title,playing)
         song_artist.markup = '<span foreground="' .. x.color4 .. '">' ..
         artist .. '</span>'
     else
+        playerctl_bar.visible = false
         song_title.markup = '--'
         song_artist.markup = '--'
     end
@@ -261,15 +263,40 @@ local date = wibox.widget {
     widget = datestring
 }
 
+local volume = lain.widget.alsa({
+        settings = function()
+            widget:set_markup(markup.fontfg(beautiful.fontname, x.color6, volume_now.level .. "%"))
+        end
+    })
+volume.widget:buttons(awful.util.table.join(
+        awful.button({}, 4, function ()
+            awful.util.spawn("amixer set Master 1%+")
+            volume.update()
+        end),
+        awful.button({}, 5, function ()
+            awful.util.spawn("amixer set Master 1%-")
+            volume.update()
+        end)
+    ))
+
 local timedate_bar = wibox.widget{
     {
         {
+            {
+                {
+                    volume,
+                    layout = wibox.layout.align.vertical
+                },
+                right = dpi(10),
+                widget = wibox.container.margin
+            },
             {
                 {
                     date,
                     layout = wibox.layout.align.vertical
                 },
                 right = dpi(10),
+                left = dpi(10),
                 widget = wibox.container.margin
             },
             {
@@ -287,7 +314,8 @@ local timedate_bar = wibox.widget{
             },
             layout = wibox.layout.fixed.horizontal
         },
-        top = dpi(2),
+        top = dpi(3),
+        bottom = dpi(1),
         left = dpi(10),
         right = dpi(10),
         widget = wibox.container.margin
@@ -298,7 +326,7 @@ local timedate_bar = wibox.widget{
 }
 
 local calendar = lain.widget.cal({
-        attach_to = {timedate_bar},
+        attach_to = {date},
         notification_preset = {
             font = beautiful.font .. "10",
             fg = beautiful.fg_normal,
@@ -310,6 +338,18 @@ local calendar = lain.widget.cal({
 -- Create wibar
 -- ===================================================================
 screen.connect_signal("request::desktop_decoration", function(s)
+
+    s.quake = lain.util.quake(
+        {
+            app = "termite",
+            height = 0.43,
+            width = 0.43,
+            -- vert = "center",
+            horiz = "center",
+            followtag = true,
+            argname = "--name %s"
+        }
+        )
     -- Create layoutbox widget
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
@@ -435,16 +475,16 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 },
                 {
                     {
-                        {
-                            {
-                                battery,
-                                margins = dpi(5),
-                                widget = wibox.container.margin
-                            },
-                            bg = x.color0,
-                            shape = helpers.rrect(beautiful.border_radius - 3),
-                            widget = wibox.container.background
-                        },
+                        awful.widget.only_on_screen({
+                                {
+                                    battery,
+                                    margins = dpi(5),
+                                    widget = wibox.container.margin
+                                },
+                                bg = x.color0,
+                                shape = helpers.rrect(beautiful.border_radius - 3),
+                                widget = wibox.container.background
+                            }, screen[1]),
                         margins = dpi(5),
                         widget = wibox.container.margin
                     },

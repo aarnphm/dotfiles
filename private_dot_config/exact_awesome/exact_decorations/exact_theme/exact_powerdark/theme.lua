@@ -209,7 +209,7 @@ theme.tooltip_align        = "left"
 -- Hotkeys Popup
 -- ===================================================================
 
-theme.hotkeys_border_color     = theme.xcolor0
+theme.hotkeys_border_color     = x.color0
 theme.hotkeys_font             = theme.fontname.."12"
 theme.hotkeys_description_font = theme.fontname.."10"
 theme.hotkeys_shape            = helpers.rrect(theme.border_radius - 3)
@@ -233,10 +233,10 @@ theme.useless_gap = dpi(0)
 -- Wibar
 -- ===================================================================
 
-theme.wibar_height  = dpi(34)
+theme.wibar_height  = screen.count()>1 and dpi(37) or dpi(30)
 theme.wibar_margin  = dpi(15)
 theme.wibar_spacing = dpi(15)
-theme.wibar_bg      = theme.xbackground
+theme.wibar_bg      = x.background
 
 -- ===================================================================
 -- Systray - Weather
@@ -245,6 +245,6 @@ theme.wibar_bg      = theme.xbackground
 theme.systray_icon_spacing = dpi(10)
 theme.bg_systray           = theme.xcolor0
 theme.systray_icon_size    = dpi(15)
-theme.weather_city         = "Hanoi"
+theme.weather_city         = os.getenv("CITY")
 
 return theme
