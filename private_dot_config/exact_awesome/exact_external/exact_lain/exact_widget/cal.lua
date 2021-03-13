@@ -5,8 +5,8 @@
 
 --]]
 
-local helpers  = require("lain.helpers")
-local markup   = require("lain.util.markup")
+local helpers  = require("external.lain.helpers")
+local markup   = require("external.lain.util.markup")
 local awful    = require("awful")
 local naughty  = require("naughty")
 local floor    = math.floor

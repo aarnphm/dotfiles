@@ -3,7 +3,7 @@ local awful      = require("awful")
 local gears      = require("gears")
 local gfs        = require("gears.filesystem")
 local wibox      = require("wibox")
-local lain       = require("lain")
+local lain       = require("external.lain")
 local beautiful  = require("beautiful")
 local helpers    = require("helpers")
 local markup     = lain.util.markup
@@ -231,8 +231,10 @@ mysystray:set_base_size(beautiful.systray_icon_size)
 
 local mysystray_container = {
     mysystray,
-    left = dpi(10),
     right = dpi(10),
+    left = dpi(10),
+    bottom = dpi(5),
+    top = dpi(5),
     widget = wibox.container.margin
 }
 
@@ -265,7 +267,13 @@ local date = wibox.widget {
 
 local volume = lain.widget.alsa({
         settings = function()
-            widget:set_markup(markup.fontfg(beautiful.fontname, x.color6, volume_now.level .. "%"))
+            local vol = ""
+            if volume_now.status == "off" then
+                vol = "Muted"
+            else
+                vol = volume_now.level .. "%"
+            end
+            widget:set_markup(markup.fontfg(beautiful.fontname, x.color6, vol))
         end
     })
 volume.widget:buttons(awful.util.table.join(
@@ -356,169 +364,173 @@ screen.connect_signal("request::desktop_decoration", function(s)
             awful.button({}, 1, function () awful.layout.inc( 1) end),
             awful.button({}, 3, function () awful.layout.inc(-1) end),
             awful.button({}, 4, function () awful.layout.inc( 1) end),
-        awful.button({}, 5, function () awful.layout.inc(-1) end)))
-        if s.index == 1 then
-            mysystray_container.visible = true
+        awful.button({}, 5, function () awful.layout.inc(-1) end))
+        )
+    if s.index == 1 then
+        mysystray_container.visible = true
+    else
+        mysystray_container.visible = false
+    end
+
+    -- Create the wibox
+    s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal .. 00})
+    s.mywibox:set_xproperty("WM_NAME", "panel")
+
+    -- Remove wibar on full screen
+    local function remove_wibar(c)
+        if c.fullscreen or c.maximized then
+            c.screen.mywibox.visible = false
         else
-            mysystray_container.visible = false
+            c.screen.mywibox.visible = true
         end
+    end
 
-        -- Create the wibox
-        s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal .. 00})
-        s.mywibox:set_xproperty("WM_NAME", "panel")
+    -- Hide bar when a splash widget is visible
+    awesome.connect_signal("widgets::splash::visibility",
+    function(vis) s.mywibox.visible = not vis end)
 
-        -- Remove wibar on full screen
-        local function remove_wibar(c)
-            if c.fullscreen or c.maximized then
-                c.screen.mywibox.visible = false
-            else
-                c.screen.mywibox.visible = true
-            end
-        end
+    client.connect_signal("property::fullscreen", remove_wibar)
 
-        -- Hide bar when a splash widget is visible
-        awesome.connect_signal("widgets::splash::visibility",
-        function(vis) s.mywibox.visible = not vis end)
+    -- Create the taglist widget
+    s.mytaglist = require("components.taglist")(s)
 
-        client.connect_signal("property::fullscreen", remove_wibar)
-
-        -- Create the taglist widget
-        s.mytaglist = require("components.taglist")(s)
-
-        -- Create a tasklist widget
-        s.mytasklist = awful.widget.tasklist {
-            screen = s,
-            filter = awful.widget.tasklist.filter.currenttags,
-            buttons = tasklist_buttons,
-            bg = x.color0,
-            style = {bg = x.color0},
-            layout = {spacing = dpi(0), layout = wibox.layout.fixed.horizontal},
-            widget_template = {
+    -- Create a tasklist widget
+    s.mytasklist = awful.widget.tasklist {
+        screen = s,
+        filter = awful.widget.tasklist.filter.currenttags,
+        buttons = tasklist_buttons,
+        bg = x.color0,
+        style = {bg = x.color0},
+        layout = {spacing = dpi(0), layout = wibox.layout.fixed.horizontal},
+        widget_template = {
+            {
                 {
-                    {
-                        nil,
-                        awful.widget.clienticon,
-                        nil,
-                        layout = wibox.layout.fixed.horizontal
-                    },
-                    top = dpi(5),
-                    bottom = dpi(5),
-                    left = dpi(10),
-                    right = dpi(10),
-                    widget = wibox.container.margin
+                    nil,
+                    awful.widget.clienticon,
+                    nil,
+                    layout = wibox.layout.fixed.horizontal
                 },
-                id = 'background_role',
-                widget = wibox.container.background
-            }
-        }
-
-        local final_systray = wibox.widget {
-            {mysystray_container, top = dpi(5), layout = wibox.container.margin},
-            bg = x.color0,
-            shape = helpers.rrect(beautiful.border_radius - 3),
+                top = dpi(5),
+                bottom = dpi(5),
+                left = dpi(10),
+                right = dpi(10),
+                widget = wibox.container.margin
+            },
+            id = 'background_role',
             widget = wibox.container.background
         }
+    }
 
-        -- Add widgets to the wibox
-        s.mywibox:setup{
-            layout = wibox.layout.fixed.vertical,
+    local final_systray = wibox.widget {
+        {
+            mysystray_container,
+            layout = wibox.container.margin
+        },
+        bg = x.color0,
+        shape = helpers.rrect(beautiful.border_radius - 3),
+        widget = wibox.container.background
+    }
+
+    -- Add widgets to the wibox
+    s.mywibox:setup{
+        layout = wibox.layout.fixed.vertical,
+        {
+            widget = wibox.container.background,
+            bg = x.color0,
+            forced_height = dpi(1)
+        },
+        {
+            layout = wibox.layout.align.horizontal,
+            expand = "none",
             {
-                widget = wibox.container.background,
-                bg = x.color0,
-                forced_height = dpi(1)
+                layout = wibox.layout.fixed.horizontal,
+                {
+                    {
+                        awesome_icon,
+                        top = dpi(5),
+                        right = dpi(10),
+                        left = dpi(5),
+                        bottom = dpi(5),
+                        widget = wibox.container.margin
+                    },
+                    margin = dpi(5),
+                    layout = wibox.container.margin
+                },
+                {
+                    {
+                        s.mytaglist,
+                        bg = x.color0,
+                        shape = helpers.rrect(beautiful.border_radius - 3),
+                        widget = wibox.container.background
+                    },
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                },
+                {
+                    awful.widget.only_on_screen(playerctl_bar, screen[1]),
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                }
             },
             {
-                layout = wibox.layout.align.horizontal,
-                expand = "none",
                 {
-                    layout = wibox.layout.fixed.horizontal,
                     {
-                        {
-                            awesome_icon,
-                            top = dpi(5),
-                            right = dpi(10),
-                            left = dpi(5),
-                            bottom = dpi(5),
-                            widget = wibox.container.margin
-                        },
-                        margin = dpi(5),
-                        layout = wibox.container.margin
+                        s.mytasklist,
+                        bg = x.color0 .. "00",
+                        shape = helpers.rrect(beautiful.border_radius - 3),
+                        widget = wibox.container.background
                     },
-                    {
-                        {
-                            s.mytaglist,
-                            bg = x.color0,
-                            shape = helpers.rrect(beautiful.border_radius - 3),
-                            widget = wibox.container.background
-                        },
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    },
-                    {
-                        awful.widget.only_on_screen(playerctl_bar, screen[1]),
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    }
+                    margins = dpi(5),
+                    widget = wibox.container.margin
                 },
+                widget = wibox.container.constraint
+            },
+            {
                 {
-                    {
-                        {
-                            s.mytasklist,
-                            bg = x.color0 .. "00",
-                            shape = helpers.rrect(beautiful.border_radius - 3),
-                            widget = wibox.container.background
-                        },
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    },
-                    widget = wibox.container.constraint
-                },
-                {
-                    {
-                        awful.widget.only_on_screen({
-                                {
-                                    battery,
-                                    margins = dpi(5),
-                                    widget = wibox.container.margin
-                                },
-                                bg = x.color0,
-                                shape = helpers.rrect(beautiful.border_radius - 3),
-                                widget = wibox.container.background
-                            }, screen[1]),
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    },
-                    nil,
-                    nil,
-                    {
-                        awful.widget.only_on_screen(final_systray, screen[1]),
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    },
-                    {
-                        timedate_bar,
-                        margins = dpi(5),
-                        widget = wibox.container.margin
-                    },
-                    {
-                        {
+                    awful.widget.only_on_screen({
                             {
-                                s.mylayoutbox,
-                                top = dpi(4),
-                                bottom = dpi(4),
-                                right = dpi(7),
-                                left = dpi(7),
+                                battery,
+                                margins = dpi(5),
                                 widget = wibox.container.margin
                             },
                             bg = x.color0,
                             shape = helpers.rrect(beautiful.border_radius - 3),
                             widget = wibox.container.background
+                        }, screen[1]),
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                },
+                nil,
+                nil,
+                {
+                    awful.widget.only_on_screen(final_systray, screen[1]),
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                },
+                {
+                    timedate_bar,
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                },
+                {
+                    {
+                        {
+                            s.mylayoutbox,
+                            top = dpi(4),
+                            bottom = dpi(4),
+                            right = dpi(7),
+                            left = dpi(7),
+                            widget = wibox.container.margin
                         },
-                        margins = dpi(5),
-                        widget = wibox.container.margin
+                        bg = x.color0,
+                        shape = helpers.rrect(beautiful.border_radius - 3),
+                        widget = wibox.container.background
                     },
-                    layout = wibox.layout.fixed.horizontal
-                }
+                    margins = dpi(5),
+                    widget = wibox.container.margin
+                },
+                layout = wibox.layout.fixed.horizontal
             }
         }
-    end)
+    }
+end)

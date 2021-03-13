@@ -8,8 +8,9 @@
 
 --]]
 
+-- local PATH = (...):match("(.+)%.[^%.]+$") or (...)
+
 return {
-    layout = require("lain.layout"),
-    util   = require("lain.util"),
-    widget = require("lain.widget")
+    util   = require("external.lain.util"),
+    widget = require("external.lain.widget")
 }

@@ -11,7 +11,6 @@ local xrdb = beautiful.xresources.get_current_theme()
 dpi = beautiful.xresources.apply_dpi
 -- Make xresources colors global
 x = {
-    --           xrdb variable
     background = xrdb.background,
     foreground = xrdb.foreground,
     color0     = xrdb.color0,
@@ -39,19 +38,18 @@ x = {
 require("autostart")
 
 -- ===================================================================
--- Windows and theme definitions
+-- Windows and notifications daemon 
 -- ===================================================================
 
 require("windows")
+require("notifications")
 
 -- ===================================================================
--- Apps & defaults
--- Also import some custom modules
+-- Daemon and modules
 -- ===================================================================
 
 require("daemon")
-require("notifications")
-require("components.window_switcher")
+require("components")
 
 -- ===================================================================
 -- Keys
@@ -64,12 +62,6 @@ require("keys")
 -- ===================================================================
 
 require("rules")
-
--- ===================================================================
--- Daemon and modules
--- ===================================================================
-
-require("components")
 
 -- ===================================================================
 -- Garbage collection (allows for lower memory consumption)

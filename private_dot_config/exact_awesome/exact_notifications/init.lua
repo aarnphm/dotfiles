@@ -8,13 +8,9 @@ local menubar   = require("menubar")
 
 local notifications = {}
 
-function notifications.init()
-    require("notifications.volume")
-end
-
 naughty.config.defaults.ontop        = true
 naughty.config.defaults.screen       = awful.screen.focused()
-naughty.config.defaults.timeout      = 6
+naughty.config.defaults.timeout      = 5
 naughty.config.defaults.border_color = x.foreground
 naughty.config.padding               = dpi(10)
 naughty.config.spacing               = dpi(5)
@@ -52,7 +48,7 @@ ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
     ruled.notification.append_rule {
         rule = {},
-        properties = {screen = awful.screen.preferred, implicit_timeout=6}
+        properties = {screen = awful.screen.preferred, implicit_timeout=5}
     }
 end)
 

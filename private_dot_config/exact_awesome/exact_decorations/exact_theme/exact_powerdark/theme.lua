@@ -96,8 +96,7 @@ theme.button_close = theme.xcolor1
 
 theme.border_width        = dpi(3)
 theme.border_normal       = theme.xcolor0
-theme.border_focus        = transparent
--- theme.border_focus        = theme.fg_normal
+theme.border_focus        = theme.fg_normal
 theme.border_radius       = dpi(12)
 theme.client_radius       = dpi(12)
 theme.widget_border_width = dpi(2)
@@ -244,7 +243,7 @@ theme.wibar_bg      = x.background
 
 theme.systray_icon_spacing = dpi(10)
 theme.bg_systray           = theme.xcolor0
-theme.systray_icon_size    = dpi(15)
+theme.systray_icon_size    = dpi(25)
 theme.weather_city         = os.getenv("CITY")
 
 return theme

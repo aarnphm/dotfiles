@@ -7,8 +7,8 @@ local awful         = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local defaults      = require("defaults")
 local beautiful     = require("beautiful")
-local lain          = require("lain")
-local freedesktop   = require("freedesktop")
+local lain          = require("external.lain")
+local freedesktop   = require("external.freedesktop")
 require("awful.hotkeys_popup.keys")
 
 -- define defaults variables
@@ -24,13 +24,11 @@ local poweroff   = "systemctl poweroff"
 -- Main menu
 -- ===================================================================
 local myawesomemenu = {
+    { "hotkeys", function() return false, hotkeys_popup.show_help end },
+    { "manual", defaults.terminal .. " -e man awesome" },
+    { "edit config", string.format("%s -e %s %s", defaults.terminal, defaults.editor, awesome.conffile) },
     {"restart", awesome.restart},
-    {
-        "quit",
-        function()
-            awesome.quit()
-        end
-    },
+    {"quit", function() awesome.quit() end },
     {"sleep", sleep, beautiful.sleep},
     {"reboot", reboot, beautiful.reboot},
     {"poweroff", poweroff, beautiful.poweroff}
@@ -39,8 +37,12 @@ awful.util.mymainmenu =
 freedesktop.menu.build(
     {
         icon_size = beautiful.menu_height or dpi(16),
-        before = {{"Awesome", myawesomemenu, beautiful.awesome_icon}},
-        after = {{"Open terminal", defaults.terminal}}
+        before = {
+            {"Awesome", myawesomemenu, beautiful.awesome_icon}
+        },
+        after = {
+            {"Open terminal", defaults.terminal}
+        }
     }
     )
 -- ===================================================================
@@ -226,6 +228,10 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "decrement useless gaps", group = "layout"}
                 ),
+            awful.key({ctrl, altkey}, "h", awful.tag.viewprev,
+                {description = "view previous", group = "tag"}),
+            awful.key({ctrl, altkey}, "l", awful.tag.viewnext,
+                {description = "view next", group = "tag"}),
 
             -- ===================================================================
             -- Switch screens focus

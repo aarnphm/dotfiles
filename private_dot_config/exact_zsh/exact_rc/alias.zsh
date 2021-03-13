@@ -94,6 +94,7 @@ if [[ -d $CS_PATH/mcmaster ]]; then
 fi
 # bentoml
 alias bentodir="$CS_PATH/BentoML"
+alias cs="$CS_PATH"
 # zsh config directory
 alias simpledir="$XDG_CONFIG_HOME/zsh/rc/simple"
 alias zcdir="$CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
