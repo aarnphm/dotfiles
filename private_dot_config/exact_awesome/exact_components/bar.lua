@@ -234,7 +234,6 @@ local mysystray_container = {
     right = dpi(10),
     left = dpi(10),
     bottom = dpi(5),
-    top = dpi(5),
     widget = wibox.container.margin
 }
 
@@ -424,6 +423,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     local final_systray = wibox.widget {
         {
             mysystray_container,
+            top=dpi(5),
             layout = wibox.container.margin
         },
         bg = x.color0,
