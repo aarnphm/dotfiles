@@ -6,6 +6,7 @@ local wibox      = require("wibox")
 local lain       = require("external.lain")
 local beautiful  = require("beautiful")
 local helpers    = require("helpers")
+local defaults   = require("defaults")
 local markup     = lain.util.markup
 
 -- Helper function that changes the appearance of progress bars and their icons
@@ -240,29 +241,20 @@ local mysystray_container = {
 -- ===================================================================
 -- Clock widget
 -- ===================================================================
-local timestring = wibox.widget.textclock("%H:%M%Z")
-timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. x.color12 .. "'>" .. timestring.text:sub(3, 5) .. "</span>" .. "<span foreground='" .. x.color6 .. "'>" .. timestring.text:sub(6,8) .. "</span>"
-timestring:connect_signal("widget::redraw_needed", function() timestring.markup = timestring.text:sub(1, 2) .. "<span foreground='" .. x.color12 .. "'>" .. timestring.text:sub(3, 5) ..  "</span>" .."<span foreground='" .. x.color6 .. "'>" .. timestring.text:sub(6,8) .. "</span>" end)
-timestring.align = "center"
-timestring.valign = "center"
-local time = wibox.widget {
-    markup = "-",
-    align = 'center',
-    valign = 'center',
-    widget = timestring
-}
 
-local datestring = wibox.widget.textclock("%m-%d-%Y")
-datestring.markup = datestring.text:sub(1, 3) .. "<span foreground='" .. x.color12 .. "'>" .. datestring.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. x.color6 .. "'>" .. datestring.text:sub(7, 10) .. "</span>"
-datestring:connect_signal("widget::redraw_needed", function() datestring.markup = datestring.text:sub(1, 3) .. "<span foreground='" .. x.color12 .. "'>" .. datestring.text:sub(4, 6) .. "</span>" .. "<span foreground='" .. x.color6 .. "'>" .. datestring.text:sub(7, 10) .. "</span>" end)
-datestring.align = "center"
-datestring.valign = "center"
-local date = wibox.widget {
-    markup = "-",
-    align = 'center',
-    valign = 'center',
-    widget = datestring
-}
+local time = awful.widget.watch(
+    "date +'%H:%M%Z'", 60,
+    function(widget, stdout)
+        widget:set_markup(stdout:sub(1,2)..markup.fontfg(beautiful.fontname, x.color12,stdout:sub(3,5))..markup.fontfg(beautiful.fontname, x.color6, stdout:sub(6,8)))
+    end
+    )
+
+local date = awful.widget.watch(
+    "date +'%m-%d-%Y'",60,
+    function(widget, stdout)
+        widget:set_markup(stdout:sub(1,3)..markup.fontfg(beautiful.fontname, x.color12, stdout:sub(4,6))..markup.fontfg(beautiful.fontname, x.color6,stdout:sub(7,10)))
+    end
+    )
 
 local volume = lain.widget.alsa({
         settings = function()
@@ -272,10 +264,17 @@ local volume = lain.widget.alsa({
             else
                 vol = volume_now.level .. "%"
             end
-            widget:set_markup(markup.fontfg(beautiful.fontname, x.color6, vol))
+            widget:set_markup(markup.fontfg(beautiful.fontname, x.color12, vol:sub(1,2))..markup.fontfg(beautiful.fontname, x.color6,vol:sub(3)))
         end
     })
+
 volume.widget:buttons(awful.util.table.join(
+        awful.button({},1, function()
+            awful.util.spawn(defaults.audiocontrol)
+        end),
+        awful.button({},2, function()
+            awful.util.spawn(defaults.bluetooth)
+        end),
         awful.button({}, 4, function ()
             awful.util.spawn("amixer set Master 1%+")
             volume.update()
@@ -360,7 +359,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     -- Create layoutbox widget
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
-            awful.button({}, 1, function () awful.layout.inc( 1) end),
+            awful.button({}, 1, function () awful.layout.set(awful.layout.layouts[10]) end),
             awful.button({}, 3, function () awful.layout.inc(-1) end),
             awful.button({}, 4, function () awful.layout.inc( 1) end),
         awful.button({}, 5, function () awful.layout.inc(-1) end))
