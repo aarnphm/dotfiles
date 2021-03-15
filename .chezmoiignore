@@ -17,6 +17,7 @@ Aurfile.*
 private_dot_config/nvim/coc-settings.json
 private_dot_config/exact_awesome/xdgmenu.lua
 private_dot_config/exact_zsh/rc/cplugins/fzf-preview.sh
+private_dot_ssh/
 
 .ssh/known_hosts
 .ssh/agent-environment

@@ -8,7 +8,7 @@ git config --global core.excludesFile ${XDG_CONFIG_HOME:-$HOME/.config}/git/giti
 
 {{ if .personal }}
 # bitwarden cli yarn and typescript
-[[ `builtin command -v npm` ]] && npm install -g @bitwarden/cli yarn typescript
+[[ `builtin command -v npm` ]] && npm install -g yarn typescript
 
 # branch main
 sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose

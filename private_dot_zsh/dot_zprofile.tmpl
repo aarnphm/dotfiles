@@ -60,8 +60,6 @@ export GOPROXY="https://proxy.golang.org/,direct"
 {{- if `builtin command -v java` }}
 {{-   if eq .chezmoi.os "darwin" }}
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home:$JAVA_HOME"
-{{-   else if eq .hostname "archlinux" }}
-export CLASSPATH="$XDG_CONFIG_DOCUMENTS/cs/vault/java/*.jar"
 {{-   end }}
 {{- end }}
 {{- if `builtin command -v wine` }}
@@ -160,5 +158,5 @@ export ODOO_OPTS="--addons-path=$XDG_CONFIG_DOCUMENTS/cs/odoo/addons --dev=reloa
 #                    source some local env                                #
 ###########################################################################
 
-[ -f $ZDOTDIR/.zshenv.local ] && source $ZDOTDIR/.zshenv.local
-[ -f $ZHOMEDIR/.zshenv.local ] && source $ZHOMEDIR/.zshenv.local
+[[ -f $ZDOTDIR/.zshenv.local ]] && source $ZDOTDIR/.zshenv.local
+[[ -f $ZHOMEDIR/.zshenv.local ]] && source $ZHOMEDIR/.zshenv.local

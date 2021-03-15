@@ -118,10 +118,17 @@ local playerctl_bar = wibox.widget {
 
 playerctl_bar.visible = false
 
-awesome.connect_signal("daemon::playerctl::player_stopped",
-function() playerctl_bar.visible = false end)
+awesome.connect_signal("daemon::playerctl::status",
+    function(playing)
+        if playing then
+            playerctl_bar.visible = true
+        else
+            playerctl_bar.visible = false
+        end
+    end
+    )
 
--- Get Title 
+-- Get Title
 awesome.connect_signal("daemon::playerctl::title_artist_album",
     function(title, artist)
 
@@ -422,18 +429,11 @@ screen.connect_signal("request::desktop_decoration", function(s)
         end
     end
 
-    local function add_wibar(c)
-        if c.fullscreen or c.maximized then
-            c.screen.mywibox.visible = true
-        end
-    end
-
     -- Hide bar when a splash widget is visible
     awesome.connect_signal("widgets::splash::visibility",
     function(vis) s.mywibox.visible = not vis end)
 
     client.connect_signal("property::fullscreen", remove_wibar)
-    client.connect_signal("request::unmanage", add_wibar)
 
     -- Create the taglist widget
     s.mytaglist = require("components.taglist")(s)
@@ -491,24 +491,24 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 layout = wibox.layout.fixed.horizontal,
                 {
                     {
-                        {
-                            awesome_icon,
-                            s.mytaglist,
-                            spacing = 3,
-                            spacing_widget = {
-                                bg = x.color8,
-                                widget = wibox.widget.separator
-                            },
-                            layout = wibox.layout.fixed.horizontal
-                        },
+                        awesome_icon,
+                        top = dpi(5),
+                        right = dpi(10),
+                        left = dpi(5),
+                        bottom = dpi(5),
+                        widget = wibox.container.margin
+                    },
+                    margin = dpi(5),
+                    layout = wibox.container.margin
+                },
+                {
+                    {
+                        s.mytaglist,
                         bg = x.color0,
                         shape = helpers.rrect(beautiful.border_radius - 3),
                         widget = wibox.container.background
                     },
-                    top = dpi(5),
-                    left = dpi(10),
-                    right = dpi(5),
-                    bottom = dpi(5),
+                    margins = dpi(5),
                     widget = wibox.container.margin
                 },
                 s.mypromptbox,
