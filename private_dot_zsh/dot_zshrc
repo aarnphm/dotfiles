@@ -10,15 +10,6 @@ if [[ $PROFILE_STARTUP == true ]]; then
     setopt XTRACE
 fi
 
-if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-    exec startx
-fi
-
-# lazy loading some functions
-for function in ${HOME}/.local/bin/*; do
-    autoload -Uz ${function:t}
-done
-
 source-safe() { if [ -f "$1" ]; then source "$1"; fi }
 
 #--------------------------------------------------------------#

@@ -118,16 +118,6 @@ local playerctl_bar = wibox.widget {
 
 playerctl_bar.visible = false
 
-awesome.connect_signal("daemon::playerctl::status",
-    function(playing)
-        if playing then
-            playerctl_bar.visible = true
-        else
-            playerctl_bar.visible = false
-        end
-    end
-    )
-
 -- Get Title
 awesome.connect_signal("daemon::playerctl::title_artist_album",
     function(title, artist)
@@ -138,6 +128,16 @@ awesome.connect_signal("daemon::playerctl::title_artist_album",
 
         song_artist.markup = '<span foreground="' .. beautiful.xcolor4 .. '">' ..
         artist .. '</span>'
+    end
+    )
+
+awesome.connect_signal("daemon::playerctl::status",
+    function(playing)
+        if playing then
+            playerctl_bar.visible = true
+        else
+            playerctl_bar.visible = false
+        end
     end
     )
 

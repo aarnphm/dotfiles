@@ -5,8 +5,6 @@
 --   status (string)
 
 local awful = require("awful")
-local beautiful = require("beautiful")
-local interval = beautiful.playerctl_position_update_interval or 1
 
 local function emit_player_status()
     local status_cmd = "playerctl status -F"
@@ -36,26 +34,6 @@ local function emit_player_info()
     local song_follow_cmd =
     "playerctl metadata --format 'artist_{{artist}}title_{{title}}' -F"
 
-    -- Progress Cmds
-    local prog_cmd = "playerctl position"
-    local length_cmd = "playerctl metadata mpris:length"
-
-    awful.widget.watch(prog_cmd, interval,
-        function(_, intl)
-            awful.spawn.easy_async_with_shell(length_cmd, function(length)
-                local length_sec = tonumber(length) -- in microseconds
-                local interval_sec = tonumber(intl) -- in seconds
-                if length_sec and interval_sec then
-                    if interval_sec >= 0 and length_sec > 0 then
-                        awesome.emit_signal("daemon::playerctl::position",
-                            interval_sec, length_sec / 1000000)
-                    end
-                end
-            end
-            )
-        collectgarbage("collect")
-    end)
-
     -- Follow title
     awful.spawn.easy_async({"pkill", "--full", "--uid", os.getenv("USER"), "^playerctl metadata"},
         function()
@@ -66,9 +44,7 @@ local function emit_player_info()
                         local title = line:match('title_(.*)')
                         -- If the title is nil or empty then the players stopped
                         if title and title ~= "" then
-                            awesome.emit_signal(
-                                "daemon::playerctl::title_artist_album", title,
-                                artist)
+                            awesome.emit_signal("daemon::playerctl::title_artist_album", title, artist)
                         else
                             awesome.emit_signal("daemon::playerctl::player_stopped")
                         end

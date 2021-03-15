@@ -135,6 +135,7 @@ set clipboard=unnamed,unnamedplus
 set mouse=a
 " set mouse=i
 set foldmethod=manual "indent-syntax-manual
+set foldlevel=2
 set wildmenu
 set wildmode=longest:full,full
 set wildcharm=<Tab>
@@ -199,7 +200,6 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 command! Ev :e $HOME/.local/share/chezmoi/private_dot_config/vim/vimrc
-command! Ca :!source $HOME/.zsh/.zshenv.local && chezmoi apply --verbose --debug
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 

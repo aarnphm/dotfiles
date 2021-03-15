@@ -57,9 +57,6 @@ if [ ! -f "/etc/arch-release" ]; then
     exit 1;
 fi
 
-#echo "Changes CapsLocks to Home (tmux binding)"
-#sudo sed -i 's/Caps_Lock/Home  /' /usr/share/X11/xkb/symbols/pc
-
 echo "Updating pacman.conf.."
 sudo sed -i '/Color$/s/^#//g' /etc/pacman.conf
 sudo sed -i '/TotalDownload$/s/^#//g' /etc/pacman.conf

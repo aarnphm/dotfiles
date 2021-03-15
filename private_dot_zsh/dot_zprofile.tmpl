@@ -1,6 +1,13 @@
 #!/usr/bin/env zsh
 
 ###########################################################################
+#                    source some local env                                #
+###########################################################################
+
+[[ -f $ZDOTDIR/.zshenv.local ]] && source $ZDOTDIR/.zshenv.local
+[[ -f $ZHOMEDIR/.zshenv.local ]] && source $ZHOMEDIR/.zshenv.local
+
+###########################################################################
 #                            Chezmoi                                      #
 ###########################################################################
 
@@ -153,10 +160,3 @@ export LS_OPTS="-laFh --group-directories-first --color=always"
 # odoo
 export ODOO_OPTS="--addons-path=$XDG_CONFIG_DOCUMENTS/cs/odoo/addons --dev=reload,all,pdb"
 {{- end }}
-
-###########################################################################
-#                    source some local env                                #
-###########################################################################
-
-[[ -f $ZDOTDIR/.zshenv.local ]] && source $ZDOTDIR/.zshenv.local
-[[ -f $ZHOMEDIR/.zshenv.local ]] && source $ZHOMEDIR/.zshenv.local

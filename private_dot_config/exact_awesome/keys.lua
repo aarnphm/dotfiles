@@ -264,6 +264,12 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "edit config files", group = "launcher"}
                 ),
+            awful.key({ctrl, altkey}, "e",
+                function()
+                    awful.spawn.easy_async_with_shell("bwmenu")
+                end,
+                {description = "bitwarden-rofi, @mattydebie", group = "launcher"}
+                ),
             awful.key({ctrl, altkey}, "t",
                 function()
                     awful.spawn(defaults.terminal)
