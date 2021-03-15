@@ -4,7 +4,7 @@
 #                            Chezmoi                                      #
 ###########################################################################
 
-export CHEZMOI_BIN=$(which chezmoi)
+export CHEZMOI_BIN="$(which chezmoi)"
 export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 
 ###########################################################################
@@ -57,8 +57,12 @@ export NPM_PACKAGES="{{ .chezmoi.homedir }}/.npm-packages"
 export GOPATH="{{ .chezmoi.homedir }}/go"
 export GOPROXY="https://proxy.golang.org/,direct"
 {{- end }}
-{{- if and (`builtin command -v java`) (eq .chezmoi.os "darwin") }}
-export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
+{{- if `builtin command -v java` }}
+{{-   if eq .chezmoi.os "darwin" }}
+export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home:$JAVA_HOME"
+{{-   else if eq .hostname "archlinux" }}
+export CLASSPATH="$XDG_CONFIG_DOCUMENTS/cs/vault/java/*.jar"
+{{-   end }}
 {{- end }}
 {{- if `builtin command -v wine` }}
 # wine prefix

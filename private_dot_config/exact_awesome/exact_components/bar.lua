@@ -118,21 +118,21 @@ local playerctl_bar = wibox.widget {
 
 playerctl_bar.visible = false
 
-awesome.connect_signal("daemon::spotify", function(artist,title,playing)
-    playerctl_bar.visible = true
-    if playing ~= "Playing" then
-        song_title.markup = '<span foreground="' .. x.color5 .. '">' ..
+awesome.connect_signal("daemon::playerctl::player_stopped",
+function() playerctl_bar.visible = false end)
+
+-- Get Title 
+awesome.connect_signal("daemon::playerctl::title_artist_album",
+    function(title, artist)
+
+        playerctl_bar.visible = true
+        song_title.markup = '<span foreground="' .. beautiful.xcolor5 .. '">' ..
         title .. '</span>'
 
-        song_artist.markup = '<span foreground="' .. x.color4 .. '">' ..
+        song_artist.markup = '<span foreground="' .. beautiful.xcolor4 .. '">' ..
         artist .. '</span>'
-    else
-        playerctl_bar.visible = false
-        song_title.markup = '--'
-        song_artist.markup = '--'
     end
-end
-)
+    )
 
 -- ===================================================================
 -- Tasklist widgets
@@ -220,6 +220,44 @@ awesome.connect_signal("daemon::battery", function(value)
     " " .. "<span foreground='" .. x.color12 .. "'>" .. bat_icon ..
     "</span>" .. value .. '% '
 end)
+
+
+-- Timer for charging animation
+-- local q = 0
+-- local g = gears.timer {
+--     timeout = 0.03,
+--     call_now = false,
+--     autostart = false,
+--     callback = function()
+--         if q >= 100 then q = 0 end
+--         q = q + 1
+--         battery_bar.value = q
+--         battery_bar.color = {
+--             type = 'linear',
+--             from = {0, 0},
+--             to = {75 - (100 - q), 20},
+--             stops = {
+--                 {1 + (q) / 100, beautiful.xcolor10},
+--                 {0.75 - (q / 100), beautiful.xcolor1},
+--                 {1 - (q) / 100, beautiful.xcolor10}
+--             }
+--         }
+--     end
+-- }
+
+-- -- The charging animation
+-- local running = false
+-- awesome.connect_signal("daemon::charger", function(plugged)
+--     if plugged then
+--         g:start()
+--         running = true
+--     else
+--         if running then
+--             g:stop()
+--             running = false
+--         end
+--     end
+-- end)
 
 local battery = format_progress_bar(battery_bar)
 
@@ -344,7 +382,8 @@ local calendar = lain.widget.cal({
 -- Create wibar
 -- ===================================================================
 screen.connect_signal("request::desktop_decoration", function(s)
-
+    -- Create a promptbox for each screen
+    s.mypromptbox = awful.widget.prompt()
     s.quake = lain.util.quake(
         {
             app = "termite",
@@ -383,11 +422,18 @@ screen.connect_signal("request::desktop_decoration", function(s)
         end
     end
 
+    local function add_wibar(c)
+        if c.fullscreen or c.maximized then
+            c.screen.mywibox.visible = true
+        end
+    end
+
     -- Hide bar when a splash widget is visible
     awesome.connect_signal("widgets::splash::visibility",
     function(vis) s.mywibox.visible = not vis end)
 
     client.connect_signal("property::fullscreen", remove_wibar)
+    client.connect_signal("request::unmanage", add_wibar)
 
     -- Create the taglist widget
     s.mytaglist = require("components.taglist")(s)
@@ -445,26 +491,27 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 layout = wibox.layout.fixed.horizontal,
                 {
                     {
-                        awesome_icon,
-                        top = dpi(5),
-                        right = dpi(10),
-                        left = dpi(5),
-                        bottom = dpi(5),
-                        widget = wibox.container.margin
-                    },
-                    margin = dpi(5),
-                    layout = wibox.container.margin
-                },
-                {
-                    {
-                        s.mytaglist,
+                        {
+                            awesome_icon,
+                            s.mytaglist,
+                            spacing = 3,
+                            spacing_widget = {
+                                bg = x.color8,
+                                widget = wibox.widget.separator
+                            },
+                            layout = wibox.layout.fixed.horizontal
+                        },
                         bg = x.color0,
                         shape = helpers.rrect(beautiful.border_radius - 3),
                         widget = wibox.container.background
                     },
-                    margins = dpi(5),
+                    top = dpi(5),
+                    left = dpi(10),
+                    right = dpi(5),
+                    bottom = dpi(5),
                     widget = wibox.container.margin
                 },
+                s.mypromptbox,
                 {
                     awful.widget.only_on_screen(playerctl_bar, screen[1]),
                     margins = dpi(5),

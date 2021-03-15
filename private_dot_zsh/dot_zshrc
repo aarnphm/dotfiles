@@ -26,7 +26,7 @@ source-safe() { if [ -f "$1" ]; then source "$1"; fi }
 #--------------------------------------------------------------#
 
 if [ "$ZSHRC_PROFILE" != "" ]; then
-  zmodload zsh/zprof && zprof > /dev/null
+    zmodload zsh/zprof && zprof > /dev/null
 fi
 
 #--------------------------------------------------------------#
@@ -89,9 +89,6 @@ source "$ZRCDIR/plugins.zsh"
 ##          Post Execution                                    ##
 #--------------------------------------------------------------#
 source "$ZRCDIR/post.zsh"
-
-source-safe "$ZDOTDIR/.zshrc.local"
-source-safe "$ZHOMEDIR/.zshrc.local"
 
 if [[ $PROFILE_STARTUP == true ]]; then
     unsetopt XTRACE

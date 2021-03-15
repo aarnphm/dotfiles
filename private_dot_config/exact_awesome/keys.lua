@@ -218,13 +218,13 @@ client.connect_signal("request::default_keybindings", function()
             -- On the fly useless gaps change
             awful.key({modkey},"-",
                 function()
-                    lain.util.useless_gaps_resize(5)
+                    lain.util.useless_gaps_resize(1)
                 end,
                 {description = "increment useless gaps", group = "layout"}
                 ),
             awful.key({modkey},"=",
                 function()
-                    lain.util.useless_gaps_resize(-5)
+                    lain.util.useless_gaps_resize(-1)
                 end,
                 {description = "decrement useless gaps", group = "layout"}
                 ),
@@ -275,12 +275,6 @@ client.connect_signal("request::default_keybindings", function()
                     awful.spawn("kitty -e tmux")
                 end,
                 {description = "open tmux", group = "launcher"}
-                ),
-            awful.key({ctrl, altkey}, "p",
-                function()
-                    awful.spawn("termite")
-                end,
-                {description = "open termite", group = "launcher"}
                 ),
             awful.key({shift, modkey}, "m",
                 function()

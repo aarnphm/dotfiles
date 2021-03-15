@@ -5,27 +5,80 @@
 --   status (string)
 
 local awful = require("awful")
+local beautiful = require("beautiful")
+local interval = beautiful.playerctl_position_update_interval or 1
 
-local function emit_info(playerctl_output)
-    local artist = playerctl_output:match('artist_start(.*)title_start')
-    local title = playerctl_output:match('title_start(.*)status_start')
-    -- Use the lower case of status
-    local status = playerctl_output:match('status_start(.*)'):lower()
-    status = string.gsub(status, '^%s*(.-)%s*$', '%1')
-    print(status)
+local function emit_player_status()
+    local status_cmd = "playerctl status -F"
 
-    awesome.emit_signal("daemon::spotify", artist, title, status)
+    -- Follow status
+    awful.spawn.easy_async_with_shell({"pkill", "--full", "--uid", os.getenv("USER"), "^playerctl status"},
+        function()
+            awful.spawn.with_line_callback(status_cmd, {
+                    stdout = function(line)
+                        local playing = false
+                        if line:find("Playing") then
+                            playing = true
+                        else
+                            playing = false
+                        end
+                        awesome.emit_signal("daemon::playerctl::status", playing)
+                    end
+                })
+            collectgarbage("collect")
+        end
+        )
 end
 
--- Sleeps until spotify changes state (pause/play/next/prev)
-local spotify_script = [[sh -c 'playerctl metadata --format 'artist_start{{artist}}title_start{{title}}status_start{{status}}' --follow']]
+local function emit_player_info()
 
--- Kill old playerctl process
-awful.spawn.easy_async_with_shell("ps x | grep \"playerctl metadata\" | grep -v grep | awk '{print $1}' | xargs kill", function ()
-    -- Emit song info with each line printed
-    awful.spawn.with_line_callback(spotify_script, {
-        stdout = function(line)
-            emit_info(line)
+    -- Command that lists artist and title in a format to find and follow
+    local song_follow_cmd =
+    "playerctl metadata --format 'artist_{{artist}}title_{{title}}' -F"
+
+    -- Progress Cmds
+    local prog_cmd = "playerctl position"
+    local length_cmd = "playerctl metadata mpris:length"
+
+    awful.widget.watch(prog_cmd, interval,
+        function(_, intl)
+            awful.spawn.easy_async_with_shell(length_cmd, function(length)
+                local length_sec = tonumber(length) -- in microseconds
+                local interval_sec = tonumber(intl) -- in seconds
+                if length_sec and interval_sec then
+                    if interval_sec >= 0 and length_sec > 0 then
+                        awesome.emit_signal("daemon::playerctl::position",
+                            interval_sec, length_sec / 1000000)
+                    end
+                end
+            end
+            )
+        collectgarbage("collect")
+    end)
+
+    -- Follow title
+    awful.spawn.easy_async({"pkill", "--full", "--uid", os.getenv("USER"), "^playerctl metadata"},
+        function()
+            awful.spawn.with_line_callback(song_follow_cmd, {
+                    stdout = function(line)
+                        -- Get title and artist
+                        local artist = line:match('artist_(.*)title_')
+                        local title = line:match('title_(.*)')
+                        -- If the title is nil or empty then the players stopped
+                        if title and title ~= "" then
+                            awesome.emit_signal(
+                                "daemon::playerctl::title_artist_album", title,
+                                artist)
+                        else
+                            awesome.emit_signal("daemon::playerctl::player_stopped")
+                        end
+                        collectgarbage("collect")
+                    end
+                })
+            collectgarbage("collect")
         end
-    })
-end)
+        )
+end
+
+emit_player_status()
+emit_player_info()
