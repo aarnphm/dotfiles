@@ -8,7 +8,7 @@ kitty
 lightdm
 lightdm-greeter
 awesome
-dunst
+gitconfig
 picom
 termite
 tmux
@@ -19,8 +19,7 @@ exports
 dmenu-scripts
 rofi
 mimeapps
-quit"
-)
+quit")
 
 choice=$(echo -e "${options[@]}" | rofi -dmenu -i -p 'Edit config file:' --show-icons)
 
@@ -49,8 +48,8 @@ case "$choice" in
 	awesome)
 		choice="$CHEZMOI_DIR/private_dot_config/exact_awesome/rc.lua"
 	;;
-	dunst)
-		choice="$CHEZMOI_DIR/private_dot_config/dunst/dunstrc"
+	gitconfig)
+		choice="$CHEZMOI_DIR/private_dot_config/git/gitconfig.tmpl"
 	;;
 	picom)
 		choice="$CHEZMOI_DIR/private_dot_config/picom/picom.conf"

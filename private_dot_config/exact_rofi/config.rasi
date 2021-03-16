@@ -1,7 +1,9 @@
 configuration {
-	modi: "window,run,ssh,drun,combi";
-	lines: 10;
-	case-sensitive: false;
-	matching: "fuzzy";
-	theme: ".config/rofi/apprentice.rasi";
+    modi: "window,run,ssh,drun,combi";
+    lines: 11;
+    case-sensitive: false;
+    matching: "fuzzy";
+    show-icons: true;
+    icon-theme: "Papirus";
+    theme: ".config/rofi/apprentice.rasi";
 }

@@ -24,7 +24,6 @@
     margin: 0;
     dynamic: true;
     padding-top: 500;
-    /* lines: 10; */
 }
 
 #window {
@@ -33,7 +32,7 @@
     border-color: #7F7F7F;
     border: 4;
     border-radius: 0;
-    width: 600;
+    width: 800;
 }
 
 #mainbox {

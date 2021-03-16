@@ -7,6 +7,7 @@ local awful         = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local defaults      = require("defaults")
 local beautiful     = require("beautiful")
+local naughty       = require("naughty")
 local lain          = require("external.lain")
 local freedesktop   = require("external.freedesktop")
 require("awful.hotkeys_popup.keys")
@@ -248,7 +249,11 @@ client.connect_signal("request::default_keybindings", function()
             -- ===================================================================
             awful.key({modkey}, "r",
                 function()
-                    awful.spawn.easy_async_with_shell("rofi -show run")
+                    awful.spawn.easy_async_with_shell('rofi -show run', {
+                            stderr = function(line)
+                                naughty.notify { text = "error: " .. line }
+                            end,
+                        })
                 end,
                 {description = "run programs", group = "launcher"}
                 ),
@@ -260,13 +265,21 @@ client.connect_signal("request::default_keybindings", function()
                 ),
             awful.key({modkey}, "e",
                 function()
-                    awful.spawn.easy_async_with_shell("dmenu-edit-config")
+                    awful.spawn.easy_async_with_shell('dmenu-edit-config', {
+                            stderr = function(line)
+                                naughty.notify { text = "error: "..line }
+                            end,
+                        })
                 end,
                 {description = "edit config files", group = "launcher"}
                 ),
             awful.key({ctrl, altkey}, "e",
                 function()
-                    awful.spawn.easy_async_with_shell("bwmenu")
+                    awful.spawn.easy_async_with_shell('bwmenu', {
+                            stderr = function(line)
+                                naughty.notify { text = "error: "..line }
+                            end,
+                        })
                 end,
                 {description = "bitwarden-rofi, @mattydebie", group = "launcher"}
                 ),

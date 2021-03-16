@@ -35,7 +35,7 @@ alias e="$CHEZMOI_BIN edit --apply $@"
 alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
 alias dca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
 alias vdir="$CHEZMOI_DIR/private_dot_config/vim"
-alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl"
+alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc"
 
 #chmod
 alias 644='chmod 644'

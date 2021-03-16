@@ -84,6 +84,10 @@ autocmd FileType zsh setlocal foldmethod=indent
 autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+au BufNewFile,BufRead /*.rasi setf css
+
+" setup autofold
+autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v:val)'))
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => init
@@ -135,9 +139,10 @@ set clipboard=unnamed,unnamedplus
 set mouse=a
 " set mouse=i
 set foldmethod=manual "indent-syntax-manual
-set foldlevel=2
+set foldlevel=1
 set wildmenu
 set wildmode=longest:full,full
+set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
 set wildcharm=<Tab>
 set shortmess+=Ic
 set pastetoggle=<F2>
@@ -200,6 +205,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 command! Ev :e $HOME/.local/share/chezmoi/private_dot_config/vim/vimrc
+command! Ca :!source $ZDOTDIR/.zshenv.local && chezmoi apply --verbose --debug
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
@@ -461,14 +467,20 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 let NERDTreeShowHidden = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-let g:NERDTreeWinPos = "right"
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let NERDTreeRespectWildIgnore=1
+let g:NERDTreeWinPos = "left"
+let NERDTreeIgnore = ['node_modules','\.pyc$', '__pycache__','\.class$','.git']
 let g:NERDTreeWinSize=35
 nnoremap <F4> :NERDTreeToggle<cr>
+" Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" Start NERDTree when Vim starts with a directory argument.
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) || &buftype == 'quickfix' | q | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 | let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " gitgutter
