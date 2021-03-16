@@ -14,22 +14,22 @@
             "command": "vim-language-server",
             "args": ["--stdio"],
             "initializationOptions": {
-                "isNeovim": true, // is neovim, default false
-                "iskeyword": "@,48-57,_,192-255,-#", // vim iskeyword option
-                "vimruntime": "",                    // $VIMRUNTIME option
-                "runtimepath": "",                   // vim runtime path separate by `,`
+                "isNeovim": true,
+                "iskeyword": "@,48-57,_,192-255,-#",
+                "vimruntime": "",
+                "runtimepath": "",
                 "diagnostic": {
                     "enable": true
                 },
                 "indexes": {
-                    "runtimepath": true,      // if index runtimepath's vim files this will effect the suggest
-                    "gap": 100,               // index time gap between next file
-                    "count": 3,               // count of files index at the same time
-                    "projectRootPatterns" : ["strange-root-pattern", ".git", "autoload", "plugin"] // Names of files used as the mark of project root. If empty, the default value [".git", "autoload", "plugin"] will be used
+                    "runtimepath": true,
+                    "gap": 100,
+                    "count": 3,
+                    "projectRootPatterns" : ["strange-root-pattern", ".git", "autoload", "plugin"]
                 },
                 "suggest": {
-                    "fromVimruntime": true,   // completionItems from vimruntime's vim files
-                    "fromRuntimepath": false  // completionItems from runtimepath's vim files, if this is true that fromVimruntime is true
+                    "fromVimruntime": true,
+                    "fromRuntimepath": false
                 }
             },
             "filetypes": [ "vim" ]

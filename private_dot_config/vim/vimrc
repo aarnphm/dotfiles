@@ -44,6 +44,7 @@ Plug 'andrewstuart/vim-kubernetes'
 Plug 'vim-python/python-syntax'
 Plug 'styled-components/vim-styled-components'
 Plug 'ekalinin/Dockerfile.vim'
+Plug 'christoomey/vim-tmux-navigator'
 " Typescripts-JSX
 Plug 'leafgarland/typescript-vim'
 Plug 'jparise/vim-graphql'
@@ -108,7 +109,7 @@ if g:is_termguicolors
     set termguicolors
 endif
 set background=dark
-colorscheme onedark 
+colorscheme apprentice
 
 " Minimal
 filetype plugin indent on
@@ -288,6 +289,11 @@ nnoremap <F3> :TagbarToggle<CR>
 " => Plugins settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Write all buffers before navigating from Vim to tmux pane
+let g:tmux_navigator_save_on_switch = 2
+" Disable tmux navigator when zooming the Vim pane
+let g:tmux_navigator_disable_when_zoomed = 1
+
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
@@ -440,7 +446,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gr <Plug>(coc-references)
 
 " perform code action
-nmap <leader>ac <Plug>(coc-codeaction)
+nmap <leader>. <Plug>(coc-codeaction)
 
 " Mappings for CoCList
 " Show all diagnostics.
