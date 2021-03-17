@@ -19,7 +19,6 @@ alias sudo='nocorrect sudo'
 # git
 alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
-alias failed="journalctl -p 3 -xb"
 
 # List all files colorized in long format
 alias la="ls ${LS_OPTS} ${colorflag}"
@@ -32,10 +31,8 @@ alias lp="nnn -P p"
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
 alias e="$CHEZMOI_BIN edit --apply $@"
-alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
-alias dca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
-alias vdir="$CHEZMOI_DIR/private_dot_config/vim"
-alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc"
+alias ca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
+alias dca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
 
 #chmod
 alias 644='chmod 644'
@@ -93,12 +90,16 @@ if [[ -d $CS_PATH/mcmaster ]]; then
     alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | egrep 'compeng' | head -n1`"
 fi
 # bentoml
-alias bentodir="$CS_PATH/BentoML"
-alias cs="$CS_PATH"
+alias cs="cd $CS_PATH"
+alias bentodir="cd $CS_PATH/BentoML"
 # zsh config directory
-alias simpledir="$XDG_CONFIG_HOME/zsh/rc/simple"
-alias zcdir="$CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
-alias zdir="$CHEZMOI_DIR/private_dot_zsh"
+alias simpledir="cd $XDG_CONFIG_HOME/zsh/rc/simple"
+alias zcdir="cd $CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
+alias zdir="cd $CHEZMOI_DIR/private_dot_zsh"
+# vim config
+alias vdir="cd $CHEZMOI_DIR/private_dot_config/vim"
+alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc"
+# awesome config
 alias adir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 alias aconf="$EDITOR -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
@@ -128,6 +129,10 @@ alias weather="curl wttr.in/$CITY"
 # docker and kubectl related
 alias dockerprune="docker system prune -a -f"
 alias kubesecret="kubectl get secret regcred --output=yaml"
+
+if (( $+commands[journalctl] )); then
+    alias failed="journalctl -p 3 -xb"
+fi
 
 # arch
 if [ -f /etc/arch-release ] ;then
@@ -163,6 +168,24 @@ if [ -f /etc/arch-release ] ;then
         alias yay-installed-list='yay -Qm'
         alias yay-clean='yay -Sc'
     fi
+fi
+
+# systemctl related
+if (( $+commands[systemctl] )); then
+    alias sys-restart='sudo systemctl restart'
+    alias sys-start='sudo systemctl start'
+    alias sys-stop='sudo systemctl stop'
+    alias sys-enable='sudo systemctl enable'
+    alias sys-disable='sudo systemctl disable'
+    alias sys-restart='sudo systemctl restart'
+    alias sys-reload='sudo systemctl reload'
+    alias sys-status='systemctl status'
+    alias sys-show='systemctl show'
+    alias sys-lu='systemctl list-units'
+    alias sys-luf='systemctl list-unit-files'
+    alias sys-lt='systemctl list-timers'
+    alias sys-cat='systemctl cat'
+    alias sys-ie='systemctl is-enabled'
 fi
 
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"

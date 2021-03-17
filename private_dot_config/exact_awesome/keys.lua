@@ -338,14 +338,14 @@ client.connect_signal("request::default_keybindings", function()
             awful.key({}, "XF86AudioRaiseVolume",
                 function()
                     -- pamixer -i 3
-                    awful.spawn("amixer set Master 1%+")
+                    awful.spawn("amixer set Master 5%+")
                 end,
                 {description = "volume up Master", group = "volume"}
                 ),
             awful.key({}, "XF86AudioLowerVolume",
                 function()
                     -- pamixer -d 3
-                    awful.spawn("amixer set Master 1%-")
+                    awful.spawn("amixer set Master 5%-")
                 end,
                 {description = "volume down Master", group = "volume"}
                 ),

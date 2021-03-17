@@ -1,5 +1,3 @@
-#!/usr/bin/vim
-
 set runtimepath+=~/.config/vim/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -20,54 +18,64 @@ endif
 
 " define vim-plug here
 call plug#begin('~/.config/vim/plugins')
-" fzf with rg
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'rking/ag.vim'
+
 " Color scheme
-Plug 'joshdick/onedark.vim'
-Plug 'romainl/Apprentice'
+Plug 'sainnhe/sonokai'
 Plug 'ayu-theme/ayu-vim'
-" Go support
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'tlhr/anderson.vim'
+Plug 'romainl/Apprentice'
+Plug 'joshdick/onedark.vim'
+Plug 'AlessandroYorba/Alduin'
+Plug 'rakr/vim-two-firewatch'
+Plug 'danilo-augusto/vim-afterglow'
+
+" fzf with rg
+Plug 'rking/ag.vim'
+Plug 'junegunn/fzf.vim'
 Plug 'Rykka/InstantRst'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+" vscode like language server
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'jiangmiao/auto-pairs'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+
 " language packs
 Plug 'sheerun/vim-polyglot'
 " language syntax
 Plug 'lervag/vimtex'
 Plug 'mrk21/yaml-vim'
-Plug 'plasticboy/vim-markdown'
-Plug 'andrewstuart/vim-kubernetes'
-Plug 'vim-python/python-syntax'
-Plug 'styled-components/vim-styled-components'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'christoomey/vim-tmux-navigator'
-" Typescripts-JSX
-Plug 'leafgarland/typescript-vim'
 Plug 'jparise/vim-graphql'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'plasticboy/vim-markdown'
+Plug 'ekalinin/Dockerfile.vim'
 Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'vim-python/python-syntax'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'leafgarland/typescript-vim'
+Plug 'andrewstuart/vim-kubernetes'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'styled-components/vim-styled-components'
+" Typescripts-JSX
+
 " UI related
-Plug 'mkitt/tabline.vim'
-Plug 'lambdalisue/suda.vim'
-Plug 'godlygeek/tabular'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-apathy'
-Plug 'tpope/vim-obsession'
-Plug 'thaerkh/vim-indentguides'
+Plug 'SirVer/ultisnips'
+Plug 'godlygeek/tabular'
+Plug 'preservim/nerdtree'
+Plug 'jiangmiao/auto-pairs'
+Plug 'lambdalisue/suda.vim'
 Plug 'wakatime/vim-wakatime'
+Plug 'airblade/vim-gitgutter'
+Plug 'thaerkh/vim-indentguides'
+
+" tpope plugins =)
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-apathy'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-commentary'
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -81,7 +89,6 @@ autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType java setlocal foldmethod=syntax
-autocmd FileType zsh setlocal foldmethod=indent
 autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
@@ -104,19 +111,20 @@ if has('vim')
 endif
 
 " Setup
-let ayucolor="mirage"
 if g:is_termguicolors
     set termguicolors
 endif
 set background=dark
-colorscheme apprentice
+let ayucolor="mirage"
+let g:two_firewatch_italics=1
+colorscheme afterglow
 
 " Minimal
 filetype plugin indent on
 syntax enable
+set number
 set autoindent
 set relativenumber
-set number
 set backspace=indent,eol,start
 set complete-=i
 set smarttab
@@ -128,7 +136,6 @@ if !has('nvim') && &ttimeoutlen == -1
     set ttimeoutlen=100
 endif
 
-set conceallevel=0
 set incsearch
 set noshowcmd
 set notitle
@@ -137,8 +144,8 @@ set showmatch
 set showmode
 set hidden
 set clipboard=unnamed,unnamedplus
-set mouse=a
-" set mouse=i
+set mouse=a " i for ssh session
+set conceallevel=0
 set foldmethod=manual "indent-syntax-manual
 set foldlevel=1
 set wildmenu
@@ -147,6 +154,24 @@ set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
 set wildcharm=<Tab>
 set shortmess+=Ic
 set pastetoggle=<F2>
+
+" Performance tuning
+set lazyredraw
+set nocursorline
+set hlsearch
+set ignorecase
+set smartcase
+
+" Misc
+set nobackup
+set noswapfile
+set nowritebackup
+set undofile
+set undodir=~/.config/vim/undo
+set undolevels=9999
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
 if &encoding ==# 'latin1' && has('gui_running')
     set encoding=utf-8
@@ -188,26 +213,39 @@ set viewoptions-=options
 set laststatus=0
 set ruler
 set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %P\ ›\ %l:%L%)
-" Performance tuning
-set lazyredraw
-set nocursorline
-set hlsearch
-set ignorecase
-set smartcase
 
-" Misc
-set nobackup
-set noswapfile
-set nowritebackup
-set undofile
-set undodir=~/.config/vim/undo
-set undolevels=9999
-set tabstop=4
-set shiftwidth=4
-set expandtab
-command! Ev :e $HOME/.local/share/chezmoi/private_dot_config/vim/vimrc
+set showtabline=1
+function! MyTabLine()
+    let s = ''
+    for i in range(tabpagenr('$'))
+        let tabnr = i + 1 " range() starts at 0
+        let winnr = tabpagewinnr(tabnr)
+        let buflist = tabpagebuflist(tabnr)
+        let bufnr = buflist[winnr - 1]
+        let bufname = fnamemodify(bufname(bufnr), ':t')
+
+        let s .= '%' . tabnr . 'T'
+        let s .= (tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+        let s .= ' ' . tabnr
+
+        let n = tabpagewinnr(tabnr,'$')
+        if n > 1 | let s .= ':' . n | endif
+
+        let s .= empty(bufname) ? ' [No Name] ' : ' [' . bufname . '] '
+
+        let bufmodified = getbufvar(bufnr, "&mod")
+        if bufmodified | let s .= '+ ' | endif
+    endfor
+    let s .= '%#TabLineFill#'
+    return s
+endfunction
+set tabline=%!MyTabLine()
+
+autocmd! BufWritePost $CHEZMOI_DIR/private_dot_config/vim/vimrc source $HOME/.config/vim/vimrc
+command! Ev :!chezmoi edit --apply $CHEZMOI_DIR/private_dot_config/vim/vimrc
 command! Ca :!source $ZDOTDIR/.zshenv.local && chezmoi apply --verbose --debug
 
+" insert mode mapping to trigger the :Tabular command when you type the character that you want to align.
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 
 function! s:align()
@@ -220,7 +258,6 @@ function! s:align()
         call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
     endif
 endfunction
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mapping
@@ -262,10 +299,10 @@ vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+" map <C-j> <C-W>j
+" map <C-k> <C-W>k
+" map <C-h> <C-W>h
+" map <C-l> <C-W>l
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
@@ -284,6 +321,12 @@ nnoremap <leader>R :PlugInstall<cr>
 nnoremap <F2> :set invpaste paste?<CR>
 imap <F2><C-O>:set invpaste paste?<CR>
 nnoremap <F3> :TagbarToggle<CR>
+if exists(":Tabularize")
+    nmap <leader>a= :Tabularize /=<CR>
+    vmap <leader>a= :Tabularize /=<CR>
+    nmap <leader>a: :Tabularize /:\zs<CR>
+    vmap <leader>a: :Tabularize /:\zs<CR>
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins settings
@@ -323,12 +366,18 @@ let g:suda#prompt = 'Mot de passe: '
 " syntax settings
 let g:python_highlight_all = 1
 
+" vim-go
+let g:go_fmt_command = "goimports"
+let g:go_info_mode='gopls'
+let g:go_auto_type_info = 1
+let g:go_fmt_autosave = 1
+let g:go_def_mapping_enabled = 0
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fzf
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " This is the default extra key bindings
 let g:fzf_tags_command = 'ctags -R'
-let g:fzf_action = {
-            \ 'ctrl-t': 'tab split',
-            \ 'ctrl-x': 'split',
-            \ 'ctrl-v': 'vsplit' }
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
@@ -345,12 +394,12 @@ let g:fzf_action = {
 
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '40%' }
+let g:fzf_layout = { 'down': '63%' }
 
 " You can set up fzf window using a Vim command (Neovim or latest Vim 8 required)
 let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10new' }
+" let g:fzf_layout = { 'window': '10new' }
 
 " Customize fzf colors to match your color scheme
 " - fzf#wrap translates this to a set of `--color` options
@@ -376,13 +425,10 @@ let g:fzf_colors =
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 nnoremap <C-f> :Files <CR>
 nnoremap <C-g> :Lines <CR>
-
-" vim-go
-let g:go_fmt_command = "goimports"
-let g:go_info_mode='gopls'
-let g:go_auto_type_info = 1
-let g:go_fmt_autosave = 1
-let g:go_def_mapping_enabled = 0
+nnoremap <F6> :Buffers <CR>
+nnoremap <F7> :Snippets <CR>
+nnoremap <F8> :Colors <CR>
+nnoremap <F9> :Maps <CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc
@@ -521,3 +567,4 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+" vim:set ft=vim et sw=2:

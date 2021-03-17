@@ -19,9 +19,6 @@ local function format_progress_bar(bar)
     return bar
 end
 
-markup.fg = x.color6
-markup.bg = x.background
-
 -- ===================================================================
 -- Awesome panel
 -- ===================================================================
@@ -119,18 +116,6 @@ local playerctl_bar = wibox.widget {
 playerctl_bar.visible = false
 
 -- Get Title
-awesome.connect_signal("daemon::playerctl::title_artist_album",
-    function(title, artist)
-
-        playerctl_bar.visible = true
-        song_title.markup = '<span foreground="' .. beautiful.xcolor5 .. '">' ..
-        title .. '</span>'
-
-        song_artist.markup = '<span foreground="' .. beautiful.xcolor4 .. '">' ..
-        artist .. '</span>'
-    end
-    )
-
 awesome.connect_signal("daemon::playerctl::status",
     function(playing)
         if playing then
@@ -138,6 +123,13 @@ awesome.connect_signal("daemon::playerctl::status",
         else
             playerctl_bar.visible = false
         end
+    end
+    )
+awesome.connect_signal("daemon::playerctl::title_artist_album",
+    function(title, artist)
+        playerctl_bar.visible = true
+        song_title.markup = markup.fontfg(beautiful.font, x.color5, title)
+        song_artist.markup = markup.fontfg(beautiful.font,x.color4, artist)
     end
     )
 
@@ -223,48 +215,8 @@ awesome.connect_signal("daemon::battery", function(value)
         bat_icon = ' '
     end
 
-    battery_tooltip.markup =
-    " " .. "<span foreground='" .. x.color12 .. "'>" .. bat_icon ..
-    "</span>" .. value .. '% '
+    battery_tooltip.markup = markup.fg.color(x.color12,bat_icon) .. value .. '% '
 end)
-
-
--- Timer for charging animation
--- local q = 0
--- local g = gears.timer {
---     timeout = 0.03,
---     call_now = false,
---     autostart = false,
---     callback = function()
---         if q >= 100 then q = 0 end
---         q = q + 1
---         battery_bar.value = q
---         battery_bar.color = {
---             type = 'linear',
---             from = {0, 0},
---             to = {75 - (100 - q), 20},
---             stops = {
---                 {1 + (q) / 100, beautiful.xcolor10},
---                 {0.75 - (q / 100), beautiful.xcolor1},
---                 {1 - (q) / 100, beautiful.xcolor10}
---             }
---         }
---     end
--- }
-
--- -- The charging animation
--- local running = false
--- awesome.connect_signal("daemon::charger", function(plugged)
---     if plugged then
---         g:start()
---         running = true
---     else
---         if running then
---             g:stop()
---             running = false
---         end
---     end
--- end)
 
 local battery = format_progress_bar(battery_bar)
 
@@ -288,16 +240,16 @@ local mysystray_container = {
 -- ===================================================================
 
 local time = awful.widget.watch(
-    "date +'%H:%M%Z'", 60,
+    "date +'%H:%M %ZGMT'", 60,
     function(widget, stdout)
-        widget:set_markup(stdout:sub(1,2)..markup.fontfg(beautiful.fontname, x.color12,stdout:sub(3,5))..markup.fontfg(beautiful.fontname, x.color6, stdout:sub(6,8)))
+        widget:set_markup(markup.fontfg(beautiful.font, x.color3,stdout))
     end
     )
 
 local date = awful.widget.watch(
-    "date +'%m-%d-%Y'",60,
+    "date +'%m/%d/%Y'",60,
     function(widget, stdout)
-        widget:set_markup(stdout:sub(1,3)..markup.fontfg(beautiful.fontname, x.color12, stdout:sub(4,6))..markup.fontfg(beautiful.fontname, x.color6,stdout:sub(7,10)))
+        widget:set_markup(markup.fontfg(beautiful.font, x.color4, stdout))
     end
     )
 
@@ -309,16 +261,13 @@ local volume = lain.widget.alsa({
             else
                 vol = volume_now.level .. "%"
             end
-            widget:set_markup(markup.fontfg(beautiful.fontname, x.color12, vol:sub(1,2))..markup.fontfg(beautiful.fontname, x.color6,vol:sub(3)))
+            widget:set_markup(markup.fontfg(beautiful.font, x.color6, vol))
         end
     })
 
 volume.widget:buttons(awful.util.table.join(
         awful.button({},1, function()
             awful.util.spawn(defaults.audiocontrol)
-        end),
-        awful.button({},2, function()
-            awful.util.spawn(defaults.bluetooth)
         end),
         awful.button({}, 4, function ()
             awful.util.spawn("amixer set Master 1%+")
@@ -395,8 +344,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         {
             app = "termite",
             height = 0.43,
-            width = 0.43,
-            -- vert = "center",
+            width = 0.68,
             horiz = "center",
             followtag = true,
             argname = "--name %s"
