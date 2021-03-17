@@ -1,6 +1,6 @@
-# aaron does dotfiles
+<h1 align="center">aaron does dotfiles</h1>
 
-<div align="center"><p>automated deployment for <code>!~</code> across Unix-like devices.(<i>currently Arch and MacOS</i>)</p></div>
+<div align="center"><p>automated deployment for <code>!~</code> across Unix-based system.</p></div>
 
 ![desktop](./bootstrap/screenshots/desktop.png)
 
