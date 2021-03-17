@@ -5,7 +5,7 @@
 #==============================================================#
 
 # Reload the shell (i.e. invoke as a login shell (-l))
-alias reload="exec ${SHELL}"
+alias reload="exec -l ${SHELL}"
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
