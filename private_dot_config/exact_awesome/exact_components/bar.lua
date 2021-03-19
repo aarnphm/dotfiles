@@ -237,8 +237,8 @@ mysystray:set_base_size(beautiful.systray_icon_size)
 
 local mysystray_container = {
     mysystray,
-    right = dpi(3),
-    left = dpi(3),
+    right = dpi(12),
+    left = dpi(12),
     widget = wibox.container.margin
 }
 

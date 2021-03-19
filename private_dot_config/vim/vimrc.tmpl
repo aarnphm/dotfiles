@@ -248,7 +248,6 @@ function! MyTabLine()
 endfunction
 set tabline=%!MyTabLine()
 
-autocmd! BufWritePost $CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl :!source $ZDOTDIR/.zshenv.local && chezmoi apply
 command! Ev :e $CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl
 command! Ca :!source $ZDOTDIR/.zshenv.local && chezmoi apply
 

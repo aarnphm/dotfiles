@@ -241,9 +241,9 @@ theme.wibar_bg      = x.background
 -- Systray - Weather
 -- ===================================================================
 
-theme.systray_icon_spacing = dpi(5)
+theme.systray_icon_spacing = dpi(10)
 theme.bg_systray           = theme.xcolor0
-theme.systray_icon_size    = dpi(20)
+theme.systray_icon_size    = dpi(18)
 theme.weather_city         = os.getenv("CITY")
 
 return theme
