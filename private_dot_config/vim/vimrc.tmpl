@@ -34,6 +34,11 @@ Plug 'danilo-augusto/vim-afterglow'
 Plug 'rking/ag.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'Rykka/InstantRst'
+Plug 'SirVer/ultisnips'
+Plug 'lambdalisue/suda.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'thaerkh/vim-indentguides'
+
 " vscode like language server
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -61,13 +66,9 @@ Plug 'styled-components/vim-styled-components'
 
 " UI related
 Plug 'preservim/tagbar'
-Plug 'SirVer/ultisnips'
 Plug 'godlygeek/tabular'
 Plug 'preservim/nerdtree'
 Plug 'jiangmiao/auto-pairs'
-Plug 'lambdalisue/suda.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'thaerkh/vim-indentguides'
 
 " tpope plugins =)
 Plug 'tpope/vim-sleuth'
@@ -86,7 +87,7 @@ call plug#end()
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 au! BufNewFile,BufRead *.prisma setfiletype graphql
 au! BufNewFile,BufRead .chezmoi* setfiletype gohtmltmpl
-au! BufNewFile,BufRead /*.sh.tmpl setfiletype zsh 
+au! BufNewFile,BufRead /*.sh.tmpl setfiletype sh 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
@@ -338,6 +339,7 @@ endif
 " => Plugins settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+{{ if not .transient }}
 "indentguides and more
 let g:indentguides_spacechar = '┆'
 let g:indentguides_tabchar = '|'
@@ -345,7 +347,6 @@ let g:indentguides_ignorelist = ['text']
 let g:suda_smart_edit = 1
 let g:suda#prompt = 'Mot de passe: '
 
-{{ if not .transient }}
 let g:UltiSnipsExpandTrigger='<HOME>'
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories=[$CHEZMOI_DIR . "/private_dot_config/vim/exact_UltiSnips"]
@@ -521,6 +522,16 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" gitgutter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" I - AM - SPEEEEEEEEED
+let g:gitgutter_enabled=1
+let g:gitgutter_realtime = 1
+let g:gitgutter_eager = 1
+let g:gitgutter_max_signs = 1500
+let g:gitgutter_diff_args = '-w'
+
 {{ end }}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NerdTree
@@ -543,16 +554,6 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) || &buftype == 'quickfix' | q | endif
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 | let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" gitgutter
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" I - AM - SPEEEEEEEEED
-let g:gitgutter_enabled=1
-let g:gitgutter_realtime = 1
-let g:gitgutter_eager = 1
-let g:gitgutter_max_signs = 1500
-let g:gitgutter_diff_args = '-w'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
