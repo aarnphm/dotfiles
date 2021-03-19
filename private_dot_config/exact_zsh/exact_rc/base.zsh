@@ -3,7 +3,7 @@
 #==============================================================#
 
 HOSTNAME="$HOST"
-HISTFILE="${ZDATADIR}/zsh_history"
+[[ -f $ZDATADIR/zsh_history ]] && HISTFILE="${ZDATADIR}/zsh_history"
 HISTSIZE=10000
 SAVEHIST=100000
 HISTORY_IGNORE="(ls|cd|pwd|zsh|exit|cd ..)"

@@ -5,20 +5,27 @@ Host *
     UseKeychain yes
     AddKeysToAgent yes
 {{- end }}
-    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_rsa
-    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_ed25519
-{{ if eq .chezmoi.os "darwin" }}
-
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ecdsa
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ed25519
+{{ if eq .hostname "APPL-AIR12" }}
 Host GGBBYAERO15W8
     HostName 116.111.83.243
     Port 34689
     User {{ .chezmoi.username }}
-    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_rsa
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
 
 Host HOME
     HostName 192.168.1.117
     Port 34689
     User {{ .chezmoi.username }}
-    IdentityFile {{ .chezmoi.homedir }}/.ssh/id_rsa
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
+{{- else if eq .hostname "archlinux" }}
+Host CRM
+    HostName 27.0.14.145
+    Port 22
+    User root
+    PasswordAuthentication no
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ecdsa
 {{- end }}
 {{- end }}

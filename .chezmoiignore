@@ -1,42 +1,51 @@
-README.md
+install
 Makefile
-Dockerfile
-ci
-*.sh
-*.deb
-*.png
-*.in
-install**
-*.tar.gz
-node_modules
-
-screenshots
 bootstrap
-Brewfile.*
-Pacfile.*
-Aurfile.*
-private_dot_config/nvim/coc-settings.json
-private_dot_config/exact_awesome/xdgmenu.lua
-private_dot_config/exact_zsh/rc/cplugins/fzf-preview.sh
-private_dot_ssh
+README.md
+Dockerfile
+*.deb
+*.tar.gz
 
-.ssh/known_hosts
-.ssh/agent-environment
-.config/xscreensaver
-.config/vim/undo
-.config/vim/plugins
-.config/nnn/.lastd
-.config/vifm/vifminfo.json
+{{ if .personal }}
+.vimrc
+{{ end }}
+
+{{ if .transient }}
+.local/share
+.local/bin
+!.local/bin/ssh-add
+.ssh/id_ed25519
+.ssh/id_rsa
+.ssh/id_ecdsa
+.ssh/config
+.config/alacritty
+.config/colorschemes
+.config/kitty
+.config/nvim
+.config/tmux
+.config/vifm
+.wakatime.cfg
+.npmrc
+.zsh/.zshenv.local
+{{ end }}
 
 {{ if or (ne .chezmoi.os "linux") (not .personal) }}
+.ssh/known_hosts
+.ssh/agent-environment
+.config/vim/undo
+.config/vim/plugins
 .config/awesome
+.config/dunst
 .config/picom
 .config/redshift
 .config/rofi
 .config/termite
 .config/conky
 .config/X11
-.screenlayout/
-.zsh/post/ssh-agent-start
+.config/screenlayout
+.config/mimeapps.list
+.config/user-dirs.dirs
 .Xresources
-{{ end  }}
+.xprofile
+.xinitrc
+{{ end }}

@@ -5,6 +5,7 @@
 pcall(require, "luarocks.loader")
 -- Autofocus a new client when previously focused one is closed
 require("awful.autofocus")
+require("naughty")
 local beautiful = require("beautiful")
 local xrdb = beautiful.xresources.get_current_theme()
 -- Make dpi function global

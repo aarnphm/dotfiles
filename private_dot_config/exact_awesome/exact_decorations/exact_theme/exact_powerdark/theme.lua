@@ -232,7 +232,7 @@ theme.useless_gap = dpi(0)
 -- Wibar
 -- ===================================================================
 
-theme.wibar_height  = screen.count()>1 and dpi(37) or dpi(30)
+theme.wibar_height  = screen.count()>1 and dpi(40) or dpi(30)
 theme.wibar_margin  = dpi(15)
 theme.wibar_spacing = dpi(15)
 theme.wibar_bg      = x.background
@@ -241,9 +241,9 @@ theme.wibar_bg      = x.background
 -- Systray - Weather
 -- ===================================================================
 
-theme.systray_icon_spacing = dpi(10)
+theme.systray_icon_spacing = dpi(5)
 theme.bg_systray           = theme.xcolor0
-theme.systray_icon_size    = dpi(14)
+theme.systray_icon_size    = dpi(20)
 theme.weather_city         = os.getenv("CITY")
 
 return theme

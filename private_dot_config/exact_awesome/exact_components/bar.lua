@@ -218,6 +218,14 @@ awesome.connect_signal("daemon::battery", function(value)
     battery_tooltip.markup = markup.fg.color(x.color12,bat_icon) .. value .. '% '
 end)
 
+-- The charging animation
+local running = false
+awesome.connect_signal("daemon::charger", function(plugged)
+    if plugged then
+        battery_tooltip.markup = markup.fg.color(x.color12,"Charging")
+    end
+end)
+
 local battery = format_progress_bar(battery_bar)
 
 -- ===================================================================
@@ -229,9 +237,8 @@ mysystray:set_base_size(beautiful.systray_icon_size)
 
 local mysystray_container = {
     mysystray,
-    right = dpi(10),
-    left = dpi(10),
-    bottom = dpi(5),
+    right = dpi(3),
+    left = dpi(3),
     widget = wibox.container.margin
 }
 
@@ -314,8 +321,8 @@ local timedate_bar = wibox.widget{
             },
             layout = wibox.layout.fixed.horizontal
         },
-        top = dpi(3),
-        bottom = dpi(1),
+        top = dpi(5),
+        bottom = dpi(5),
         left = dpi(10),
         right = dpi(10),
         widget = wibox.container.margin

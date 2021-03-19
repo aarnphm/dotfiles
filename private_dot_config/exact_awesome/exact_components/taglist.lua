@@ -35,7 +35,7 @@ local get_taglist = function(s)
     local ghost       = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/ghost.png")
     local dot         = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/dot.png")
     local pacman      = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/pacman.png")
-    local ghost_icon  = gears.color.recolor_image(ghost, x.color6)
+    local ghost_icon  = gears.color.recolor_image(ghost, x.color7)
     local dot_icon    = gears.color.recolor_image(dot, x.color8)
     local pacman_icon = gears.color.recolor_image(pacman, x.color3)
 

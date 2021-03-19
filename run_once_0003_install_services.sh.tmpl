@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+{{- if .personal }}
+{{-   if and (eq .hostname "archlinux") (.personal) }}
+SERVICES=(docker cronie sshd bluetooth postgresql optimus-manager lightdm acpid)
+
+for services in "${SERVICES[@]}"; do
+    sudo systemctl enable $services
+done
+
+crontab {{ .chezmoi.sourceDir }}/bootstrap/configs/private_cronfile
+{{-   end }}
+{{- end }}

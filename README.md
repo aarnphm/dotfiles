@@ -13,12 +13,16 @@
 ```sh 
     $ curl -fsSL https://raw.githubusercontent.com/aarnphm/dotfiles/HEAD/install | bash
 ```
-- for first time installer do `make build`
-- checkout [bootstrap README](bootstrap/README.md) for more information
-- the scripts will install a baseline, if you want a more rich experience take a look at [Pacfile.local](Pacfile.local) and [Aurfile.local](Aurfile.local) and run `make full-install`
-A more responsible options:
-- after installing chezmoi you can do `chezmoi init git@github.com:aarnphm/dotfiles.git`
-- `chezmoi diff -v` to see different files, `chezmoi apply -v --dry-run` to check for errors
-- then run `chezmoi apply -v` to see the magic happens
-- Runtime goes zoooom
+- setup `$ZDOTDIR=$HOME/.zsh` in either `/etc/zsh/zshenv` or `/etc/zshenv`
+
+<h3 align="center">Runtime goes zoooom</h3>
+
 ![runtime vrom vrom](./bootstrap/screenshots/runtime.png)
+
+<h3 align="center">file descriptions</h3>
+
+- [run_once_0001_install_pkgman.sh](./run_once_0001_install_pkgman.sh.tmpl) will install either `brew` or `yay` depending on OS defined by `.chezmoi.os`
+- [run_once_0002_install_deps.sh](./run_once_0002_install_deps.sh.tmpl) will install my dependencies for day to day uses
+- [run_once_0003_install_services.sh](./run_once_0003_install_services.sh.tmpl) will initialise some services using either Mac's services or `systemd`
+- [run_once_0004_install_frameworks.sh](./run_once_0004_install_frameworks.sh.tmpl) will install some packages like pyenv, gcloud, etc
+- [run_once_0009_sys_default.sh](./run_once_0009_sys_defaults.sh.tmpl) will setup some hacker defaults

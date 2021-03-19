@@ -3,10 +3,11 @@
 #==============================================================#
 
 # Prompt symbol
-SIMPLE_PROMPT_SYMBOL="➜"
+# SIMPLE_PROMPT_SYMBOL="➜"
+# SIMPLE_GIT_UP_ARROW="⇡"
+# SIMPLE_GIT_DOWN_ARROW="⇣"
+SIMPLE_PROMPT_SYMBOL=">"
 VICMD_SYMBOL="[vi]"
-GIT_UP_ARROW="⇡"
-GIT_DOWN_ARROW="⇣"
 
 # Colors
 HOST_ME=magenta

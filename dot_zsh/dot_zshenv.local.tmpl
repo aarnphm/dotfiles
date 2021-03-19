@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Put local env or secrets here
+zmodload zsh/mapfile
+
+# bitwarden-cli with a bit of a hack
+bwpassfile="$HOME/bw.pass"
+bitwarden=("${(f@)mapfile[$bwpassfile]}")
+export BW_MASTER=$bitwarden[1]
+export BW_CLIENTID=$bitwarden[2]
+export BW_CLIENTSECRET=$bitwarden[3]
+export BW_SESSION="$(bw unlock $BW_MASTER 2>/dev/null | grep 'export' | sed -E 's/.*export BW_SESSION="(.*==)"$/\1/')"
+
+# docker PAT
+export DOCKER_PAT="{{ (bitwarden "item" "docker_pat_aar0npham").notes }}"

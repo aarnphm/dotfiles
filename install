@@ -3,19 +3,57 @@
 set -euo pipefail
 trap "exit" INT
 
-CURRENT=$(pwd)
+DOTS="$HOME/dotfiles"
 
-if [[ `command -v git` ]]; then
-    git clone --depth=1 --recursive https://github.com/aarnphm/dotfiles.git $CURRENT/dotfiles && cd $CURRENT/dotfiles
-    git update-index --skip-worktree $(pwd)/exact_private_dot_zsh/dot_zshenv.local.tmpl
-    exec make
-    if [[ "$(uname -s)" == "Linux" ]]; then
-        make full-install
-    else
-        xargs brew install < ${pwd}/Brewfile.local
-    fi
-else
-    echo "git hasn't installed on the system yet. Install git before procedding"
+if [ ! "$(command -v chezmoi)" ]; then
+  bin_dir="$HOME/.local/bin"
+  chezmoi="$bin_dir/chezmoi"
+  if [ "$(command -v curl)" ]; then
+    sh -c "$(curl -fsSL https://git.io/chezmoi)" -- -b "$bin_dir"
+  elif [ "$(command -v wget)" ]; then
+    sh -c "$(wget -qO- https://git.io/chezmoi)" -- -b "$bin_dir"
+  else
+    echo "To install chezmoi, you must have curl or wget installed." >&2
     exit 1
+  fi
+else
+  chezmoi=chezmoi
 fi
 
+if ! builtin command -v git &>/dev/null; then
+    gitcmd="$chezmoi git"
+else
+    gitcmd=git
+fi
+
+# includes v2
+CHEZMOI_VERSIONS="$($chezmoi --version | cut -d " " -f3)"
+
+# handles vm or cloud instances
+OPTS=(--apply --verbose --debug)
+if virt-what &>/dev/null; then
+    OPTS+=(--one-shot)
+fi
+
+echo "chezmoi version: $CHEZMOI_VERSIONS"
+echo "chezmoi opts: ${OPTS[@]}"
+
+if [[ $CHEZMOI_VERSIONS =~ v2* ]]; then
+    \ls -1qA $("$chezmoi" source-path) &>/dev/null || exec "$chezmoi" init ${OPTS[@]} aarnphm
+else
+    # v1 compatible
+    $gitcmd clone --depth=1 --recursive https://github.com/aarnphm/dotfiles.git $DOTS && cd $DOTS
+
+    # POSIX way to get script's dir: https://stackoverflow.com/a/29834779/12156188
+    script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)"
+    # exec: replace current process with chezmoi init
+    exec "$chezmoi" init --apply "--source=$script_dir" -v
+fi
+
+$gitcmd update-index --skip-worktree $($chezmoi source-path)/dot_zsh/dot_zshenv.local.tmpl
+
+if [ "$HOSTNAME" == "archlinux" ]; then
+    builtin command -v make &>/dev/null && exec make full-install
+elif [ "$HOSTNAME" =~ *.local  ]; then
+    exec xargs brew install < ${pwd}/bootstrap/configs/Brewfile.local
+fi

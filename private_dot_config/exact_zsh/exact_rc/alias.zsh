@@ -21,7 +21,12 @@ alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 
 # List all files colorized in long format
-alias la="ls ${LS_OPTS} ${colorflag}"
+if command -v virt-what &>/dev/null; then
+    alias la="\ls --color -rthla --group-directories-first"
+else
+    # la is actually exa
+    alias la="ls ${LS_OPTS} ${colorflag}"
+fi
 # nnn intensifies
 alias N="sudo -E nnn -dDH"
 alias l="n"
@@ -84,7 +89,7 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 #==============================================================#
 
 # move to functions
-alias dotfiles="cd $CHEZMOI_DIR"
+alias dots="cd $CHEZMOI_DIR"
 # mcmaster vpn connect via studentvpn.mcmaster.ca
 if [[ -d $CS_PATH/mcmaster ]]; then
     alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | egrep 'compeng' | head -n1`"
@@ -95,7 +100,7 @@ alias bentodir="cd $CS_PATH/BentoML"
 # zsh config directory
 alias simpledir="cd $XDG_CONFIG_HOME/zsh/rc/simple"
 alias zcdir="cd $CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
-alias zdir="cd $CHEZMOI_DIR/private_dot_zsh"
+alias zdir="cd $CHEZMOI_DIR/dot_zsh"
 # vim config
 alias vdir="cd $CHEZMOI_DIR/private_dot_config/vim"
 alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc"
@@ -206,7 +211,7 @@ done
 #Lock the screen (when going AFK)
 if [[ $SYSTEM == "Darwin" ]]; then
     alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-else
+elif [[ -f /etc/arch-release ]]; then
     if xset q | grep "DPMS is Enabled" &>/dev/null; then
         alias afk="xset s activate"
     else

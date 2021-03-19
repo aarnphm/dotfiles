@@ -37,13 +37,6 @@ awful.screen.connect_for_each_screen(function(s)
         },
         widget_template = {
             {
-                -- Standard icon (from beautiful.icon_theme)
-                -- {
-                --     awful.widget.clienticon,
-                --     margins = 5,
-                --     widget  = wibox.container.margin
-                -- },
-                -- Text icon
                 {
                     id     = 'text_icon',
                     font   = 'icomoon 25',
@@ -161,7 +154,7 @@ end
 
 local window_search = function()
     window_switcher_hide()
-    awful.spawn.with_shell("rofi_awesome_window")
+    awful.spawn.with_shell("rofi-awesome-window")
 end
 
 local unminimize = function()

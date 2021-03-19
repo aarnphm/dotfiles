@@ -1,0 +1,184 @@
+window:
+  # Window dimensions (changes require restart)
+  #
+  # Specified in number of columns/lines, not pixels.
+  # If both are `0`, this setting is ignored.
+  dimensions:
+   columns: 102
+   lines: 45
+
+  # Window position (changes require restart)
+  #
+  # Specified in number of pixels.
+  # If the position is not set, the window manager will handle the placement.
+  position:
+    x: 0
+    y: 0
+
+  # Window padding (changes require restart)
+  #
+  # Blank space added around the window in pixels. This padding is scaled
+  # by DPI and the specified value is always added at both opposing sides.
+  padding:
+    x: 0
+    y: 0
+
+  # Spread additional padding evenly around the terminal content.
+  dynamic_padding: false
+
+  # Window decorations
+  #
+  # Values for `decorations`:
+  #     - full: Borders and title bar
+  #     - none: Neither borders nor title bar
+  #
+  # Values for `decorations` (macOS only):
+  #     - transparent: Title bar, transparent background and title bar buttons
+  #     - buttonless: Title bar, transparent background, but no title bar buttons
+  #decorations: full
+
+  # Startup Mode (changes require restart)
+  #
+  # Values for `startup_mode`:
+  #   - Windowed
+  #   - Maximized
+  #   - Fullscreen
+  #
+  # Values for `startup_mode` (macOS only):
+  #   - SimpleFullscreen
+  #startup_mode: Windowed
+
+  # GTK theme variant (Linux/BSD only)
+  #
+  # Override the variant of the GTK theme. Commonly supported values are `dark` and `light`.
+  # Set this to `None` to use the default theme variant.
+  gtk_theme_variant: dark
+
+scrolling:
+  # Maximum number of lines in the scrollback buffer.
+  # Specifying '0' will disable scrolling.
+  history: 10000
+
+  # Scrolling distance multiplier.
+  multiplier: 3
+
+# Font configuration (changes require restart)
+font:
+  # The normal (roman) font face to use.
+  # Style can be specified to pick a specific face.
+  normal:
+    # family: "SFMono Nerd Font"
+    family: "InconsolataGo Nerd Font"
+    # family: "Fira Code Nerd Font"
+    # style: Mono
+
+  # The bold font face
+  bold:
+    # family: "SFMono Nerd Font"
+    family: "InconsolataGo Nerd Font"
+    # family: "Fira Code Nerd Font"
+
+  # The italic font face
+  italic:
+    # family: "SFMono Nerd Font"
+    family: "InconsolataGo Nerd Font"
+    # family: "Fira Code Nerd Font"
+    # style: "Medium Italic"
+
+  # Point size of the font
+  # size: 10
+  size: 13
+
+  # Offset is the extra space around each character. offset.y can be thought of
+  # as modifying the linespacing, and offset.x as modifying the letter spacing.
+  offset:
+    x: 0
+    y: 0
+
+  # Glyph offset determines the locations of the glyphs within their cells with
+  # the default being at the bottom. Increase the x offset to move the glyph to
+  # the right, increase the y offset to move the glyph upward.
+  glyph_offset:
+    x: 0
+    y: 0
+
+  # Thin stroke font rendering (macOS only)
+  #
+  # Thin strokes are suitable for retina displays, but for non-retina you
+  # probably want this set to false.
+  #
+  # macOS >= 10.14.x:
+  #
+  # If the font quality on non-retina display looks bad then set
+  # `use_thin_strokes` to `true` and enable font smoothing by running the
+  # following command:
+  #   `defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO`
+  #
+  # This is a global setting and will require a log out or restart to take
+  # effect.
+  # use_thin_strokes: true
+
+# When true, bold text is drawn using the bright variant of colors.
+draw_bold_text_with_bright_colors: false
+
+colors:
+  bright:
+    black: '#505050'
+    blue: '#6c99bb'
+    cyan: '#7dd6cf'
+    green: '#7e8e50'
+    magenta: '#9f4e85'
+    red: '#ac4142'
+    white: '#f5f5f5'
+    yellow: '#e5b567'
+  cursor:
+    cursor: '#d0d0d0'
+    text: '#151515'
+  normal:
+    black: '#151515'
+    blue: '#6c99bb'
+    cyan: '#7dd6cf'
+    green: '#7e8e50'
+    magenta: '#9f4e85'
+    red: '#ac4142'
+    white: '#d0d0d0'
+    yellow: '#e5b567'
+  primary:
+    background: '#212121'
+    foreground: '#d0d0d0'
+  selection:
+    background: '#303030'
+    text: '#d0d0d0'
+
+# Default
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x262626'
+#     foreground: '0xbcbcbc'
+
+#   # Normal colors
+#   normal:
+#     black:   '0x1c1c1c'
+#     red:     '0xaf5f5f'
+#     green:   '0x5f875f'
+#     yellow:  '0x87875f'
+#     blue:    '0x5f87af'
+#     magenta: '0x5f5f87'
+#     cyan:    '0x5f8787'
+#     white:   '0x6c6c6c'
+
+#   # Bright colors
+#   bright:
+#     black:   '0x444444'
+#     red:     '0xff8700'
+#     green:   '0x87af87'
+#     yellow:  '0xffffaf'
+#     blue:    '0x8fafd7'
+#     magenta: '0x8787af'
+#     cyan:    '0x5fafaf'
+#     white:   '0xffffff'
+
+# Live config reload (changes require restart)
+live_config_reload: true
+

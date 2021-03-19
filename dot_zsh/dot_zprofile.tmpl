@@ -1,0 +1,162 @@
+#!/usr/bin/env zsh
+
+###########################################################################
+#                    source some local env                                #
+###########################################################################
+
+[[ -f $ZDOTDIR/.zshenv.local ]] && source $ZDOTDIR/.zshenv.local
+[[ -f $ZHOMEDIR/.zshenv.local ]] && source $ZHOMEDIR/.zshenv.local
+
+###########################################################################
+#                            Chezmoi                                      #
+###########################################################################
+
+export CHEZMOI_BIN="$(which chezmoi)"
+export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
+
+###########################################################################
+#                            XDG - ZSH                                    #
+###########################################################################
+
+# XDG  config
+export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-{{ .chezmoi.homeDir }}/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-{{ .chezmoi.homeDir }}/.local/share}"
+export XDG_CONFIG_DOCUMENTS="{{ .chezmoi.homeDir }}/documents"
+export XDG_BIN_HOME="{{ .chezmoi.homeDir }}/.local/bin"
+
+# ZSH defaults
+export ZDOTDIR="${ZDOTDIR:-{{ .chezmoi.homeDir }}/.zsh}"
+export ZHOMEDIR=$XDG_CONFIG_HOME/zsh
+export ZRCDIR=$ZHOMEDIR/rc
+export ZDATADIR=$XDG_DATA_HOME/zsh
+
+{{ if eq .hostname "archlinux" }}
+# Probably one of the most important directory
+export CS_PATH="${XDG_CONFIG_DOCUMENTS}/cs"
+export ODOO_PATH="${CS_PATH}/odoo"
+{{ end }}
+export CITY="{{ .city }}"
+
+###########################################################################
+#                            applications default                         #
+###########################################################################
+
+# Don’t clear the screen after quitting a manual page.
+export MANPAGER='less -X';
+export PAGER=less
+# Highlight section titles in manual pages.
+export LESS_TERMCAP_md="${yellow}";
+export LESS='--no-init -R --shift 4 --LONG-PROMPT --quit-if-one-screen'
+{{- if `builtin command -v nvim` }}
+export EDITOR=nvim
+{{- else }}
+export EDITOR=vim
+{{- end }}
+export VISUAL=$EDITOR
+
+{{if `builtin command -v npm` }}
+# npm config
+export NPM_PACKAGES="{{ .chezmoi.homeDir }}/.npm/npm-packages"
+{{ end }}
+{{- if `builtin command -v go` }}
+# defined go path
+export GOPATH="{{ .chezmoi.homeDir }}/go"
+export GOPROXY="https://proxy.golang.org/,direct"
+{{- end }}
+{{- if `builtin command -v java` }}
+{{-   if eq .chezmoi.os "darwin" }}
+export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home:$JAVA_HOME"
+{{-   end }}
+{{- end }}
+{{- if `builtin command -v wine` }}
+# wine prefix
+export WINEPREFIX="{{ .chezmoi.homeDir }}/.wine32"
+export WINEARCH=win32
+{{- end }}
+{{- if `builtin command -v firefox` }}
+export BROWSER=/usr/bin/firefox
+{{ end }}
+{{- if `builtin command -v pyenv` }}
+export PYENV_SHELL=zsh
+{{ end }}
+export LS_COLORS="${LS_COLORS}:ow=01;33:no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:"
+export GOOGLE_APPLICATION_CREDENTIALS="/mnt/Centralized/documents/txt/karlpol-backend-a8faccb72676.json"
+
+{{ if `command -v nnn` }}
+export NNN_OPENER=nuke
+export NNN_COLORS="2134"
+export NNN_OPTS="EDUHrxdeat"
+export NNN_TRASH=trash-cli
+export NNN_SEL='/tmp/.sel'
+export NNN_FIFO=/tmp/nnn.fifo
+export NNN_ARCHIVE="\\.(7z|bz2|gz|tar|tgz|zip)$"
+export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
+export NNN_PLUG='f:finder;o:fzopen;m:mocplay;d:diffs;t:nmount;p:preview-tui'
+{{ end }}
+
+###########################################################################
+#                            PATH                                         #
+###########################################################################
+
+typeset -U path PATH manpath sudo_path cdpath fpath
+typeset -xT SUDO_PATH sudo_path
+
+path=(
+    {{ .chezmoi.homeDir }}/.local/bin(N-/)
+    {{- if `builtin command -v rustc` }}
+    {{ .chezmoi.homeDir }}/.cargo/bin(N-/)
+    {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin(N-/)
+    {{- end }}
+    {{- if `builtin command -v pyenv` }}
+    {{ .chezmoi.homeDir }}/.pyenv/shims(N-/)
+    {{ .chezmoi.homeDir }}/.pyenv/bin(N-/)
+    {{- end }}
+    {{- if eq .chezmoi.os "darwin" }}
+    /usr/local/bin(N-/)
+    $JAVA_HOME/bin(N-/)
+    {{- end }}
+    {{- if `builtin command -v npm` }}
+    $NPM_PACKAGES/bin(N-/)
+    {{- end }}
+    {{- if `builtin command -v yarn` }}
+    {{ .chezmoi.homeDir }}/.yarn/bin(N-/)
+    $XDG_CONFIG_HOME/yarn/global/node_modules/.bin(N-/)
+    {{- end }}
+    {{- if `builtin command -v go` }}
+    $GOPATH/bin(N-/)
+    $GOPATH/src(N-/)
+    {{- end }}
+    {{- if `builtin command -v gcloud` }}
+    {{.chezmoi.homeDir }}/google-cloud-sdk/bin(N-/)
+    {{- end }}
+    {{- if `builtin command -v nnn` }}
+    {{ .chezmoi.homeDir }}/.config/nnn/plugins(N-/)
+    {{- end }}
+    $path
+)
+
+fpath=(
+    $ZHOMEDIR/rc/simple
+    {{ .chezmoi.homeDir }}/.local/bin(N-/)
+    $ZHOMEDIR/completion(N-/)
+    $ZHOMEDIR/completion.local(N-/)
+    /usr/local/share/zsh/site-functions
+    /usr/share/zsh/site-functions
+    $fpath
+)
+
+###########################################################################
+#                             OPTS                                        #
+###########################################################################
+
+export TMUX_OPTS="-2uf $XDG_CONFIG_HOME/tmux/tmux.conf"
+
+export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
+export CHEZMOI_OPTS="--verbose --debug --color on"
+
+{{- if .personal }}
+export LS_OPTS="-laFh --group-directories-first --color=always"
+# odoo
+export ODOO_OPTS="--addons-path=$XDG_CONFIG_DOCUMENTS/cs/odoo/addons --dev=reload,all,pdb"
+{{- end }}

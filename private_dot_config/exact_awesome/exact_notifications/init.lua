@@ -8,18 +8,17 @@ local menubar   = require("menubar")
 
 local notifications = {}
 
-naughty.config.defaults.ontop        = true
-naughty.config.defaults.screen       = awful.screen.focused()
-naughty.config.defaults.timeout      = 5
-naughty.config.defaults.border_color = x.foreground
-naughty.config.padding               = dpi(10)
-naughty.config.spacing               = dpi(5)
-naughty.config.icon_dirs             = {"/usr/share/icons/Papirus-Dark/24x24/apps/", "/usr/share/pixmaps/"}
-naughty.config.icon_formats          = {"png", "svg"}
+naughty.config.spacing = dpi(5)
+naughty.config.padding = dpi(10)
+naughty.config.defaults.timeout = 3
+naughty.config.defaults.ontop = true
+naughty.config.defaults.screen = awful.screen.focused()
+naughty.config.icon_formats = {"png", "svg"}
+naughty.config.icon_dirs = {"/usr/share/icons/Papirus-Dark/24x24/apps/", "/usr/share/pixmaps/"}
 
 -- Timeouts
-naughty.config.presets.low.timeout      = 3
-naughty.config.presets.critical.timeout = 0
+naughty.config.presets.low.timeout = 5
+naughty.config.presets.critical.timeout = 5
 
 naughty.config.presets.normal = {
     font = beautiful.font,
@@ -48,7 +47,7 @@ ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
     ruled.notification.append_rule {
         rule = {},
-        properties = {screen = awful.screen.preferred, implicit_timeout=5}
+        properties = {screen = awful.screen.preferred, implicit_timeout=naughty.config.defaults.timeout}
     }
 end)
 
@@ -59,14 +58,12 @@ naughty.connect_signal("request::display_error", function(message, startup)
         urgency = "critical",
         title = "Oops, an error happened" .. (startup and " during startup!" or "!"),
         message = message,
-        app_name = 'System Notification',
         icon = beautiful.awesome_icon
     }
 end)
 
 -- XDG icon lookup
-naughty.connect_signal(
-    'request::icon',
+naughty.connect_signal('request::icon',
     function(n, context, hints)
         if context ~= 'app_icon' then return end
 
@@ -152,8 +149,9 @@ naughty.connect_signal("request::display", function(n)
                                     nil,
                                     {
                                         {
+                                            fps=60,
+                                            speed = 80,
                                             step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
-                                            speed = 50,
                                             {
                                                 markup = "<span weight='bold'>" .. n.title .. "</span>",
                                                 font = beautiful.font,
@@ -164,8 +162,9 @@ naughty.connect_signal("request::display", function(n)
                                             widget = wibox.container.scroll.horizontal
                                         },
                                         {
-                                            step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
-                                            speed = 100,
+                                            fps=60,
+                                            speed = 110,
+                                            step_function = wibox.container.scroll.step_functions.linear_increase,
                                             {
                                                 markup = n.message,
                                                 font = beautiful.font,
@@ -175,13 +174,13 @@ naughty.connect_signal("request::display", function(n)
                                             forced_width = beautiful.notification_width or dpi(220),
                                             widget = wibox.container.scroll.horizontal
                                         },
-                                        {
-                                            actions,
-                                            visible = n.actions and #n.actions > 0,
-                                            layout = wibox.layout.fixed.vertical,
-                                            forced_width = dpi(220)
-                                        },
-                                        -- spacing = dpi(3),
+                                        -- {
+                                        --     actions,
+                                        --     visible = n.actions and #n.actions > 0,
+                                        --     layout = wibox.layout.fixed.vertical,
+                                        --     forced_width = dpi(220)
+                                        -- },
+                                        spacing = dpi(3),
                                         layout = wibox.layout.fixed.vertical
                                     },
                                     nil,
@@ -216,7 +215,6 @@ function notifications.notify_dwim(args, notification)
     if n and not n._private.is_destroyed and not n.is_expired then
         notification.title = args.title or notification.title
         notification.message = args.message or notification.message
-        -- notification.text = args.text or notification.text
         notification.icon = args.icon or notification.icon
         notification.timeout = args.timeout or notification.timeout
     else

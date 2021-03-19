@@ -1,0 +1,580 @@
+set runtimepath+=~/.config/vim/
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-plug
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" use vim-plug becauseof its minimalistic
+"¯\_(ツ)_/¯
+if empty(glob('~/.config/vim/autoload/plug.vim'))
+    silent call system('curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+    execute 'source  ~/.config/vim/autoload/plug.vim'
+    augroup plugsetup
+        "
+        au!
+        autocmd VimEnter * PlugInstall
+    augroup end
+endif
+
+" define vim-plug here
+call plug#begin('~/.config/vim/plugins')
+
+" Color scheme
+Plug 'sainnhe/sonokai'
+Plug 'ayu-theme/ayu-vim'
+Plug 'tlhr/anderson.vim'
+Plug 'romainl/Apprentice'
+Plug 'joshdick/onedark.vim'
+Plug 'AlessandroYorba/Alduin'
+Plug 'rakr/vim-two-firewatch'
+Plug 'danilo-augusto/vim-afterglow'
+
+{{ if not .transient }}
+" fzf with rg
+Plug 'rking/ag.vim'
+Plug 'junegunn/fzf.vim'
+Plug 'Rykka/InstantRst'
+" vscode like language server
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+
+" language packs
+Plug 'sheerun/vim-polyglot'
+" language syntax
+Plug 'lervag/vimtex'
+Plug 'mrk21/yaml-vim'
+Plug 'jparise/vim-graphql'
+Plug 'wakatime/vim-wakatime'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'plasticboy/vim-markdown'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'vim-python/python-syntax'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'leafgarland/typescript-vim'
+Plug 'andrewstuart/vim-kubernetes'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'styled-components/vim-styled-components'
+{{ end }}
+
+" UI related
+Plug 'preservim/tagbar'
+Plug 'SirVer/ultisnips'
+Plug 'godlygeek/tabular'
+Plug 'preservim/nerdtree'
+Plug 'jiangmiao/auto-pairs'
+Plug 'lambdalisue/suda.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'thaerkh/vim-indentguides'
+
+" tpope plugins =)
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-apathy'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-commentary'
+
+call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => autocmd glore
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+au! BufNewFile,BufRead *.prisma setfiletype graphql
+au! BufNewFile,BufRead .chezmoi* setfiletype gohtmltmpl
+au! BufNewFile,BufRead /*.sh.tmpl setfiletype zsh 
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType md setlocal conceallevel=0
+autocmd FileType vim setlocal foldmethod=marker
+autocmd FileType python setlocal foldmethod=indent
+autocmd FileType java setlocal foldmethod=syntax
+autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+au BufNewFile,BufRead /*.rasi setf css
+
+" setup autofold
+autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v:val)'))
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => init
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:is_unix=has('unix')
+let g:is_gui=has('gui_running')
+let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
+let g:has_job = has('job')
+let g:has_term = has('terminal')
+if has('vim')
+    set term=xterm-256color
+endif
+
+" Setup
+if g:is_termguicolors
+    set termguicolors
+endif
+set background=dark
+let ayucolor="mirage"
+let g:two_firewatch_italics=1
+colorscheme afterglow
+
+" Minimal
+filetype plugin indent on
+syntax enable
+set number
+set autoindent
+set relativenumber
+set backspace=indent,eol,start
+set complete-=i
+set smarttab
+
+set nrformats-=octal
+
+if !has('nvim') && &ttimeoutlen == -1
+    set ttimeout
+    set ttimeoutlen=100
+endif
+
+set incsearch
+set noshowcmd
+set notitle
+set nowrap
+set showmatch
+set showmode
+set hidden
+set clipboard=unnamed,unnamedplus
+set mouse=a " i for ssh session
+set conceallevel=0
+set foldmethod=manual "indent-syntax-manual
+set foldlevel=1
+set wildmenu
+set wildmode=longest:full,full
+set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
+set wildcharm=<Tab>
+set shortmess+=Ic
+set pastetoggle=<F2>
+
+" Performance tuning
+set lazyredraw
+set nocursorline
+set hlsearch
+set ignorecase
+set smartcase
+
+" Misc
+set nobackup
+set noswapfile
+set nowritebackup
+set undofile
+set undodir=~/.config/vim/undo
+set undolevels=9999
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+if &encoding ==# 'latin1' && has('gui_running')
+    set encoding=utf-8
+endif
+
+exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+set list
+" if &listchars ==# 'eol:$'
+"   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+" endif
+
+if v:version > 703 || v:version == 703 && has("patch541")
+    set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+if has('path_extra')
+    setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
+    set shell=/usr/bin/env\ bash
+endif
+
+set autoread
+
+if &history < 1000
+    set history=1000
+endif
+if &tabpagemax < 50
+    set tabpagemax=50
+endif
+if !empty(&viminfo)
+    set viminfo^=!
+endif
+set sessionoptions-=options
+set viewoptions-=options
+
+" UI setting
+set laststatus=0
+set ruler
+set rulerformat=%34(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %P\ ›\ %l:%L%)
+
+set showtabline=1
+hi TabLine      guifg=#1a1a1a guibg=#d6d6d6
+hi TabLineFill  guifg=#1a1a1a guibg=#d6d6d6 gui=reverse
+hi TabLineSel   guifg=#1a1a1a guibg=#d6d6d6 gui=bold
+function! MyTabLine()
+    let s = ''
+    for i in range(tabpagenr('$'))
+        let tabnr = i + 1 " range() starts at 0
+        let winnr = tabpagewinnr(tabnr)
+        let buflist = tabpagebuflist(tabnr)
+        let bufnr = buflist[winnr - 1]
+        let bufname = fnamemodify(bufname(bufnr), ':t')
+
+        let s .= '%' . tabnr . 'T'
+        let s .= (tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+        let s .= ' ' . tabnr
+
+        let n = tabpagewinnr(tabnr,'$')
+        if n > 1 | let s .= ':' . n | endif
+
+        let s .= empty(bufname) ? ' [No Name] ' : ' [' . bufname . '] '
+
+        let bufmodified = getbufvar(bufnr, "&mod")
+        if bufmodified | let s .= '+ ' | endif
+    endfor
+    let s .= '%#TabLineFill#'
+    return s
+endfunction
+set tabline=%!MyTabLine()
+
+autocmd! BufWritePost $CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl :!source $ZDOTDIR/.zshenv.local && chezmoi apply
+command! Ev :e $CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl
+command! Ca :!source $ZDOTDIR/.zshenv.local && chezmoi apply
+
+" insert mode mapping to trigger the :Tabular command when you type the character that you want to align.
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+    let p = '^\s*|\s.*\s|\s*$'
+    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+        Tabularize/|/l1
+        normal! 0
+        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+    endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Mapping
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Mapping
+nnoremap ; :
+nnoremap : ;
+imap jj <Esc>
+let mapleader=','
+" We don't use arrow key in vim
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+" manual folding
+inoremap <F5> <C-O>za
+nnoremap <F5> za
+onoremap <F5> <C-C>za
+vnoremap <F5> zf
+" quick resize for split
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+nnoremap <leader>S :SudaWrite<CR>
+nnoremap \\ :let @/=''<CR>:noh<CR>
+nnoremap <silent> <leader>p :%s///g<CR>
+nnoremap <leader># :g/\v^(#\|$)/d_<CR>
+nnoremap <leader>b :ls<CR>:buffer<space>
+nnoremap <leader>d :w !diff % -<CR>
+nnoremap <leader>s :so $MYVIMRC<CR>
+nnoremap <silent> <leader>i gg=G``<CR>
+nnoremap <leader>l :set list! list?<CR>
+nnoremap <silent> <leader>t :%s/\s\+$//e<CR>
+nnoremap <leader>w :set wrap! wrap?<CR>
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+" Smart way to move between windows
+" map <C-j> <C-W>j
+" map <C-k> <C-W>k
+" map <C-h> <C-W>h
+" map <C-l> <C-W>l
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
+
+" remove Ex mode
+map Q <Nop>
+" added yank to clipboard shortcut
+noremap <M-Y> "*y
+noremap <M-P> "*p
+noremap <M-y> "+y
+noremap <M-p> "+p
+" map <M-r> for PlugInstall and <M-d> for PlugClean
+nnoremap <leader>C :PlugClean<cr>
+nnoremap <leader>R :PlugInstall<cr>
+" use this when lightline is not in use for minimal
+nnoremap <F2> :set invpaste paste?<CR>
+imap <F2><C-O>:set invpaste paste?<CR>
+nnoremap <F3> :TagbarToggle<CR>
+if exists(":Tabularize")
+    nmap <leader>a= :Tabularize /=<CR>
+    vmap <leader>a= :Tabularize /=<CR>
+    nmap <leader>a: :Tabularize /:\zs<CR>
+    vmap <leader>a: :Tabularize /:\zs<CR>
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"indentguides and more
+let g:indentguides_spacechar = '┆'
+let g:indentguides_tabchar = '|'
+let g:indentguides_ignorelist = ['text']
+let g:suda_smart_edit = 1
+let g:suda#prompt = 'Mot de passe: '
+
+{{ if not .transient }}
+let g:UltiSnipsExpandTrigger='<HOME>'
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetDirectories=[$CHEZMOI_DIR . "/private_dot_config/vim/exact_UltiSnips"]
+
+" Write all buffers before navigating from Vim to tmux pane
+let g:tmux_navigator_save_on_switch = 2
+" Disable tmux navigator when zooming the Vim pane
+let g:tmux_navigator_disable_when_zoomed = 1
+
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+" let g:tex_conceal='abdmg'
+
+" obsession
+let g:session_dir='~/.config/vim/sessions'
+" Remaps for Sessions
+exec 'nnoremap <Leader>ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+nnoremap <Leader>sp :Obsession<CR>
+
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+let g:instant_rst_port=5686
+" syntax settings
+let g:python_highlight_all = 1
+
+" vim-go
+let g:go_fmt_command = "goimports"
+let g:go_info_mode='gopls'
+let g:go_auto_type_info = 1
+let g:go_fmt_autosave = 1
+let g:go_def_mapping_enabled = 0
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fzf
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" This is the default extra key bindings
+let g:fzf_tags_command = 'ctags -R'
+" imap <c-x><c-f> <plug>(fzf-complete-path)
+
+" An action can be a reference to a function that processes selected lines
+function! s:build_quickfix_list(lines)
+    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+    copen
+    cc
+endfunction
+
+let g:fzf_action = {
+            \ 'ctrl-q': function('s:build_quickfix_list'),
+            \ 'ctrl-t': 'tab split',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '63%' }
+
+" You can set up fzf window using a Vim command (Neovim or latest Vim 8 required)
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': '-tabnew' }
+" let g:fzf_layout = { 'window': '10new' }
+
+" Customize fzf colors to match your color scheme
+" - fzf#wrap translates this to a set of `--color` options
+let g:fzf_colors =
+            \ { 'fg'    : ['fg', 'Normal'],
+            \ 'bg'      : ['bg', 'Normal'],
+            \ 'hl'      : ['fg', 'Comment'],
+            \ 'fg+'     : ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+            \ 'bg+'     : ['bg', 'CursorLine', 'CursorColumn'],
+            \ 'hl+'     : ['fg', 'Statement'],
+            \ 'info'    : ['fg', 'PreProc'],
+            \ 'border'  : ['fg', 'Ignore'],
+            \ 'prompt'  : ['fg', 'Conditional'],
+            \ 'pointer' : ['fg', 'Exception'],
+            \ 'marker'  : ['fg', 'Keyword'],
+            \ 'spinner' : ['fg', 'Label'],
+            \ 'header'  : ['fg', 'Comment'] }
+
+" Enable per-command history
+" History files will be stored in the specified directory
+" When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+" 'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+nnoremap <C-f> :Files <CR>
+nnoremap <C-g> :Lines <CR>
+nnoremap <F6> :Buffers <CR>
+nnoremap <F7> :Snippets <CR>
+nnoremap <F8> :Colors <CR>
+nnoremap <F9> :Maps <CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" coc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:coc_global_extensions = ['coc-texlab', 'coc-lua', 'coc-prettier', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+    let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+    let g:coc_global_extensions += ['coc-eslint']
+endif
+
+if isdirectory("$HOME/R")
+    let g:coc_global_extensions += ['coc-r-lsp']
+endif
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+
+inoremap <silent><expr> <Tab>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<Tab>" :
+            \ coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+            \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call CocAction('doHover')<CR>
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+" perform code action
+nmap <leader>. <Plug>(coc-codeaction)
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>d  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+{{ end }}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NerdTree
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let NERDTreeShowHidden = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDTreeRespectWildIgnore=1
+let g:NERDTreeWinPos = "left"
+let NERDTreeIgnore = ['node_modules','\.pyc$', '__pycache__','\.class$','.git']
+let g:NERDTreeWinSize=35
+nnoremap <F4> :NERDTreeToggle<cr>
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" Start NERDTree when Vim starts with a directory argument.
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) || &buftype == 'quickfix' | q | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 | let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" gitgutter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" I - AM - SPEEEEEEEEED
+let g:gitgutter_enabled=1
+let g:gitgutter_realtime = 1
+let g:gitgutter_eager = 1
+let g:gitgutter_max_signs = 1500
+let g:gitgutter_diff_args = '-w'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! CmdLine(str)
+    call feedkeys(":" . a:str)
+endfunction
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+" vim:set ft=vim et sw=2:

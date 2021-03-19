@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# git config that we can all agree about
+git config --global include.path ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig
+git config --global core.excludesFile ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitignore
+
+{{ if .personal }}
+# bitwarden cli yarn and typescript
+if builtin command -v npm &>/dev/null; then
+    packages=(typescript ts-node react @bitwarden/cli)
+    npm list -g yarn &>/dev/null || npm install -g yarn
+    yarn global add ${packages[@]}
+fi
+
+# branch main
+if ! builtin command -v docker-compose &>/dev/null; then
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+fi
+
+# nnn plugins install
+if  ! [ -f $XDG_CONFIG_HOME/nnn/plugins/getplugs ]; then
+    curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh;
+    git clone https://github.com/sebastiencs/icons-in-terminal.git && cd icons-in-terminal && ./install.sh
+fi
+
+{{ if eq .chezmoi.os "linux" }}
+# install lotion
+if ! builtin command -v lotion &>/dev/null; then
+    curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
+    sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
+fi
+{{ end }}
+
+# gcp
+if [[ ! -d $HOME/google-cloud-sdk ]]; then
+    cd $HOME && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-326.0.0-linux-x86_64.tar.gz
+    tar xvf google-cloud-sdk-326.0.0-linux-x86_64.tar.gz $HOME/google-cloud-sdk && rm google-cloud-sdk-326.0.0-linux-x86_64.tar.gz
+    $HOME/google-cloud-sdk/install.sh --quiet --path-update false --command-completion false --usage-reporting false
+    $HOME/google-cloud-sdk/bin/gcloud init
+fi;
+{{ end }}

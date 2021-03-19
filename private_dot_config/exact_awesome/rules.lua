@@ -19,11 +19,11 @@ ruled.client.connect_signal("request::rules", function()
         properties = {
             border_width     = beautiful.border_width,
             border_color     = beautiful.border_normal,
-            focus            = awful.client.focus,
-            raise            = false,
-            size_hints_honor = false,
-            maximized        = false,
-            placement        = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
+            focus            = awful.client.focus.filter,
+            raise            = true,
+            size_hints_honor = true,
+            honor_workarea   = true,
+            placement        = awful.placement.no_overlap + awful.placement.no_offscreen
         }
     }
 
@@ -44,10 +44,10 @@ ruled.client.connect_signal("request::rules", function()
         id         = "floating",
         rule_any   = {
             class = {"Nm-connection-editor", "Cisco AnyConnect Secure Mobility Client",
-                     "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen",
-                     "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", 
-                     "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer",
-                     "Termite", "URxvt", "XTerm"},
+                "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen",
+                "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", 
+                "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer",
+            "Termite", "URxvt", "XTerm"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"Popup"},
             type  = {"dialog"}
@@ -72,9 +72,16 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "terminal",
-        rule_any = {class = {"Alacritty", "Kitty", "St", "UXTerm", "XTerm"}},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[1], switchtotag = true}
+        rule_any = {class = {"Alacritty", "St", "UXTerm", "XTerm"}},
+        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
+
+    ruled.client.append_rule {
+        id = "kitty",
+        rule = {class = "Kitty"},
+        properties = {ontop=true, screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
+    }
+
     ruled.client.append_rule {
         id = "termite",
         rule = {class = "Termite"},
@@ -83,8 +90,14 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "meeting",
-        rule_any = {class={"Zoom","Microsoft Teams - Preview", "Whatsapp-for-linux"}, instance = {"discord", "slack", "skype","caprine"}},
+        rule_any = {class={"Whatsapp-for-linux"}, instance = {"discord", "slack", "skype","caprine"}},
         properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
+    }
+
+    ruled.client.append_rule {
+        id = "zooms",
+        rule_any = {class={"Zoom", "Microsoft Teams - Preview"}},
+        properties = {screen = screen.count()>1 and 2 or 1, tags = defaults.tags[1].names[5], switchtotag=true}
     }
 
     ruled.client.append_rule{

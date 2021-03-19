@@ -1,6 +1,6 @@
 [user]
     email = aaronpham0103@gmail.com
-    name = {{ .chezmoi.group }}
+    name = Aaron Pham
 
 [submodule]
     recurse = true
@@ -74,6 +74,9 @@
 
     # Interactive rebase with the given number of latest commits.
     reb = "!r() { git rebase -i HEAD~$1; }; r"
+    ra = rebase --abort
+	rc = rebase --continue
+	ri = rebase --interactive
 
     # Remove the old tag with this name and tag the latest commit with it.
     retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
@@ -121,9 +124,21 @@
     # Speed up commands involving untracked files such as `git status`.
     # https://git-scm.com/docs/git-update-index#_untracked_cache
     untrackedCache = true
+    editor = vim
 
 [color]
     ui = auto
+
+[pager]
+	branch = false
+	grep = false
+
+[push]
+	default = current
+
+[rebase]
+	autosquash = true
+	autostash = true
 
 [init]
     defaultBranch = main

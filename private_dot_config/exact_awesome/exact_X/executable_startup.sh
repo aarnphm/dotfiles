@@ -34,6 +34,7 @@ run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
 run kitty tmux
+run skypeforlinux
 run nm-applet
 run blueman-applet
 run discord
