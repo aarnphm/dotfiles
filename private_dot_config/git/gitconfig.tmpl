@@ -5,13 +5,13 @@
 [submodule]
     recurse = true
 
-{{ if "$(git lfs &> /dev/null)" }}
+{{- if "$(git lfs &>/dev/null)" }}
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
-{{ end }}
+{{- end }}
 
 [alias]
     # quick commit
@@ -19,6 +19,7 @@
 
     # update current index with keeping the files minimal
     skip = update-index --skip-worktree
+    noskip = update-index --no-skip-worktree
 
     # get branch
     br = branch -vv
@@ -124,7 +125,11 @@
     # Speed up commands involving untracked files such as `git status`.
     # https://git-scm.com/docs/git-update-index#_untracked_cache
     untrackedCache = true
+    {{- if eq (env "EDITOR") "nvim" }}
+    editor = nvim
+    {{- else }}
     editor = vim
+    {{- end }}
 
 [color]
     ui = auto

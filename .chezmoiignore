@@ -12,7 +12,7 @@ Dockerfile
 
 {{ if .transient }}
 .local/share
-.local/bin
+.local/bin/*
 !.local/bin/ssh-add
 .ssh/id_ed25519
 .ssh/id_rsa
