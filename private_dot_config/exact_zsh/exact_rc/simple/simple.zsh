@@ -115,7 +115,7 @@ prompt_simple_async_git_fetch() {
 
     # Guard against all forms of password prompts. By setting the shell into
     # MONITOR mode we can notice when a child process prompts for user input
-    # because it will be suspended. Since we are inside an async worker, we
+    # because it will be suspended. Since we are inside an async workr, we
     # have no way of transmitting the password and the only option is to
     # kill it. If we don\'t do it this way, the process will corrupt with the
     # async worker.

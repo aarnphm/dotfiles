@@ -90,12 +90,13 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
 # move to functions
 alias dots="cd $CHEZMOI_DIR"
+alias cs="cd $CS_PATH"
 # mcmaster vpn connect via studentvpn.mcmaster.ca
 if [[ -d $CS_PATH/mcmaster ]]; then
     alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | egrep 'compeng' | head -n1`"
 fi
+alias chezmoidir="cd $CS_PATH/chezmoi"
 # bentoml
-alias cs="cd $CS_PATH"
 alias bentodir="cd $CS_PATH/BentoML"
 # zsh config directory
 alias simpledir="cd $XDG_CONFIG_HOME/zsh/rc/simple"

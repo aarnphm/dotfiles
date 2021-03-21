@@ -232,7 +232,7 @@ theme.useless_gap = dpi(0)
 -- Wibar
 -- ===================================================================
 
-theme.wibar_height  = screen.count()>1 and dpi(40) or dpi(30)
+theme.wibar_height  = dpi(40)
 theme.wibar_margin  = dpi(15)
 theme.wibar_spacing = dpi(15)
 theme.wibar_bg      = x.background
