@@ -1,6 +1,5 @@
-{{- $virt := `"$(command -v virt-what &>/dev/null || print 1)"` }}
-{{- $zprof := env "ZSHRC_PROFILE" }}
-{{- $tshell := env "TIMESHELL" }}
+{{- $zprof := env "ZSHRC_PROFILE" -}}
+{{- $tshell := env "TIMESHELL" -}}
 #!/usr/bin/env zsh
 
 {{- if .personal }}
@@ -44,21 +43,12 @@ source "$ZRCDIR/options.zsh"
 #--------------------------------------------------------------#
 source "$ZRCDIR/completion.zsh"
 
-{{ if ne $virt "1" }}
+
 #--------------------------------------------------------------#
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
 autoload -U promptinit && promptinit
 prompt simple
-{{ else }}
-source "$ZRCDIR/prompt.zsh"
-{{ end }}
-
-{{- if ne $virt "1" }}
-#--------------------------------------------------------------#
-##          Function                                          ##
-#--------------------------------------------------------------#
-source "$ZRCDIR/function.zsh"
 
 
 #--------------------------------------------------------------#
@@ -66,18 +56,14 @@ source "$ZRCDIR/function.zsh"
 #--------------------------------------------------------------#
 source "$ZRCDIR/bindkey.zsh"
 
-
-#--------------------------------------------------------------#
-##          Plugin                                            ##
-#--------------------------------------------------------------#
-source "$ZRCDIR/plugins.zsh"
-
-
-#--------------------------------------------------------------#
-##          Post Execution                                    ##
-#--------------------------------------------------------------#
-source "$ZRCDIR/post.zsh"
-{{- end }}
+if ! command -v virt-what &>/dev/null; then
+    # functions
+    source "$ZRCDIR/function.zsh"
+    # plugins
+    source "$ZRCDIR/plugins.zsh"
+    # post
+    source "$ZRCDIR/post.zsh"
+fi
 
 {{ if .personal }}
 if [[ $PROFILE_STARTUP == true ]]; then

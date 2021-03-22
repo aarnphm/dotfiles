@@ -19,6 +19,7 @@ alias sudo='nocorrect sudo'
 # git
 alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
+alias vpn="sudo protonvpn connect"
 
 # List all files colorized in long format
 if command -v virt-what &>/dev/null; then
