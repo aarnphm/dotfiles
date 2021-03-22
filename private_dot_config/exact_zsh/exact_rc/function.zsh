@@ -176,15 +176,17 @@ function zsh-profiler() {
 }
 
 function zsh-detailed() {
-    logf=$(ls -tm $ZDATADIR/logs | head -n 1)
-    sed -E -n '/PROFILE_STARTUP/s/false/true/' $ZDOTDIR/.zshrc
+    logf=$(ls -tm $ZDATADIR/logs | head -n1)
+    sed -i '/PROFILE_STARTUP/s/false/true/' $ZDOTDIR/.zshrc
     dtime="$HOME/.local/bin/sort-timings-zsh $ZDATADIR/logs/$logf | head"
     echo "Getting runtime..."
-    builtin emulate zsh -i -c $dtime
+    zsh -i -c $dtime
+    echo "done."
+    sed -i '/PROFILE_STARTUP/s/true/false/' $ZDOTDIR/.zshrc
 }
 
 function timeshell() {
-    TIMESHELL=1 zsh -c 'for i in $(seq 1 10); do time ${SHELL} -i -c exit; done'
+    TIMESHELL=1 zsh -c 'for i in $(seq 1 10); do time $SHELL -i -c exit; done'
 }
 
 n()

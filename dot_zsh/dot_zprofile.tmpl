@@ -119,7 +119,10 @@ path=(
 
 fpath=(
     {{ .chezmoi.homeDir }}/.local/bin(N-/)
-    $ZHOMEDIR/rc/simple
+    $ZRCDIR/simple
+    {{- if "$([ -d $ZRCDIR/pure ])" }}
+    $ZRCDIR/pure
+    {{- end }}
     $ZHOMEDIR/completion(N-/)
     $ZHOMEDIR/completion.local(N-/)
     /usr/local/share/zsh/site-functions

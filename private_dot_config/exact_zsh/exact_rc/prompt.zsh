@@ -3,16 +3,15 @@
 #==============================================================#
 
 # Prompt symbol
-# SIMPLE_PROMPT_SYMBOL="➜"
+SIMPLE_PROMPT_SYMBOL="➜"
+VICMD_SYMBOL="[vi]"
 # SIMPLE_GIT_UP_ARROW="⇡"
 # SIMPLE_GIT_DOWN_ARROW="⇣"
-SIMPLE_PROMPT_SYMBOL=">"
-VICMD_SYMBOL="[vi]"
 
 # Colors
 HOST_ME=magenta
 CURRENT_DIR=blue
-RETURN_STATUS_TRUE=green
+RETURN_STATUS_TRUE=white
 RETURN_STATUS_FALSE=red
 GIT_STATUS_DEFAULT=green
 GIT_STATUS_STAGED=red
@@ -56,7 +55,7 @@ function __git_status {
 }
 
 function __return_symbol {
-  echo -n " %(?.%F{$RETURN_STATUS_TRUE}.%F{$RETURN_STATUS_FALSE})$PROMPT_SYMBOL%f "
+  echo -n " %(?.%F{$RETURN_STATUS_TRUE}.%F{$RETURN_STATUS_FALSE})$SIMPLE_PROMPT_SYMBOL%f "
 }
 
 function __show_status {

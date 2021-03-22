@@ -1,5 +1,9 @@
+{{- $virt := `"$(command -v virt-what &>/dev/null || print 1)"` }}
+{{- $zprof := env "ZSHRC_PROFILE" }}
+{{- $tshell := env "TIMESHELL" }}
 #!/usr/bin/env zsh
 
+{{- if .personal }}
 # Another way to profile zsh startup
 PROFILE_STARTUP=false
 if [[ $PROFILE_STARTUP == true ]]; then
@@ -9,16 +13,13 @@ if [[ $PROFILE_STARTUP == true ]]; then
     exec 3>&2 2>>$logfile
     setopt XTRACE
 fi
+{{- end }}
 
 source-safe() { if [ -f "$1" ]; then source "$1"; fi }
 
-#--------------------------------------------------------------#
-##          Profile                                           ##
-#--------------------------------------------------------------#
-
-if [ "$ZSHRC_PROFILE" != "" ]; then
-    zmodload zsh/zprof && zprof > /dev/null
-fi
+{{- if eq $zprof "1" }}
+zmodload zsh/zprof && zprof > /dev/null
+{{- end }}
 
 #--------------------------------------------------------------#
 ##          Base Configuration                                ##
@@ -43,45 +44,44 @@ source "$ZRCDIR/options.zsh"
 #--------------------------------------------------------------#
 source "$ZRCDIR/completion.zsh"
 
-
+{{ if ne $virt "1" }}
 #--------------------------------------------------------------#
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
-if [[ "$TIMESHELL" == "" ]]; then
-    if [ ! -d $ZRCDIR/simple ] || command -v virt-what &>/dev/null; then
-        source "$ZRCDIR/prompt.zsh"
-    else
-        autoload -U promptinit && promptinit
-        prompt simple
-    fi
-fi
+autoload -U promptinit && promptinit
+prompt simple
+{{ else }}
+source "$ZRCDIR/prompt.zsh"
+{{ end }}
 
-if ! command -v virt-what &>/dev/null; then
-    #--------------------------------------------------------------#
-    ##          Function                                          ##
-    #--------------------------------------------------------------#
-    source "$ZRCDIR/function.zsh"
+{{- if ne $virt "1" }}
+#--------------------------------------------------------------#
+##          Function                                          ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/function.zsh"
 
 
-    #--------------------------------------------------------------#
-    ##          Key Bindings                                      ##
-    #--------------------------------------------------------------#
-    source "$ZRCDIR/bindkey.zsh"
+#--------------------------------------------------------------#
+##          Key Bindings                                      ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/bindkey.zsh"
 
 
-    #--------------------------------------------------------------#
-    ##          Plugin                                            ##
-    #--------------------------------------------------------------#
-    source "$ZRCDIR/plugins.zsh"
+#--------------------------------------------------------------#
+##          Plugin                                            ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/plugins.zsh"
 
 
-    #--------------------------------------------------------------#
-    ##          Post Execution                                    ##
-    #--------------------------------------------------------------#
-    source "$ZRCDIR/post.zsh"
-fi
+#--------------------------------------------------------------#
+##          Post Execution                                    ##
+#--------------------------------------------------------------#
+source "$ZRCDIR/post.zsh"
+{{- end }}
 
+{{ if .personal }}
 if [[ $PROFILE_STARTUP == true ]]; then
     unsetopt XTRACE
     exec 2>&3 3>&-
 fi
+{{- end }}
