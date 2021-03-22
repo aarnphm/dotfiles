@@ -12,6 +12,8 @@ if [[ $PROFILE_STARTUP == true ]]; then
     exec 3>&2 2>>$logfile
     setopt XTRACE
 fi
+{{- else if .transient }}
+. $HOME/.local/bin/ssh-add
 {{- end }}
 
 source-safe() { if [ -f "$1" ]; then source "$1"; fi }
