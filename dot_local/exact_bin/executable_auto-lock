@@ -1,7 +1,7 @@
 #!/bin/bash
 
 me="$(readlink -f "$0")"
-timeout=600
+timeout=1200
 notify=$((timeout/120))
 display=$(systemd-escape -- "$DISPLAY")
 
@@ -13,5 +13,5 @@ configure() {
 echo "xss-lock: Running xss-lock daemon..." >&2
 configure
 export XSECURELOCK_SAVER=saver_blank
-# playerctl -a pause
+playerctl -a pause
 exec xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock

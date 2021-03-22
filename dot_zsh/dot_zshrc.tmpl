@@ -1,5 +1,3 @@
-{{- $zprof := env "ZSHRC_PROFILE" -}}
-{{- $tshell := env "TIMESHELL" -}}
 #!/usr/bin/env zsh
 
 {{- if .personal }}
@@ -18,9 +16,9 @@ fi
 
 source-safe() { if [ -f "$1" ]; then source "$1"; fi }
 
-{{- if eq $zprof "1" }}
-zmodload zsh/zprof && zprof > /dev/null
-{{- end }}
+if [[ "$ZSHRC_PROFILE" != "" ]]; then
+    zmodload zsh/zprof && zprof > /dev/null
+fi
 
 #--------------------------------------------------------------#
 ##          Base Configuration                                ##
@@ -49,8 +47,17 @@ source "$ZRCDIR/completion.zsh"
 #--------------------------------------------------------------#
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
-autoload -U promptinit && promptinit
-prompt simple
+if [[ "$ZSHRC_PROFILE" == "" ]]; then
+    if [[ -z "$TIMESHELL" ]]; then
+        if command -v virt-what &>/dev/null; then
+            source "$ZRCDIR/prompt.zsh"
+        else
+            autoload -Uz promptinit
+            promptinit
+            prompt simple
+        fi
+    fi
+fi
 
 
 #--------------------------------------------------------------#
