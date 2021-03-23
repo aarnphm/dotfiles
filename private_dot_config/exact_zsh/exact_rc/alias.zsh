@@ -105,7 +105,7 @@ alias zcdir="cd $CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
 alias zdir="cd $CHEZMOI_DIR/dot_zsh"
 # vim config
 alias vdir="cd $CHEZMOI_DIR/private_dot_config/vim"
-alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc"
+alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl"
 # awesome config
 alias adir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 alias aconf="$EDITOR -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
@@ -128,6 +128,7 @@ alias delay="ping google.com | grep -E --only-matching --color '[0-9\.]+ ms'"
 alias ip4='dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com'
 alias ip6='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
 alias dlisten='ss -lntu | grep $1'
+alias copy='xclip -sel clip'
 
 # some curl ass shit
 alias cryptoprice="curl rate.sx"

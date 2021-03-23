@@ -10,7 +10,6 @@ if empty(glob('~/.config/vim/autoload/plug.vim'))
     silent call system('curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
     execute 'source  ~/.config/vim/autoload/plug.vim'
     augroup plugsetup
-        "
         au!
         autocmd VimEnter * PlugInstall
     augroup end
@@ -19,6 +18,9 @@ endif
 " define vim-plug here
 call plug#begin('~/.config/vim/plugins')
 
+Plug 'danilo-augusto/vim-afterglow'
+
+{{- if not .transient }}
 " Color scheme
 Plug 'sainnhe/sonokai'
 Plug 'ayu-theme/ayu-vim'
@@ -27,9 +29,7 @@ Plug 'romainl/Apprentice'
 Plug 'joshdick/onedark.vim'
 Plug 'AlessandroYorba/Alduin'
 Plug 'rakr/vim-two-firewatch'
-Plug 'danilo-augusto/vim-afterglow'
 
-{{ if not .transient }}
 " fzf with rg
 Plug 'rking/ag.vim'
 Plug 'junegunn/fzf.vim'
@@ -62,13 +62,13 @@ Plug 'leafgarland/typescript-vim'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'styled-components/vim-styled-components'
-{{ end }}
 
 " UI related
 Plug 'preservim/tagbar'
 Plug 'godlygeek/tabular'
 Plug 'preservim/nerdtree'
 Plug 'jiangmiao/auto-pairs'
+{{- end }}
 
 " tpope plugins =)
 Plug 'tpope/vim-sleuth'
@@ -80,14 +80,18 @@ Plug 'tpope/vim-commentary'
 
 call plug#end()
 
+{{- if not .transient }}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => autocmd glore
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+"remove trailing whitespaces and ^M chars
+augroup ws
+  au!
+  autocmd FileType c,lua,cpp,java,php,js,json,css,scss,sass,py,rb,coffee,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
+augroup end
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 au! BufNewFile,BufRead *.prisma setfiletype graphql
-au! BufNewFile,BufRead .chezmoi* setfiletype gohtmltmpl
-au! BufNewFile,BufRead /*.sh.tmpl setfiletype sh 
+au BufNewFile,BufRead /*.rasi setf css
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
@@ -96,11 +100,11 @@ autocmd FileType java setlocal foldmethod=syntax
 autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
-au BufNewFile,BufRead /*.rasi setf css
 
 " setup autofold
 autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v:val)'))
 
+{{- end }}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => init
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -126,8 +130,12 @@ colorscheme afterglow
 " Minimal
 filetype plugin indent on
 syntax enable
+set nocompatible
 set number
+" Make the keyboard faaaaaaast
+set ttyfast
 set autoindent
+set smartindent
 set relativenumber
 set backspace=indent,eol,start
 set complete-=i
@@ -183,9 +191,9 @@ endif
 
 exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
 set list
-" if &listchars ==# 'eol:$'
-"   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-" endif
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
 
 if v:version > 703 || v:version == 703 && has("patch541")
     set formatoptions+=j " Delete comment character when joining commented lines
@@ -271,23 +279,32 @@ endfunction
 
 " Mapping
 nnoremap ; :
-nnoremap : ;
 imap jj <Esc>
+
+" Thanks to Steve Losh for this liberating tip
+" See http://stevelosh.com/blog/2010/09/coming-home-to-vim
+nnoremap / /\v
+vnoremap / /\v
+
 let mapleader=','
+
 " We don't use arrow key in vim
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+inoremap <Up> <nop>
+inoremap <Down> <nop>
+inoremap <Left> <nop>
+inoremap <Right> <nop>
+
 " manual folding
 inoremap <F5> <C-O>za
 nnoremap <F5> za
 onoremap <F5> <C-C>za
 vnoremap <F5> zf
-" quick resize for split
-nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
-nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
-nnoremap <leader>S :SudaWrite<CR>
+" Toggle show/hide invisible chars
+nnoremap <leader>I :set list!<cr>
 nnoremap \\ :let @/=''<CR>:noh<CR>
 nnoremap <silent> <leader>p :%s///g<CR>
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>
@@ -297,18 +314,24 @@ nnoremap <leader>s :so $MYVIMRC<CR>
 nnoremap <silent> <leader>i gg=G``<CR>
 nnoremap <leader>l :set list! list?<CR>
 nnoremap <silent> <leader>t :%s/\s\+$//e<CR>
+" Remove the Windows ^M - when the encodings gets messed up
+" for somereason bufread doesn't catch  it first
+noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 nnoremap <leader>w :set wrap! wrap?<CR>
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+nnoremap <silent> <leader>ml :call AppendModeline()<CR>
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+{{- if .transient }}
 " Smart way to move between windows
-" map <C-j> <C-W>j
-" map <C-k> <C-W>k
-" map <C-h> <C-W>h
-" map <C-l> <C-W>l
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+{{- end }}
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
@@ -320,12 +343,17 @@ noremap <M-Y> "*y
 noremap <M-P> "*p
 noremap <M-y> "+y
 noremap <M-p> "+p
-" map <M-r> for PlugInstall and <M-d> for PlugClean
-nnoremap <leader>C :PlugClean<cr>
-nnoremap <leader>R :PlugInstall<cr>
 " use this when lightline is not in use for minimal
 nnoremap <F2> :set invpaste paste?<CR>
 imap <F2><C-O>:set invpaste paste?<CR>
+{{- if not .transient }}
+" quick resize for split
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+nnoremap <leader>S :SudaWrite<CR>
+" map <M-r> for PlugInstall and <M-d> for PlugClean
+nnoremap <leader>C :PlugClean<cr>
+nnoremap <leader>R :PlugInstall<cr>
 nnoremap <F3> :TagbarToggle<CR>
 if exists(":Tabularize")
     nmap <leader>a= :Tabularize /=<CR>
@@ -333,6 +361,7 @@ if exists(":Tabularize")
     nmap <leader>a: :Tabularize /:\zs<CR>
     vmap <leader>a: :Tabularize /:\zs<CR>
 endif
+{{- end }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins settings
@@ -531,7 +560,6 @@ let g:gitgutter_eager = 1
 let g:gitgutter_max_signs = 1500
 let g:gitgutter_diff_args = '-w'
 
-{{ end }}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NerdTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -553,10 +581,21 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) || &buftype == 'quickfix' | q | endif
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 | let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+{{ end }}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Append modeline after last line in buffer.
+" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+" files.
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ft=%s ts=%d sw=%d tw=%d %set :",
+        \ &filetype, &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+
 function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
@@ -578,3 +617,4 @@ function! VisualSelection(direction, extra_filter) range
     let @" = l:saved_reg
 endfunction
 " vim:set ft=vim et sw=2:
+" vim: set ft=vim ts=4 sw=4 tw=78 et :

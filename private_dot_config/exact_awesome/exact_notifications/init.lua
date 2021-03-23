@@ -8,9 +8,11 @@ local menubar   = require("menubar")
 
 local notifications = {}
 
+require("notifications.playerctl")
+
 naughty.config.spacing = dpi(5)
 naughty.config.padding = dpi(10)
-naughty.config.defaults.timeout = 3
+naughty.config.defaults.timeout = 5
 naughty.config.defaults.ontop = true
 naughty.config.defaults.screen = awful.screen.focused()
 naughty.config.icon_formats = {"png", "svg"}
@@ -98,6 +100,8 @@ naughty.connect_signal("request::display", function(n)
             widget = wibox.container.margin
         },
         bg = x.color0,
+        forced_height = dpi(25),
+        forced_width = dpi(20),
         shape = helpers.rrect(dpi(4)),
         widget = wibox.container.background
     }
@@ -156,6 +160,7 @@ naughty.connect_signal("request::display", function(n)
                                                 markup = "<span weight='bold'>" .. n.title .. "</span>",
                                                 font = beautiful.font,
                                                 align = "left",
+                                                visible = title_visible,
                                                 widget = wibox.widget.textbox
                                             },
                                             forced_width = beautiful.notification_width or dpi(220),
@@ -172,14 +177,16 @@ naughty.connect_signal("request::display", function(n)
                                                 widget = wibox.widget.textbox
                                             },
                                             forced_width = beautiful.notification_width or dpi(220),
-                                            widget = wibox.container.scroll.horizontal
+                                            right = 10,
+                                            widget = wibox.container.margin
+                                            -- wibox.container.scroll.horizontal
                                         },
-                                        -- {
-                                        --     actions,
-                                        --     visible = n.actions and #n.actions > 0,
-                                        --     layout = wibox.layout.fixed.vertical,
-                                        --     forced_width = dpi(220)
-                                        -- },
+                                        {
+                                            actions,
+                                            visible = n.actions and #n.actions > 0,
+                                            layout = wibox.layout.fixed.vertical,
+                                            forced_width = dpi(220)
+                                        },
                                         spacing = dpi(3),
                                         layout = wibox.layout.fixed.vertical
                                     },

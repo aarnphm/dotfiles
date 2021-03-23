@@ -22,6 +22,7 @@ Dockerfile
 .config/colorschemes
 .config/kitty
 .config/nvim
+.config/zsh/rc/simple/*
 .config/vim/UltiSnips
 .config/tmux
 .config/vifm
