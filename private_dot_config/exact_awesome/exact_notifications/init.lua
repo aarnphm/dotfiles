@@ -154,7 +154,7 @@ naughty.connect_signal("request::display", function(n)
                                     {
                                         {
                                             fps=60,
-                                            speed = 80,
+                                            speed = 110,
                                             step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
                                             {
                                                 markup = "<span weight='bold'>" .. n.title .. "</span>",

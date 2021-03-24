@@ -1,3 +1,4 @@
+set nocompatible
 set runtimepath+=~/.config/vim/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -86,23 +87,27 @@ call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "remove trailing whitespaces and ^M chars
 augroup ws
-  au!
-  autocmd FileType c,lua,cpp,java,php,js,json,css,scss,sass,py,rb,coffee,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
+    au!
+    autocmd FileType c,lua,cpp,java,php,js,json,css,scss,sass,py,rb,coffee,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
 augroup end
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
-au! BufNewFile,BufRead *.prisma setfiletype graphql
-au BufNewFile,BufRead /*.rasi setf css
+au! BufNewFile,BufRead *.prisma set filetype=graphql
+au! BufNewFile,BufRead *.rasi setf css
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType java setlocal foldmethod=syntax
+autocmd FileType zsh setlocal foldmethod=manual
 autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 " setup autofold
 autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v:val)'))
+
+" C/C++ specific settings
+autocmd FileType c,cpp,cc  set cindent comments=sr:/*,mb:*,el:*/,:// cino=>s,e0,n0,f0,{0,}0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30
 
 {{- end }}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -112,6 +117,7 @@ autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v
 let g:is_unix=has('unix')
 let g:is_gui=has('gui_running')
 let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
+let g:ssh = $SSH_CONNECTION
 let g:has_job = has('job')
 let g:has_term = has('terminal')
 if has('vim')
@@ -130,7 +136,6 @@ colorscheme afterglow
 " Minimal
 filetype plugin indent on
 syntax enable
-set nocompatible
 set number
 " Make the keyboard faaaaaaast
 set ttyfast
@@ -156,10 +161,14 @@ set showmatch
 set showmode
 set hidden
 set clipboard=unnamed,unnamedplus
-set mouse=a " i for ssh session
+" i for ssh session
+if g:ssh
+    set mouse=i
+else
+    set mouse=a
+endif
 set conceallevel=0
 set foldmethod=manual "indent-syntax-manual
-set foldlevel=1
 set wildmenu
 set wildmode=longest:full,full
 set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
@@ -192,7 +201,7 @@ endif
 exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
 set list
 if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+    set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
 
 if v:version > 703 || v:version == 703 && has("patch541")
@@ -230,30 +239,6 @@ set showtabline=1
 hi TabLine      guifg=#1a1a1a guibg=#d6d6d6
 hi TabLineFill  guifg=#1a1a1a guibg=#d6d6d6 gui=reverse
 hi TabLineSel   guifg=#1a1a1a guibg=#d6d6d6 gui=bold
-function! MyTabLine()
-    let s = ''
-    for i in range(tabpagenr('$'))
-        let tabnr = i + 1 " range() starts at 0
-        let winnr = tabpagewinnr(tabnr)
-        let buflist = tabpagebuflist(tabnr)
-        let bufnr = buflist[winnr - 1]
-        let bufname = fnamemodify(bufname(bufnr), ':t')
-
-        let s .= '%' . tabnr . 'T'
-        let s .= (tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-        let s .= ' ' . tabnr
-
-        let n = tabpagewinnr(tabnr,'$')
-        if n > 1 | let s .= ':' . n | endif
-
-        let s .= empty(bufname) ? ' [No Name] ' : ' [' . bufname . '] '
-
-        let bufmodified = getbufvar(bufnr, "&mod")
-        if bufmodified | let s .= '+ ' | endif
-    endfor
-    let s .= '%#TabLineFill#'
-    return s
-endfunction
 set tabline=%!MyTabLine()
 
 command! Ev :e $CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl
@@ -320,7 +305,7 @@ noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 nnoremap <leader>w :set wrap! wrap?<CR>
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-nnoremap <silent> <leader>ml :call AppendModeline()<CR>
+nnoremap <silent> <leader>ml :call AppendModeLine()<CR>
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
@@ -437,7 +422,6 @@ let g:fzf_layout = { 'down': '63%' }
 " You can set up fzf window using a Vim command (Neovim or latest Vim 8 required)
 let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_layout = { 'window': '-tabnew' }
-" let g:fzf_layout = { 'window': '10new' }
 
 " Customize fzf colors to match your color scheme
 " - fzf#wrap translates this to a set of `--color` options
@@ -586,14 +570,39 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! MyTabLine()
+    let s = ''
+    for i in range(tabpagenr('$'))
+        let tabnr = i + 1 " range() starts at 0
+        let winnr = tabpagewinnr(tabnr)
+        let buflist = tabpagebuflist(tabnr)
+        let bufnr = buflist[winnr - 1]
+        let bufname = fnamemodify(bufname(bufnr), ':t')
+
+        let s .= '%' . tabnr . 'T'
+        let s .= (tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+        let s .= ' ' . tabnr
+
+        let n = tabpagewinnr(tabnr,'$')
+        if n > 1 | let s .= ':' . n | endif
+
+        let s .= empty(bufname) ? ' [No Name] ' : ' [' . bufname . '] '
+
+        let bufmodified = getbufvar(bufnr, "&mod")
+        if bufmodified | let s .= '+ ' | endif
+    endfor
+    let s .= '%#TabLineFill#'
+    return s
+endfunction
+
 " Append modeline after last line in buffer.
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
 " files.
-function! AppendModeline()
-  let l:modeline = printf(" vim: set ft=%s ts=%d sw=%d tw=%d %set :",
-        \ &filetype, &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-  call append(line("$"), l:modeline)
+function! AppendModeLine()
+    let l:modeline = printf("vim: set ft=%s ts=%d sw=%d tw=%d %set :",
+                \ &filetype, &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+    let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+    call append(line("$"), l:modeline)
 endfunction
 
 function! CmdLine(str)
@@ -616,5 +625,4 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
-" vim:set ft=vim et sw=2:
 " vim: set ft=vim ts=4 sw=4 tw=78 et :

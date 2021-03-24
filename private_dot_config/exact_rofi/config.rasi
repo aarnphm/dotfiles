@@ -5,5 +5,5 @@ configuration {
     matching: "fuzzy";
     show-icons: true;
     icon-theme: "Papirus";
-    theme: ".config/rofi/apprentice.rasi";
+    theme: "oxide";
 }

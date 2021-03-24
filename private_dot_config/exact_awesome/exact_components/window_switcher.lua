@@ -39,7 +39,7 @@ awful.screen.connect_for_each_screen(function(s)
             {
                 {
                     id     = 'text_icon',
-                    font   = 'icomoon 25',
+                    font   = beautiful.switch_font,
                     forced_width = dpi(50),
                     align  = "center",
                     valign = "center",
@@ -191,10 +191,18 @@ local keybinds = {
     [' '] = window_search
 }
 
+-- TODO: switch tags to history
 function window_switcher_show(s)
-    if get_num_clients(s) == 0 then
+    if get_num_clients(s) <= 1 then
+        return
+    -- if there is only two clients simple alt-tab should just switch to the other client
+    elseif get_num_clients(s) == 2 then
+        s.window_switcher.visible=false
+        awful.client.focus.byidx(1)
         return
     end
+
+    -- when there is 3 or more clients in a tag
     -- Store client that is focused in a variable
     window_switcher_first_client = client.focus
 
@@ -202,6 +210,8 @@ function window_switcher_show(s)
     awful.client.focus.history.disable_tracking()
 
     -- Go to previously focused client (in the tag)
+    -- I don't enjoy to go back to the previous client, uncomment this to use this
+    -- however this will get override with L198 behaviour
     awful.client.focus.history.previous()
 
     -- Track minimized clients

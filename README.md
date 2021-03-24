@@ -1,4 +1,4 @@
-<h1 align="center">aaron does dotfiles</h1>
+<h1 align="center">dots.</h1>
 
 <div align="center"><p>automated deployment for <code>!~</code> across Unix-based system.</p></div>
 
@@ -15,11 +15,7 @@
 ```
 - setup `$ZDOTDIR=$HOME/.zsh` in either `/etc/zsh/zshenv` or `/etc/zshenv`
 
-<h3 align="center">Runtime goes zoooom</h3>
-
-![runtime vrom vrom](./bootstrap/screenshots/runtime.png)
-
-<h3 align="center">file descriptions</h3>
+<h3 align="center">Scripts descriptions</h3>
 
 - [run_once_0001_install_pkgman.sh](./run_once_0001_install_pkgman.sh.tmpl) will install either `brew` or `yay` depending on OS defined by `.chezmoi.os`
 - [run_once_0002_install_deps.sh](./run_once_0002_install_deps.sh.tmpl) will install my dependencies for day to day uses

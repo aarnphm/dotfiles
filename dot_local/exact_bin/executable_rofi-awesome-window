@@ -42,7 +42,7 @@ clients="$(awesome_get_client_list)"
 
 # Pass client list to rofi (except the first column which represents the
 # window ID) and get the index of the user's choice
-index="$(echo "$clients" | cut -f2- -d ' ' | rofi -p '❯' -dmenu -i -fuzzy -format d)"
+index="$(echo "$clients" | cut -f2- -d ' ' | rofi -p '➜' -dmenu -i -fuzzy -format d)"
 
 # If user has not picked anything, exit
 if [ ! $? -eq 0 ]; then

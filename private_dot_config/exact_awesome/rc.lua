@@ -39,7 +39,7 @@ x = {
 require("autostart")
 
 -- ===================================================================
--- Windows and notifications daemon 
+-- Windows and notifications daemon
 -- ===================================================================
 
 require("windows")

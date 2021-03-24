@@ -16,7 +16,7 @@ local theme     = dofile(themes_path .. "default/theme.lua")
 local icon_path = gfs.get_configuration_dir() .. "decorations/icons/"
 
 -- ===================================================================
--- icons 
+-- icons
 -- ===================================================================
 
 theme.awesome_icon        = icon_path .. "awesome.png"
@@ -110,6 +110,7 @@ theme.font         = theme.fontname .. "12"
 theme.icon_font    = theme.fontname .. "10"
 theme.font_taglist = "InconsolataGo Nerd Font 18"
 theme.max_font     = "InconsolataGo Nerd Font 10"
+theme.switch_font  = "icomoon 25"
 
 -- ===================================================================
 -- Taglist

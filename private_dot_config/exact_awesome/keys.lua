@@ -233,6 +233,8 @@ client.connect_signal("request::default_keybindings", function()
                 {description = "view previous", group = "tag"}),
             awful.key({ctrl, altkey}, "l", awful.tag.viewnext,
                 {description = "view next", group = "tag"}),
+            -- awful.key({modkey}, "Tab", awful.tag.history.restore(awful.screen.focused(), 1)
+            --     {description="go to previous tag", group="tag"}),
 
             -- ===================================================================
             -- Switch screens focus
@@ -288,6 +290,12 @@ client.connect_signal("request::default_keybindings", function()
                     awful.spawn(defaults.terminal)
                 end,
                 {description = "open kitty", group = "launcher"}
+                ),
+            awful.key({ctrl, altkey}, "p",
+                function()
+                    awful.spawn("termite")
+                end,
+                {description = "open termite", group = "launcher"}
                 ),
             awful.key({altkey, shift}, "t",
                 function()

@@ -17,9 +17,9 @@ fi
 if (builtin command -v /usr/bin/lxpolkit && ! pgrep lxpolkit); then
     /usr/bin/lxpolkit &
 fi
-if ([[ -d /opt/cisco ]] && ! pgrep vpnagentd); then
-    /opt/cisco/anyconnect/bin/vpnui &
-fi
+# if ([[ -d /opt/cisco ]] && ! pgrep vpnagentd); then
+#     /opt/cisco/anyconnect/bin/vpnui &
+# fi
 if (builtin command -v xsecurelock && ! pgrep xss-lock); then
     . $HOME/.local/bin/auto-lock &
 fi
@@ -40,3 +40,4 @@ run blueman-applet
 run discord
 run spotify-tray --client-path=/usr/bin/spotify --minimized --class=spotify
 run optimus-manager-qt
+# vim: set ft=sh ts=4 sw=4 tw=0 et :

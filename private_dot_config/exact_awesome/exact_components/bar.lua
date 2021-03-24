@@ -218,11 +218,9 @@ awesome.connect_signal("daemon::battery", function(value)
     battery_tooltip.markup = markup.fg.color(x.color12,bat_icon) .. value .. '% '
 end)
 
--- The charging animation
-local running = false
 awesome.connect_signal("daemon::charger", function(plugged)
     if plugged then
-        battery_tooltip.markup = markup.fg.color(x.color12,"Charging")
+        battery_tooltip.markup = markup.fg.color(x.color12,"::Charging::")
     end
 end)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 #==============================================================#
-##          Aliases                                           ##
+## Aliases
 #==============================================================#
 
 # Reload the shell (i.e. invoke as a login shell (-l))
@@ -36,18 +36,17 @@ alias lp="nnn -P p"
 # editors
 alias v="$EDITOR $@"
 alias av="$EDITOR -p $@"
-alias e="$CHEZMOI_BIN edit --apply $@"
-alias ca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
-alias dca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
 
 #chmod
 alias 644='chmod 644'
+alias 600='chmod 600'
 alias 755='chmod 755'
 alias 700='chmod 700'
 alias 777='chmod 777'
+alias cx='chmod +x'
 
 #==============================================================#
-##          Global alias                                      ##
+## Global alias
 #==============================================================#
 
 alias -g G='| grep '  # e.x. dmesg lG CPU
@@ -57,7 +56,7 @@ alias -g H='| head'
 alias -g T='| tail'
 
 #==============================================================#
-##          Suffix                                            ##
+## Suffix
 #==============================================================#
 
 alias -s {md,markdown,txt}="$EDITOR"
@@ -86,11 +85,22 @@ function extract() {
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
 #==============================================================#
-##          Dir                                               ##
+## Chezmoi
 #==============================================================#
 
 # move to functions
 alias dots="cd $CHEZMOI_DIR"
+
+# editor
+alias e="$CHEZMOI_BIN edit --apply $@"
+alias ca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
+alias dca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
+alias chez-add="chezmoi add ${CHEZMOI_OPTS}"
+
+#==============================================================#
+## Dir
+#==============================================================#
+
 alias cs="cd $CS_PATH"
 # mcmaster vpn connect via studentvpn.mcmaster.ca
 if [[ -d $CS_PATH/mcmaster ]]; then
@@ -100,7 +110,8 @@ alias chezmoidir="cd $CS_PATH/chezmoi"
 # bentoml
 alias bentodir="cd $CS_PATH/BentoML"
 # zsh config directory
-alias simpledir="cd $XDG_CONFIG_HOME/zsh/rc/simple"
+alias simpledir="cd $CS_PATH/simple"
+alias simup="cp $ZRCDIR/simple/{simple,async_git}.zsh $CS_PATH/simple/"
 alias zcdir="cd $CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
 alias zdir="cd $CHEZMOI_DIR/dot_zsh"
 # vim config
@@ -112,7 +123,7 @@ alias aconf="$EDITOR -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 
 #==============================================================#
-##          App                                               ##
+## App
 #==============================================================#
 
 # bento
@@ -129,6 +140,7 @@ alias ip4='dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com'
 alias ip6='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
 alias dlisten='ss -lntu | grep $1'
 alias copy='xclip -sel clip'
+alias bwpass='[[ -f $HOME/bw.pass ]] && cat $HOME/bw.pass | sed -n 1p | xclip -sel clip'
 
 # some curl ass shit
 alias cryptoprice="curl rate.sx"
@@ -142,7 +154,9 @@ if (( $+commands[journalctl] )); then
     alias failed="journalctl -p 3 -xb"
 fi
 
-# arch
+#==============================================================#
+## Arch
+#==============================================================#
 if [ -f /etc/arch-release ] ;then
     # urxvt
     alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
@@ -159,7 +173,7 @@ if [ -f /etc/arch-release ] ;then
     alias pac-installed-list='pacman -Qs'
     alias pac-installed-package-info='pacman -Qi'
     # import: sudo pacman -S pkglist.txt
-    alias pac-installed-list-export='pacman -Qqen' 
+    alias pac-installed-list-export='pacman -Qqen'
     alias pac-installed-files='pacman -Ql'
     alias pac-unused-list='pacman -Qtdq'
     alias pac-search-from-path='pacman -Qqo'
@@ -175,6 +189,7 @@ if [ -f /etc/arch-release ] ;then
     if builtin command -v yay > /dev/null 2>&1; then
         alias yay-installed-list='yay -Qm'
         alias yay-clean='yay -Sc'
+        alias yay-update='yay -Syuu --noconfirm'
     fi
 fi
 
@@ -233,7 +248,7 @@ elif (( $+commands[wget] )); then
 fi
 
 #==============================================================#
-##          safe opts                                         ##
+## safe opts
 #==============================================================#
 alias tmux="TERM=xterm-256color $(which tmux) ${TMUX_OPTS}"
 
@@ -244,7 +259,8 @@ alias cpi="${aliases[cp]:-cp} -i"
 alias lni="${aliases[ln]:-ln} -i"
 
 #==============================================================#
-##          Hash                                              ##
+## Hash
 #==============================================================#
 
 hash -d data=~/.local/share/
+#  vim: set ft=zsh ts=4 sw=4 tw=0 et :
