@@ -2,8 +2,13 @@
 set -euo pipefail
 
 # defaults zsh location
-zshenv_file="/etc/zshenv"
-sudo touch -c $zshenv_file | cat $zshenv_file | grep ZDOTDIR &>/dev/null || echo 'export ZDOTDIR="$HOME/.zsh"' >> $zshenv_file
+echo "Append default ZDOTDIR"
+{{- if eq .hostname "archlinux" }}
+ZSHENV_FILE="/etc/zsh/zshenv"
+{{- else }}
+ZSHENV_FILE="/etc/zshenv"
+{{- end }}
+cat $ZSHENV_FILE | grep ZDOTDIR &>/dev/null || echo 'export ZDOTDIR="$HOME/.zsh"' >> $ZSHENV_FILE
 
 {{- if eq .chezmoi.os "darwin" }}
 # mostly from: https://github.com/mathiasbynens/dotfiles/blob/main/.macos

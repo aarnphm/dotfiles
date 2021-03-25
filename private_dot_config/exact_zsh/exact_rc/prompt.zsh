@@ -3,7 +3,7 @@
 #==============================================================#
 
 # Prompt symbol
-SIMPLE_PROMPT_SYMBOL="➜"
+PROMPT_SYMBOL="➜"
 VICMD_SYMBOL="[vi]"
 # SIMPLE_GIT_UP_ARROW="⇡"
 # SIMPLE_GIT_DOWN_ARROW="⇣"
@@ -55,7 +55,7 @@ function __git_status {
 }
 
 function __return_symbol {
-  echo -n " %(?.%F{$RETURN_STATUS_TRUE}.%F{$RETURN_STATUS_FALSE})$SIMPLE_PROMPT_SYMBOL%f "
+  echo -n " %(?.%F{$RETURN_STATUS_TRUE}.%F{$RETURN_STATUS_FALSE})$PROMPT_SYMBOL%f "
 }
 
 function __show_status {
@@ -81,5 +81,5 @@ function __show_status {
     fi
 }
 
-PROMPT='[$(__host):$(__directory):$(__git_status)]${WINDOW:+"[$WINDOW]"}$(__return_symbol)'
+PROMPT='[$(__host):$(__directory)]${WINDOW:+"[$WINDOW]"}$(__return_symbol)'
 RPROMPT='$(__show_status)'

@@ -111,7 +111,7 @@ alias chezmoidir="cd $CS_PATH/chezmoi"
 alias bentodir="cd $CS_PATH/BentoML"
 # zsh config directory
 alias simpledir="cd $CS_PATH/simple"
-alias simup="cp $ZRCDIR/simple/{simple,async_git}.zsh $CS_PATH/simple/"
+alias simup="cp $ZRCDIR/simple/*.zsh $CS_PATH/simple/"
 alias zcdir="cd $CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
 alias zdir="cd $CHEZMOI_DIR/dot_zsh"
 # vim config
