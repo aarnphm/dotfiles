@@ -1,46 +1,46 @@
-{{/* boolean feature tags */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets from BitWarden */}}
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
 {{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
-{{- "" -}}
 
 {{- $city := "Hanoi" -}}{{/* city inputs for weather */}}
 {{- $wm := env "XDG_SESSION_DESKTOP" -}}{{/* current windows manager in use (default to awesome) */}}
-
 {{/* detect GitHub codespaces and VSCode remote containers */}}
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") -}}
-{{-   $headless = true -}}
-{{-   $transient = true -}}
+{{- $headless = true -}}
+{{- $transient = true -}}
 {{- end -}}
 
 {{- $hostname := .chezmoi.hostname -}}{{/* work around unreliable hostname on darwin */}}
 {{- if eq .chezmoi.os "darwin" -}}
-{{-   $serialNumberSHA256Sum := index ioreg "IORegistryEntryChildren" 0 "IOPlatformSerialNumber" | sha256sum -}}
-{{-   if eq $serialNumberSHA256Sum "21bc2b3dba08a4f53732b42ac8b041ac2a83ebe95b73dfc2b5c251b4767463d8" -}}
-{{-     $hostname = "APPL-AIR12" -}}
-{{-   end -}}
+{{- $serialNumberSHA256Sum := index ioreg "IORegistryEntryChildren" 0 "IOPlatformSerialNumber" | sha256sum -}}
+{{- if eq $serialNumberSHA256Sum "21bc2b3dba08a4f53732b42ac8b041ac2a83ebe95b73dfc2b5c251b4767463d8" -}}
+{{- $hostname = "APPL-AIR12" -}}
+{{- end -}}
 {{- end -}}
 
 {{- if not $transient -}}
-{{-   if not $city -}}
-{{-     $city := promptString "Current city" -}}
-{{-   end -}}
-{{-   if eq $hostname "archlinux" -}}
-{{-     $personal = true -}}
-{{-   else if eq $hostname "APPL-AIR12" -}}
-{{-     $personal = true -}}
-{{-   else -}}
-{{-     $headless = promptBool "headless" -}}
-{{-     $transient = promptBool "transient" -}}
-{{-     $kubernetes = promptBool "kubernetes" -}}
-{{-   end -}}
+{{- if not $city -}}
+{{- $city := promptString "Current city" -}}
+{{- end -}}
+{{- if eq $hostname "archlinux" -}}
+{{- $personal = true -}}
+{{- else if eq $hostname "APPL-AIR12" -}}
+{{- $personal = true -}}
+{{- else -}}
+{{- $headless = promptBool "headless" -}}
+{{- $transient = promptBool "transient" -}}
+{{- $kubernetes = promptBool "kubernetes" -}}
+{{- end -}}
 {{- end -}}
 remove = true
+[merge]
+  command = "nvim"
+  args = "-d"
 [data]
-  wm = "{{ $wm }}"
-  city = "{{ $city }}"
-  hostname = "{{ $hostname }}"
+  wm = "{{- $wm }}"
+  city = "{{- $city }}"
+  hostname = "{{- $hostname }}"
   personal = {{ $personal }}
   headless = {{ $headless }}
   transient = {{ $transient }}

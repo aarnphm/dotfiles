@@ -6,24 +6,24 @@ trap "exit" INT
 DOTS="$HOME/dotfiles"
 
 if [ ! "$(command -v chezmoi)" ]; then
-  bin_dir="$HOME/.local/bin"
-  chezmoi="$bin_dir/chezmoi"
-  if [ "$(command -v curl)" ]; then
-    sh -c "$(curl -fsSL https://git.io/chezmoi)" -- -b "$bin_dir"
-  elif [ "$(command -v wget)" ]; then
-    sh -c "$(wget -qO- https://git.io/chezmoi)" -- -b "$bin_dir"
-  else
-    echo "To install chezmoi, you must have curl or wget installed." >&2
-    exit 1
-  fi
+    BIN_DIR="$HOME/.local/bin"
+    chezmoi="$BIN_DIR/chezmoi"
+    if [ "$(command -v curl)" ]; then
+        sh -c "$(curl -fsSL https://git.io/chezmoi)" -- -b "$bin_dir"
+    elif [ "$(command -v wget)" ]; then
+        sh -c "$(wget -qO- https://git.io/chezmoi)" -- -b "$bin_dir"
+    else
+        echo "To install chezmoi, you must have curl or wget installed." >&2
+        exit 1
+    fi
 else
-  chezmoi=chezmoi
+    chezmoi=$(which chezmoi)
 fi
 
 if ! builtin command -v git &>/dev/null; then
-    gitcmd="$chezmoi git"
+    gitcmd="$chezmoi --use-builtin-git on"
 else
-    gitcmd=git
+    gitcmd=$(which git)
 fi
 
 # includes v2
@@ -50,10 +50,9 @@ else
     exec "$chezmoi" init --apply "--source=$script_dir" -v
 fi
 
-$gitcmd update-index --skip-worktree $($chezmoi source-path)/dot_zsh/dot_zshenv.local.tmpl
-
 if [ "$HOSTNAME" == "archlinux" ]; then
     builtin command -v make &>/dev/null && exec make full-install
 elif [ "$HOSTNAME" =~ *.local  ]; then
-    exec xargs brew install < ${pwd}/bootstrap/configs/Brewfile.local
+    exec brew bundle --file=${pwd}/bootstrap/configs/Brewfile
 fi
+#vim: set ft=sh ts=4 sw=4 tw=0 et :

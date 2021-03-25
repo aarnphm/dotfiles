@@ -4,8 +4,8 @@ local wibox     = require("wibox")
 local helpers   = require("helpers")
 local beautiful = require("beautiful")
 local defaults  = require("defaults")
-local modkey    = require("defaults").modkey
-local altkey    = require("defaults").altkey
+local ctrl      = defaults.ctrl
+local modkey    = defaults.modkey
 local gfs       = gears.filesystem
 
 -- This is to slave windows' positions in floating layout
@@ -62,10 +62,8 @@ screen.connect_signal("arrange", function (s)
     end
 end
 )
-
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
+-- Enable sloppy focus, so that focus follows mouse.  client.connect_signal("mouse::enter", function(c)
+c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
@@ -78,7 +76,6 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 local ll = awful.widget.layoutlist {
     source = awful.widget.layoutlist.source.default_layouts, -- DOC_HIDE
     spacing = dpi(24),
-    screen = awful.screen.focused(),
     base_layout = wibox.widget {
         spacing = dpi(24),
         forced_num_cols = 4,
@@ -138,7 +135,7 @@ awful.keygrabber {
     stop_key = {"Escape", "Super_L", "Super_R", "Mod4"},
     keybindings = {
         {
-            {modkey, "Shift"}, "=",
+            {ctrl, modkey}, "=",
             function()
                 awful.layout.set(gears.table.cycle_value(ll.layouts, ll.current_layout, -1), nil)
             end

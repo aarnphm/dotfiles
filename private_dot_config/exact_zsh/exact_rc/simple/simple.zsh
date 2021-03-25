@@ -48,12 +48,12 @@ prompt_simple_set_title() {
   setopt localoptions noshwordsplit
 
   # Emacs terminal does not support settings the title.
-    (( ${+EMACS} || ${+INSIDE_EMACS} )) && return
+  (( ${+EMACS} || ${+INSIDE_EMACS} )) && return
 
-    case $TTY in
-      # Don't set title over serial console.
-      /dev/ttyS[0-9]*) return;;
-    esac
+  case $TTY in
+    # Don\'t set title over serial console.
+    /dev/ttyS[0-9]*) return;;
+  esac
 
     # Show hostname if connected via SSH.
     local hostname=
@@ -427,4 +427,4 @@ prompt_simple_setup() {
   }
 
 prompt_simple_setup "$@"
-# vim: set ft=zsh sw=2 et :
+# vim: set ft=zsh ts=2 sw=2 tw=0 et :

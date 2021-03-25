@@ -21,7 +21,7 @@ local icon_path = gfs.get_configuration_dir() .. "decorations/icons/"
 
 theme.awesome_icon        = icon_path .. "awesome.png"
 theme.terminal_icon       = icon_path .. "terminal.png"
-theme.notification_width  = dpi(230)
+theme.notification_width  = dpi(250)
 theme.notification_height = dpi(380)
 
 -- ===================================================================

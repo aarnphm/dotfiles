@@ -85,11 +85,19 @@ call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => autocmd glore
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"remove trailing whitespaces and ^M chars
-augroup ws
-    au!
-    autocmd FileType c,lua,cpp,java,php,js,json,css,scss,sass,py,rb,coffee,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-augroup end
+{{- if stat (joinPath .chezmoi.homeDir ".config/nvim" )}}
+augroup remember_folds
+  autocmd!
+  au BufWinLeave ?* mkview 1
+  au BufWinEnter ?* silent! loadview 1
+augroup END
+{{- else }}
+augroup remember_folds
+  autocmd!
+  autocmd BufWinLeave * mkview
+  autocmd BufWinEnter * silent! loadview
+augroup END
+{{- end }}
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 au! BufNewFile,BufRead *.prisma set filetype=graphql
 au! BufNewFile,BufRead *.rasi setf css
@@ -98,7 +106,6 @@ autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType java setlocal foldmethod=syntax
-autocmd FileType zsh setlocal foldmethod=manual
 autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
@@ -138,9 +145,6 @@ filetype plugin indent on
 syntax enable
 set number
 " Make the keyboard faaaaaaast
-set ttyfast
-set autoindent
-set smartindent
 set relativenumber
 set backspace=indent,eol,start
 set complete-=i
@@ -191,8 +195,11 @@ set undofile
 set undodir=~/.config/vim/undo
 set undolevels=9999
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
 set expandtab
+set autoindent
+set smartindent
 
 if &encoding ==# 'latin1' && has('gui_running')
     set encoding=utf-8
