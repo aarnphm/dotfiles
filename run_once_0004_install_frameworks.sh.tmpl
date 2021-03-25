@@ -14,11 +14,6 @@ if builtin command -v npm &>/dev/null; then
     yarn global add ${packages[@]}
 fi
 
-# branch main
-if ! builtin command -v docker-compose &>/dev/null; then
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-fi
-
 # nnn plugins install
 if  ! [ -f $XDG_CONFIG_HOME/nnn/plugins/getplugs ]; then
     curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh;
@@ -26,6 +21,11 @@ if  ! [ -f $XDG_CONFIG_HOME/nnn/plugins/getplugs ]; then
 fi
 
 {{- if eq .chezmoi.os "linux" }}
+# branch main
+if ! builtin command -v docker-compose &>/dev/null; then
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+fi
+
 # install lotion
 if ! builtin command -v lotion &>/dev/null; then
     curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
