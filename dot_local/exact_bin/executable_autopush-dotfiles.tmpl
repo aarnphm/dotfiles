@@ -12,7 +12,7 @@ cd $(chezmoi source-path)
 PKGMN=yay
 $PKGMN -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local && $PKGMN -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
 {{- else }}
-brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile.local
+brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile
 {{- end }}
 
 # Check if upstream, else not pull
@@ -22,4 +22,4 @@ fi
 
 # execute scripts
 git add -f -v . && git commit -am "$datetime: cron chores" && git push --all
-
+# vim: set ft=sh ts=2 sw=2 tw=0 et :

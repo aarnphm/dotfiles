@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# defaults zsh location
+zshenv_file="/etc/zshenv"
+sudo touch -c $zshenv_file | cat $zshenv_file | grep ZDOTDIR &>/dev/null || echo 'export ZDOTDIR="$HOME/.zsh"' >> $zshenv_file
+
 {{- if eq .chezmoi.os "darwin" }}
 # mostly from: https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
@@ -47,9 +51,6 @@ defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 echo "Avoid creating .DS_Store files on network or USB volumes"
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-
-# defaults zsh location
-sudo echo 'export ZDOTDIR="$HOME/.zsh"' >| /etc/zshenv
 
 {{- else if eq .hostname "archlinux" }}
 echo "Updating pacman.conf.."

@@ -6,7 +6,7 @@ IFS=$'\n\t'
 git config --global include.path ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig
 git config --global core.excludesFile ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitignore
 
-{{ if .personal }}
+{{- if .personal }}
 # bitwarden cli yarn and typescript
 if builtin command -v npm &>/dev/null; then
     packages=(typescript ts-node react @bitwarden/cli)
@@ -25,13 +25,15 @@ if  ! [ -f $XDG_CONFIG_HOME/nnn/plugins/getplugs ]; then
     git clone https://github.com/sebastiencs/icons-in-terminal.git && cd icons-in-terminal && ./install.sh
 fi
 
-{{ if eq .chezmoi.os "linux" }}
+{{- if eq .chezmoi.os "linux" }}
 # install lotion
 if ! builtin command -v lotion &>/dev/null; then
     curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
     sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
 fi
-{{ end }}
+{{- else if eq .chezmoi.os "darwin" }}
+curl -fsSL https://raw.github.com/rcmdnk/homebrew-file/install/install.sh |sh
+{{- end }}
 
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then
@@ -39,6 +41,7 @@ if [[ ! -d $HOME/google-cloud-sdk ]]; then
     tar xvf google-cloud-sdk-326.0.0-linux-x86_64.tar.gz $HOME/google-cloud-sdk && rm google-cloud-sdk-326.0.0-linux-x86_64.tar.gz
     $HOME/google-cloud-sdk/install.sh --quiet --path-update false --command-completion false --usage-reporting false
     $HOME/google-cloud-sdk/bin/gcloud init
-fi;
-{{ end }}
+fi
+
+{{- end }}
 # vim: set ft=sh ts=4 sw=4 tw=0 et :
