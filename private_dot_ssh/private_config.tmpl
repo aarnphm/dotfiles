@@ -5,9 +5,15 @@ Host *
     UseKeychain yes
     AddKeysToAgent yes
 {{- end }}
+{{- if stat (joinPath .chezmoi.homeDir ".ssh/id_rsa" )}}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
+{{- end }}
+{{- if stat (joinPath .chezmoi.homeDir ".ssh/id_ecdsa" )}}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ecdsa
+{{- end }}
+{{- if stat (joinPath .chezmoi.homeDir ".ssh/id_ed25519" )}}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ed25519
+{{- end }}
 {{ if eq .hostname "APPL-AIR12" }}
 Host GGBBYAERO15W8
     HostName 116.111.83.243

@@ -17,7 +17,9 @@ fi
 # nnn plugins install
 if  ! [ -f $XDG_CONFIG_HOME/nnn/plugins/getplugs ]; then
     curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh;
+{{- if eq .chezmoi.os "linux" }}
     git clone https://github.com/sebastiencs/icons-in-terminal.git && cd icons-in-terminal && ./install.sh
+{{- end }}
 fi
 
 {{- if eq .chezmoi.os "linux" }}
@@ -31,9 +33,6 @@ if ! builtin command -v lotion &>/dev/null; then
     curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
     sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
 fi
-{{- else if eq .chezmoi.os "darwin" }}
-curl -fsSL https://raw.github.com/rcmdnk/homebrew-file/install/install.sh |sh
-{{- end }}
 
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then
@@ -43,5 +42,6 @@ if [[ ! -d $HOME/google-cloud-sdk ]]; then
     $HOME/google-cloud-sdk/bin/gcloud init
 fi
 
+{{- end }}
 {{- end }}
 # vim: set ft=sh ts=4 sw=4 tw=0 et :
