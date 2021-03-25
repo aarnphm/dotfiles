@@ -13,7 +13,6 @@
 ```sh 
     $ curl -fsSL https://raw.githubusercontent.com/aarnphm/dotfiles/HEAD/install | bash
 ```
-- setup `$ZDOTDIR=$HOME/.zsh` in either `/etc/zsh/zshenv` or `/etc/zshenv`
 
 <h3 align="center">Scripts descriptions</h3>
 
