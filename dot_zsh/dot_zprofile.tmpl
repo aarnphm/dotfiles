@@ -120,9 +120,6 @@ path=(
 fpath=(
     {{ .chezmoi.homeDir }}/.local/bin(N-/)
     $ZRCDIR/simple
-    {{- if "$([ -d $ZRCDIR/pure ])" }}
-    $ZRCDIR/pure
-    {{- end }}
     $ZHOMEDIR/completion(N-/)
     $ZHOMEDIR/completion.local(N-/)
     /usr/local/share/zsh/site-functions
@@ -141,6 +138,6 @@ export CHEZMOI_OPTS="--verbose --debug --color on"
 export TMUX_OPTS="-2uf $XDG_CONFIG_HOME/tmux/tmux.conf"
 export LS_OPTS="-laFh --group-directories-first --color=always"
 # odoo
-export ODOO_OPTS="--addons-path=$XDG_CONFIG_DOCUMENTS/cs/odoo/addons --dev=reload,all,pdb"
+export ODOO_OPTS="--addons-path=$CS_PATH/odoo/addons --dev=reload,all,pdb"
 {{- end }}
 # vim:set ft=sh et sw=2:

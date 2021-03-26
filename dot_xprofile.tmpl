@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 {{- if .personal }}
-{{-   if (eq .chezmoi.os "linux") }}
+{{- if (eq .chezmoi.os "linux") }}
 
 # Prefer CA English and use UTF-8.
 export LANGUAGE='en';
@@ -21,6 +21,6 @@ export NO_AT_BRIDGE=1
 
 xsettingsd &
 
-{{-   end }}
+{{- end }}
 {{- end }}
 # vim: set ft=bash ts=4 sw=4 tw=0 et :

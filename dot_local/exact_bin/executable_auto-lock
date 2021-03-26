@@ -1,12 +1,15 @@
 #!/bin/bash
 
 me="$(readlink -f "$0")"
+kebdel=200
+kebrate=25
 timeout=1200
 notify=$((timeout/120))
 display=$(systemd-escape -- "$DISPLAY")
 
 configure() {
     xset s $timeout $notify
+    xset r rate $kebdel $kebrate
     xset dpms $((timeout * 2)) $((timeout * 22 / 10)) $((timeout * 24 / 10))
 }
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-
 {{- if .personal }}
 # Another way to profile zsh startup
 PROFILE_STARTUP=false
@@ -10,15 +9,15 @@ if [[ $PROFILE_STARTUP == true ]]; then
     exec 3>&2 2>>$logfile
     setopt XTRACE
 fi
-{{- else if .transient }}
-. $HOME/.local/bin/ssh-add
-{{- end }}
 
 source-safe() { if [ -f "$1" ]; then source "$1"; fi }
 
 if [[ "$ZSHRC_PROFILE" != "" ]]; then
     zmodload zsh/zprof && zprof > /dev/null
 fi
+{{- else if .transient }}
+. $HOME/.local/bin/ssh-add
+{{- end }}
 
 #--------------------------------------------------------------#
 ##          Base Configuration                                ##
@@ -45,34 +44,31 @@ source "$ZRCDIR/completion.zsh"
 
 
 #--------------------------------------------------------------#
-##          Prompt Configuration                              ##
-#--------------------------------------------------------------#
-if [[ "$ZSHRC_PROFILE" == "" ]]; then
-    if [[ -z "$TIMESHELL" ]]; then
-        if command -v virt-what &>/dev/null; then
-            source "$ZRCDIR/prompt.zsh"
-        else
-            autoload -Uz promptinit
-            promptinit
-            prompt simple
-        fi
-    fi
-fi
-
-
-#--------------------------------------------------------------#
 ##          Key Bindings                                      ##
 #--------------------------------------------------------------#
 source "$ZRCDIR/bindkey.zsh"
 
-if ! command -v virt-what &>/dev/null; then
-    # functions
-    source "$ZRCDIR/function.zsh"
-    # plugins
-    source "$ZRCDIR/plugins.zsh"
-    # post
-    source "$ZRCDIR/post.zsh"
+
+{{- if not (lookPath "virt-what") }}
+#--------------------------------------------------------------#
+##          Prompt Configuration                              ##
+#--------------------------------------------------------------#
+if [[ "$ZSHRC_PROFILE" == "" ]]; then
+    if [[ -z "$TIMESHELL" ]]; then
+        autoload -Uz promptinit
+        promptinit
+        prompt simple
+    fi
 fi
+# functions
+source "$ZRCDIR/function.zsh"
+# plugins
+source "$ZRCDIR/plugins.zsh"
+# post
+source "$ZRCDIR/post.zsh"
+{{- else }}
+source "$ZRCDIR/prompt.zsh"
+{{- end }}
 
 {{ if .personal }}
 if [[ $PROFILE_STARTUP == true ]]; then
@@ -80,4 +76,4 @@ if [[ $PROFILE_STARTUP == true ]]; then
     exec 2>&3 3>&-
 fi
 {{- end }}
-# vim: set ft=zsh ts=4 sw=4 tw=0 et :
+# vim: set ft=zsh ts=2 sw=2 tw=0 noet :

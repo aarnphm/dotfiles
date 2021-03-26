@@ -31,7 +31,7 @@ filter_unmatched_urls = true
 size_hints = true
 
 # "off", "left" or "right"
-scrollbar = right
+scrollbar = off
 
 [colors]
 background = #212121
