@@ -106,6 +106,7 @@ path=(
     /usr/local/bin(N-/)
     /usr/sbin(N-/)
     /sbin(N-/)
+    /usr/local/sbin(N-/)
     $JAVA_HOME/bin(N-/)
     {{- end }}
     $NPM_PACKAGES/bin(N-/)
@@ -140,4 +141,4 @@ export LS_OPTS="-laFh --group-directories-first --color=always"
 # odoo
 export ODOO_OPTS="--addons-path=$CS_PATH/odoo/addons --dev=reload,all,pdb"
 {{- end }}
-# vim:set ft=sh et sw=2:
+# vim: set ft=sh.gohtmltmpl ts=2 sw=2 tw=0 et :
