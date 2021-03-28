@@ -128,7 +128,7 @@ awesome.connect_signal("daemon::playerctl::status",
 awesome.connect_signal("daemon::playerctl::title_artist_album",
     function(title, artist)
         playerctl_bar.visible = true
-        song_title.markup = markup.fontfg(beautiful.font, x.color5, title)
+        song_title.markup = markup.fontfg(beautiful.font, x.color3, title)
         song_artist.markup = markup.fontfg(beautiful.font,x.color4, artist)
     end
     )
@@ -349,7 +349,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         {
             app = "termite",
             height = 0.43,
-            width = 0.68,
+            width = 0.43,
             horiz = "center",
             followtag = true,
             argname = "--name %s"
@@ -370,7 +370,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     end
 
     -- Create the wibox
-    s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal .. 00})
+    s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal.."53"})
     s.mywibox:set_xproperty("WM_NAME", "panel")
 
     -- Remove wibar on full screen
@@ -383,8 +383,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     end
 
     -- Hide bar when a splash widget is visible
-    awesome.connect_signal("widgets::splash::visibility",
-    function(vis) s.mywibox.visible = not vis end)
+    awesome.connect_signal("widgets::splash::visibility", function(vis) s.mywibox.visible = not vis end)
 
     client.connect_signal("property::fullscreen", remove_wibar)
 

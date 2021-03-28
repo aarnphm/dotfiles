@@ -109,6 +109,8 @@ fi
 alias chezmoidir="cd $CS_PATH/chezmoi"
 # bentoml
 alias bentodir="cd $CS_PATH/BentoML"
+# luxcer
+alias luxcer="cd $CS_PATH/luxcer"
 # zsh config directory
 alias simpledir="cd $CS_PATH/simple"
 alias simup="cp $ZRCDIR/simple/*.zsh $CS_PATH/simple/"
@@ -212,6 +214,8 @@ if (( $+commands[systemctl] )); then
 fi
 
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
+
+alias keys="xev | grep -i key"
 
 # Intuitive map function
 # For example, to list all directories that contain a certain file:

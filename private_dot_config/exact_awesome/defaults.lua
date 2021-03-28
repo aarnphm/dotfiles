@@ -19,7 +19,8 @@ local defaults = {
     -- ===================================================================
     terminal     = "kitty",
     editor       = "nvim",
-    filebrowser  = "firefox --new-window file:///home/aarnphm",
+    -- filebrowser  = "firefox --new-window file:///home/aarnphm",
+    filebrowser  = "alacritty -e nnn",
     browser      = os.getenv("BROWSER") or "firefox",
     spotify      = "spotify-tray",
     launcher     = "rofi -modi drun -i -p -show drun -show-icons",
@@ -40,7 +41,8 @@ local defaults = {
         },
         {
             names  = { "", " ", " ", " ", " " },
-            layout = {layouts[2], layouts[2], layouts[8], layouts[10], layouts[10]},
+            -- layout = {layouts[2], layouts[2], layouts[8], layouts[10], layouts[10]},
+            layout = {layouts[4],layouts[4],layouts[4], layouts[10], layouts[10]},
         },
         {
             names  = { "", " ", " ", " ", " " },

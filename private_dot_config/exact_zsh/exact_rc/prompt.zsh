@@ -29,7 +29,7 @@ function __host {
 }
 
 function __directory {
-  echo "%{$fg[$CURRENT_DIR]%}%c%{$reset_color%}:"
+    echo "%{$fg[$CURRENT_DIR]%}%c%{$reset_color%}:"
 }
 
 function __git_status {
@@ -55,7 +55,7 @@ function __git_status {
 }
 
 function __return_symbol {
-  echo -n " %(?.%F{$RETURN_STATUS_TRUE}.%F{$RETURN_STATUS_FALSE})$PROMPT_SYMBOL%f "
+    echo -n " %(?.%F{$RETURN_STATUS_TRUE}.%F{$RETURN_STATUS_FALSE})$PROMPT_SYMBOL%f "
 }
 
 function __show_status {

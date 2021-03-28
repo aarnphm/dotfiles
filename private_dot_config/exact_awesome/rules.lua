@@ -73,13 +73,13 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "terminal",
         rule_any = {class = {"Alacritty", "St", "UXTerm", "XTerm"}},
-        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "kitty",
-        rule = {class = "Kitty"},
-        properties = {ontop=true, screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
+        rule = {class = "kitty"},
+        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
