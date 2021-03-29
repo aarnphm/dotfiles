@@ -19,7 +19,12 @@ alias sudo='nocorrect sudo'
 # git
 alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
-alias vpn="sudo protonvpn connect"
+
+if (( $+commands[protonvpn] )); then
+    alias connect="sudo protonvpn connect --cc CA"
+    alias disconnect="sudo protonvpn disconnect"
+    alias status="sudo protonvpn status"
+fi
 
 # List all files colorized in long format
 if command -v virt-what &>/dev/null; then
@@ -267,4 +272,4 @@ alias lni="${aliases[ln]:-ln} -i"
 #==============================================================#
 
 hash -d data=~/.local/share/
-#  vim: set ft=zsh ts=4 sw=4 tw=0 et :
+# vim: set ft=zsh ts=2 sw=2 tw=0 et :

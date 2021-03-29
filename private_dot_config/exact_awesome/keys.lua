@@ -217,13 +217,13 @@ client.connect_signal("request::default_keybindings", function()
                 {description = "decrease the number of master clients", group = "layout"}
                 ),
             -- On the fly useless gaps change
-            awful.key({modkey},"-",
+            awful.key({modkey, shift},"-",
                 function()
                     lain.util.useless_gaps_resize(1)
                 end,
                 {description = "increment useless gaps", group = "layout"}
                 ),
-            awful.key({modkey},"=",
+            awful.key({modkey, shift},"=",
                 function()
                     lain.util.useless_gaps_resize(-1)
                 end,

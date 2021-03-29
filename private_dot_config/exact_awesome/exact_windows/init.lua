@@ -134,7 +134,7 @@ awful.keygrabber {
     stop_key = {"Escape", "Super_L", "Super_R", "Mod4"},
     keybindings = {
         {
-            {ctrl, modkey}, "=",
+            {modkey}, "-",
             function()
                 awful.layout.set(gears.table.cycle_value(ll.layouts, ll.current_layout, -1), nil)
             end

@@ -38,6 +38,5 @@ run skypeforlinux
 run nm-applet
 run blueman-applet
 run discord
-run spotify-tray --client-path=/usr/bin/spotify --minimized --class=spotify
 run optimus-manager-qt
-# vim: set ft=sh ts=4 sw=4 tw=0 et :
+# vim: set ft=sh ts=2 sw=2 tw=0 et :

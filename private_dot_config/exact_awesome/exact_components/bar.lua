@@ -370,7 +370,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     end
 
     -- Create the wibox
-    s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal.."53"})
+    s.mywibox = awful.wibar({position = "top", screen = s, bg = beautiful.bg_normal.."00"})
     s.mywibox:set_xproperty("WM_NAME", "panel")
 
     -- Remove wibar on full screen

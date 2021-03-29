@@ -133,6 +133,7 @@ pulseaudio-alsa
 pulseaudio-bluetooth
 pulseaudio-zeroconf
 pyenv
+python-pywal
 qopenvpn
 qt5ct
 qt6-base
