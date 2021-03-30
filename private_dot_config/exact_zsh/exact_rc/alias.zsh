@@ -246,8 +246,9 @@ elif [[ -f /etc/arch-release ]]; then
     fi
 fi
 
-# Print each PATH entry on a separate line
+# Print each PATH, FPATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
+alias fpath='echo -e ${FPATH//:/\\n}'
 
 # File Download
 if (( $+commands[curl] )); then

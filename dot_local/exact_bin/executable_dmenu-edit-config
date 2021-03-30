@@ -34,7 +34,7 @@ case "$choice" in
 		choice="/etc/lightdm/lightdm-mini-greeter.conf"
 	;;
     .dotfiles)
-		choice="$CHEZMOI_DIR/bootstrap"
+		choice="$CHEZMOI_DIR"
 	;;
 	alacritty)
 		choice="$CHEZMOI_DIR/private_dot_config/alacritty/alacritty.yml"
@@ -55,13 +55,13 @@ case "$choice" in
 		choice="$CHEZMOI_DIR/private_dot_config/picom/picom.conf"
 	;;
 	tmux)
-		choice="$CHEZMOI_DIR/dot_tmux.conf"
+		choice="$CHEZMOI_DIR/private_dot_config/tmux/tmux.conf"
 	;;
 	termite)
 		choice="$CHEZMOI_DIR/private_dot_config/termite/config"
 	;;
 	vim)
-		choice="$CHEZMOI_DIR/dot_vim/vimrc"
+		choice="$CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl"
 	;;
 	dmenu-scripts)
 		choice="$CHEZMOI_DIR/dot_local/exact_bin/executable_dmenu-edit-config"
@@ -70,13 +70,13 @@ case "$choice" in
 		choice="$CHEZMOI_DIR/private_dot_config/rofi/config.rasi"
 	;;
 	zsh)
-		choice="$CHEZMOI_DIR/dot_zshrc.tmpl"
+		choice="$CHEZMOI_DIR/dot_zsh/dot_zshrc.tmpl"
 	;;
 	aliases)
-		choice="$CHEZMOI_DIR/exact_dot_zsh/aliases.zsh"
+		choice="$CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc/aliases.zsh"
 	;;
 	exports)
-		choice="$CHEZMOI_DIR/dot_zshenv.tmpl"
+		choice="$CHEZMOI_DIR/dot_zsh/dot_zprofile.tmpl"
 	;;
 	*)
 		exit 1

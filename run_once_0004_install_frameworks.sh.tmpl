@@ -22,6 +22,11 @@ if  ! [ -f $XDG_CONFIG_HOME/nnn/plugins/getplugs ]; then
 {{- end }}
 fi
 
+{{- if not (joinPath .chezmoi.homeDir ".poetry") }}
+# install poetry
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+{{- end }}
+
 {{- if eq .chezmoi.os "linux" }}
 # branch main
 if ! builtin command -v docker-compose &>/dev/null; then
@@ -33,7 +38,7 @@ if ! builtin command -v lotion &>/dev/null; then
     curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
     sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
 fi
-
+{{- end }}
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then
     cd $HOME && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-326.0.0-linux-x86_64.tar.gz
@@ -43,5 +48,4 @@ if [[ ! -d $HOME/google-cloud-sdk ]]; then
 fi
 
 {{- end }}
-{{- end }}
-# vim: set ft=sh ts=4 sw=4 tw=0 et :
+# vim: set ft=zsh.gohtmltmpl ts=4 sw=4 tw=0 et :

@@ -20,13 +20,13 @@ export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 
 # XDG  config
 export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-{{ .chezmoi.homeDir }}/.config}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-{{ .chezmoi.homeDir }}/.local/share}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_CONFIG_DOCUMENTS="{{ .chezmoi.homeDir }}/documents"
 export XDG_BIN_HOME="{{ .chezmoi.homeDir }}/.local/bin"
 
 # ZSH defaults
-export ZDOTDIR="${ZDOTDIR:-{{ .chezmoi.homeDir }}/.zsh}"
+export ZDOTDIR="${ZDOTDIR:-~/.zsh}"
 export ZHOMEDIR=$XDG_CONFIG_HOME/zsh
 export ZRCDIR=$ZHOMEDIR/rc
 export ZDATADIR=$XDG_DATA_HOME/zsh
@@ -97,6 +97,9 @@ typeset -xT SUDO_PATH sudo_path
 
 path=(
     {{ .chezmoi.homeDir }}/.local/bin(N-/)
+    {{- if joinPath .chezmoi.homeDir ".poetry" }}
+    {{ .chezmoi.homeDir }}/.poetry/bin(N-/)
+    {{- end }}
     {{- if .personal }}
     {{ .chezmoi.homeDir }}/.cargo/bin(N-/)
     {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin(N-/)
@@ -141,4 +144,4 @@ export LS_OPTS="-laFh --group-directories-first --color=always"
 # odoo
 export ODOO_OPTS="--addons-path=$CS_PATH/odoo/addons --dev=reload,all,pdb"
 {{- end }}
-# vim: set ft=sh.gohtmltmpl ts=2 sw=2 tw=0 et :
+# vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :

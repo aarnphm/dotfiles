@@ -55,7 +55,7 @@ source "$ZRCDIR/bindkey.zsh"
 #--------------------------------------------------------------#
 if [[ "$ZSHRC_PROFILE" == "" ]]; then
     if [[ -z "$TIMESHELL" ]]; then
-        clear && . $XDG_BIN_HOME/ghosts
+        # clear && . $XDG_BIN_HOME/ghosts
         autoload -Uz promptinit
         promptinit
         prompt simple
@@ -77,4 +77,4 @@ if [[ $PROFILE_STARTUP == true ]]; then
     exec 2>&3 3>&-
 fi
 {{- end }}
-# vim: set ft=zsh ts=2 sw=2 tw=0 noet :
+# vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 noet :

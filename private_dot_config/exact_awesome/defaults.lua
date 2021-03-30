@@ -19,8 +19,8 @@ local defaults = {
     -- ===================================================================
     terminal     = "kitty",
     editor       = "nvim",
-    -- filebrowser  = "firefox --new-window file:///home/aarnphm",
-    filebrowser  = "alacritty -e nnn",
+    fileviewer   = "firefox --new-window file:///home/aarnphm",
+    filebrowser  = "termite -e nnn",
     browser      = os.getenv("BROWSER") or "firefox",
     spotify      = "spotify-tray",
     launcher     = "rofi -modi drun -i -p -show drun -show-icons",
@@ -51,3 +51,4 @@ local defaults = {
     },
 }
 return defaults
+-- vim: set ft=lua ts=4 sw=4 tw=0 et :
