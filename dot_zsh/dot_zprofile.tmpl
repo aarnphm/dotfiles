@@ -101,8 +101,8 @@ path=(
     {{ .chezmoi.homeDir }}/.poetry/bin(N-/)
     {{- end }}
     {{- if .personal }}
-    {{ .chezmoi.homeDir }}/.cargo/bin(N-/)
-    {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin(N-/)
+    {{ .chezmoi.homeDir }}/.cargo/bin
+    {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin
     {{ .chezmoi.homeDir }}/.pyenv/shims(N-/)
     {{ .chezmoi.homeDir }}/.pyenv/bin(N-/)
     {{- if eq .chezmoi.os "darwin" }}

@@ -18,7 +18,6 @@ libcurl3-gnutls
 light-git
 lightdm-mini-greeter
 minecraft-launcher
-ncspot-git
 ncurses5-compat-libs
 networkmanager-dispatcher-sshd
 nnn-nerd
@@ -31,8 +30,6 @@ rxvt-unicode-truecolor-wide-glyphs
 shell-color-scripts
 skypeforlinux-stable-bin
 slack-desktop
-spotify
-spotify-tray-git
 tealdeer-git
 teams
 toilet

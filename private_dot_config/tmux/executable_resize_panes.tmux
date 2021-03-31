@@ -17,10 +17,7 @@ HS=$(expr $H \* $HPER / 10)
 
 # split panes using | and -
 main(){
-
-    tmux unbind-key "$VSPLIT"
     tmux bind-key "$VSPLIT" split-window -h -c "#{pane_current_path}"\; resize-pane -x $VS
-    tmux unbind-key "$HSPLIT"
     tmux bind-key "$HSPLIT" split-window -v -c "#{pane_current_path}"\; resize-pane -y $HS
 }
 

@@ -75,7 +75,7 @@ ROFI_OPTIONS=()
 DEDUP_MARK="(+)"
 
 # Source helper functions
-# DIR="$(dirname "$(readlink -f "$0")")"
+DIR="$(dirname "$(readlink -f "$0")")"
 
 ask_password() {
     mpw=$(printf '' | rofi -dmenu -p "Master Password" -password -lines 0) || exit $?
@@ -121,25 +121,25 @@ exit_error() {
 rofi_menu() {
 
     actions=(
-        -kb-custom-1 $KB_SYNC
-        -kb-custom-2 $KB_NAMESEARCH
-        -kb-custom-3 $KB_URLSEARCH
-        -kb-custom-4 $KB_FOLDERSELECT
-        -kb-custom-8 $KB_TOTPCOPY
-        -kb-custom-9 $KB_LOCK
-    )
+    -kb-custom-1 $KB_SYNC
+    -kb-custom-2 $KB_NAMESEARCH
+    -kb-custom-3 $KB_URLSEARCH
+    -kb-custom-4 $KB_FOLDERSELECT
+    -kb-custom-8 $KB_TOTPCOPY
+    -kb-custom-9 $KB_LOCK
+)
 
-    msg="<b>$KB_SYNC</b>: sync | <b>$KB_URLSEARCH</b>: urls | <b>$KB_NAMESEARCH</b>: names | <b>$KB_FOLDERSELECT</b>: folders | <b>$KB_TOTPCOPY</b>: totp | <b>$KB_LOCK</b>: lock"
+msg="<b>$KB_SYNC</b>: sync | <b>$KB_URLSEARCH</b>: urls | <b>$KB_NAMESEARCH</b>: names | <b>$KB_FOLDERSELECT</b>: folders | <b>$KB_TOTPCOPY</b>: totp | <b>$KB_LOCK</b>: lock"
 
-    [[ ! -z "$AUTOTYPE_MODE" ]] && {
-        actions+=(
-            -kb-custom-5 $KB_TYPEALL
-            -kb-custom-6 $KB_TYPEUSER
-            -kb-custom-7 $KB_TYPEPASS
-        )
-        msg+="
-        <b>$KB_TYPEALL</b>: Type all | <b>$KB_TYPEUSER</b>: Type user | <b>$KB_TYPEPASS</b>: Type pass"
-    }
+[[ ! -z "$AUTOTYPE_MODE" ]] && {
+    actions+=(
+    -kb-custom-5 $KB_TYPEALL
+    -kb-custom-6 $KB_TYPEUSER
+    -kb-custom-7 $KB_TYPEPASS
+)
+msg+="
+<b>$KB_TYPEALL</b>: Type all | <b>$KB_TYPEUSER</b>: Type user | <b>$KB_TYPEPASS</b>: Type pass"
+}
 
 rofi -dmenu -p 'Name' \
     -i -no-custom \
@@ -507,8 +507,13 @@ done
 
 parse_cli_arguments "$@"
 
+{{- if eq .hostname "archlinux" }}
+BW_HASH=$BW_SESSION
+{{- else }}
 get_session_key
+{{- end }}
 select_autotype_command
 select_copy_command
 load_items
 show_items
+# vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :

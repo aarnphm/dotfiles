@@ -18,3 +18,4 @@ configure
 export XSECURELOCK_SAVER=saver_blank
 playerctl -a pause
 exec xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock
+#vim: set ft=sh ts=4 sw=4 tw=0 et :

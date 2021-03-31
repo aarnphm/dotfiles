@@ -1,0 +1,6 @@
+user_nerdfont = true
+notify = false
+shuffle = true
+repeat = "playlist"
+gapless = true
+cover_max_scale = 2

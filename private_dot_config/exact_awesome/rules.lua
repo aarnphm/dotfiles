@@ -46,8 +46,7 @@ ruled.client.connect_signal("request::rules", function()
             class = {"Nm-connection-editor", "Cisco AnyConnect Secure Mobility Client",
                 "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen",
                 "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", 
-                "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer",
-            "Termite", "URxvt", "XTerm"},
+                "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer", "URxvt", "XTerm"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"Popup"},
             type  = {"dialog"}
@@ -61,7 +60,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "spotify",
         rule = {class = "Spotify"},
-        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[4], switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[4], switchtotag = true}
     }
 
     ruled.client.append_rule {

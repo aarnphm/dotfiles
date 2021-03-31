@@ -2,26 +2,26 @@
 
 ## run (only once) processes which spawn with the same name
 function run {
-    if (builtin command -v $1 && ! pgrep $1); then
-        $@ &
-    fi
+  if (builtin command -v $1 && ! pgrep $1); then
+    $@ &
+  fi
 }
 
 ## run (only once) processes which spawn with different name
 if (builtin command -v start-pulseaudio-x11 && ! pgrep pulseaudio); then
-    start-pulseaudio-x11 &
+  start-pulseaudio-x11 &
 fi
 if (builtin command -v gnome-keyring-daemon && ! pgrep gnome-keyring-d); then
-    gnome-keyring-daemon --daemonize --login &
+  gnome-keyring-daemon --daemonize --login &
 fi
 if (builtin command -v /usr/bin/lxpolkit && ! pgrep lxpolkit); then
-    /usr/bin/lxpolkit &
+  /usr/bin/lxpolkit &
 fi
 # if ([[ -d /opt/cisco ]] && ! pgrep vpnagentd); then
 #     /opt/cisco/anyconnect/bin/vpnui &
 # fi
 if (builtin command -v xsecurelock && ! pgrep xss-lock); then
-    . $HOME/.local/bin/auto-lock &
+  . $HOME/.local/bin/auto-lock &
 fi
 
 # background daemon

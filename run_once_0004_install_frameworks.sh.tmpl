@@ -17,10 +17,16 @@ fi
 # nnn plugins install
 if  ! [ -f $XDG_CONFIG_HOME/nnn/plugins/getplugs ]; then
     curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh;
-{{- if eq .chezmoi.os "linux" }}
+    {{- if eq .chezmoi.os "linux" }}
     git clone https://github.com/sebastiencs/icons-in-terminal.git && cd icons-in-terminal && ./install.sh
-{{- end }}
+    {{- end }}
 fi
+
+{{- if not (joinPath .chezmoi.homeDir ".cargo/bin") }}
+# install rustup 
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs >| {{ .chezmoi.homeDir }}/rustup.sh && . {{ .chezmoi.homeDir }}/rustup.sh -y --no-modify-path;
+rm {{ .chezmoi.homeDir }}/rustup.sh;
+{{- end }}
 
 {{- if not (joinPath .chezmoi.homeDir ".poetry") }}
 # install poetry
@@ -33,12 +39,20 @@ if ! builtin command -v docker-compose &>/dev/null; then
     sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
 fi
 
+# ncspot
+if ! builtin command -v ncspot 2>/dev/null; then
+    [[ ! -d {{ .chezmoi.homeDir }}/ncspot-git ]] && git clone git@github.com:hrkfdn/ncspot.git {{ .chezmoi.homeDir }}/ncspot-git
+    [[ ! -d {{ .chezmoi.homeDir }}/ncspot-git/target ]] && cargo build --release --features cover
+    sudo mv {{ .chezmoi.homeDir }}/ncspot-git/target/release/ncspot /usr/local/bin
+fi
+
 # install lotion
 if ! builtin command -v lotion &>/dev/null; then
     curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
     sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
 fi
 {{- end }}
+
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then
     cd $HOME && curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-326.0.0-linux-x86_64.tar.gz
@@ -48,4 +62,4 @@ if [[ ! -d $HOME/google-cloud-sdk ]]; then
 fi
 
 {{- end }}
-# vim: set ft=zsh.gohtmltmpl ts=4 sw=4 tw=0 et :
+# vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :
