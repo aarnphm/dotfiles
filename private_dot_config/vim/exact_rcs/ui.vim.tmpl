@@ -1,0 +1,36 @@
+{{- if not .transient }}
+let g:is_unix=has('unix')
+let g:is_gui=has('gui_running')
+let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
+let g:has_job = has('job')
+let g:has_term = has('terminal')
+if has('vim')
+    set term=xterm-256color
+endif
+
+" Setup
+if g:is_termguicolors
+    set termguicolors
+endif
+let ayucolor="mirage"
+let g:two_firewatch_italics=1
+{{- end }}
+set background=dark
+colorscheme afterglow
+
+set laststatus=0
+set ruler
+set rulerformat=%50(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %P\ ›\ %l:%L%)
+
+set showtabline=1
+hi TabLine      guifg=#1a1a1a guibg=#d6d6d6
+hi TabLineFill  guifg=#1a1a1a guibg=#d6d6d6 gui=reverse
+hi TabLineSel   guifg=#1a1a1a guibg=#d6d6d6 gui=bold
+set tabline=%!MyTabLine()
+
+" tree style file explorer
+let g:netrw_liststyle=3
+let g:netrw_browse_split=4
+let g:netrw_winsize=25
+
+" vim: set ft=vim.gohtmltmpl ts=2 sw=2 tw=0 et :

@@ -128,11 +128,6 @@ prompt_simple_preexec() {
 
   # Shows the current directory and executed command in the title while a process is active.
   prompt_simple_set_title 'ignore-escape' "$PWD:t: $2"
-
-  # TODO: Caveats: seems like preexec overrides $PROMPT, do we want this behaviour?
-  # Disallow Python virtualenv from updating the prompt. Pure set it to 12 to to be in sync with psvar
-  # just disable it here
-  export VIRTUAL_ENV_DISABLE_PROMPT=12
 }
 
 # Change the colors if their value are different from the current ones.
@@ -152,9 +147,9 @@ prompt_simple_set_colors() {
 
 prompt_simple_prompt_prerender() {
 
-  prompt_simple_reset_prompt
-  setopt localoptions noshwordsplit
-  unset prompt_simple_async_render_requested
+    prompt_simple_reset_prompt
+    setopt localoptions noshwordsplit
+    unset prompt_simple_async_render_requested
 
   # Setup prompt here, instead of preprompt
   local -a prompt_parts
@@ -167,7 +162,7 @@ prompt_simple_prompt_prerender() {
   prompt_parts+=('%F{${prompt_simple_colors[path]}}%c%f')
 
   # If a virtualenv is activated, display it in grey and show it under username
-  [[ -n $VIRTUAL_ENV ]] && prompt_parts='%(12V.%F{$prompt_simple_colors[virtualenv]}%12v%f .)%f'
+  [[ -n $VIRTUAL_ENV ]] && prompt_parts='%(10V.%F{$prompt_simple_colors[virtualenv]}%10v%f.)%f'
 
   # Prompt turns red if the previous command didn\'t exit with 0.
   local prompt_indicator=' %(?.%F{$prompt_simple_colors[prompt:success]}.%F{$prompt_simple_colors[prompt:error]})${prompt_simple_state[prompt]}%f '
@@ -226,17 +221,21 @@ prompt_simple_precmd() {
   prompt_simple_async_tasks
 
   # Check if we should display the virtual env. We use a sufficiently high
-  # index of psvar (12) here to avoid collisions with user defined entries.
-  psvar[12]=
-  # Check if a Conda environment is active and display its name.
-  if [[ -n $CONDA_DEFAULT_ENV ]]; then
-      psvar[12]="${CONDA_DEFAULT_ENV//[$'\t\r\n']}"
-  fi
-  # When VIRTUAL_ENV_DISABLE_PROMPT is empty, it was unset by the user and
-  # simple should take back control.
-  if [[ -n $VIRTUAL_ENV ]] && [[ -z $VIRTUAL_ENV_DISABLE_PROMPT || $VIRTUAL_ENV_DISABLE_PROMPT = 12 ]]; then
-      psvar[12]="${VIRTUAL_ENV:t}"
-      export VIRTUAL_ENV_DISABLE_PROMPT=12
+  # index of psvar[10] here to avoid collisions with user defined entries.
+  # pipenv/poetry: when the virtualenv is in the project directory
+  if [[ ${VIRTUAL_ENV:t} == '.venv' ]]; then
+      psvar[10]=${VIRTUAL_ENV:h:t}
+      # pipenv
+  elif (( PIPENV_ACTIVE )); then
+      # Remove the hash
+      psvar[10]=${${VIRTUAL_ENV%-*}:t}
+      # poetry
+  elif (( POETRY_ACTIVE )); then
+      # Remove the hash and version number
+      psvar[10]=${${${VIRTUAL_ENV%-*}%-*}:t}
+      # virtualenv/venv/conda
+  else
+      psvar[10]=${${VIRTUAL_ENV:t}:-${CONDA_DEFAULT_ENV//[$'\t\r\n']/}}
   fi
 
   # Make sure VIM prompt is reset.
@@ -452,37 +451,37 @@ prompt_simple_async_tasks() {
 prompt_simple_async_refresh() {
     setopt localoptions noshwordsplit
 
-    if [[ -z $prompt_simple_git_fetch_pattern ]]; then
-        # We set the pattern here to avoid redoing the pattern check until the
-        # working tree has changed. Pull and fetch are always valid patterns.
-        typeset -g prompt_simple_git_fetch_pattern="pull|fetch"
-        async_job "prompt_simple" prompt_simple_async_git_aliases
-    fi
+# We set the pattern here to avoid redoing the pattern check until the
+# working tree has changed. Pull and fetch are always valid patterns.
+if [[ -z $prompt_simple_git_fetch_pattern ]]; then
+    typeset -g prompt_simple_git_fetch_pattern="pull|fetch"
+    async_job "prompt_simple" prompt_simple_async_git_aliases
+fi
 
-    async_job "prompt_simple" prompt_simple_async_git_arrows
+async_job "prompt_simple" prompt_simple_async_git_arrows
 
-  # Do not perform `git fetch` if it is disabled or in home folder.
-  if (( ${SIMPLE_GIT_PULL:-1} )) && [[ $prompt_simple_vcs_info[top] != $HOME ]]; then
-      zstyle -t :prompt:simple:git:fetch only_upstream
-      local only_upstream=$((? == 0))
-      async_job "prompt_simple" prompt_simple_async_git_fetch $only_upstream
-  fi
+# Do not perform `git fetch` if it is disabled or in home folder.
+if (( ${SIMPLE_GIT_PULL:-1} )) && [[ $prompt_simple_vcs_info[top] != $HOME ]]; then
+    zstyle -t :prompt:simple:git:fetch only_upstream
+    local only_upstream=$((? == 0))
+    async_job "prompt_simple" prompt_simple_async_git_fetch $only_upstream
+fi
 
-  # If dirty checking is sufficiently fast,
-  # tell the worker to check it again, or wait for timeout.
-  integer time_since_last_dirty_check=$(( EPOCHSECONDS - ${prompt_simple_git_last_dirty_check_timestamp:-0} ))
-  if (( time_since_last_dirty_check > ${SIMPLE_GIT_DELAY_DIRTY_CHECK:-1800} )); then
-      unset prompt_simple_git_last_dirty_check_timestamp
-      # Check check if there is anything to pull.
-      async_job "prompt_simple" prompt_simple_async_git_dirty ${SIMPLE_GIT_UNTRACKED_DIRTY:-1}
-  fi
+# If dirty checking is sufficiently fast,
+# tell the worker to check it again, or wait for timeout.
+integer time_since_last_dirty_check=$(( EPOCHSECONDS - ${prompt_simple_git_last_dirty_check_timestamp:-0} ))
+if (( time_since_last_dirty_check > ${SIMPLE_GIT_DELAY_DIRTY_CHECK:-1800} )); then
+    unset prompt_simple_git_last_dirty_check_timestamp
+    # Check check if there is anything to pull.
+    async_job "prompt_simple" prompt_simple_async_git_dirty ${SIMPLE_GIT_UNTRACKED_DIRTY:-1}
+fi
 
-  # If stash is enabled, tell async worker to count stashes
-  if zstyle -t ":prompt:simple:git:stash" show; then
-      async_job "prompt_simple" prompt_simple_async_git_stash
-  else
-      unset prompt_simple_git_stash
-  fi
+# If stash is enabled, tell async worker to count stashes
+if zstyle -t ":prompt:simple:git:stash" show; then
+    async_job "prompt_simple" prompt_simple_async_git_stash
+else
+    unset prompt_simple_git_stash
+fi
 }
 
 prompt_simple_check_git_arrows() {
@@ -710,6 +709,9 @@ prompt_simple_state_setup() {
     # Show `username@host` if inside a container.
     prompt_simple_is_inside_container && username='%F{$prompt_simple_colors[user]}%n%f'"$hostname"
 
+    # TODO: this is a dirty solutions
+    prompt_simple_is_inside_virtualenv && prompt_simple_reset_prompt
+
     # Show `username@host` if root, with username in default color.
     [[ $UID -eq 0 ]] && username='%F{$prompt_simple_colors[user:root]}%n%f'"$hostname"
 
@@ -727,6 +729,10 @@ prompt_simple_is_inside_container() {
     [[ -r "$cgroup_file" && "$(< $cgroup_file)" = *(lxc|docker)* ]] \
         || [[ "$container" == "lxc" ]]
     }
+
+# NOTE: poetry behaviour doesn't source shell as login shell
+# should we reload prompt to overcome poetry doesn't recognize prompts?
+prompt_simple_is_inside_virtualenv() {[[ -n $VIRTUAL_ENV ]]}
 
 prompt_simple_setup() {
 
@@ -777,7 +783,7 @@ prompt_simple_setup() {
         prompt:continuation  242
         user                 172
         user:root            default
-        virtualenv           208
+        virtualenv           121
     )
     prompt_simple_colors=("${(@kv)prompt_simple_colors_default}")
 
@@ -835,4 +841,3 @@ prompt_simple_setup() {
 }
 
 prompt_simple_setup "$@"
-# vim: set ft=zsh ts=2 sw=2 tw=0 et :

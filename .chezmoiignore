@@ -23,7 +23,7 @@ Dockerfile
 .config/kitty
 .config/nvim
 .config/zsh/rc/simple/*
-.config/vim/UltiSnips
+.config/vim/ultisnips
 .config/tmux
 .config/vifm
 .wakatime.cfg
@@ -35,6 +35,7 @@ Dockerfile
 .ssh/known_hosts
 .ssh/agent-environment
 .config/vim/undo
+.config/ncspot
 .config/vim/plugins
 .config/awesome
 .config/dunst

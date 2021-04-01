@@ -7,6 +7,7 @@ datetime=$(date +'%a %D %T %ZGMT')
 
 cd $(chezmoi source-path)
 
+echo "Dumping installed packages to files" >&2
 {{- if eq .chezmoi.os "linux" }}
 # Check for new packages, and add it to both .local file
 PKGMN=yay
@@ -22,4 +23,4 @@ fi
 
 # execute scripts
 git add -f -v . && git commit -am "$datetime: cron chores" && git push --all
-# vim: set ft=sh ts=2 sw=2 tw=0 et :
+# vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :

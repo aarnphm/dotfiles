@@ -115,7 +115,10 @@ path=(
     $NPM_PACKAGES/bin(N-/)
     $GOPATH/bin(N-/)
     $GOPATH/src(N-/)
-    {{.chezmoi.homeDir }}/google-cloud-sdk/bin(N-/)
+    {{- if joinPath "/opt/cuda" }}
+    /opt/cuda/bin(N-/)
+    {{- end }}
+    {{ .chezmoi.homeDir }}/google-cloud-sdk/bin(N-/)
     {{ .chezmoi.homeDir }}/.config/nnn/plugins(N-/)
     {{- end }}
     $path
@@ -123,7 +126,8 @@ path=(
 
 fpath=(
     {{ .chezmoi.homeDir }}/.local/bin(N-/)
-    $ZRCDIR/simple
+    ${ZRCDIR:-$XDG_CONFIG_HOME/zsh/rc}/simple
+    ${ZRCDIR:-$XDG_CONFIG_HOME/zsh/rc}/pure
     $ZHOMEDIR/completion(N-/)
     $ZHOMEDIR/completion.local(N-/)
     /usr/local/share/zsh/site-functions

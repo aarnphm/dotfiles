@@ -1,0 +1,97 @@
+set nocompatible
+set runtimepath+=~/.config/vim/
+
+let g:ssh = $SSH_CONNECTION
+
+if &encoding ==# 'latin1' && has('gui_running')
+    set encoding=utf-8
+endif
+
+" Minimal
+filetype plugin indent on
+syntax enable
+set number
+set relativenumber
+set backspace=indent,eol,start
+set complete-=i
+set smarttab
+
+set nrformats-=octal
+
+if !has('nvim') && &ttimeoutlen == -1
+    set ttimeout
+    set ttimeoutlen=100
+endif
+
+set incsearch
+set noshowcmd
+set notitle
+set nowrap
+set showmatch
+set showmode
+set hidden
+set clipboard=unnamed,unnamedplus
+" i for ssh session
+if g:ssh
+    set mouse=i
+else
+    set mouse=a
+endif
+set conceallevel=0
+set foldmethod=manual "indent-syntax-manual
+set wildmenu
+set wildmode=longest:full,full
+set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
+set wildcharm=<Tab>
+set shortmess+=Ic
+set pastetoggle=<F2>
+
+" Performance tuning
+set lazyredraw
+set nocursorline
+set hlsearch
+set ignorecase
+set smartcase
+
+" Misc
+set nobackup
+set noswapfile
+set nowritebackup
+set undofile
+set undodir=~/.config/vim/undo
+set undolevels=9999
+set autoindent
+set smartindent
+
+exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+set list
+if &listchars ==# 'eol:$'
+    set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+if v:version > 703 || v:version == 703 && has("patch541")
+    set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+if has('path_extra')
+    setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
+    set shell=/usr/bin/env\ bash
+endif
+
+set autoread
+
+if &history < 1000
+    set history=1000
+endif
+if &tabpagemax < 50
+    set tabpagemax=50
+endif
+if !empty(&viminfo)
+    set viminfo^=!
+endif
+set sessionoptions-=options
+set viewoptions-=options
+" vim: set ft=vim.gohtmltmpl ts=2 sw=2 tw=0 et :

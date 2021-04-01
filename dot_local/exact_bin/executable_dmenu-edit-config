@@ -61,7 +61,7 @@ case "$choice" in
 		choice="$CHEZMOI_DIR/private_dot_config/termite/config"
 	;;
 	vim)
-		choice="$CHEZMOI_DIR/private_dot_config/vim/vimrc.tmpl"
+		choice="$CHEZMOI_DIR/private_dot_config/vim/exact_rcs"
 	;;
 	dmenu-scripts)
 		choice="$CHEZMOI_DIR/dot_local/exact_bin/executable_dmenu-edit-config"
