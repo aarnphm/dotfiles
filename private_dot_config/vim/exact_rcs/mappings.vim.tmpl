@@ -32,6 +32,7 @@ vnoremap <F5> zf
 nnoremap <leader>I :set list!<cr>
 nnoremap \\ :let @/=''<CR>:noh<CR>
 nnoremap <silent> <leader>p :%s///g<CR>
+nnoremap <silent> <leader>i gg=G<CR>
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>
 nnoremap <leader>b :ls<CR>:buffer<space>
 nnoremap <leader>d :w !diff % -<CR>
@@ -79,11 +80,11 @@ nnoremap <leader>C :PlugClean<cr>
 nnoremap <leader>R :PlugInstall<cr>
 nnoremap <F3> :TagbarToggle<CR>
 if exists(":Tabularize")
-    nmap <leader>a= :Tabularize /=<CR>
-    vmap <leader>a= :Tabularize /=<CR>
-    nmap <leader>a: :Tabularize /:\zs<CR>
-    vmap <leader>a: :Tabularize /:\zs<CR>
+  nmap <leader>a= :Tabularize /=<CR>
+  vmap <leader>a= :Tabularize /=<CR>
+  nmap <leader>a: :Tabularize /:\zs<CR>
+  vmap <leader>a: :Tabularize /:\zs<CR>
 endif
 {{- end }}
 
-" vim: set ft=vim.gohtmltmpl ts=2 sw=2 tw=0 et :
+"vim: set ft=vim.gohtmltmpl ts=2 sw=2 tw=0 et :

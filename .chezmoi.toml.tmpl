@@ -34,9 +34,11 @@
 {{- end -}}
 {{- end -}}
 remove = true
+{{- if not .transient }}
 [merge]
   command = "nvim"
   args = "-d"
+{{- end }}
 [data]
   wm = "{{- $wm }}"
   city = "{{- $city }}"
