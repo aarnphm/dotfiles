@@ -94,6 +94,12 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+        id = "vmware",
+        rule = {class = "vmware"},
+        properties = {screen = screen.count()>1 and 2 or 1, tag=defaults.tags[1].names[2], switchtotag = true}
+    }
+
+    ruled.client.append_rule {
         id = "meeting",
         rule_any = {class={"Whatsapp-for-linux"}, instance = {"discord", "slack", "skype","caprine"}},
         properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[5], switchtotag = true}

@@ -21,9 +21,9 @@ alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 
 if (( $+commands[protonvpn] )); then
-    alias connect="sudo protonvpn connect --cc CA"
-    alias disconnect="sudo protonvpn disconnect"
-    alias status="sudo protonvpn status"
+    alias vpnconnect="sudo protonvpn connect --cc CA"
+    alias vpndisconnect="sudo protonvpn disconnect"
+    alias vpnstatus="sudo protonvpn status"
 fi
 
 # List all files colorized in long format
@@ -137,6 +137,8 @@ alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 alias bento="bentoml $@"
 # odoo
 alias odoo="${ODOO_PATH}/odoo-bin ${ODOO_OPTS}"
+# jupyter
+alias ipynb="jupyter notebook ${JUPYTER_OPTS}"
 
 # check internet
 alias speedtest="watch -n 1 ping -c 1 google.com"

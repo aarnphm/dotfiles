@@ -49,7 +49,7 @@ source "$ZRCDIR/completion.zsh"
 source "$ZRCDIR/bindkey.zsh"
 
 
-{{- if not (lookPath "virt-what") }}
+{{ if not (lookPath "virt-what") }}
 #--------------------------------------------------------------#
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
@@ -68,7 +68,8 @@ source "$ZRCDIR/plugins.zsh"
 # post
 source "$ZRCDIR/post.zsh"
 {{- else }}
-source "$ZRCDIR/prompt.zsh"
+autoload -Uz promptinit && promptinit
+prompt simple
 {{- end }}
 
 {{ if .personal }}

@@ -21,5 +21,5 @@ main(){
     tmux bind-key "$HSPLIT" split-window -v -c "#{pane_current_path}"\; resize-pane -y $HS
 }
 
-main
+main "$@"
 #vim: set ft=bash ts=2 sw=2 tw=0 et :

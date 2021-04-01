@@ -28,6 +28,8 @@ chromium
 cmake
 cronie
 ctags
+cuda
+cudnn
 dconf-editor
 dex
 dialog
@@ -134,12 +136,14 @@ pulseaudio-bluetooth
 pulseaudio-zeroconf
 pyenv
 python-pywal
+python-tensorflow-opt-cuda
 qopenvpn
 qt5ct
 qt6-base
 r
 redis
 redshift
+reflector
 ripgrep
 rofi
 rsync
@@ -151,6 +155,7 @@ sshfs
 steam
 stow
 sudo
+tensorboard
 termite
 texinfo
 texlive-bibtexextra

@@ -79,7 +79,6 @@ export GOOGLE_APPLICATION_CREDENTIALS="/mnt/Centralized/documents/txt/karlpol-ba
 
 export NNN_OPENER=nuke
 export NNN_COLORS="2134"
-export NNN_OPTS="EDUHrxdeat"
 export NNN_TRASH=trash-cli
 export NNN_SEL='/tmp/.sel'
 export NNN_FIFO=/tmp/nnn.fifo
@@ -143,9 +142,10 @@ export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
 export CHEZMOI_OPTS="--verbose --debug --color on"
 
 {{- if .personal }}
+export NNN_OPTS="EDUHrxdeat"
 export TMUX_OPTS="-2uf $XDG_CONFIG_HOME/tmux/tmux.conf"
 export LS_OPTS="-laFh --group-directories-first --color=always"
-# odoo
 export ODOO_OPTS="--addons-path=$CS_PATH/odoo/addons --dev=reload,all,pdb"
+export JUPYTER_OPTS="--autoreload --debug"
 {{- end }}
 # vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :

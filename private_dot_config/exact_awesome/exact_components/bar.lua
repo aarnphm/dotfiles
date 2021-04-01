@@ -47,21 +47,21 @@ end)))
 -- Playerctl Bar widget
 -- ===================================================================
 
-local song_title = wibox.widget {
+song_title = wibox.widget {
     markup = '--',
     align = 'center',
     valign = 'center',
     widget = wibox.widget.textbox
 }
 
-local song_artist = wibox.widget {
+song_artist = wibox.widget {
     markup = '--',
     align = 'center',
     valign = 'center',
     widget = wibox.widget.textbox
 }
 
-local song_logo = wibox.widget {
+song_logo = wibox.widget {
     markup = '<span foreground="' .. x.color6 .. '"> </span>',
     font = beautiful.icon_font,
     align = 'center',
@@ -69,7 +69,7 @@ local song_logo = wibox.widget {
     widget = wibox.widget.textbox
 }
 
-local playerctl_bar = wibox.widget {
+playerctl_bar = wibox.widget {
     {
         {
             {
@@ -116,22 +116,25 @@ local playerctl_bar = wibox.widget {
 playerctl_bar.visible = false
 
 -- Get Title
-awesome.connect_signal("daemon::playerctl::status",
-    function(playing)
-        if playing then
-            playerctl_bar.visible = true
-        else
-            playerctl_bar.visible = false
+awful.screen.connect_for_each_screen(function(s)
+    awesome.connect_signal("daemon::playerctl::status",
+        function(playing)
+            if playing then
+                playerctl_bar.visible = true
+            else
+                playerctl_bar.visible = false
+            end
         end
-    end
-    )
-awesome.connect_signal("daemon::playerctl::title_artist_album",
-    function(title, artist)
-        playerctl_bar.visible = true
-        song_title.markup = markup.fontfg(beautiful.font, x.color3, title)
-        song_artist.markup = markup.fontfg(beautiful.font,x.color4, artist)
-    end
-    )
+        )
+    awesome.connect_signal("daemon::playerctl::title_artist_album",
+        function(title, artist)
+            playerctl_bar.visible = true
+            song_title.markup = markup.fontfg(beautiful.font, x.color3, title)
+            song_artist.markup = markup.fontfg(beautiful.font,x.color4, artist)
+        end
+        )
+end
+)
 
 -- ===================================================================
 -- Tasklist widgets
