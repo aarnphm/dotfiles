@@ -24,7 +24,7 @@ function print_info() {
 check_if_modified_message(){
 
   [[ ! -f $MSG_FILE ]] && touch "$MSG_FILE"
-  STALE=$( 20 \* 60 \* 60 )
+  STALE=$(expr 20 \* 60 \* 60 )
   CURRTIME=$(date +%s)
   {{- if eq .chezmoi.os "linux" }}
   FILETIME=$(stat "$MSG_FILE" -c %Y)
@@ -32,7 +32,7 @@ check_if_modified_message(){
   FILETIME=$(stat -t %s -f %m $MSG_FILE)
   {{- end }}
 
-  if [ $(( "$CURRTIME" - "$FILETIME" )) -lt "$STALE" ]; then
+  if [ $(expr "$CURRTIME" - "$FILETIME" ) -lt "$STALE" ]; then
     return 0
   else
     return 1
