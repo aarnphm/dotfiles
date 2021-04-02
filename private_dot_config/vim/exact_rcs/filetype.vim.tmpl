@@ -69,7 +69,8 @@ au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-autocmd FileType zsh setlocal ts=2 sts=2 sw=2 tw=0 expandtab
+au! FileType bash set filetype=zsh
+autocmd FileType zsh setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType md setlocal conceallevel=0
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType java setlocal foldmethod=syntax

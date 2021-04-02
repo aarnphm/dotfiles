@@ -1,8 +1,8 @@
 let configs = [
       \ "helpers",
-      \ "plugins",
       \ "general",
       \ "filetype",
+      \ "plugins",
       \ "ui",
       \ "commands",
       \ "mappings",
@@ -12,7 +12,7 @@ let configs = [
 for file in configs
   let x = expand("~/.config/vim/rcs/".file.".vim")
   if filereadable(x)
-    execute 'source' x
+    silent! execute 'source ' x
   endif
 endfor
 "vim: set ft=vim ts=2 sw=2 tw=0 et :

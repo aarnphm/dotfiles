@@ -1,26 +1,83 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -e
+set -euo pipefail
+
+# setup defaults message for cron tasks
+DEFAULT_MESSAGE="chores"
+DEFAULT_PS="cron"
+
+# setup message files
+GIT_CONFIG_ROOT=$(dirname "$(git config --global --get include.path)")
+MSG_FILE="$GIT_CONFIG_ROOT/dot-commit-msg"
 
 # get datetime
-datetime=$(date +'%a %D %T %ZGMT')
+COMMITTIME=$(date +'%D %I:%M%p %ZGMT')
+TASKNAME=
+MESSAGE=
 
-cd $(chezmoi source-path)
+function print_info() {
+    echo -e "\e[1;36m$*\e[m" # cyan
+}
 
-echo "Dumping installed packages to files" >&2
-{{- if eq .chezmoi.os "linux" }}
-# Check for new packages, and add it to both .local file
-PKGMN=yay
-$PKGMN -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local && $PKGMN -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
-{{- else }}
-brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile
-{{- end }}
+# check if message files is recently modified, default time difference: 20h
+# https://stackoverflow.com/a/28341234/8643197
+check_if_modified_message(){
 
-# Check if upstream, else not pull
-if [ $(git rev-parse @)==$(git merge-base @ ${1:-'@{u}'}) ]; then
+  [[ ! -f $MSG_FILE ]] && touch "$MSG_FILE"
+  STALE=$( 20 \* 60 \* 60 )
+  CURRTIME=$(date +%s)
+  {{- if eq .chezmoi.os "linux" }}
+  FILETIME=$(stat "$MSG_FILE" -c %Y)
+  {{- else if eq .chezmoi.os "darwin" }}
+  FILETIME=$(stat -t %s -f %m $MSG_FILE)
+  {{- end }}
+
+  if [ $(( "$CURRTIME" - "$FILETIME" )) -lt "$STALE" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+define_message_body(){
+  check_if_modified_message && MESSAGE=$(cat "$MSG_FILE") || MESSAGE=$DEFAULT_MESSAGE
+  TASKNAME=$DEFAULT_PS
+}
+
+
+backup_dotfiles() {
+  BACKUPDIR="$1"
+  [[ -d "$BACKUPDIR" ]] || mkdir -p "$BACKUPDIR"
+  cd "$BACKUPDIR" && git fetch && git pull --recurse-submodules
+}
+
+autopush_dots() {
+
+  # backup
+  # BACKUPLOC="/mnt/Centralized/documents/dotfiles"
+  # print_info "Backup dotfiles to $BACKUPLOC..."
+  # backup_dotfiles $BACKUPLOC
+
+  # define message block here
+  print_info "\nGet commit message..."
+  define_message_body && cd "$($CHEZMOI_BIN source-path)"
+
+  print_info "\nDumping installed packages to files..."
+  {{- if eq .chezmoi.os "linux" }}
+  # Check for new packages, and add it to both .local file
+  yay -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local && yay -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
+  {{- else }}
+  brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile
+  {{- end }}
+
+  # Check if upstream, else not pull
+  if [ "$(git rev-parse @)" == "$(git merge-base @ "${1:-'@{u}'}")" ]; then
     git pull --recurse-submodules
-fi
+  fi
 
-# execute scripts
-git add -f -v . && git commit -am "$datetime: cron chores" && git push --all
-# vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :
+  # execute scripts
+  git add -f -v . && git commit -am "[$TASKNAME] $COMMITTIME: $MESSAGE" && git push --all
+}
+
+autopush_dots "$@"
+# vim: set ft=zsh ts=2 sw=2 tw=0 et :

@@ -6,10 +6,6 @@ Dockerfile
 *.deb
 *.tar.gz
 
-{{ if .personal }}
-.vimrc
-{{ end }}
-
 {{ if .transient }}
 .local/share
 .local/bin/*

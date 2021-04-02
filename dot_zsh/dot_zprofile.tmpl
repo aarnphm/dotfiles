@@ -1,18 +1,12 @@
 #!/usr/bin/env zsh
 
 ###########################################################################
-#                    source some local env                                #
-###########################################################################
-
-[[ -f $ZDOTDIR/.zshenv.local ]] && source $ZDOTDIR/.zshenv.local
-[[ -f $ZHOMEDIR/.zshenv.local ]] && source $ZHOMEDIR/.zshenv.local
-
-###########################################################################
 #                            Chezmoi                                      #
 ###########################################################################
 
 export CHEZMOI_BIN="$(which chezmoi)"
 export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
+export GIT_GLOBAL_CONFIG_DIR="$(dirname "$(git config --global --get include.path)")"
 
 ###########################################################################
 #                            XDG - ZSH                                    #
@@ -22,21 +16,30 @@ export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_CONFIG_DOCUMENTS="{{ .chezmoi.homeDir }}/documents"
 export XDG_BIN_HOME="{{ .chezmoi.homeDir }}/.local/bin"
+{{- if eq .hostname "archlinux" }}
+source "$XDG_CONFIG_HOME/user-dirs.dirs"
+{{- end }}
 
 # ZSH defaults
-export ZDOTDIR="${ZDOTDIR:-~/.zsh}"
-export ZHOMEDIR=$XDG_CONFIG_HOME/zsh
-export ZRCDIR=$ZHOMEDIR/rc
-export ZDATADIR=$XDG_DATA_HOME/zsh
+export ZDOTDIR="${ZDOTDIR:-$HOME/.zsh}"
+export ZHOMEDIR="${ZHOMEDIR:-$XDG_CONFIG_HOME/zsh}"
+export ZRCDIR="${ZRCDIR:-$ZHOMEDIR/rc}"
+export ZDATADIR="${ZDATADIR:-$XDG_DATA_HOME/zsh}"
 
-{{ if eq .hostname "archlinux" }}
+{{- if eq .hostname "archlinux" }}
 # Probably one of the most important directory
 export CS_PATH="${XDG_CONFIG_DOCUMENTS}/cs"
 export ODOO_PATH="${CS_PATH}/odoo"
-{{ end }}
+{{- end }}
 export CITY="{{ .city }}"
+
+###########################################################################
+#                    source some local env                                #
+###########################################################################
+
+[[ -f $ZDOTDIR/.zshenv.local ]] && source $ZDOTDIR/.zshenv.local
+[[ -f $ZHOMEDIR/.zshenv.local ]] && source $ZHOMEDIR/.zshenv.local
 
 ###########################################################################
 #                            applications default                         #

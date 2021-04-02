@@ -13,11 +13,27 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias -- -="cd -"
 
+#==============================================================#
+## Chezmoi
+#==============================================================#
+
+# move to functions
+alias dots="cd $CHEZMOI_DIR"
+
+# editor
+alias e="$CHEZMOI_BIN edit --apply $@"
+alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
+alias dca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
+alias sca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
+alias dsca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
+alias chez-add="chezmoi add ${CHEZMOI_OPTS}"
+
 # Enable aliases to be sudo’ed
 alias sudo='nocorrect sudo'
 
 # git
 alias g="git"
+alias dotmsg="v $GIT_GLOBAL_CONFIG_DIR/dot-commit-msg"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 
 if (( $+commands[protonvpn] )); then
@@ -88,19 +104,6 @@ function extract() {
     esac
 }
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
-
-#==============================================================#
-## Chezmoi
-#==============================================================#
-
-# move to functions
-alias dots="cd $CHEZMOI_DIR"
-
-# editor
-alias e="$CHEZMOI_BIN edit --apply $@"
-alias ca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
-alias dca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
-alias chez-add="chezmoi add ${CHEZMOI_OPTS}"
 
 #==============================================================#
 ## Dir

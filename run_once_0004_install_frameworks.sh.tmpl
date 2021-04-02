@@ -9,8 +9,10 @@ git config --global core.excludesFile ${XDG_CONFIG_HOME:-$HOME/.config}/git/giti
 {{- if .personal }}
 # bitwarden cli yarn and typescript
 if builtin command -v npm &>/dev/null; then
-    packages=(typescript ts-node react @bitwarden/cli)
     npm list -g yarn &>/dev/null || npm install -g yarn
+
+    # install packages
+    packages=(diagnostic-languageserver typescript ts-node react @bitwarden/cli)
     yarn global add ${packages[@]}
 fi
 
