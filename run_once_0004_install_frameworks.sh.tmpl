@@ -53,7 +53,6 @@ if ! builtin command -v lotion &>/dev/null; then
     curl https://raw.githubusercontent.com/puneetsl/lotion/master/setup.sh >| /tmp/setup.sh
     sudo chmod +x /tmp/setup.sh && sudo ./tmp/setup.sh native
 fi
-{{- end }}
 
 # gcp
 if [[ ! -d $HOME/google-cloud-sdk ]]; then
@@ -62,5 +61,5 @@ if [[ ! -d $HOME/google-cloud-sdk ]]; then
     $HOME/google-cloud-sdk/install.sh --quiet --path-update false --command-completion false --usage-reporting false
     $HOME/google-cloud-sdk/bin/gcloud init
 fi
-
+{{- end }}
 {{- end }}
