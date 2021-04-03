@@ -24,13 +24,13 @@ if  ! [ -f $XDG_CONFIG_HOME/nnn/plugins/getplugs ]; then
     {{- end }}
 fi
 
-{{- if not (joinPath .chezmoi.homeDir ".cargo/bin") }}
+{{- if not (lookPath "rustc") }}
 # install rustup 
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs >| {{ .chezmoi.homeDir }}/rustup.sh && . {{ .chezmoi.homeDir }}/rustup.sh -y --no-modify-path;
 rm {{ .chezmoi.homeDir }}/rustup.sh;
 {{- end }}
 
-{{- if not (joinPath .chezmoi.homeDir ".poetry") }}
+{{- if not (lookPath "poetry") }}
 # install poetry
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 {{- end }}
