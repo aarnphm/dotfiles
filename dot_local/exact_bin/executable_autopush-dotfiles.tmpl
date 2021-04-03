@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -xeuo pipefail
 
 # setup defaults message for cron tasks
 DEFAULT_MESSAGE="chores"
 DEFAULT_PS="cron"
+CURRTIME=$(date +%s)
 
 # setup message files
 GIT_CONFIG_ROOT=$(dirname "$(git config --global --get include.path)")
@@ -15,8 +16,9 @@ COMMITTIME=$(date +'%D %I:%M%p %ZGMT')
 TASKNAME=
 MESSAGE=
 
-function print_info() {
-    echo -e "\e[1;36m$*\e[m" # cyan
+function pprint() {
+    echo -e "$*"
+    # echo -e "\e[1;36m$*\e[m" # cyan
 }
 
 # check if message files is recently modified, default time difference: 20h
@@ -25,7 +27,6 @@ check_if_modified_message(){
 
   [[ ! -f $MSG_FILE ]] && touch "$MSG_FILE"
   STALE=$(expr 20 \* 60 \* 60 )
-  CURRTIME=$(date +%s)
   {{- if eq .chezmoi.os "linux" }}
   FILETIME=$(stat "$MSG_FILE" -c %Y)
   {{- else if eq .chezmoi.os "darwin" }}
@@ -44,25 +45,26 @@ define_message_body(){
   TASKNAME=$DEFAULT_PS
 }
 
-
+# https://stackoverflow.com/a/36332260/8643197
+# should only run as cronjob instead of scripts
 backup_dotfiles() {
   BACKUPDIR="$1"
-  [[ -d "$BACKUPDIR" ]] || mkdir -p "$BACKUPDIR"
+  [[ -d "$BACKUPDIR" ]] || git clone git@github.com:aarnphm/dotfiles.git $BACKUPDIR 
   cd "$BACKUPDIR" && git fetch && git pull --recurse-submodules
 }
 
 autopush_dots() {
 
   # backup
-  # BACKUPLOC="/mnt/Centralized/documents/dotfiles"
-  # print_info "Backup dotfiles to $BACKUPLOC..."
-  # backup_dotfiles $BACKUPLOC
+  BACKUPLOC="/mnt/Centralized/documents/dotfiles"
+  pprint "Backup dotfiles to $BACKUPLOC..."
+  backup_dotfiles $BACKUPLOC
 
   # define message block here
-  print_info "\nGet commit message..."
+  pprint "\nGet commit message..."
   define_message_body && cd "$($CHEZMOI_BIN source-path)"
 
-  print_info "\nDumping installed packages to files..."
+  pprint "\nDumping installed packages to files..."
   {{- if eq .chezmoi.os "linux" }}
   # Check for new packages, and add it to both .local file
   yay -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local && yay -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
@@ -80,4 +82,4 @@ autopush_dots() {
 }
 
 autopush_dots "$@"
-# vim: set ft=zsh ts=2 sw=2 tw=0 et :
+# vim: set ft=sh.gohtmltmpl ts=2 sw=2 tw=0 et :
