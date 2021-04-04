@@ -40,7 +40,7 @@ function pprint() {
     echo -e "$*"
   else
     # cyan
-    echo -e "\e[1;36m$*\e[m" &>/dev/tty
+    echo -e "\e[1;33m$*\e[m" &>/dev/tty
   fi
 }
 
@@ -69,8 +69,7 @@ define_message_body(){
 
   # this will handles while interactive, check predefined message, or just use chores
   if [[ $INTERACTIVE == 1 ]]; then
-    pprint "Define message: "
-    read $MESSAGE </dev/tty
+    read -ep "Define message: " MESSAGE
     TASKNAME=$(whoami)
   elif check_if_modified $MSG_FILE; then
     pprint "Using predefined message, stored at $MSG_FILE"
@@ -105,6 +104,10 @@ autopush_dots() {
   # define message block here
   pprint "\nGet commit message..."
   define_message_body && cd "$(chezmoi source-path)"
+  if [[ $INTERACTIVE == 1 ]]; then
+    COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
+    pprint "Commit message: $COMMITMSG"
+  fi
 
   pprint "\nDumping installed packages to files..."
   {{- if eq .chezmoi.os "linux" }}
@@ -121,7 +124,8 @@ autopush_dots() {
   fi
 
   # execute scripts
-  git add -f -v . && git commit -am "[$TASKNAME] $COMMITTIME: $MESSAGE" && git push --all
+  pprint "\nPushing to remote directory..."
+  git add -f -v . && git commit -am "$COMMITMSG" && git push --all
 }
 
 autopush_dots "$@"
