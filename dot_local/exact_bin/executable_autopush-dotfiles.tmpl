@@ -36,7 +36,7 @@ function check_interactive() {
 }
 
 function pprint() {
-  if [ $INTERACTIVE == 0 ]; then
+  if [[ $INTERACTIVE == 0 ]]; then
     echo -e "$*"
   else
     # cyan
@@ -73,7 +73,7 @@ define_message_body(){
     MESSAGE=$DEFAULT_MESSAGE
   fi
 
-  if [ $INTERACTIVE == 0 ]; then
+  if [[ $INTERACTIVE == 1 ]]; then
     TASKNAME=$(whoami)
   else
     TASKNAME=$DEFAULT_PS
