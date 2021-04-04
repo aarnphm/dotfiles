@@ -21,7 +21,7 @@ alias -- -="cd -"
 alias dots="cd $CHEZMOI_DIR"
 
 # editor
-alias e="$CHEZMOI_BIN edit --apply $@"
+alias e="$CHEZMOI_BIN edit --apply"
 alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
 alias dca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
 alias sca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
@@ -55,8 +55,8 @@ alias l="n"
 alias lp="nnn -P p"
 
 # editors
-alias v="$EDITOR $@"
-alias av="$EDITOR -p $@"
+alias v="$EDITOR"
+alias av="$EDITOR -p"
 
 #chmod
 alias 644='chmod 644'
@@ -118,7 +118,7 @@ alias chezmoidir="cd $CS_PATH/chezmoi"
 # bentoml
 alias bentodir="cd $CS_PATH/BentoML"
 # luxcer
-alias luxcer="cd $CS_PATH/luxcer"
+alias luxcer="cd $CS_PATH/luxcer/lookup-service"
 # zsh config directory
 alias simpledir="cd $CS_PATH/simple"
 alias simup="cp $ZRCDIR/simple/*.zsh $CS_PATH/simple/"
@@ -137,7 +137,7 @@ alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 #==============================================================#
 
 # bento
-alias bento="bentoml $@"
+alias bento="bentoml"
 # odoo
 alias odoo="${ODOO_PATH}/odoo-bin ${ODOO_OPTS}"
 # jupyter

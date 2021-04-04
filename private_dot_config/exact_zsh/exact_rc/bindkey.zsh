@@ -2,8 +2,8 @@
 ##          Key Bindings                                      ##
 #==============================================================#
 
-stty intr '^C'
-stty susp '^Z'
+# stty intr '^C'
+# stty susp '^Z'
 stty stop undef
 bindkey -v     # vi 風
 

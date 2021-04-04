@@ -13,10 +13,3 @@ export SYSTEM=$(uname -s)
 if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR}/.zprofile" ]]; then
   source "${ZDOTDIR}/.zprofile"
 fi
-
-###########################################################################
-#                    source some local env                                #
-###########################################################################
-
-[[ -f $ZDOTDIR/.zshenv.local ]] && source $ZDOTDIR/.zshenv.local
-[[ -f $ZHOMEDIR/.zshenv.local ]] && source $ZHOMEDIR/.zshenv.local

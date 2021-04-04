@@ -346,7 +346,7 @@ prompt_simple_async_git_fetch() {
   # MONITOR mode we can notice when a child process prompts for user input
   # because it will be suspended. Since we are inside an async worker, we
   # have no way of transmitting the password and the only option is to
-  # kill it. If we don't do it this way, the process will corrupt with the
+  # kill it. If we don\'t do it this way, the process will corrupt with the
   # async worker.
   setopt localtraps monitor
 
@@ -732,7 +732,7 @@ prompt_simple_is_inside_container() {
 
 # NOTE: poetry behaviour doesn't source shell as login shell
 # should we reload prompt to overcome poetry doesn't recognize prompts?
-prompt_simple_is_inside_virtualenv() {[[ -n $VIRTUAL_ENV ]]}
+prompt_simple_is_inside_virtualenv() {[[ -n $VIRTUAL_ENV ]] || [[ -n $POETRY_ACTIVE ]]}
 
 prompt_simple_setup() {
 
@@ -783,7 +783,7 @@ prompt_simple_setup() {
       prompt:continuation  242
       user                 172
       user:root            default
-      virtualenv           121
+      virtualenv           242
     )
     prompt_simple_colors=("${(@kv)prompt_simple_colors_default}")
 
@@ -841,4 +841,4 @@ prompt_simple_setup() {
   }
 
 prompt_simple_setup "$@"
-# vim: set ft=zsh ts=2 sw=2 tw=0 et :
+# vim: set ft=zsh ts=4 sw=4 tw=0 et :

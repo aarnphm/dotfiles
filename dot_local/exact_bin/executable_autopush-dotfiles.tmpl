@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-set -xeuo pipefail
+set -euo pipefail
+
+# setup directory
+GIT_CONFIG_ROOT=$(dirname "$(git config --global --get include.path)")
 
 # setup defaults message for cron tasks
 DEFAULT_MESSAGE="chores"
@@ -8,29 +11,51 @@ DEFAULT_PS="cron"
 CURRTIME=$(date +%s)
 
 # setup message files
-GIT_CONFIG_ROOT=$(dirname "$(git config --global --get include.path)")
 MSG_FILE="$GIT_CONFIG_ROOT/dot-commit-msg"
+PID_FILE="/tmp/autodots.pid"
+BACKUP_DIR="/mnt/Centralized/documents/dotfiles"
 
 # get datetime
-COMMITTIME=$(date +'%D %I:%M%p %ZGMT')
+COMMITTIME=$(date +'%m/%d %H:%M%p')
 TASKNAME=
 MESSAGE=
+INTERACTIVE=
+
+echo $$ >| $PID_FILE
+
+function check_interactive() {
+  case "$-" in
+    *i*)
+      # this is interactive
+      INTERACTIVE=0
+      ;;
+    *)
+      INTERACTIVE=1
+      ;;
+  esac
+}
 
 function pprint() {
+  if [ $INTERACTIVE == 0 ]; then
     echo -e "$*"
-    # echo -e "\e[1;36m$*\e[m" # cyan
+  else
+    # cyan
+    echo -e "\e[1;36m$*\e[m" &>/dev/tty
+  fi
 }
 
 # check if message files is recently modified, default time difference: 20h
 # https://stackoverflow.com/a/28341234/8643197
-check_if_modified_message(){
+check_if_modified(){
 
-  [[ ! -f $MSG_FILE ]] && touch "$MSG_FILE"
+  file=$1
+
+  [[ ! -f $file ]] && touch "$file"
   STALE=$(expr 20 \* 60 \* 60 )
   {{- if eq .chezmoi.os "linux" }}
-  FILETIME=$(stat "$MSG_FILE" -c %Y)
+  FILETIME=$(stat "$file" -c %Y)
   {{- else if eq .chezmoi.os "darwin" }}
-  FILETIME=$(stat -t %s -f %m $MSG_FILE)
+  FILETIME=$(stat -t %s -f %m $file)
   {{- end }}
 
   if [ $(expr "$CURRTIME" - "$FILETIME" ) -lt "$STALE" ]; then
@@ -41,12 +66,22 @@ check_if_modified_message(){
 }
 
 define_message_body(){
-  check_if_modified_message && MESSAGE=$(cat "$MSG_FILE") || MESSAGE=$DEFAULT_MESSAGE
-  TASKNAME=$DEFAULT_PS
+  if check_if_modified $MSG_FILE; then
+    pprint "Using custom message, stored at $MSG_FILE"
+    MESSAGE=$(cat "$MSG_FILE")
+  else
+    MESSAGE=$DEFAULT_MESSAGE
+  fi
+
+  if [ $INTERACTIVE == 0 ]; then
+    TASKNAME=$(whoami)
+  else
+    TASKNAME=$DEFAULT_PS
+  fi
 }
 
 # https://stackoverflow.com/a/36332260/8643197
-# should only run as cronjob instead of scripts
+# TODO: should only run as cronjob instead of scripts
 backup_dotfiles() {
   BACKUPDIR="$1"
   [[ -d "$BACKUPDIR" ]] || git clone git@github.com:aarnphm/dotfiles.git $BACKUPDIR 
@@ -55,25 +90,28 @@ backup_dotfiles() {
 
 autopush_dots() {
 
+  # this will check whether task is running by cron or user
+  check_interactive
+
   # backup
-  BACKUPLOC="/mnt/Centralized/documents/dotfiles"
-  pprint "Backup dotfiles to $BACKUPLOC..."
-  backup_dotfiles $BACKUPLOC
+  pprint "Backup dotfiles to $BACKUP_DIR..."
+  backup_dotfiles $BACKUP_DIR
 
   # define message block here
   pprint "\nGet commit message..."
-  define_message_body && cd "$($CHEZMOI_BIN source-path)"
+  define_message_body && cd "$(chezmoi source-path)"
 
   pprint "\nDumping installed packages to files..."
   {{- if eq .chezmoi.os "linux" }}
   # Check for new packages, and add it to both .local file
-  yay -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local && yay -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
+  yay -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local
+  yay -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
   {{- else }}
   brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile
   {{- end }}
 
   # Check if upstream, else not pull
-  if [ "$(git rev-parse @)" == "$(git merge-base @ "${1:-'@{u}'}")" ]; then
+  if [ $(git rev-parse @) == $(git merge-base @ ${1:-'@{u}'}) ]; then
     git pull --recurse-submodules
   fi
 

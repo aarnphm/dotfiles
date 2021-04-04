@@ -35,6 +35,14 @@ export ODOO_PATH="${CS_PATH}/odoo"
 export CITY="{{ .city }}"
 
 ###########################################################################
+#                    source some local env                                #
+###########################################################################
+
+[[ -f $ZDOTDIR/.zshenv.local ]] && source $ZDOTDIR/.zshenv.local
+[[ -f $ZHOMEDIR/.zshenv.local ]] && source $ZHOMEDIR/.zshenv.local
+
+
+###########################################################################
 #                            applications default                         #
 ###########################################################################
 
