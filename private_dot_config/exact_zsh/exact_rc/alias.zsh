@@ -33,7 +33,6 @@ alias sudo='nocorrect sudo'
 
 # git
 alias g="git"
-alias dotmsg="v $GIT_GLOBAL_CONFIG_DIR/dot-commit-msg"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 
 if (( $+commands[protonvpn] )); then

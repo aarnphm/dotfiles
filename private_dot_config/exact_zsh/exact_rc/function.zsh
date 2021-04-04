@@ -7,6 +7,11 @@ function history-all() {
     history -E 1
 }
 
+function dotmsg(){
+    echo "Define message: "
+    cat - >| $GIT_GLOBAL_CONFIG_DIR/dot-commit-msg
+}
+
 function __exec_command_with_tmux() {
     local cmd="$@"
     if [[ "$(ps -p $(ps -p $$ -o ppid=) -o comm= 2> /dev/null)" =~ tmux ]]; then
