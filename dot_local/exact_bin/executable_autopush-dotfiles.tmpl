@@ -66,18 +66,23 @@ check_if_modified(){
 }
 
 define_message_body(){
-  if check_if_modified $MSG_FILE; then
-    pprint "Using custom message, stored at $MSG_FILE"
+
+  # this will handles while interactive, check predefined message, or just use chores
+  if [[ $INTERACTIVE == 1 ]]; then
+    pprint "Define message: "
+    read $MESSAGE </dev/tty
+    TASKNAME=$(whoami)
+  elif check_if_modified $MSG_FILE; then
+    pprint "Using predefined message, stored at $MSG_FILE"
     MESSAGE=$(cat "$MSG_FILE")
   else
     MESSAGE=$DEFAULT_MESSAGE
   fi
 
-  if [[ $INTERACTIVE == 1 ]]; then
-    TASKNAME=$(whoami)
-  else
+  if [[ -z $TASKNAME ]]; then
     TASKNAME=$DEFAULT_PS
   fi
+
 }
 
 # https://stackoverflow.com/a/36332260/8643197
