@@ -70,7 +70,7 @@ define_message_body(){
   # this will handles while interactive, check predefined message, or just use chores
   if [[ $INTERACTIVE == 1 ]]; then
     read -ep "Define message: " MESSAGE
-    TASKNAME=$(whoami)
+    TASKNAME="user"
   elif check_if_modified $MSG_FILE; then
     pprint "Using predefined message, stored at $MSG_FILE"
     MESSAGE=$(cat "$MSG_FILE")

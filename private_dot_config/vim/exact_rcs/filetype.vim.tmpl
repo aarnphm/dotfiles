@@ -35,9 +35,9 @@ function! JavaScriptFold()
   setl foldtext=FoldText()
 endfunction
 
-au FileType typescript setlocal formatprg=prettier\ --parser\ typescript
-au BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
-au BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+" au FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+" au BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+" au BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

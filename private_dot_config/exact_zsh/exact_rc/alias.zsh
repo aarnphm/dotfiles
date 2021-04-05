@@ -29,7 +29,7 @@ alias dsca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_D
 alias chez-add="chezmoi add ${CHEZMOI_OPTS}"
 
 # Enable aliases to be sudo’ed
-alias sudo='nocorrect sudo'
+alias sudo="nocorrect sudo"
 
 # git
 alias g="git"
@@ -58,35 +58,35 @@ alias v="$EDITOR"
 alias av="$EDITOR -p"
 
 #chmod
-alias 644='chmod 644'
-alias 600='chmod 600'
-alias 755='chmod 755'
-alias 700='chmod 700'
-alias 777='chmod 777'
-alias cx='chmod +x'
+alias 644="chmod 644"
+alias 600="chmod 600"
+alias 755="chmod 755"
+alias 700="chmod 700"
+alias 777="chmod 777"
+alias cx="chmod +x"
 
 #==============================================================#
 ## Global alias
 #==============================================================#
 
-alias -g G='| grep '  # e.x. dmesg lG CPU
-alias -g L='| $PAGER '
-alias -g W='| wc'
-alias -g H='| head'
-alias -g T='| tail'
+alias -g G="| grep "  # e.x. dmesg lG CPU
+alias -g L="| $PAGER "
+alias -g W="| wc"
+alias -g H="| head"
+alias -g T="| tail"
 
 #==============================================================#
 ## Suffix
 #==============================================================#
 
 alias -s {md,markdown,txt}="$EDITOR"
-alias -s {html,gif,mp4}='x-www-browser'
-alias -s rb='ruby'
-alias -s py='python'
-alias -s hs='runhaskell'
-alias -s php='php -f'
-alias -s {jpg,jpeg,png,bmp}='feh'
-alias -s mp3='mplayer'
+alias -s {html,gif,mp4}="x-www-browser"
+alias -s rb="ruby"
+alias -s py="python"
+alias -s hs="runhaskell"
+alias -s php="php -f"
+alias -s {jpg,jpeg,png,bmp}="feh"
+alias -s mp3="mplayer"
 function extract() {
     case $1 in
         *.tar.gz|*.tgz) tar xzvf "$1";;
@@ -111,7 +111,7 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 alias cs="cd $CS_PATH"
 # mcmaster vpn connect via studentvpn.mcmaster.ca
 if [[ -d $CS_PATH/mcmaster ]]; then
-    alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | egrep 'compeng' | head -n1`"
+    alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | egrep "compeng" | head -n1`"
 fi
 alias chezmoidir="cd $CS_PATH/chezmoi"
 # bentoml
@@ -147,11 +147,12 @@ alias speedtest="watch -n 1 ping -c 1 google.com"
 alias delay="ping google.com | grep -E --only-matching --color '[0-9\.]+ ms'"
 
 # IP addresses
-alias ip4='dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com'
-alias ip6='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
-alias dlisten='ss -lntu | grep $1'
-alias copy='xclip -sel clip'
-alias bwpass='[[ -f $HOME/bw.pass ]] && cat $HOME/bw.pass | sed -n 1p | xclip -sel clip'
+alias ip4="dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com"
+alias ip6="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com"
+alias dlisten="ss -lntu | grep $1"
+alias freetcp="fuser -k {$@}/tcp"
+alias copy="xclip -sel clip"
+alias bwpass="[[ -f $HOME/bw.pass ]] && cat $HOME/bw.pass | sed -n 1p | xclip -sel clip"
 
 # some curl ass shit
 alias cryptoprice="curl rate.sx"
@@ -172,54 +173,54 @@ if [ -f /etc/arch-release ] ;then
     # urxvt
     alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
     # install
-    alias pac-update='sudo pacman -Sy'
-    alias pac-upgrade='sudo pacman -Syu'
-    alias pac-upgrade-force='sudo pacman -Syyu'
-    alias pac-install='sudo pacman -S'
-    alias pac-remove='sudo pacman -Rs'
+    alias pac-update="sudo pacman -Sy"
+    alias pac-upgrade="sudo pacman -Syu"
+    alias pac-upgrade-force="sudo pacman -Syyu"
+    alias pac-install="sudo pacman -S"
+    alias pac-remove="sudo pacman -Rs"
     # search remote package
-    alias pac-search='pacman -Ss'
-    alias pac-package-info='pacman -Si'
+    alias pac-search="pacman -Ss"
+    alias pac-package-info="pacman -Si"
     # search local package
-    alias pac-installed-list='pacman -Qs'
-    alias pac-installed-package-info='pacman -Qi'
+    alias pac-installed-list="pacman -Qs"
+    alias pac-installed-package-info="pacman -Qi"
     # import: sudo pacman -S pkglist.txt
-    alias pac-installed-list-export='pacman -Qqen'
-    alias pac-installed-files='pacman -Ql'
-    alias pac-unused-list='pacman -Qtdq'
-    alias pac-search-from-path='pacman -Qqo'
+    alias pac-installed-list-export="pacman -Qqen"
+    alias pac-installed-files="pacman -Ql"
+    alias pac-unused-list="pacman -Qtdq"
+    alias pac-search-from-path="pacman -Qqo"
     # search package from filename
-    alias pac-included-files='pacman -Fl'
-    alias pac-search-by-filename='pkgfile'
+    alias pac-included-files="pacman -Fl"
+    alias pac-search-by-filename="pkgfile"
     # log
-    alias pac-log='cat /var/log/pacman.log | \grep "installed\|removed\|upgraded"'
-    alias pac-aur-packages='pacman -Qm'
+    alias pac-log="cat /var/log/pacman.log | \grep "installed\|removed\|upgraded""
+    alias pac-aur-packages="pacman -Qm"
     # etc
-    alias pac-clean='sudo pacman -Sc'
+    alias pac-clean="sudo pacman -Sc"
     # aur
     if builtin command -v yay > /dev/null 2>&1; then
-        alias yay-installed-list='yay -Qm'
-        alias yay-clean='yay -Sc'
-        alias yay-update='yay -Syuu --noconfirm'
+        alias yay-installed-list="yay -Qm"
+        alias yay-clean="yay -Sc"
+        alias yay-update="yay -Syuu --noconfirm"
     fi
 fi
 
 # systemctl related
 if (( $+commands[systemctl] )); then
-    alias sys-restart='sudo systemctl restart'
-    alias sys-start='sudo systemctl start'
-    alias sys-stop='sudo systemctl stop'
-    alias sys-enable='sudo systemctl enable'
-    alias sys-disable='sudo systemctl disable'
-    alias sys-restart='sudo systemctl restart'
-    alias sys-reload='sudo systemctl reload'
-    alias sys-status='systemctl status'
-    alias sys-show='systemctl show'
-    alias sys-lu='systemctl list-units'
-    alias sys-luf='systemctl list-unit-files'
-    alias sys-lt='systemctl list-timers'
-    alias sys-cat='systemctl cat'
-    alias sys-ie='systemctl is-enabled'
+    alias sys-restart="sudo systemctl restart"
+    alias sys-start="sudo systemctl start"
+    alias sys-stop="sudo systemctl stop"
+    alias sys-enable="sudo systemctl enable"
+    alias sys-disable="sudo systemctl disable"
+    alias sys-restart="sudo systemctl restart"
+    alias sys-reload="sudo systemctl reload"
+    alias sys-status="systemctl status"
+    alias sys-show="systemctl show"
+    alias sys-lu="systemctl list-units"
+    alias sys-luf="systemctl list-unit-files"
+    alias sys-lt="systemctl list-timers"
+    alias sys-cat="systemctl cat"
+    alias sys-ie="systemctl is-enabled"
 fi
 
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
@@ -251,14 +252,14 @@ elif [[ -f /etc/arch-release ]]; then
 fi
 
 # Print each PATH, FPATH entry on a separate line
-alias path='echo -e ${PATH//:/\\n}'
-alias fpath='echo -e ${FPATH//:/\\n}'
+alias path="echo -e ${PATH//:/\\n}"
+alias fpath="echo -e ${FPATH//:/\\n}"
 
 # File Download
 if (( $+commands[curl] )); then
-    alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
+    alias get="curl --continue-at - --location --progress-bar --remote-name --remote-time"
 elif (( $+commands[wget] )); then
-    alias get='wget --continue --progress=bar --timestamping'
+    alias get="wget --continue --progress=bar --timestamping"
 fi
 
 #==============================================================#
