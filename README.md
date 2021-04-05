@@ -26,12 +26,13 @@
 
 <h2 align="center">todo.</h3>
 
+- [x] Customs tasks messages (check [autopush_dotfiles](./dot_local/exact_bin/executable_autopush-dotfiles.tmpl))
 - [ ] Tidy up awesome
 - [ ] Release schedule
 - [ ] Cron jobs for different branches
-- [ ] Customs tasks messages (check [autopush_dotfiles](./dot_local/exact_bin/executable_autopush-dotfiles.tmpl))
 - [ ] Rotate bitwarden password every two weeks, secure with gpg
 - [ ] save some local docs with pass
+- [ ] fixes bwmenu
 - [ ] (when i have time): custom arch ISO
 
 <!-- vim: set ft=markdown ts=4 sw=4 tw=0 et : -->

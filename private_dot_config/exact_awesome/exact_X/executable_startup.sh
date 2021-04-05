@@ -34,9 +34,9 @@ run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
 run kitty tmux
-run skypeforlinux
+# run skypeforlinux
+run discord
 run nm-applet
 run blueman-applet
-run discord
 run optimus-manager-qt
 # vim: set ft=sh ts=2 sw=2 tw=0 et :

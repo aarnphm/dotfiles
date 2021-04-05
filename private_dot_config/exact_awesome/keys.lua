@@ -277,11 +277,7 @@ client.connect_signal("request::default_keybindings", function()
                 ),
             awful.key({ctrl, altkey}, "e",
                 function()
-                    awful.spawn.easy_async_with_shell('bwmenu', {
-                            stderr = function(line)
-                                naughty.notify { text = "error: "..line }
-                            end,
-                        })
+                    awful.spawn.easy_async_with_shell('bwmenu')
                 end,
                 {description = "bitwarden-rofi, @mattydebie", group = "launcher"}
                 ),

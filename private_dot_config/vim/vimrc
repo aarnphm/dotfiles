@@ -1,5 +1,4 @@
 let configs = [
-      \ "helpers",
       \ "general",
       \ "filetype",
       \ "plugins",

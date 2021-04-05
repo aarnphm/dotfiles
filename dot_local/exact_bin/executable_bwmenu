@@ -1,5 +1,4 @@
 #!/bin/bash
-# Helper functions
 
 # Extract item or items matching .name, including deduplication
 # $1: item name, prepended or not with deduplication mark
@@ -78,9 +77,15 @@ DEDUP_MARK="(+)"
 DIR="$(dirname "$(readlink -f "$0")")"
 
 ask_password() {
-    mpw=$(printf '' | rofi -dmenu -p "Master Password" -password -lines 0) || exit $?
-    echo "$mpw" | bw unlock 2>/dev/null | grep 'export' | sed -E 's/.*export BW_SESSION="(.*==)"$/\1/' || exit_error $? "Could not unlock vault"
-}
+    if [[ -f $HOME/bw.pass ]]; then
+        # bitwarden-cli with a bit of a hack
+        bwpassfile="$HOME/bw.pass"
+        mpw=$(echo $bwpassfile | mapfile; echo "${MAPFILE[0]}") 
+    else
+        mpw=$(printf '' | rofi -dmenu -p "Master Password" -password -lines 0) || exit $?
+    fi
+        echo "$mpw" | bw unlock 2>/dev/null | grep 'export' | sed -E 's/.*export BW_SESSION="(.*==)"$/\1/' || exit_error $? "Could not unlock vault"
+    }
 
 get_session_key() {
     if [ $AUTO_LOCK -eq 0 ]; then
@@ -506,7 +511,7 @@ done
 }
 
 parse_cli_arguments "$@"
-BW_HASH=$BW_SESSION
+get_session_key
 select_autotype_command
 select_copy_command
 load_items
