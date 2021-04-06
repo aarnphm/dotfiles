@@ -4,7 +4,6 @@ local wibox     = require("wibox")
 local helpers   = require("helpers")
 local beautiful = require("beautiful")
 local defaults  = require("defaults")
-local ctrl      = defaults.ctrl
 local modkey    = defaults.modkey
 local gfs       = gears.filesystem
 
@@ -53,8 +52,9 @@ end)
 
 screen.connect_signal("arrange", function (s)
     local only_one = #s.tiled_clients == 1
+    local max_layer = awful.layout.get(s)
     for _, c in pairs(s.clients) do
-        if only_one and not c.floating or c.maximized then
+        if only_one and not c.floating or c.maximized or max_layer == awful.layout.suit.max.name or max_layer == awful.layout.suit.max.fullscreen then
             c.border_width = 0
         else
             c.border_width = beautiful.border_width
