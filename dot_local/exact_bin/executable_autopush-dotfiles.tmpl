@@ -68,19 +68,21 @@ check_if_modified(){
 define_message_body(){
 
   # this will handles while interactive, check predefined message, or just use chores
-  if check_if_modified $MSG_FILE; then
-    pprint "Using predefined message, stored at $MSG_FILE"
-    MESSAGE=$(cat "$MSG_FILE")
-  elif [[ $INTERACTIVE == 1 ]]; then
-    read -ep "Define message: " MESSAGE
-    TASKNAME="user"
-  else
-    MESSAGE=$DEFAULT_MESSAGE
-  fi
+  # if check_if_modified $MSG_FILE; then
+  #   pprint "Using predefined message, stored at $MSG_FILE"
+  #   MESSAGE=$(cat "$MSG_FILE")
+  # elif [[ $INTERACTIVE == 1 ]]; then
+  #   read -ep "Define message: " MESSAGE
+  #   TASKNAME="user"
+  # else
+  #   MESSAGE=$DEFAULT_MESSAGE
+  # fi
 
-  if [[ -z $TASKNAME ]]; then
-    TASKNAME=$DEFAULT_PS
-  fi
+  # if [[ -z $TASKNAME ]]; then
+  #   TASKNAME=$DEFAULT_PS
+  # fi
+  MESSAGE=$DEFAULT_MESSAGE
+  TASKNAME=$DEFAULT_PS
 
 }
 

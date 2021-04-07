@@ -1,46 +1,29 @@
 set nocompatible
-set laststatus=0
-set background=dark
 
-let mapleader=','
-let g:is_unix=has('unix')
-let g:is_nvim=has('nvim')
-let g:has_job=has('job')
-let g:is_gui=has('gui_running')
-let g:has_term = has('terminal')
-let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
+set background=dark
+colorscheme afterglow
 
 " use vim-plug because of its minimalistic
 "¯\_(ツ)_/¯
+let g:is_nvim=has('nvim')
 let data_dir = g:is_nvim ? stdpath('data') . '/site': '~/.config/vim'
 let g:plug_home = g:is_nvim ? data_dir : data_dir . '/plugins'
 
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if empty(glob(stdpath('data') . '/autoload/plug.vim'))
+    silent execute '!curl -fLo '.stdpath('data').'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin()
 
 " tpope plugins =)
-Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-apathy'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
-
-" Color scheme
-Plug 'sainnhe/sonokai'
-Plug 'ayu-theme/ayu-vim'
-Plug 'tlhr/anderson.vim'
-Plug 'romainl/Apprentice'
-Plug 'ntk148v/vim-horizon'
-Plug 'joshdick/onedark.vim'
-Plug 'AlessandroYorba/Alduin'
-Plug 'rakr/vim-two-firewatch'
-Plug 'danilo-augusto/vim-afterglow'
 
 " fzf with rg
 Plug 'rking/ag.vim'
@@ -55,48 +38,66 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'Rykka/InstantRst'
+Plug 'jupyter-vim/jupyter-vim'
 
 " language packs
 Plug 'sheerun/vim-polyglot'
-" language syntax
-Plug 'lervag/vimtex'
-Plug 'mrk21/yaml-vim'
-Plug 'jparise/vim-graphql'
 Plug 'wakatime/vim-wakatime'
-Plug 'tmux-plugins/vim-tmux'
-Plug 'zinit-zsh/zinit-vim-syntax'
-Plug 'Rykka/InstantRst'
-Plug 'jupyter-vim/jupyter-vim'
-Plug 'plasticboy/vim-markdown'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'vim-python/python-syntax'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'leafgarland/typescript-vim'
+" language syntax
+Plug 'lervag/vimtex', {'for':'tex'}
+Plug 'mrk21/yaml-vim', {'for': 'yaml'}
+Plug 'jparise/vim-graphql', {'for': 'graphql'}
+Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
+Plug 'plasticboy/vim-markdown', {'for': 'md'}
+Plug 'ekalinin/Dockerfile.vim', {'for': 'Dockerfile'}
+Plug 'vim-python/python-syntax', {'for': 'python'}
+Plug 'lifepillar/pgsql.vim', {'for': 'sql'}
+Plug 'pangloss/vim-javascript', {'for': 'js'}
+Plug 'maxmellon/vim-jsx-pretty', {'for': 'jsx'}
+Plug 'peitalin/vim-jsx-typescript', {'for': 'typescript'}
+Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'styled-components/vim-styled-components'
 
 " UI related
-Plug 'preservim/tagbar'
+Plug 'preservim/tagbar', {'on':'TagbarToggle'}
 Plug 'godlygeek/tabular'
 Plug 'preservim/nerdtree'
 Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
-if g:is_termguicolors
-  set termguicolors
+let mapleader=','
+let g:is_unix=has('unix')
+let g:has_job=has('job')
+let g:is_gui=has('gui_running')
+let g:has_term = has('terminal')
+let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
+let g:ssh = $SSH_CONNECTION
+" tree style file explorer
+let g:netrw_liststyle=3
+
+" Minimal
+set number
+set relativenumber
+
+set autoindent
+set backspace=indent,eol,start
+set complete-=i
+set smarttab
+
+set nrformats-=octal
+
+if !has('nvim') && &ttimeoutlen == -1
+    set ttimeout
+    set ttimeoutlen=100
 endif
-if has('vim')
-    set term=xterm-256color
-endif
 
-colorscheme afterglow 
-
-
+set laststatus=0
 set ruler
 set rulerformat=%70(%=%y\ ›\ %{getfsize(@%)}B\ ›\ %P\ ›\ %l:%L%)
+set wildmenu
 
 set showtabline=1
 hi TabLine      guifg=#1a1a1a guibg=#d6d6d6
@@ -104,55 +105,22 @@ hi TabLineFill  guifg=#1a1a1a guibg=#d6d6d6 gui=reverse
 hi TabLineSel   guifg=#1a1a1a guibg=#d6d6d6 gui=bold
 set tabline=%!MyTabLine()
 
-function! MyTabLine()
-    let s = ''
-    for i in range(tabpagenr('$'))
-        let tabnr = i + 1 " range() starts at 0
-        let winnr = tabpagewinnr(tabnr)
-        let buflist = tabpagebuflist(tabnr)
-        let bufnr = buflist[winnr - 1]
-        let bufname = fnamemodify(bufname(bufnr), ':t')
-
-        let s .= '%' . tabnr . 'T'
-        let s .= (tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-        let s .= ' ' . tabnr
-
-        let n = tabpagewinnr(tabnr,'$')
-        if n > 1 | let s .= ':' . n | endif
-
-        let s .= empty(bufname) ? ' [No Name] ' : ' [' . bufname . '] '
-
-        let bufmodified = getbufvar(bufnr, "&mod")
-        if bufmodified | let s .= '+ ' | endif
-    endfor
-    let s .= '%#TabLineFill#'
-    return s
-endfunction
-
-" tree style file explorer
-let g:netrw_liststyle=1
-let g:netrw_browse_split=4
-let g:netrw_winsize=25
-
-let g:ssh = $SSH_CONNECTION
-
-if &encoding ==# 'latin1' && has('gui_running')
-    set encoding=utf-8
+if !&scrolloff
+    set scrolloff=1
 endif
-
-" Minimal
-set number
-set relativenumber
+if !&sidescrolloff
+    set sidescrolloff=5
+endif
+set display+=lastline
 
 set incsearch
+set hlsearch
 set noshowcmd
 set notitle
 set nowrap
-set showmatch
 set showmode
 set hidden
-set clipboard=unnamed,unnamedplus
-" i for ssh session
+set clipboard=unnamed
 if g:ssh
     set mouse=i
 else
@@ -160,18 +128,23 @@ else
 endif
 set conceallevel=0
 set foldmethod=manual "indent-syntax-manual
-set wildmenu
 set wildmode=longest:full,full
 set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
-set wildcharm=<Tab>
+set wildchar=<Tab>
 set shortmess+=Ic
 set pastetoggle=<F2>
 set expandtab
+set shiftwidth=4
+set expandtab
+set tabstop=4
+set softtabstop=4
+set nojoinspaces
+set splitright
+set splitbelow
 
 " Performance tuning
 set lazyredraw
 set nocursorline
-set hlsearch
 set ignorecase
 set smartcase
 
@@ -183,14 +156,49 @@ set undofile
 set undodir=~/.config/vim/undo
 set undolevels=9999
 
-exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+if &encoding ==# 'latin1' && has('gui_running')
+    set encoding=utf-8
+endif
+
 set list
+let &listchars='tab:\uBB\uBB,trail:\uB7,nbsp:~'
 if &listchars ==# 'eol:$'
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
 
+if v:version > 703 || v:version == 703 && has("patch541")
+    set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+if has('path_extra')
+    setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
+    set shell=/usr/bin/env\ bash
+endif
+
+set autoread
+
+if &history < 1000
+    set history=1000
+endif
+if &tabpagemax < 50
+    set tabpagemax=50
+endif
+if !empty(&viminfo)
+    set viminfo^=!
+endif
+set sessionoptions-=options
+set viewoptions-=options
+
+" Allow color schemes to do bright colors without forcing bold.
+if &t_Co == 8 && $TERM !~# '^Eterm'
+    set t_Co=16
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Python
+" Filetype
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let python_highlight_all = 1
 
@@ -200,9 +208,6 @@ au FileType python syn keyword pythonDecorator True None False self
 au BufNewFile,BufRead *.jinja set syntax=htmljinja
 au BufNewFile,BufRead *.mako set ft=mako
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Misc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 au! FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 au! FileType zsh setlocal ts=2 sts=2 sw=2 expandtab
@@ -216,10 +221,10 @@ autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v
 
 " C/C++ specific settings
 autocmd FileType c,cpp,cc  set cindent comments=sr:/*,mb:*,el:*/,:// cino=>s,e0,n0,f0,{0,}0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mapping
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " Mapping
 nnoremap ; :
 imap jj <Esc>
@@ -274,7 +279,7 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
-nnoremap <leader>e :tabedit <CR>
+nnoremap <leader>e :tabedit <C-r>=expand("%")<CR>
 
 " remove Ex mode
 map Q <Nop>
@@ -289,19 +294,20 @@ imap <F2><C-O>:set invpaste paste?<CR>
 " quick resize for split
 nnoremap <silent> <leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
-nnoremap <leader>S :SudaWrite<CR>
 " map <M-r> for PlugInstall and <M-d> for PlugClean
-nnoremap <leader>C :PlugClean<cr>
-nnoremap <leader>R :PlugInstall<cr>
+nnoremap <M-c> :PlugClean<cr>
+nnoremap <M-i> :PlugInstall<cr>
 nnoremap <F3> :TagbarToggle<CR>
 if exists(":Tabularize")
-  nmap <leader>a= :Tabularize /=<CR>
-  vmap <leader>a= :Tabularize /=<CR>
-  nmap <leader>a: :Tabularize /:\zs<CR>
-  vmap <leader>a: :Tabularize /:\zs<CR>
+    nmap <leader>a= :Tabularize /=<CR>
+    vmap <leader>a= :Tabularize /=<CR>
+    nmap <Leader>a: :Tabularize /:<CR>
+    vmap <Leader>a: :Tabularize /:<CR>
+    nmap <leader>a: :Tabularize /:\zs<CR>
+    vmap <leader>a: :Tabularize /:\zs<CR>
 endif
 
-command! Ev :e $CHEZMOI_DIR/private_dot_config/vim
+command! Ev :e $CHEZMOI_DIR/private_dot_config/vim/vimrc
 command! Ca :!source $ZDOTDIR/.zshenv.local && chezmoi apply
 
 " insert mode mapping to trigger the :Tabular command when you type the character that you want to align.
@@ -316,6 +322,31 @@ function! s:align()
         normal! 0
         call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
     endif
+endfunction
+
+function! MyTabLine()
+    let s = ''
+    for i in range(tabpagenr('$'))
+        let tabnr = i + 1 " range() starts at 0
+        let winnr = tabpagewinnr(tabnr)
+        let buflist = tabpagebuflist(tabnr)
+        let bufnr = buflist[winnr - 1]
+        let bufname = fnamemodify(bufname(bufnr), ':t')
+
+        let s .= '%' . tabnr . 'T'
+        let s .= (tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+        let s .= ' ' . tabnr
+
+        let n = tabpagewinnr(tabnr,'$')
+        if n > 1 | let s .= ':' . n | endif
+
+        let s .= empty(bufname) ? ' [No Name] ' : ' [' . bufname . '] '
+
+        let bufmodified = getbufvar(bufnr, "&mod")
+        if bufmodified | let s .= '+ ' | endif
+    endfor
+    let s .= '%#TabLineFill#'
+    return s
 endfunction
 
 
@@ -399,7 +430,7 @@ let g:go_def_mapping_enabled = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " This is the default extra key bindings
 let g:fzf_tags_command = 'ctags -R'
-" imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-f> <plug>(fzf-complete-path)
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
@@ -416,11 +447,8 @@ let g:fzf_action = {
 
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '63%' }
-
-" You can set up fzf window using a Vim command (Neovim or latest Vim 8 required)
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+let g:fzf_layout = { 'right': '43%' }
 
 " Customize fzf colors to match your color scheme
 " - fzf#wrap translates this to a set of `--color` options
@@ -564,4 +592,5 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) || &buftype == 'quickfix' | q | endif
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 | let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-"vim: set ft=vim ts=2 sw=2 tw=0 et :
+
+"vim: set ft=vim et sw=2 tw=2:

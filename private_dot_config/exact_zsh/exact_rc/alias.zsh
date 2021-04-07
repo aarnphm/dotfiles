@@ -125,7 +125,7 @@ alias zcdir="cd $CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
 alias zdir="cd $CHEZMOI_DIR/dot_zsh"
 # vim config
 alias vdir="cd $CHEZMOI_DIR/private_dot_config/vim"
-alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/exact_rcs"
+alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc"
 # awesome config
 alias adir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 alias aconf="$EDITOR -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
