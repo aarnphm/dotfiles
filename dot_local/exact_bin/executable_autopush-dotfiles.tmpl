@@ -14,6 +14,7 @@ CURRTIME=$(date +%s)
 MSG_FILE="$GIT_CONFIG_ROOT/dot-commit-msg"
 PID_FILE="/tmp/autodots.pid"
 BACKUP_DIR="/mnt/Centralized/documents/dotfiles"
+GITREPO="git@github.com:$USER/dotfiles.git"
 
 # get datetime
 COMMITTIME=$(date +'%m/%d %H:%M%p')
@@ -68,21 +69,17 @@ check_if_modified(){
 define_message_body(){
 
   # this will handles while interactive, check predefined message, or just use chores
-  # if check_if_modified $MSG_FILE; then
-  #   pprint "Using predefined message, stored at $MSG_FILE"
-  #   MESSAGE=$(cat "$MSG_FILE")
-  # elif [[ $INTERACTIVE == 1 ]]; then
-  #   read -ep "Define message: " MESSAGE
-  #   TASKNAME="user"
-  # else
-  #   MESSAGE=$DEFAULT_MESSAGE
-  # fi
-
-  # if [[ -z $TASKNAME ]]; then
-  #   TASKNAME=$DEFAULT_PS
-  # fi
-  MESSAGE=$DEFAULT_MESSAGE
-  TASKNAME=$DEFAULT_PS
+  if check_if_modified $MSG_FILE; then
+    pprint "Using predefined message, stored at $MSG_FILE"
+    MESSAGE=$(cat "$MSG_FILE")
+    TASKNAME=$DEFAULT_PS
+  elif [[ $INTERACTIVE == 1 ]]; then
+    read -ep "Define message: " MESSAGE
+    TASKNAME="user"
+  else
+    MESSAGE=$DEFAULT_MESSAGE
+    TASKNAME=$DEFAULT_PS
+  fi
 
 }
 
@@ -90,7 +87,7 @@ define_message_body(){
 # TODO: should only run as cronjob instead of scripts
 backup_dotfiles() {
   BACKUPDIR="$1"
-  [[ -d "$BACKUPDIR" ]] || git clone git@github.com:aarnphm/dotfiles.git $BACKUPDIR 
+  [[ -d "$BACKUPDIR" ]] || git clone "$GITREPO" "$BACKUPDIR"
   cd "$BACKUPDIR" && git fetch && git pull --recurse-submodules
 }
 
@@ -101,15 +98,8 @@ autopush_dots() {
 
   # backup
   pprint "Backup dotfiles to $BACKUP_DIR..."
+  pprint "Repository: $GITREPO"
   backup_dotfiles $BACKUP_DIR
-
-  # define message block here
-  pprint "\nGet commit message..."
-  define_message_body && cd "$(chezmoi source-path)"
-  if [[ $INTERACTIVE == 1 ]]; then
-    COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
-    pprint "Commit message: $COMMITMSG"
-  fi
 
   pprint "\nDumping installed packages to files..."
   {{- if eq .chezmoi.os "linux" }}
@@ -124,6 +114,15 @@ autopush_dots() {
   if [ $(git rev-parse @) == $(git merge-base @ ${1:-'@{u}'}) ]; then
     git pull --recurse-submodules
   fi
+
+  if [[ $INTERACTIVE == 1 ]]; then
+    COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
+    pprint "Commit message: $COMMITMSG"
+  fi
+
+  # define message block here
+  pprint "\nGet commit message..."
+  define_message_body && cd "$(chezmoi source-path)"
 
   # execute scripts
   pprint "\nPushing to remote directory..."

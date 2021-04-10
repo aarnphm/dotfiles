@@ -6,6 +6,7 @@ cef-minimal
 curl-git
 dmenu2
 dxvk-bin
+ffmpeg-compat-57
 figma-linux
 figma-linux-font-helper
 gofish
@@ -30,6 +31,7 @@ rxvt-unicode-truecolor-wide-glyphs
 shell-color-scripts
 skypeforlinux-stable-bin
 slack-desktop
+spotify
 tealdeer-git
 teams
 toilet
