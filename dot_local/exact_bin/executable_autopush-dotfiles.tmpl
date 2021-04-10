@@ -115,14 +115,13 @@ autopush_dots() {
     git pull --recurse-submodules
   fi
 
+  # define message block here
+  define_message_body && cd "$(chezmoi source-path)"
+  pprint "\nGet commit message..."
   if [[ $INTERACTIVE == 1 ]]; then
     COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
     pprint "Commit message: $COMMITMSG"
   fi
-
-  # define message block here
-  pprint "\nGet commit message..."
-  define_message_body && cd "$(chezmoi source-path)"
 
   # execute scripts
   pprint "\nPushing to remote directory..."
