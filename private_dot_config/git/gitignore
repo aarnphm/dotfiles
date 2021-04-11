@@ -251,7 +251,7 @@ dist
 .pnp.*
 
 # Python #
-########
+##########
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -262,9 +262,9 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+build/**
 develop-eggs/
-dist/
+dist/**
 downloads/
 eggs/
 .eggs/
@@ -275,6 +275,7 @@ sdist/
 var/
 wheels/
 *.egg-info/
+*.egg-info/**
 .installed.cfg
 *.egg
 MANIFEST

@@ -12,7 +12,6 @@ CURRTIME=$(date +%s)
 
 # setup message files
 MSG_FILE="$GIT_CONFIG_ROOT/dot-commit-msg"
-PID_FILE="/tmp/autodots.pid"
 BACKUP_DIR="/mnt/Centralized/documents/dotfiles"
 GITREPO="git@github.com:$USER/dotfiles.git"
 
@@ -22,25 +21,32 @@ TASKNAME=
 MESSAGE=
 INTERACTIVE=
 
-echo $$ >| $PID_FILE
+# another way to check for cron
+CRON=$(pstree -s $$ | grep -q cron && echo true || echo false)
 
 check_interactive() {
-  case "$-" in
-    *i*)
-      # this is interactive
-      INTERACTIVE=0
-      ;;
-    *)
-      INTERACTIVE=1
-      ;;
-  esac
+  # check for /dev/tty instead
+  if [ -t 1 ]; then
+    # this is interactive
+    INTERACTIVE=1
+  else
+    INTERACTIVE=0
+  fi
+}
+
+check_cron() {
+  if $CRON;then
+    return 1
+  else
+    return 0
+  fi
 }
 
 function pprint() {
   if [[ $INTERACTIVE == 0 ]]; then
     echo -e "$*"
   else
-    # cyan
+    # yellow
     echo -e "\e[1;33m$*\e[m"
   fi
 }
@@ -53,11 +59,11 @@ check_if_modified(){
 
   [[ ! -f $file ]] && touch "$file"
   STALE=$(expr 20 \* 60 \* 60 )
-  {{- if eq .chezmoi.os "linux" }}
-  FILETIME=$(stat "$file" -c %Y)
-  {{- else if eq .chezmoi.os "darwin" }}
-  FILETIME=$(stat -t %s -f %m $file)
-  {{- end }}
+  if [[ $(uname) == "Linux" ]]; then
+    FILETIME=$(stat "$file" -c %Y)
+  elif [[ $(uname) == "Darwin" ]]; then
+    FILETIME=$(stat -t %s -f %m $file)
+  fi
 
   if [ $(expr "$CURRTIME" - "$FILETIME" ) -lt "$STALE" ]; then
     return 0
@@ -67,18 +73,19 @@ check_if_modified(){
 }
 
 define_message_body(){
-
   # this will handles while interactive, check predefined message, or just use chores
+
   if check_if_modified $MSG_FILE; then
     pprint "Using predefined message, stored at $MSG_FILE"
     MESSAGE=$(cat "$MSG_FILE")
     TASKNAME=$DEFAULT_PS
-  elif [[ $INTERACTIVE == 1 ]]; then
-    read -ep "Define message: " MESSAGE
-    TASKNAME="user"
-  else
+  elif [[ $(check_cron) == 1 ]]; then
+    pprint "Running by cron"
     MESSAGE=$DEFAULT_MESSAGE
     TASKNAME=$DEFAULT_PS
+  elif [[ $INTERACTIVE == 1 ]]; then
+    read -ep "Define message body: " MESSAGE
+    TASKNAME="$USER"
   fi
 
 }
@@ -118,10 +125,8 @@ autopush_dots() {
   # define message block here
   define_message_body && cd "$(chezmoi source-path)"
   pprint "\nGet commit message..."
-  if [[ $INTERACTIVE == 1 ]]; then
-    COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
-    pprint "Commit message: $COMMITMSG"
-  fi
+  COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
+  pprint "Commit message: $COMMITMSG"
 
   # execute scripts
   pprint "\nPushing to remote directory..."
@@ -129,4 +134,4 @@ autopush_dots() {
 }
 
 autopush_dots "$@"
-# vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :
+# vim: set ft=bash.gohtmltmpl ts=2 sw=2 tw=0 et :

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cd /mnt/Centralized/documents/backup
+
+for APP in $(adb shell pm list packages -3 -f); do
+  adb pull $( echo "${APP}" | sed "s/^package://" | sed "s/base.apk=/base.apk /").apk
+done
+
+adb backup -f "$1" -all -apk -nosystem

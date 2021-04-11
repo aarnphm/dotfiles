@@ -580,7 +580,7 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let NERDTreeRespectWildIgnore=1
 let g:NERDTreeWinPos = "right"
-let NERDTreeIgnore = ['node_modules','\.pyc$', '__pycache__','\.class$','.git']
+let NERDTreeIgnore = ['node_modules','\dist','\build','\.pyc$', '__pycache__','\.class$','\.egg_info$','.git']
 let g:NERDTreeWinSize=35
 nnoremap <F4> :NERDTreeToggle<cr>
 " Start NERDTree. If a file is specified, move the cursor to its window.
