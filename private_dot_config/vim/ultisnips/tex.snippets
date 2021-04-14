@@ -44,6 +44,21 @@ def add_row(snip):
 
 endglobal
 
+
+snippet template "Basic template" b
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[dutch]{babel}
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+	$0
+\end{document}
+endsnippet
+
 snippet "\\?b(egin)?" "begin{} / end{}" br
 \begin{${1:something}}
 	${0:${VISUAL}}
@@ -321,21 +336,6 @@ endsnippet
 
 snippet / "Fraction" iA
 \\frac{${VISUAL}}{$1}$0
-endsnippet
-
-priority 1000
-snippet '^.*\)/' "() Fraction" wrA
-`!p
-stripped = match.string[:-1]
-depth = 0
-i = len(stripped) - 1
-while True:
-	if stripped[i] == ')': depth += 1
-	if stripped[i] == '(': depth -= 1
-	if depth == 0: break;
-	i -= 1
-snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
-`{$1}$0
 endsnippet
 
 snippet sympy "sympy block " w
