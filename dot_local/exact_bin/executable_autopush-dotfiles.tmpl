@@ -83,9 +83,9 @@ define_message_body(){
     pprint "Running by cron"
     MESSAGE=$DEFAULT_MESSAGE
     TASKNAME=$DEFAULT_PS
-  elif [[ $INTERACTIVE == 1 ]]; then
-    read -ep "Define message body: " MESSAGE
-    TASKNAME="$USER"
+  # elif [[ $INTERACTIVE == 1 ]]; then
+  #   read -ep "Define message body: " MESSAGE
+  #   TASKNAME="$USER"
   fi
 
 }
