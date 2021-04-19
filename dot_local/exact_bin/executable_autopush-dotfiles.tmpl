@@ -78,11 +78,11 @@ define_message_body(){
   if check_if_modified $MSG_FILE; then
     pprint "Using predefined message, stored at $MSG_FILE"
     MESSAGE=$(cat "$MSG_FILE")
-    TASKNAME=$DEFAULT_PS
-  elif [[ $(check_cron) == 1 ]]; then
+    TASKNAME="$DEFAULT_PS"
+  else
     pprint "Running by cron"
-    MESSAGE=$DEFAULT_MESSAGE
-    TASKNAME=$DEFAULT_PS
+    MESSAGE="$DEFAULT_MESSAGE"
+    TASKNAME="$DEFAULT_PS"
   # TODO: this is broken
   # elif [[ $INTERACTIVE == 1 ]]; then
   #   read -ep "Define message body: " MESSAGE
@@ -124,8 +124,8 @@ autopush_dots() {
   fi
 
   # define message block here
-  define_message_body && cd "$(chezmoi source-path)"
   pprint "\nGet commit message..."
+  define_message_body && cd "$(chezmoi source-path)"
   COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
   pprint "Commit message: $COMMITMSG"
 
