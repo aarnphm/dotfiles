@@ -18,6 +18,8 @@ libcurl3-gnutls
 light-git
 lightdm-mini-greeter
 minecraft-launcher
+mongodb-bin
+mongodb-tools-bin
 ncurses5-compat-libs
 networkmanager-dispatcher-sshd
 nnn-nerd

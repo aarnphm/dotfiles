@@ -280,7 +280,7 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
-nnoremap <leader>e :tabedit <C-r>=expand("%")<CR>
+nnoremap <leader>vs :vsplit <C-r>=expand("%:p:h")<cr>/
 
 " remove Ex mode
 map Q <Nop>
