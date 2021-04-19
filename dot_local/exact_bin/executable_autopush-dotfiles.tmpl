@@ -79,14 +79,14 @@ define_message_body(){
     pprint "Using predefined message, stored at $MSG_FILE"
     MESSAGE=$(cat "$MSG_FILE")
     TASKNAME="$DEFAULT_PS"
+  # TODO: this is broken
+  elif [[ $INTERACTIVE == 1 ]]; then
+    read -ep "Define message body: " MESSAGE
+    TASKNAME="$USER"
   else
     pprint "Running by cron"
     MESSAGE="$DEFAULT_MESSAGE"
     TASKNAME="$DEFAULT_PS"
-  # TODO: this is broken
-  # elif [[ $INTERACTIVE == 1 ]]; then
-  #   read -ep "Define message body: " MESSAGE
-  #   TASKNAME="$USER"
   fi
 
 }
