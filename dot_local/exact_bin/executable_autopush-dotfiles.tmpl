@@ -128,6 +128,8 @@ autopush_dots() {
   define_message_body && cd "$(chezmoi source-path)"
   COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
   pprint "Commit message: $COMMITMSG"
+  
+  # scrot -o bootstrap/screenshots/desktop.png
 
   # execute scripts
   pprint "\nPushing to remote directory..."

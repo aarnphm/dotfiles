@@ -258,7 +258,7 @@ nnoremap <silent> <leader>i gg=G<CR>
 nnoremap <leader># :g/\v^(#\|$)/d_<CR>
 nnoremap <leader>b :ls<CR>:buffer<space>
 nnoremap <leader>d :w !diff % -<CR>
-nnoremap <leader>s :so $MYVIMRC<CR>
+nnoremap <leader>S :so $MYVIMRC<CR>
 nnoremap <leader>l :set list! list?<CR>
 nnoremap <leader>t :%s/\s\+$//e<CR>
 " Remove the Windows ^M - when the encodings gets messed up
@@ -281,6 +281,7 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 nnoremap <leader>vs :vsplit <C-r>=expand("%:p:h")<cr>/
+nnoremap <leader>s :split <C-r>=expand("%:p:h")<cr>/
 
 " remove Ex mode
 map Q <Nop>
