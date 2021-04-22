@@ -6,9 +6,11 @@ cef-minimal
 curl-git
 dmenu2
 dxvk-bin
+fabric-server
 ffmpeg-compat-57
 figma-linux
 figma-linux-font-helper
+forge-server
 gofish
 gyazo
 heroku-cli-bin

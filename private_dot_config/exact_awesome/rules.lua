@@ -43,7 +43,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule{
         id         = "floating",
         rule_any   = {
-            class = {"Nm-connection-editor", "Cisco AnyConnect Secure Mobility Client",
+            class = {"Nm-connection-editor", "minecraft-launcher", "Cisco AnyConnect Secure Mobility Client",
                 "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen",
                 "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", 
                 "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer", "URxvt", "XTerm"},
@@ -69,6 +69,12 @@ ruled.client.connect_signal("request::rules", function()
         properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
+        ruled.client.append_rule {
+        id = "chromium",
+        rule_any = {class = {"Chromium"}},
+        properties = {screen = screen.count()>2 and 3 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
+    }
+
     ruled.client.append_rule {
         id = "terminal",
         rule_any = {class = {"Alacritty", "St", "UXTerm", "XTerm"}},
@@ -79,6 +85,12 @@ ruled.client.connect_signal("request::rules", function()
         id = "steam",
         rule = {class = "Steam"},
         properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
+    }
+
+    ruled.client.append_rule {
+        id = "minecraft",
+        rule_any = {class = "Minecraft 1.16.5"},
+        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[3], switchtotag = true}
     }
 
     ruled.client.append_rule {
