@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+# clicker.pl - click the living hell out of whatever's under the mouse cursor
+
+use Time::HiRes qw (usleep nanosleep);
+
+$waitBetweenHits = 5; # default: 5 seconds
+$offHandUsageFrequency = 10; # try to engage the off hand action every n-th time
+$hitCounter = 0; # keeping track of the hits to engage the off hand usage
+
+# sleep three seconds after starting clicker.pl before hammering the mouse - 
+# gives you time to get into the game window
+sleep 10;
+
+# endless loop - press and hold the mouse button to stop registering click events,
+# then mouse back over to the terminal and Ctrl-C to stop
+while (1) {
+	# 10,000 microseconds == 10 milliseconds == 1/100 of a second.
+	# 2 of these per loop means ~~ 50 clicks per second.
+
+	print `/usr/bin/xdotool mousedown 1`;
+	usleep(100000);
+	print `/usr/bin/xdotool mouseup 1`;
+    if ($hitCounter == $offHandUsageFrequency) {
+         $hitCounter = 0; # reset
+         print `/usr/bin/xdotool mousedown 3`;
+         sleep(5);
+         print `/usr/bin/xdotool mouseup 3`;
+    }
+    $hitCounter = $hitCounter + 1;
+    sleep($waitBetweenHits);
+}
+

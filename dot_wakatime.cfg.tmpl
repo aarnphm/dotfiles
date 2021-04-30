@@ -1,10 +1,11 @@
 [settings]
 debug = false
 hidefilenames = false
+proxy = 
+status_bar_enabled = true
 ignore =
     COMMIT_EDITMSG$
     PULLREQ_EDITMSG$
     MERGE_MSG$
     TAG_EDITMSG$
-api_key={{ (bitwarden "item" "waka_api_key").login.password }}
-# vim: set ft=cfg ts=4 sw=4 tw=0 et :
+api_key = {{ (bitwarden "item" "waka_api_key").login.password }}
