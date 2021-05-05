@@ -34,6 +34,7 @@ run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
 run kitty tmux
+run spotify-tray
 # run skypeforlinux
 run discord
 run nm-applet
