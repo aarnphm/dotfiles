@@ -96,7 +96,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "kitty",
         rule_any = {class = {"kitty", "jetbrains-pycharm", "jetbrains-goland"}},
-        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true, maximized=true}
+        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -114,7 +114,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "meeting",
         rule_any = {class={"Whatsapp-for-linux"}, instance = {"discord", "slack", "skype","caprine"}},
-        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
+        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule {

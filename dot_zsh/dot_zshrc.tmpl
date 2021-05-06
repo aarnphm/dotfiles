@@ -3,17 +3,21 @@
 # Another way to profile zsh startup
 PROFILE_STARTUP=false
 if [[ $PROFILE_STARTUP == true ]]; then
-    zmodload zsh/datetime
-    PS4='+$EPOCHREALTIME %N:%i> '
-    logfile=$(mkdir -p $ZDATADIR/logs && mktemp $ZDATADIR/logs/zsh_profile.XXXXXXXX)
-    exec 3>&2 2>>$logfile
-    setopt XTRACE
+	zmodload zsh/datetime
+	PS4='+$EPOCHREALTIME %N:%i> '
+	logfile=$(mkdir -p $ZDATADIR/logs && mktemp $ZDATADIR/logs/zsh_profile.XXXXXXXX)
+	exec 3>&2 2>>$logfile
+	setopt XTRACE
 fi
 
 source-safe() { if [ -f "$1" ]; then source "$1"; fi }
 
 if [[ "$ZSHRC_PROFILE" != "" ]]; then
-    zmodload zsh/zprof && zprof > /dev/null
+	zmodload zsh/zprof && zprof > /dev/null
+fi
+
+if  [[ "$ZRCDIR" == "" ]]; then
+	source $HOME/.zsh/.zprofile
 fi
 {{- else if .transient }}
 . $HOME/.local/bin/ssh-add
@@ -54,12 +58,11 @@ source "$ZRCDIR/bindkey.zsh"
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
 if [[ "$ZSHRC_PROFILE" == "" ]]; then
-    if [[ -z "$TIMESHELL" ]]; then
-        # clear && . $XDG_BIN_HOME/ghosts
-        autoload -Uz promptinit
-        promptinit
-        prompt simple
-    fi
+	if [[ -z "$TIMESHELL" ]]; then
+		# clear && . $XDG_BIN_HOME/ghosts
+		autoload -Uz promptinit && promptinit
+		prompt simple
+	fi
 fi
 # functions
 source "$ZRCDIR/function.zsh"

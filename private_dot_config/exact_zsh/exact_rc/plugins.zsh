@@ -14,6 +14,7 @@ fi
 
 typeset -gAH ZPLGM
 ZPLGM[HOME_DIR]="${ZPLG_HOME}"
+ZHOMEDIR="${ZHOMEDIR:-$HOME/.config/zsh}"
 source "$ZPLG_HOME/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
