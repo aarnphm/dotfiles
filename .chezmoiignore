@@ -5,6 +5,7 @@ README.md
 Dockerfile
 *.deb
 *.tar.gz
+scripts
 
 {{ if .transient }}
 .local/share

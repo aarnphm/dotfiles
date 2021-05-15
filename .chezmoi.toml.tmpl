@@ -2,7 +2,6 @@
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
 {{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
-
 {{- $city := "Hanoi" -}}{{/* city inputs for weather */}}
 {{- $wm := env "XDG_SESSION_DESKTOP" -}}{{/* current windows manager in use (default to awesome) */}}
 {{/* detect GitHub codespaces and VSCode remote containers */}}
@@ -10,7 +9,6 @@
 {{- $headless = true -}}
 {{- $transient = true -}}
 {{- end -}}
-
 {{- $hostname := .chezmoi.hostname -}}{{/* work around unreliable hostname on darwin */}}
 {{- if eq .chezmoi.os "darwin" -}}
 {{- $serialNumberSHA256Sum := index ioreg "IORegistryEntryChildren" 0 "IOPlatformSerialNumber" | sha256sum -}}
@@ -18,7 +16,6 @@
 {{- $hostname = "APPL-AIR12" -}}
 {{- end -}}
 {{- end -}}
-
 {{- if not $transient -}}
 {{- if not $city -}}
 {{- $city := promptString "Current city" -}}
