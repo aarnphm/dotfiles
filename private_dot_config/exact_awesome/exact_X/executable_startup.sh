@@ -37,6 +37,7 @@ run kitty tmux
 run spotify-tray
 # run skypeforlinux
 run discord
+run slack
 run nm-applet
 run blueman-applet
 run optimus-manager-qt
