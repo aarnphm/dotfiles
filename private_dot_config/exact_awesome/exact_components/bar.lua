@@ -468,7 +468,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 },
                 s.mypromptbox,
                 {
-                    awful.widget.only_on_screen(playerctl_bar, screen[1]),
+                    -- awful.widget.only_on_screen(playerctl_bar, screen[1]),
+                    playerctl_bar,
                     margins = dpi(5),
                     widget = wibox.container.margin
                 }
