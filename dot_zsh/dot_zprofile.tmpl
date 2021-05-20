@@ -53,7 +53,7 @@ export PAGER=less
 export LESS_TERMCAP_md="${yellow}";
 export LESS='--no-init -R --shift 4 --LONG-PROMPT --quit-if-one-screen'
 # add cuda lib
-export LD_LIBRARY_PATH="/opt/cuda/lib64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/opt/cuda/lib64"
 {{- if not .transient }}
 export EDITOR=nvim
 {{- else }}

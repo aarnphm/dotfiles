@@ -44,9 +44,9 @@ ruled.client.connect_signal("request::rules", function()
         id         = "floating",
         rule_any   = {
             class = {"Nm-connection-editor", "minecraft-launcher", "Cisco AnyConnect Secure Mobility Client",
-                "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen",
-                "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", 
-                "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer", "URxvt", "XTerm"},
+                     "gnome-disks", "caffeine", "Arandr", "Blueman-manager", "Nitrogen",
+                     "Nvidia-settings", "Baobab", "Xmessage", "Lxappearance", "Chatterino", 
+                     "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer", "URxvt", "XTerm"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"Popup"},
             type  = {"dialog"}
@@ -66,7 +66,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "firefox",
         rule_any = {class = {"Firefox","Chromium"}},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
+        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
         ruled.client.append_rule {
@@ -84,7 +84,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "steam",
         rule_any = {class = {"Steam", "dota2"}},
-        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -95,8 +95,14 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "kitty",
-        rule_any = {class = {"kitty", "jetbrains-pycharm", "jetbrains-goland"}},
+        rule_any = {class = {"kitty"}},
         properties = {screen = 2, tag = defaults.tags[1].names[1], switchtotag = true}
+    }
+
+    ruled.client.append_rule {
+        id = "jetbrains",
+        rule_any = {class = {"jetbrains-pycharm", "jetbrains-goland"}},
+        properties = {screen = 3, tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -114,7 +120,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "meeting",
         rule_any = {class={"Whatsapp-for-linux"}, instance = {"discord", "slack", "skype","caprine"}},
-        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
+        properties = {screen = 1, tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule {
@@ -132,7 +138,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule{
         id = "obs",
         rule = {class = "obs"},
-        properties = {screen=screen.count()>1 and 3 or 1, tag=defaults.tags[1].names[2], switchtotag=true}
+        properties = {screen=screen.count()>1 and 2 or 1, tag=defaults.tags[1].names[2], switchtotag=true}
     }
     -- Rofi
     ruled.client.append_rule{

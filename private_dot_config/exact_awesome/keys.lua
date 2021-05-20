@@ -229,9 +229,9 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "decrement useless gaps", group = "layout"}
                 ),
-            awful.key({ctrl, altkey}, "h", awful.tag.viewprev,
+            awful.key({ctrl, modkey}, "h", awful.tag.viewprev,
                 {description = "view previous", group = "tag"}),
-            awful.key({ctrl, altkey}, "l", awful.tag.viewnext,
+            awful.key({ctrl, modkey}, "l", awful.tag.viewnext,
                 {description = "view next", group = "tag"}),
             -- awful.key({modkey}, "Tab", awful.tag.history.restore(awful.screen.focused(), 1)
             --     {description="go to previous tag", group="tag"}),

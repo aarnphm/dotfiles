@@ -27,7 +27,7 @@ chromium
 cmake
 cronie
 ctags
-cudnn
+curl
 dconf-editor
 dex
 dialog
@@ -53,7 +53,6 @@ github-cli
 gnome-disk-utility
 gnome-keyring
 gparted
-gpsd
 groff
 grub
 grub-customizer
@@ -83,6 +82,8 @@ libgnome-keyring
 libpng12
 libtool
 libudev0-shim
+libva-intel-driver
+libva-mesa-driver
 libvoikko
 lightdm
 linux
@@ -106,6 +107,7 @@ net-tools
 network-manager-applet
 networkmanager
 networkmanager-openvpn
+networkmanager-qt
 nginx
 nitrogen
 nm-connection-editor
@@ -117,7 +119,6 @@ nvidia
 nvidia-dkms
 nvidia-prime
 nvidia-settings
-obs-studio
 openconnect
 openvpn
 os-prober
@@ -130,6 +131,9 @@ pasystray
 patch
 pavucontrol
 pgadmin4
+pipewire
+pipewire-alsa
+pipewire-media-session
 pkgconf
 playerctl
 postgresql
@@ -139,7 +143,6 @@ pulseaudio-bluetooth
 pulseaudio-zeroconf
 pyenv
 python-pywal
-python-tensorflow-opt-cuda
 qopenvpn
 qt5ct
 qt6-base
@@ -159,7 +162,6 @@ sshfs
 steam
 stow
 sudo
-tensorboard
 termite
 texinfo
 texlive-bibtexextra

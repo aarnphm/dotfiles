@@ -1,11 +1,10 @@
 autofs
 awesome-git
 awmtt
-bluez-git
 cacheclean
 cef-minimal
-cuda11.1
-curl-git
+cuda-11.0
+cudnn8-cuda11.0
 dmenu2
 dxvk-bin
 fabric-server
@@ -29,11 +28,10 @@ minecraft-launcher
 mongodb-bin
 mongodb-tools-bin
 ncurses5-compat-libs
-networkmanager-dispatcher-sshd
 nnn-nerd
 numix-circle-icon-theme-git
 nvidia-container-toolkit
-obs-linuxbrowser-bin
+obs-studio-git
 optimus-manager-qt
 picom-git
 pycharm-professional
