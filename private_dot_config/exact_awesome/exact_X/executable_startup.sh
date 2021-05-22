@@ -34,10 +34,10 @@ run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
 run kitty tmux
-run spotify-tray
+# run spotify-tray
 # run skypeforlinux
+# run slack
 run discord
-run slack
 run nm-applet
 run blueman-applet
 run optimus-manager-qt

@@ -8,9 +8,6 @@ Host *
 {{- if stat (joinPath .chezmoi.homeDir ".ssh/id_rsa" )}}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
 {{- end }}
-{{- if stat (joinPath .chezmoi.homeDir ".ssh/id_ecdsa" )}}
-    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ecdsa
-{{- end }}
 {{- if stat (joinPath .chezmoi.homeDir ".ssh/id_ed25519" )}}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ed25519
 {{- end }}
@@ -26,12 +23,5 @@ Host HOME
     Port 34689
     User {{ .chezmoi.username }}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
-{{- else if eq .hostname "archlinux" }}
-Host CRM
-    HostName 27.0.14.145
-    Port 22
-    User root
-    PasswordAuthentication no
-    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ecdsa
 {{- end }}
 {{- end }}

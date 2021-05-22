@@ -47,94 +47,94 @@ end)))
 -- Playerctl Bar widget
 -- ===================================================================
 
-song_title = wibox.widget {
-    markup = '--',
-    align = 'center',
-    valign = 'center',
-    widget = wibox.widget.textbox
-}
+-- song_title = wibox.widget {
+--     markup = '--',
+--     align = 'center',
+--     valign = 'center',
+--     widget = wibox.widget.textbox
+-- }
 
-song_artist = wibox.widget {
-    markup = '--',
-    align = 'center',
-    valign = 'center',
-    widget = wibox.widget.textbox
-}
+-- song_artist = wibox.widget {
+--     markup = '--',
+--     align = 'center',
+--     valign = 'center',
+--     widget = wibox.widget.textbox
+-- }
 
-song_logo = wibox.widget {
-    markup = '<span foreground="' .. x.color6 .. '"> </span>',
-    font = beautiful.icon_font,
-    align = 'center',
-    valign = 'center',
-    widget = wibox.widget.textbox
-}
+-- song_logo = wibox.widget {
+--     markup = '<span foreground="' .. x.color6 .. '"> </span>',
+--     font = beautiful.icon_font,
+--     align = 'center',
+--     valign = 'center',
+--     widget = wibox.widget.textbox
+-- }
 
-playerctl_bar = wibox.widget {
-    {
-        {
-            {
-                song_logo,
-                left = dpi(3),
-                right = dpi(10),
-                widget = wibox.container.margin
-            },
-            {
-                {
-                    song_title,
-                    expand = "outside",
-                    layout = wibox.layout.align.vertical
-                },
-                left = dpi(10),
-                right = dpi(10),
-                widget = wibox.container.margin
-            },
-            {
-                {
-                    song_artist,
-                    expand = "outside",
-                    layout = wibox.layout.align.vertical
-                },
-                left = dpi(10),
-                widget = wibox.container.margin
-            },
-            spacing = 1,
-            spacing_widget = {
-                bg = x.color8,
-                widget = wibox.container.background
-            },
-            layout = wibox.layout.fixed.horizontal
-        },
-        left = dpi(10),
-        right = dpi(10),
-        widget = wibox.container.margin
-    },
-    bg = x.color0,
-    shape = helpers.rrect(beautiful.border_radius - 3),
-    widget = wibox.container.background
-}
+-- playerctl_bar = wibox.widget {
+--     {
+--         {
+--             {
+--                 song_logo,
+--                 left = dpi(3),
+--                 right = dpi(10),
+--                 widget = wibox.container.margin
+--             },
+--             {
+--                 {
+--                     song_title,
+--                     expand = "outside",
+--                     layout = wibox.layout.align.vertical
+--                 },
+--                 left = dpi(10),
+--                 right = dpi(10),
+--                 widget = wibox.container.margin
+--             },
+--             {
+--                 {
+--                     song_artist,
+--                     expand = "outside",
+--                     layout = wibox.layout.align.vertical
+--                 },
+--                 left = dpi(10),
+--                 widget = wibox.container.margin
+--             },
+--             spacing = 1,
+--             spacing_widget = {
+--                 bg = x.color8,
+--                 widget = wibox.container.background
+--             },
+--             layout = wibox.layout.fixed.horizontal
+--         },
+--         left = dpi(10),
+--         right = dpi(10),
+--         widget = wibox.container.margin
+--     },
+--     bg = x.color0,
+--     shape = helpers.rrect(beautiful.border_radius - 3),
+--     widget = wibox.container.background
+-- }
 
-playerctl_bar.visible = false
+-- playerctl_bar.visible = false
 
--- Get Title
-awful.screen.connect_for_each_screen(function(s)
-    awesome.connect_signal("daemon::playerctl::status",
-        function(playing)
-            if playing then
-                playerctl_bar.visible = true
-            else
-                playerctl_bar.visible = false
-            end
-        end
-        )
-    awesome.connect_signal("daemon::playerctl::title_artist_album",
-        function(title, artist)
-            playerctl_bar.visible = true
-            song_title.markup = markup.fontfg(beautiful.font, x.color3, title)
-            song_artist.markup = markup.fontfg(beautiful.font,x.color4, artist)
-        end
-        )
-end
-)
+-- -- Get Title
+-- awful.screen.connect_for_each_screen(function(s)
+--     awesome.connect_signal("daemon::playerctl::status",
+--         function(playing)
+--             if playing then
+--                 playerctl_bar.visible = true
+--             else
+--                 playerctl_bar.visible = false
+--             end
+--         end
+--         )
+--     awesome.connect_signal("daemon::playerctl::title_artist_album",
+--         function(title, artist)
+--             playerctl_bar.visible = true
+--             song_title.markup = markup.fontfg(beautiful.font, x.color3, title)
+--             song_artist.markup = markup.fontfg(beautiful.font,x.color4, artist)
+--         end
+--         )
+-- end
+-- )
 
 -- ===================================================================
 -- Tasklist widgets
@@ -467,12 +467,12 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     widget = wibox.container.margin
                 },
                 s.mypromptbox,
-                {
-                    -- awful.widget.only_on_screen(playerctl_bar, screen[1]),
-                    playerctl_bar,
-                    margins = dpi(5),
-                    widget = wibox.container.margin
-                }
+                -- {
+                --     -- awful.widget.only_on_screen(playerctl_bar, screen[1]),
+                --     playerctl_bar,
+                --     margins = dpi(5),
+                --     widget = wibox.container.margin
+                -- }
             },
             {
                 {
