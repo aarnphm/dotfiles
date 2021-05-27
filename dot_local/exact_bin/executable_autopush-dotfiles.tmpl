@@ -113,6 +113,7 @@ autopush_dots() {
   # Check for new packages, and add it to both .local file
   yay -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local
   yay -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
+  pprint "Done."
   {{- else if eq .chezmoi.os "darwin" }}
   brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile
   {{- end }}
@@ -137,3 +138,4 @@ autopush_dots() {
 
 autopush_dots "$@"
 
+# vim: set ft=zsh.gohtmltmpl ts=4 sw=4 tw=0 et:
