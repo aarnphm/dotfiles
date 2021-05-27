@@ -275,12 +275,6 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "edit config files", group = "launcher"}
                 ),
-            awful.key({ctrl, altkey}, "e",
-                function()
-                    awful.spawn.easy_async_with_shell('bwmenu')
-                end,
-                {description = "bitwarden-rofi, @mattydebie", group = "launcher"}
-                ),
             awful.key({ctrl, altkey}, "t",
                 function()
                     awful.spawn(defaults.terminal)
@@ -304,12 +298,6 @@ client.connect_signal("request::default_keybindings", function()
                     awful.spawn(defaults.spotify)
                 end,
                 {description = "run spotify", group = "launcher"}
-                ),
-            awful.key({shift, modkey}, "f",
-                function()
-                    awful.spawn(defaults.filebrowser)
-                end,
-                {description = "open explorer", group = "launcher"}
                 ),
             awful.key({modkey}, "p",
                 function()

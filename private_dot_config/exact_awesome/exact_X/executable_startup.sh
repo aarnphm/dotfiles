@@ -11,12 +11,12 @@ function run {
 if (builtin command -v start-pulseaudio-x11 && ! pgrep pulseaudio); then
   start-pulseaudio-x11 &
 fi
-# if (builtin command -v gnome-keyring-daemon && ! pgrep gnome-keyring-d); then
-#   gnome-keyring-daemon --daemonize --login &
-# fi
-# if (builtin command -v /usr/bin/lxpolkit && ! pgrep lxpolkit); then
-#   /usr/bin/lxpolkit &
-# fi
+if (builtin command -v gnome-keyring-daemon && ! pgrep gnome-keyring-d); then
+  gnome-keyring-daemon --daemonize --login &
+fi
+if (builtin command -v /usr/bin/lxpolkit && ! pgrep lxpolkit); then
+  /usr/bin/lxpolkit &
+fi
 # if ([[ -d /opt/cisco ]] && ! pgrep vpnagentd); then
 #     /opt/cisco/anyconnect/bin/vpnui &
 # fi
@@ -26,7 +26,7 @@ fi
 
 # background daemon
 # run playerctld daemon
-# run redshift -v
+run redshift -v
 run ibus-daemon -drx
 run nitrogen --restore
 run unclutter -idle 1
@@ -34,9 +34,10 @@ run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
 run optimus-manager-qt
-run kitty tmux
-run discord
+run pasystray
 run nm-applet
 run spotify-tray
 run blueman-applet
+run kitty tmux
+run discord
 # vim: set ft=sh ts=2 sw=2 tw=0 et :

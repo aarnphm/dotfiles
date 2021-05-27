@@ -138,7 +138,7 @@ theme.taglist_disable_icon  = true
 --  Tasklist
 -- ===================================================================
 
-theme.tasklist_font              = theme.fontname .. "18"
+theme.tasklist_font              = theme.fontname .. "12"
 theme.tasklist_plain_task_name   = true
 theme.tasklist_bg_focus          = theme.xcolor0
 theme.tasklist_fg_focus          = theme.xcolor6
@@ -150,7 +150,6 @@ theme.tasklist_disable_task_name = false
 theme.tasklist_disable_icon      = true
 theme.tasklist_bg_urgent         = theme.xcolor0
 theme.tasklist_fg_urgent         = theme.xcolor1
-theme.tasklist_spacing           = dpi(2)
 theme.tasklist_align             = "center"
 
 -- ===================================================================
@@ -233,7 +232,7 @@ theme.useless_gap = dpi(0)
 -- Wibar
 -- ===================================================================
 
-theme.wibar_height  = dpi(40)
+theme.wibar_height  = dpi(30)
 theme.wibar_margin  = dpi(15)
 theme.wibar_spacing = dpi(15)
 theme.wibar_bg      = x.background
@@ -244,7 +243,8 @@ theme.wibar_bg      = x.background
 
 theme.systray_icon_spacing = dpi(10)
 theme.bg_systray           = theme.xcolor0
-theme.systray_icon_size    = dpi(18)
+theme.systray_icon_size    = dpi(20)
+
 theme.weather_city         = os.getenv("CITY")
 
 return theme

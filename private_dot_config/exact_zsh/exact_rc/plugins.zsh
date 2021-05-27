@@ -63,7 +63,10 @@ zinit wait'0' lucid \
 # enhanced command
 #--------------------------------#
 
+GEOMETRY_PROMPT=(geometry_echo geometry_status geometry_virtualenv geometry_node geometry_kube geometry_rustup geometry_rust_version geometry_hostname geometry_path)
+GEOMETRY_RPROMPT=(geometry_docker_machine geometry_exec_time geometry_git geometry_echo)
 GEOMETRY_COLOR_DIR=152
+GEOMETRY_PATH_SHOW_BASENAME=true
 zinit ice wait"0" lucid atload"geometry::prompt"
 zinit light geometry-zsh/geometry
 
