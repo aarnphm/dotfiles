@@ -5,20 +5,5 @@ set -euo pipefail
 
 {{  if eq .chezmoi.os "darwin" -}}
 type brew &>/dev/null || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh
-{{  else if eq .hostname "archlinux" -}}
-if  [ ! builtin command -v yay ]; then
-    echo "Installing yay..."
-    sudo pacman -Sy --needed --noconfirm base base-devel wget
-    tmpdir="$(command mktemp -d)"
-    command cd "${tmpdir}" || return 1
-    dl_url="$(curl -sfLS 'https://api.github.com/repos/Jguer/yay/releases/latest' | grep 'browser_download_url' | tail -1 | cut -d '"' -f 4)"
-    command wget "${dl_url}"
-    command tar xzvf yay_*_x86_64.tar.gz
-    command cd yay_*_x86_64 || return 1
-    ./yay $PKGI ${PKGOPT[@]} yay-bin
-    rm -rf "${tmpdir}"
-else
-    echo "yay already installed, continue..."
-fi
 {{ end -}}
 {{ end -}}

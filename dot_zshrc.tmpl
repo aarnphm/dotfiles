@@ -17,7 +17,7 @@ if [[ "$ZSHRC_PROFILE" != "" ]]; then
 fi
 
 if  [[ "$ZRCDIR" == "" ]]; then
-	source $HOME/.zsh/.zprofile
+	source $HOME/.zprofile
 fi
 {{- else if .transient }}
 . $HOME/.local/bin/ssh-add

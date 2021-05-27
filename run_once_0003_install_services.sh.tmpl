@@ -4,7 +4,8 @@ IFS=$'\n\t'
 
 {{- if .personal }}
 {{-   if and (eq .hostname "archlinux") (.personal) }}
-SERVICES=(docker cronie sshd bluetooth postgresql optimus-manager lightdm acpid)
+# for debian we disable
+SERVICES=(docker sshd bluetooth lightdm acpid cronie acpid postgresql optimus-manager)
 
 for services in "${SERVICES[@]}"; do
     sudo systemctl enable $services

@@ -3,7 +3,7 @@
 {{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
 {{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
 {{- $city := "Hanoi" -}}{{/* city inputs for weather */}}
-{{- $wm := env "XDG_SESSION_DESKTOP" -}}{{/* current windows manager in use (default to awesome) */}}
+{{- $wm := "awesome" -}}{{/* current windows manager in use (default to awesome), can also find via XDG_SESSION_DESKTOP */}}
 {{/* detect GitHub codespaces and VSCode remote containers */}}
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") -}}
 {{- $headless = true -}}
@@ -25,6 +25,7 @@
 {{- else if eq $hostname "APPL-AIR12" -}}
 {{- $personal = true -}}
 {{- else -}}
+{{- $personal = promptBool "personal" -}}
 {{- $headless = promptBool "headless" -}}
 {{- $transient = promptBool "transient" -}}
 {{- $kubernetes = promptBool "kubernetes" -}}

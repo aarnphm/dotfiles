@@ -7,6 +7,10 @@ function history-all() {
     history -E 1
 }
 
+function venv() {
+    [[ -d venv ]] && source venv/bin/activate
+}
+
 function dotmsg(){
     echo "Define message: "
     cat - >| $GIT_GLOBAL_CONFIG_DIR/dot-commit-msg
@@ -51,7 +55,7 @@ function ssh() {
 }
 
 function which () {
-    if [[ $SYSTEM == "Linux" ]]; then
+    if [[ -f /etc/arch-release ]]; then
         (alias; declare -f) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot $@
     else 
         (alias; declare -f) | /usr/bin/which $@

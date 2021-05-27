@@ -7,7 +7,7 @@
 {{- if .personal }}
 {{- if eq .hostname "archlinux" }}
 # for some reason the cursor size doesnt change
-xrandr &&
+# xrandr &&
 
 userresources=$HOME/.config/X11/Xresources
 usermodmap=$HOME/.config/X11/Xmodmap
@@ -37,14 +37,14 @@ fi
 session=${1:-{{ .wm }}}
 
 # No known session, try to run it as command
-case $session in
-    i3|i3wm           ) exec i3;;
-    kde               ) exec startplasma-x11;;
-    xfce|xfce4        ) exec startxfce4;;
-    awesome           ) exec awesome;;
-    xmonad            ) exec xmonad;;
-    *                 ) exec $1;;
-esac
+# case $session in
+#     i3|i3wm           ) exec i3;;
+#     kde               ) exec startplasma-x11;;
+#     xfce|xfce4        ) exec startxfce4;;
+#     awesome           ) exec awesome;;
+#     xmonad            ) exec xmonad;;
+#     *                 ) exec $1;;
+# esac
 {{- end }}
 {{- end }}
 # vim: set ft=bash ts=4 sw=4 tw=0 et :

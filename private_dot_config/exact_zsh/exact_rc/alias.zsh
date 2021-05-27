@@ -26,7 +26,6 @@ alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
 alias dca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
 alias sca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
 alias dsca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
-alias chez-add="chezmoi add ${CHEZMOI_OPTS}"
 
 # Enable aliases to be sudo’ed
 alias sudo="nocorrect sudo"
@@ -34,6 +33,7 @@ alias sudo="nocorrect sudo"
 # git
 alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
+alias triple=". $HOME/.config/screenlayout/triple.sh"
 
 if (( $+commands[protonvpn] )); then
     alias vpnconnect="sudo protonvpn connect --cc CA"
@@ -137,8 +137,6 @@ alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 
 # bento
 alias bento="bentoml"
-# odoo
-alias odoo="${ODOO_PATH}/odoo-bin ${ODOO_OPTS}"
 # jupyter
 alias ipynb="jupyter notebook ${JUPYTER_OPTS}"
 

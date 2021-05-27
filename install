@@ -3,6 +3,7 @@
 set -euo pipefail
 trap "exit" INT
 
+export PATH="$PATH:$HOME/.local/bin"
 DOTS="$HOME/dotfiles"
 
 if [ ! "$(command -v chezmoi)" ]; then
@@ -20,6 +21,7 @@ else
     chezmoi=$(which chezmoi)
 fi
 
+
 if ! builtin command -v git &>/dev/null; then
     gitcmd="$chezmoi --use-builtin-git on"
 else
@@ -36,8 +38,8 @@ if virt-what &>/dev/null || [[ $is_headless == "true," ]]; then
     OPTS+=(--one-shot)
 fi
 
-echo "chezmoi version: $CHEZMOI_VERSIONS"
-echo "chezmoi opts: ${OPTS[*]}"
+# echo "chezmoi version: $CHEZMOI_VERSIONS"
+# echo "chezmoi opts: ${OPTS[*]}"
 
 if [[ $CHEZMOI_VERSIONS =~ v2* ]]; then
     \ls -1qA "$("$chezmoi" source-path)" &>/dev/null || exec "$chezmoi" init "${OPTS[*]}" aarnphm

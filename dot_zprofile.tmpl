@@ -22,7 +22,7 @@ source "$XDG_CONFIG_HOME/user-dirs.dirs"
 {{- end }}
 
 # ZSH defaults
-export ZDOTDIR="${ZDOTDIR:-$HOME/.zsh}"
+export ZDOTDIR="${ZDOTDIR:-$HOME}"
 export ZHOMEDIR="${ZHOMEDIR:-$XDG_CONFIG_HOME/zsh}"
 export ZRCDIR="${ZRCDIR:-$ZHOMEDIR/rc}"
 export ZDATADIR="${ZDATADIR:-$XDG_DATA_HOME/zsh}"
@@ -30,7 +30,6 @@ export ZDATADIR="${ZDATADIR:-$XDG_DATA_HOME/zsh}"
 {{- if eq .hostname "archlinux" }}
 # Probably one of the most important directory
 export CS_PATH="${XDG_DOCUMENTS_DIR}/cs"
-export ODOO_PATH="${CS_PATH}/odoo"
 {{- end }}
 export CITY="{{ .city }}"
 
@@ -53,7 +52,7 @@ export PAGER=less
 export LESS_TERMCAP_md="${yellow}";
 export LESS='--no-init -R --shift 4 --LONG-PROMPT --quit-if-one-screen'
 # add cuda lib
-export LD_LIBRARY_PATH="/opt/cuda/lib64"
+export LD_LIBRARY_PATH="/usr/local/cuda-11.3/lib64:/opt/cuda/lib64"
 {{- if not .transient }}
 export EDITOR=nvim
 {{- else }}
@@ -66,6 +65,7 @@ export VISUAL=$EDITOR
 export NPM_PACKAGES="{{ .chezmoi.homeDir }}/.npm/npm-packages"
 
 # defined go path
+export PATH=$PATH:/usr/local/go/bin
 export GOPATH="{{ .chezmoi.homeDir }}/go"
 export GOPROXY="https://proxy.golang.org/,direct"
 {{- if eq .chezmoi.os "darwin" }}
@@ -107,7 +107,7 @@ path=(
     {{- end }}
     {{- if .personal }}
     {{ .chezmoi.homeDir }}/.cargo/bin
-    {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin
+    # {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin
     {{ .chezmoi.homeDir }}/.pyenv/shims(N-/)
     {{ .chezmoi.homeDir }}/.pyenv/bin(N-/)
     {{- if eq .chezmoi.os "darwin" }}
@@ -127,6 +127,9 @@ path=(
     {{ .chezmoi.homeDir }}/.config/nnn/plugins(N-/)
     {{- end }}
     $HOME/bin/(N-/)
+    {{- if joinPath "/usr/local/cuda" }}
+    /usr/local/cuda/bin
+    {{- end }}
     $path
 )
 

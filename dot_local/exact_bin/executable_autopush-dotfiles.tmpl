@@ -88,7 +88,6 @@ define_message_body(){
     MESSAGE="$DEFAULT_MESSAGE"
     TASKNAME="$DEFAULT_PS"
   fi
-
 }
 
 # https://stackoverflow.com/a/36332260/8643197
@@ -110,11 +109,11 @@ autopush_dots() {
   backup_dotfiles $BACKUP_DIR
 
   pprint "\nDumping installed packages to files..."
-  {{- if eq .chezmoi.os "linux" }}
+  {{- if stat "/etc/arch-release" }}
   # Check for new packages, and add it to both .local file
   yay -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local
   yay -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
-  {{- else }}
+  {{- else if eq .chezmoi.os "darwin" }}
   brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile
   {{- end }}
 
@@ -128,7 +127,7 @@ autopush_dots() {
   define_message_body && cd "$(chezmoi source-path)"
   COMMITMSG="[$TASKNAME] $COMMITTIME: $MESSAGE"
   pprint "Commit message: $COMMITMSG"
-  
+
   # scrot -o bootstrap/screenshots/desktop.png
 
   # execute scripts
@@ -137,4 +136,4 @@ autopush_dots() {
 }
 
 autopush_dots "$@"
-# vim: set ft=bash.gohtmltmpl ts=2 sw=2 tw=0 et :
+
