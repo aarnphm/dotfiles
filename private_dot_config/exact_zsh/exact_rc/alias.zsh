@@ -42,10 +42,9 @@ if (( $+commands[protonvpn] )); then
 fi
 
 # List all files colorized in long format
-if command -v virt-what &>/dev/null; then
+if command -v virt-what &>/dev/null || (( !$+commands[exa] )); then
     alias la="\ls --color -rthla --group-directories-first"
 else
-    # la is actually exa
     alias la="ls ${LS_OPTS} ${colorflag}"
 fi
 # nnn intensifies
@@ -109,20 +108,10 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 #==============================================================#
 
 alias cs="cd $CS_PATH"
-# mcmaster vpn connect via studentvpn.mcmaster.ca
-if [[ -d $CS_PATH/mcmaster ]]; then
-    alias compeng="$CS_PATH/mcmaster && `\ls -t $CS_PATH/mcmaster | egrep "compeng" | head -n1`"
-fi
-alias chezmoidir="cd $CS_PATH/chezmoi"
+
 # bentoml
 alias bentodir="cd $CS_PATH/BentoML"
-# luxcer
-alias luxcer="cd $CS_PATH/luxcer/lookup-service"
-# zsh config directory
-alias simpledir="cd $CS_PATH/simple"
-alias simup="cp $ZRCDIR/simple/*.zsh $CS_PATH/simple/"
-alias zcdir="cd $CHEZMOI_DIR/private_dot_config/exact_zsh/exact_rc"
-alias zdir="cd $CHEZMOI_DIR/dot_zsh"
+
 # vim config
 alias vdir="cd $CHEZMOI_DIR/private_dot_config/vim"
 alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc"
@@ -135,8 +124,6 @@ alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 ## App
 #==============================================================#
 
-# bento
-alias bento="bentoml"
 # jupyter
 alias ipynb="jupyter notebook ${JUPYTER_OPTS}"
 
@@ -171,54 +158,53 @@ if [ -f /etc/arch-release ] ;then
     # urxvt
     alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
     # install
-    alias pac-update="sudo pacman -Sy"
-    alias pac-upgrade="sudo pacman -Syu"
-    alias pac-upgrade-force="sudo pacman -Syyu"
-    alias pac-install="sudo pacman -S"
-    alias pac-remove="sudo pacman -Rs"
+    alias pacupdate="sudo pacman -Sy"
+    alias pacupgrade="sudo pacman -Syu"
+    alias pacupgradef="sudo pacman -Syyu"
+    alias pacinstall="sudo pacman -S"
+    alias pacremove="sudo pacman -Rs"
     # search remote package
-    alias pac-search="pacman -Ss"
-    alias pac-package-info="pacman -Si"
+    alias pacsearch="pacman -Ss"
+    alias packinfo="pacman -Si"
     # search local package
-    alias pac-installed-list="pacman -Qs"
-    alias pac-installed-package-info="pacman -Qi"
+    alias pacinstalled="pacman -Qs"
+    alias pacinstalledinfo="pacman -Qi"
+    alias pacinstalledfiles="pacman -Ql"
     # import: sudo pacman -S pkglist.txt
-    alias pac-installed-list-export="pacman -Qqen"
-    alias pac-installed-files="pacman -Ql"
-    alias pac-unused-list="pacman -Qtdq"
-    alias pac-search-from-path="pacman -Qqo"
+    alias pacexport="pacman -Qqen"
+    alias pacunused="pacman -Qtdq"
+    alias pacsearchfrompath="pacman -Qqo"
+    alias pacsearchbyfilename="pkgfile"
     # search package from filename
-    alias pac-included-files="pacman -Fl"
-    alias pac-search-by-filename="pkgfile"
+    alias pacincludedfiles="pacman -Fl"
     # log
-    alias pac-log="cat /var/log/pacman.log | \grep "installed\|removed\|upgraded""
-    alias pac-aur-packages="pacman -Qm"
+    alias paclog="cat /var/log/pacman.log | \grep "installed\|removed\|upgraded""
+    alias aurpack="pacman -Qm"
     # etc
-    alias pac-clean="sudo pacman -Sc"
+    alias pacclean="sudo pacman -Sc"
     # aur
     if builtin command -v yay > /dev/null 2>&1; then
-        alias yay-installed-list="yay -Qm"
-        alias yay-clean="yay -Sc"
-        alias yay-update="yay -Syuu --noconfirm"
+        alias ylist="yay -Qm"
+        alias yclean="yay -Sc"
+        alias yupdate="yay -Syuu --noconfirm"
     fi
 fi
 
 # systemctl related
 if (( $+commands[systemctl] )); then
-    alias sys-restart="sudo systemctl restart"
-    alias sys-start="sudo systemctl start"
-    alias sys-stop="sudo systemctl stop"
-    alias sys-enable="sudo systemctl enable"
-    alias sys-disable="sudo systemctl disable"
-    alias sys-restart="sudo systemctl restart"
-    alias sys-reload="sudo systemctl reload"
-    alias sys-status="systemctl status"
-    alias sys-show="systemctl show"
-    alias sys-lu="systemctl list-units"
-    alias sys-luf="systemctl list-unit-files"
-    alias sys-lt="systemctl list-timers"
-    alias sys-cat="systemctl cat"
-    alias sys-ie="systemctl is-enabled"
+    alias sysrestart="sudo systemctl restart"
+    alias sysstart="sudo systemctl start"
+    alias sysstop="sudo systemctl stop"
+    alias sysenable="sudo systemctl enable"
+    alias sysdisable="sudo systemctl disable"
+    alias sysreload="sudo systemctl reload"
+    alias sysstatus="systemctl status"
+    alias sysshow="systemctl show"
+    alias syslu="systemctl list-units"
+    alias sysluf="systemctl list-unit-files"
+    alias syslt="systemctl list-timers"
+    alias syscat="systemctl cat"
+    alias sysie="systemctl is-enabled"
 fi
 
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
@@ -250,8 +236,8 @@ elif [[ -f /etc/arch-release ]]; then
 fi
 
 # Print each PATH, FPATH entry on a separate line
-alias path="echo -e ${PATH//:/\\n}"
-alias fpath="echo -e ${FPATH//:/\\n}"
+# alias path="echo -e ${PATH//:/\\n}"
+# alias fpath="echo -e ${FPATH//:/\\n}"
 
 # File Download
 if (( $+commands[curl] )); then

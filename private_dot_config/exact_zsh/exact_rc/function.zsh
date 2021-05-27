@@ -109,10 +109,6 @@ function 256color() {
     done
 }
 
-function tensorflow() {
-    echo "Tensorflow is installed with sytem Python, run 'pyenv global system' to use tensorflow"
-}
-
 function ascii_color_code() {
     seq 30 47 | xargs -i{} printf "\x1b[%dm#\x1b[0m %d\n" {} {}
 }
@@ -122,17 +118,6 @@ function find_no_new_line_at_end_of_file() {
     find * -type f -print0 | xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "No new line at end of $0"'
 }
 
-
-function change_terminal_title() {
-    if typeset -f precmd > /dev/null; then
-        unfunction precmd
-    fi
-    if [ "$#" -gt 0 ]; then
-        echo -ne "\033]0;$@\007"
-        return
-    fi
-    echo "Please reload zsh"
-}
 
 function get_stdin_and_args() {
     local __str
@@ -308,9 +293,4 @@ function fs() {
     else
         du $arg .[^.]* ./*;
     fi;
-}
-
-function fe(){
-    current_dir=`pwd`;
-    [[ -x `builtin command -v firefox` ]] &&${BROWSER:=firefox} --new-window file://$current_dir
 }

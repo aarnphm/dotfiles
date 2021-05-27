@@ -65,7 +65,6 @@ export VISUAL=$EDITOR
 export NPM_PACKAGES="{{ .chezmoi.homeDir }}/.npm/npm-packages"
 
 # defined go path
-export PATH=$PATH:/usr/local/go/bin
 export GOPATH="{{ .chezmoi.homeDir }}/go"
 export GOPROXY="https://proxy.golang.org/,direct"
 {{- if eq .chezmoi.os "darwin" }}
@@ -134,11 +133,8 @@ path=(
 )
 
 fpath=(
-    {{ .chezmoi.homeDir }}/.local/bin(N-/)
-    ${ZRCDIR:-$XDG_CONFIG_HOME/zsh/rc}/simple
-    ${ZRCDIR:-$XDG_CONFIG_HOME/zsh/rc}/pure
-    $ZHOMEDIR/completion(N-/)
-    $ZHOMEDIR/completion.local(N-/)
+    $ZHOMEDIR/completion
+    $ZHOMEDIR/completion.local
     /usr/local/share/zsh/site-functions
     /usr/share/zsh/site-functions
     $fpath

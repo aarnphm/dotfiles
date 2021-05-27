@@ -15,7 +15,6 @@ if empty(glob(stdpath('data') . '/autoload/plug.vim'))
 endif
 
 call plug#begin()
-
 " tpope plugins =)
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'

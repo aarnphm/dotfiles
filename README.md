@@ -4,7 +4,7 @@
 
 <h2 align="center">fyi.</h2>
 
-- managed with [chezmoi](https://www.chezmoi.io/) 
+- managed with [chezmoi](https://www.chezmoi.io/)
 - secrets stored with [BitWarden CLI](https://bitwarden.com/) and [Unix pass](https://www.passwordstore.org/)
 - I have included a Docker version of my dotfiles if you want to try it out.
 - check [desktop](./bootstrap/screenshots/desktop.png) as current setup
@@ -12,7 +12,7 @@
 <h2 align="center">installation.</h2>
 
 ```sh 
-    $ curl -fsSL https://raw.githubusercontent.com/aarnphm/dotfiles/HEAD/install | bash
+    $ chezmoi init github.com/aarnphm/dotfiles.git
 ```
 
 <h2 align="center">scripts.</h2>
@@ -31,7 +31,6 @@
 - [ ] Cron jobs for different branches
 - [ ] Rotate bitwarden password every two weeks, secure with gpg
 - [ ] save some local docs with pass
-- [ ] fixes bwmenu
 - [ ] (when i have time): custom arch ISO
 
 <!-- vim: set ft=markdown ts=4 sw=4 tw=0 et : -->

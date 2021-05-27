@@ -66,13 +66,13 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "firefox",
         rule_any = {class = {"Firefox","Chromium"}},
-        properties = {screen = screen.count()>1 and 3 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
+        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
         ruled.client.append_rule {
         id = "chromium",
         rule_any = {class = {"Chromium"}},
-        properties = {screen = screen.count()>2 and 3 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
+        properties = {screen = screen.count()>2 and 2 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -96,13 +96,13 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "kitty",
         rule_any = {class = {"kitty"}},
-        properties = {screen = 2, tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "jetbrains",
         rule_any = {class = {"jetbrains-pycharm", "jetbrains-goland"}},
-        properties = {screen = 3, tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = 2, tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {

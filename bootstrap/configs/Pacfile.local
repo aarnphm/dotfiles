@@ -75,7 +75,6 @@ binutils
 bison
 bitwarden-bin
 bleachbit
-blueberry
 blueman
 bluez
 bluez-libs
@@ -116,6 +115,7 @@ edk2-shell
 efibootmgr
 etcher-bin
 ethtool
+exa
 exfatprogs
 exo
 expac
@@ -206,6 +206,7 @@ jsoncpp
 kitty
 kitty-terminfo
 kvantum-qt5
+kvantum-theme-materia
 laptop-detect
 lib32-libappindicator-gtk2
 lib32-libappindicator-gtk3
@@ -304,7 +305,6 @@ optimus-manager-qt
 os-prober
 p7zip
 pacman
-pamac-all
 pamixer
 paper-icon-theme
 papirus-icon-theme
@@ -398,11 +398,6 @@ texlive-pstricks
 texlive-publishers
 texlive-science
 the_silver_searcher
-thunar
-thunar-archive-plugin
-thunar-media-tags-plugin
-thunar-shares-plugin
-thunar-volman
 tk
 tmux
 toilet
@@ -471,14 +466,6 @@ xf86-video-openchrome
 xf86-video-qxl
 xf86-video-vesa
 xf86-video-vmware
-xfce4-appfinder
-xfce4-notifyd
-xfce4-panel
-xfce4-power-manager
-xfce4-screenshooter
-xfce4-settings
-xfce4-taskmanager
-xfce4-terminal
 xfconf
 xfsprogs
 xfwm4

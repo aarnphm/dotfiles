@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
-{{- if .personal }}
 # Another way to profile zsh startup
+{{- if .personal }}
 PROFILE_STARTUP=false
 if [[ $PROFILE_STARTUP == true ]]; then
 	zmodload zsh/datetime
@@ -16,11 +16,6 @@ if [[ "$ZSHRC_PROFILE" != "" ]]; then
 	zmodload zsh/zprof && zprof > /dev/null
 fi
 
-if  [[ "$ZRCDIR" == "" ]]; then
-	source $HOME/.zprofile
-fi
-{{- else if .transient }}
-. $HOME/.local/bin/ssh-add
 {{- end }}
 
 #--------------------------------------------------------------#
@@ -36,12 +31,6 @@ source "$ZRCDIR/alias.zsh"
 
 
 #--------------------------------------------------------------#
-##          Options                                           ##
-#--------------------------------------------------------------#
-source "$ZRCDIR/options.zsh"
-
-
-#--------------------------------------------------------------#
 ##          Completion                                        ##
 #--------------------------------------------------------------#
 source "$ZRCDIR/completion.zsh"
@@ -53,29 +42,17 @@ source "$ZRCDIR/completion.zsh"
 source "$ZRCDIR/bindkey.zsh"
 
 
-{{ if not (lookPath "virt-what") }}
 #--------------------------------------------------------------#
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
-if [[ "$ZSHRC_PROFILE" == "" ]]; then
-	if [[ -z "$TIMESHELL" ]]; then
-		# clear && . $XDG_BIN_HOME/ghosts
-		autoload -Uz promptinit && promptinit
-		prompt simple
-	fi
-fi
 # functions
 source "$ZRCDIR/function.zsh"
 # plugins
 source "$ZRCDIR/plugins.zsh"
 # post
 source "$ZRCDIR/post.zsh"
-{{- else }}
-autoload -Uz promptinit && promptinit
-prompt simple
-{{- end }}
 
-{{ if .personal }}
+{{- if .personal }}
 if [[ $PROFILE_STARTUP == true ]]; then
     unsetopt XTRACE
     exec 2>&3 3>&-
