@@ -113,7 +113,6 @@ date_text.markup =markup.fg.color(x.color11, date_text.text)
 
 date_text:connect_signal("widget::redraw_needed", function()
     date_text.markup = markup.fg.color(x.color11, date_text.text)
-        right=dpi(7),
 end)
 
 local date_icon = wibox.widget {

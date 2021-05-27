@@ -210,6 +210,8 @@ kvantum-theme-materia
 laptop-detect
 lib32-libappindicator-gtk2
 lib32-libappindicator-gtk3
+lib32-nvidia-utils
+lib32-vulkan-intel
 libcups
 libdvdcss
 libfido2
