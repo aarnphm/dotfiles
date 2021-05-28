@@ -8,12 +8,10 @@ function history-all() {
 }
 
 function venv() {
-    [[ -d venv ]] && source venv/bin/activate
-}
-
-function dotmsg(){
-    echo "Define message: "
-    cat - >| $GIT_GLOBAL_CONFIG_DIR/dot-commit-msg
+    if [[ ! -d venv ]]; then
+        python -m venv venv
+    fi
+    source venv/bin/activate
 }
 
 function __exec_command_with_tmux() {

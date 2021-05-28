@@ -11,13 +11,10 @@ fabric-server
 ffmpeg-compat-57
 figma-linux
 figma-linux-font-helper
+fix-bt-a2dp
 forge-server
-goland
-goland-jre
 gyazo
 heroku-cli-bin
-intellij-idea-ultimate-edition
-intellij-idea-ultimate-edition-jre
 ipscan
 kdocker
 libcurl-compat-minimal-git
@@ -30,7 +27,6 @@ ncurses5-compat-libs
 nnn-nerd
 nvidia-container-toolkit
 obs-studio-git
-pycharm-professional
 python-qtconsole-git
 rainbow
 shell-color-scripts

@@ -32,12 +32,19 @@ zinit light-mode for \
 #--------------------------------#
 # completion
 #--------------------------------#
-# syntax highlighting and completion
-zinit wait lucid light-mode for \
-    atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting
 
-zplugin ice wait"0" lucid
-zplugin load zdharma/history-search-multi-word
+zinit wait'0b' lucid as"completion" \
+  atload"source $ZRCDIR/configs/zsh-completions_atload.zsh" \
+  light-mode for @zsh-users/zsh-completions
+
+zinit wait'0a' lucid \
+  if"(( ${ZSH_VERSION%%.*} > 4.4))" \
+  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+  light-mode for @zdharma/fast-syntax-highlighting
+
+zplugin ice wait"0a" lucid \
+  atinit"source $ZRCDIR/configs/zsh-autocomplete_atinit.zsh" \
+  light-mode for @zdharma/history-search-multi-word
 
 #--------------------------------#
 # history

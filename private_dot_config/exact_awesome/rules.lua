@@ -4,6 +4,15 @@ local defaults  = require("defaults")
 -- updates to newer api
 local ruled     = require("ruled")
 
+local get_screen = function(screen_num)
+    local count = screen.count()
+    if screen_num > count then
+        return count
+    else
+        return screen_num
+    end
+end
+
 -- ===================================================================
 -- Define sets rules
 -- ===================================================================
@@ -49,7 +58,7 @@ ruled.client.connect_signal("request::rules", function()
                      "Gparted", "Pavucontrol", "Qt5ct", "Kvantum", "Grub-customizer", "URxvt", "XTerm"},
             name  = {"Library", "Chat", "Event Tester", "Settings"},
             role  = {"Popup"},
-            type  = {"dialog"}
+            type  = {"dialog", "GtkFileChooserDialog"}
         },
         properties = {floating = true}
     }
@@ -60,37 +69,31 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "spotify",
         rule = {class = "Spotify"},
-        properties = {screen = 1, tag = defaults.tags[1].names[4], switchtotag = true}
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[4], switchtotag = true}
     }
 
     ruled.client.append_rule {
-        id = "firefox",
-        rule_any = {class = {"Firefox","Chromium"}},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
-    }
-
-        ruled.client.append_rule {
-        id = "chromium",
-        rule_any = {class = {"Chromium"}},
-        properties = {screen = screen.count()>2 and 2 or 1, tag = defaults.tags[1].names[2], switchtotag = true}
+        id = "browser",
+        rule_any = {class = {"Chromium", "Firefox"}},
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "terminal",
         rule_any = {class = {"Alacritty", "St", "UXTerm", "XTerm"}},
-        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = get_screen(3), tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "steam",
         rule_any = {class = {"Steam", "dota2"}},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[5], switchtotag = true}
+        properties = {screen = get_screen(3), tag = defaults.tags[1].names[5], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "minecraft",
         rule_any = {class = "Minecraft 1.16.5"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag = defaults.tags[1].names[3], switchtotag = true}
+        properties = {screen = get_screen(3), tag = defaults.tags[1].names[3], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -102,7 +105,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "jetbrains",
         rule_any = {class = {"jetbrains-pycharm", "jetbrains-goland"}},
-        properties = {screen = 2, tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -114,7 +117,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "vmware",
         rule = {class = "vmware"},
-        properties = {screen = screen.count()>1 and 2 or 1, tag=defaults.tags[1].names[2], switchtotag = true}
+        properties = {screen = get_screen(1), tag=defaults.tags[1].names[2], switchtotag = true}
     }
 
     ruled.client.append_rule {

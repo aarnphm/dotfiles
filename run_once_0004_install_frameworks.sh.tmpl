@@ -6,10 +6,11 @@ IFS=$'\n\t'
 git config --global include.path ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig
 git config --global core.excludesFile ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitignore
 
+# shellcheck disable=SC1009,SC1054,SC1073,SC1056,SC1072,SC1083
 {{- if .personal }}
 # bitwarden cli yarn and typescript
 if builtin command -v npm &>/dev/null; then
-    npm list -g yarn &>/dev/null || npm install -g yarn
+    npm install -g yarn
 
     # install packages
     packages=(diagnostic-languageserver typescript ts-node react @bitwarden/cli)

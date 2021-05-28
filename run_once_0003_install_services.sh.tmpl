@@ -2,8 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# shellcheck disable=SC1009,SC1054,SC1073,SC1056,SC1072,SC1083,SC1036
 {{- if .personal }}
-{{-   if and (eq .hostname "archlinux") (.personal) }}
+{{- if and (joinPath "/etc/arch-release") (.personal) }}
 # for debian we disable
 SERVICES=(docker sshd bluetooth lightdm acpid cronie acpid postgresql optimus-manager)
 
@@ -12,5 +13,5 @@ for services in "${SERVICES[@]}"; do
 done
 
 crontab {{ .chezmoi.sourceDir }}/bootstrap/configs/private_cronfile
-{{-   end }}
+{{- end }}
 {{- end }}

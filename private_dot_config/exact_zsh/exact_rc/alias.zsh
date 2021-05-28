@@ -33,6 +33,7 @@ alias sudo="nocorrect sudo"
 # git
 alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
+alias dm="$EDITOR $(dirname "$(git config --global --get include.path)")/dot-commit-msg"
 alias triple=". $HOME/.config/screenlayout/triple.sh"
 
 if (( $+commands[protonvpn] )); then
@@ -42,10 +43,11 @@ if (( $+commands[protonvpn] )); then
 fi
 
 # List all files colorized in long format
-if command -v virt-what &>/dev/null || (( !$+commands[exa] )); then
+if command -v virt-what &>/dev/null; then
     alias la="\ls --color -rthla --group-directories-first"
 else
-    alias la="ls ${LS_OPTS} ${colorflag}"
+    # exa as defaults
+    alias la="exa ${LS_OPTS} ${colorflag}"
 fi
 # nnn intensifies
 alias N="sudo -E nnn -dDH"

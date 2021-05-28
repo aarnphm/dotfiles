@@ -9,11 +9,11 @@ local gfs       = gears.filesystem
 
 -- This is to slave windows' positions in floating layout
 -- https://github.com/larkery/awesome/blob/master/savefloats.lua
-require("windows.savefloats")
+-- require("windows.savefloats")
 
 -- Better mouse resizing on tiled
 -- https://github.com/larkery/awesome/blob/master/better-resize.lua
-require("windows.better-resize")
+-- require("windows.better-resize")
 
 -- ===================================================================
 -- Theme definition

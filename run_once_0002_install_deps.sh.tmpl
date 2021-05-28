@@ -1,14 +1,13 @@
-{{- if and (ne .chezmoi.os "windows") (not .transient) -}}
 #!/usr/bin/env bash
 
 set -euo pipefail
 
-{{- if ne .chezmoi.os "darwin" }}
+# shellcheck disable=SC1009,SC1054,SC1073,SC1056,SC1072,SC1083,SC1090,SC1036,SC1111
+{{- if and (ne .chezmoi.os "windows") (not .transient) -}}
 declare -A osInfo
 osInfo[Centos]=yum
 osInfo[Arch]=pacman
 osInfo[Debian]=apt-get
-{{- end }}
 
 # declare os based on system
 if [ -f /etc/os-release ]; then
@@ -52,7 +51,7 @@ case "$OS" in
         PKGOPT=(--needed --noconfirm)
         ;;
     Debian)
-        PKGOPT=
+        PKGOPT=(-y)
         ;;
     Darwin)
         PKGOPT=(--verbose --debug)
@@ -104,7 +103,6 @@ function install() {
     fi
 }
 
-{{- if .personal }}
 if [[ $OS == "Darwin" ]]; then
     echo "Using $BUNDLE_FILE"
     install osx
@@ -112,5 +110,4 @@ elif [[ $OS == "Arch"* ]]; then
     echo "Using $PACMAN_FILE and $AUR_FILE"
     install core && install aur
 fi
-{{ end -}}
 {{ end -}}

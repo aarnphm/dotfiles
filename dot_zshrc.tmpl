@@ -52,7 +52,9 @@ source "$ZRCDIR/function.zsh"
 # plugins
 source "$ZRCDIR/plugins.zsh"
 # post
-source "$ZRCDIR/post.zsh"
+if ! builtin command -v zinit > /dev/null 2>&1; then
+	source "$ZRCDIR/post.zsh"
+fi
 
 {{- if .personal }}
 if [[ $PROFILE_STARTUP == true ]]; then

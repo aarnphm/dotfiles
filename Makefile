@@ -1,6 +1,6 @@
-.PHONY: help full-install docker-build docker-run build
+.PHONY: help full-install
 
-.DEFAULT_GOAL := help
+.DEFAULT_GOAL := full-install
 
 LOCALDIR := ${CURDIR}/bootstrap/configs
 
@@ -10,11 +10,3 @@ help: ## Display this help messages
 full-install: ## install from both .local file
 	xargs sudo pacman -Syu --noconfirm --needed < ${LOCALDIR}/Pacfile.local 
 	xargs yay -Syu --noconfirm --needed < ${LOCALDIR}/Aurfile.local
-
-docker-build: ## build docker images from Dockerfile
-	docker build -t aar0npham/dotfiles:latest .
-
-docker-run: docker-build ## test run docker
-	docker run -it aar0npham/dotfiles:latest
-
-build: docker-build docker-run ## build and run test code

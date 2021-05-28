@@ -75,6 +75,7 @@ binutils
 bison
 bitwarden-bin
 bleachbit
+blender
 blueman
 bluez
 bluez-libs
@@ -175,7 +176,6 @@ gvfs-mtp
 gvfs-nfs
 gvfs-smb
 gzip
-hardcode-fixer-git
 hardinfo
 haveged
 hdparm
@@ -339,6 +339,7 @@ pulseaudio-alsa
 pulseaudio-bluetooth
 pulseaudio-zeroconf
 pyenv
+python-pre-commit
 python-pyparted
 python-pywal
 python2-pyxdg

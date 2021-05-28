@@ -6,7 +6,6 @@
 
 export CHEZMOI_BIN="$(which chezmoi)"
 export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
-export GIT_GLOBAL_CONFIG_DIR="$(dirname "$(git config --global --get include.path)")"
 
 ###########################################################################
 #                            XDG - ZSH                                    #
@@ -17,7 +16,7 @@ export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_BIN_HOME="{{ .chezmoi.homeDir }}/.local/bin"
-{{- if eq .hostname "archlinux" }}
+{{- if joinPath "/etc/arch-release" }}
 source "$XDG_CONFIG_HOME/user-dirs.dirs"
 {{- end }}
 
