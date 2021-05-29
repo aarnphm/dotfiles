@@ -105,14 +105,9 @@ function extract() {
 }
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
-#==============================================================#
-## Dir
-#==============================================================#
-
 alias cs="cd $CS_PATH"
 
 # awesome config
-alias aconf="$EDITOR -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 
 #==============================================================#
@@ -130,7 +125,7 @@ alias delay="ping google.com | grep -E --only-matching --color '[0-9\.]+ ms'"
 alias ip4="dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com"
 alias ip6="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com"
 alias dlisten="ss -lntu | grep $1"
-alias freetcp="fuser -k {$@}/tcp"
+alias freeport="sudo fuser -k $@"
 alias copy="xclip -sel clip"
 alias bwpass="[[ -f $HOME/bw.pass ]] && cat $HOME/bw.pass | sed -n 1p | xclip -sel clip"
 

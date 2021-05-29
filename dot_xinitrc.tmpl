@@ -5,20 +5,10 @@
 # Executed by startx (run your window manager from here)
 
 {{- if .personal }}
-{{- if eq .hostname "archlinux" }}
+{{- if eq .chezmoi.os "linux" }}
 # for some reason the cursor size doesnt change
-xrandr &&
-
-userresources=$HOME/.config/X11/Xresources
-usermodmap=$HOME/.config/X11/Xmodmap
-
-if [ -f "$userresources" ]; then
-    xrdb -merge "$userresources" &&
-fi
-
-if [ -f "$usermodmap" ]; then
-    xmodmap "$usermodmap"
-fi
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
 
 # start some nice programs
 

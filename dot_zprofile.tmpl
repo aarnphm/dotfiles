@@ -121,6 +121,7 @@ path=(
     {{- if joinPath "/opt/cuda" }}
     /opt/cuda/bin(N-/)
     {{- end }}
+    $NPM_PACKAGES/bin
     {{ .chezmoi.homeDir }}/google-cloud-sdk/bin(N-/)
     {{ .chezmoi.homeDir }}/.config/nnn/plugins(N-/)
     {{- end }}

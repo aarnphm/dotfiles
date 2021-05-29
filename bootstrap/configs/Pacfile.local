@@ -368,6 +368,7 @@ sed
 sg3_utils
 shellcheck
 skypeforlinux-stable-bin
+sl
 slack-desktop
 smartmontools
 sof-firmware

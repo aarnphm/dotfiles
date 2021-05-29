@@ -35,9 +35,9 @@ local get_taglist = function(s)
     local ghost       = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/ghost.png")
     local dot         = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/dot.png")
     local pacman      = gears.surface.load_uncached(gfs.get_configuration_dir() .. "decorations/icons/pacman.png")
-    local ghost_icon  = gears.color.recolor_image(ghost, x.color10)
+    local ghost_icon  = gears.color.recolor_image(dot, x.color10)
     local dot_icon    = gears.color.recolor_image(dot, x.color8)
-    local pacman_icon = gears.color.recolor_image(pacman, x.color3)
+    local pacman_icon = gears.color.recolor_image(dot, x.color3)
 
     -- Function to update the tags
     local update_tags = function(self, c3)
