@@ -13,11 +13,11 @@ if (( $num_screen > 1 )); then
 fi
 
 if [[ $num_screen == 3 ]]; then
-    dp=$screen_setup/triple.sh
+    dp="$screen_setup/triple.sh"
 elif [[ $num_screen == 2 ]]; then
-	dp=$screen_setup/dual.sh
+	dp="$screen_setup/dual.sh"
 else
-	dp=$screen_setup/one.sh
+	dp="$screen_setup/one.sh"
 fi
 
 # shellcheck disable=SC1090

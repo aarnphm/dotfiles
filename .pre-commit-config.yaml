@@ -1,5 +1,0 @@
-repos:
-  - repo: https://github.com/gruntwork-io/pre-commit
-    rev: e9250bd
-    hooks:
-      - id: shellcheck

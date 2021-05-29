@@ -6,5 +6,8 @@ set -euo pipefail
 {{- if .personal }}
 {{- if eq .chezmoi.os "darwin" }}
 type brew &>/dev/null || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh
-{{ end -}}
-{{ end -}}
+{{- end }}
+{{- if joinPath "/etc/arch-release" }}
+make -f $HOME/.local/share/chezmoi/Makefile
+{{- end }}
+{{- end }}

@@ -34,6 +34,7 @@ run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
 run optimus-manager-qt
+run jetbrains-toolbox
 run pasystray
 run nm-applet
 run spotify-tray

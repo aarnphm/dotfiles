@@ -54,11 +54,47 @@ zinit wait'1' lucid \
         light-mode for @zsh-users/zsh-history-substring-search
 
 #--------------------------------#
+# improve cd
+#--------------------------------#
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"zoxide-*/zoxide" \
+  atload"source $ZRCDIR/configs/zoxide_atload.zsh" \
+  light-mode for @ajeetdsouza/zoxide
+
+zinit wait'1' lucid \
+  light-mode for @mollifier/cd-gitroot
+
+zinit wait'1' lucid \
+  light-mode for @peterhurford/up.zsh
+
+zinit wait'1' lucid \
+  light-mode for @Tarrasch/zsh-bd
+
+#--------------------------------#
 # fzf
 #--------------------------------#
 zinit wait'0b' lucid \
-    from"gh-r" as"program" \
-    for @junegunn/fzf
+  from"gh-r" as"program" \
+  atload"source $ZRCDIR/configs/fzf_atload.zsh" \
+  for @junegunn/fzf
+zinit ice wait'0a' lucid
+zinit snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
+zinit ice wait'1a' lucid atload"source $ZRCDIR/configs/fzf_completion_atload.zsh"
+zinit snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+zinit ice wait'0a' lucid as"program"
+zinit snippet https://github.com/junegunn/fzf/blob/master/bin/fzf-tmux
+
+# zinit wait'2' lucid \
+#   from"gh-r" as"program" \
+#   atload"source $ZRCDIR/configs/pmy_atload.zsh" \
+#   for @relastle/pmy
+
+zinit wait'2' lucid blockf depth"1" \
+  atclone'deno cache --no-check ./bin/zeno' \
+  atpull'%atclone' \
+  atinit"source $ZRCDIR/configs/zeno_atinit.zsh" \
+  atload"source $ZRCDIR/configs/zeno_atload.zsh" \
+  for @yuki-yano/zeno.zsh
 
 #--------------------------------#
 # extension
@@ -70,12 +106,15 @@ zinit wait'0' lucid \
 # enhanced command
 #--------------------------------#
 
-GEOMETRY_PROMPT=(geometry_echo geometry_status geometry_virtualenv geometry_node geometry_kube geometry_rustup geometry_rust_version geometry_hostname geometry_path)
-GEOMETRY_RPROMPT=(geometry_docker_machine geometry_exec_time geometry_git geometry_echo)
-GEOMETRY_COLOR_DIR=152
-GEOMETRY_PATH_SHOW_BASENAME=true
-zinit ice wait"0" lucid atload"geometry::prompt"
-zinit light geometry-zsh/geometry
+PROMPT="%~"$'\n'"» "
+zinit wait'!0b' lucid depth=1 \
+  atload"source $ZRCDIR/configs/powerlevel10k_atload.zsh" \
+  light-mode for @romkatv/powerlevel10k
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"bin/exa" \
+  atload"source $ZRCDIR/configs/exa_atload.zsh" \
+  light-mode for @ogham/exa
 
 zinit wait'1' lucid blockf nocompletions \
     from"gh-r" as'program' pick'ripgrep*/rg' \
@@ -88,6 +127,11 @@ zinit wait'1' lucid blockf nocompletions \
     atclone'chown -R $(id -nu):$(id -ng) .; zinit creinstall -q sharkdp/fd' \
     atpull'%atclone' \
     light-mode for @sharkdp/fd
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" cp"bat/autocomplete/bat.zsh -> _bat" pick"bat*/bat" \
+  atload"alias cat=bat" \
+  light-mode for @sharkdp/bat
 
 zinit wait'1' lucid \
     from"gh-r" as"program" pick"rip*/rip" \
@@ -107,11 +151,28 @@ zinit wait'1' lucid \
 #--------------------------------#
 
 zinit wait'1' lucid \
-    from"gh-r" as'program' bpick'*linux_*.tar.gz' pick'gh*/**/gh' \
-    light-mode for @cli/cli
-
+  from"gh-r" as"program" pick"ghq*/ghq" \
+  atload"source $ZRCDIR/configs/ghq_atload.zsh" \
+  light-mode for @x-motemen/ghq
 
 zinit wait'1' lucid \
-    from"gh-r" as"program" mv"hub-*/bin/hub -> hub" pick"hub" \
-    atload"alias git=hub" \
-    for @github/hub
+  from"gh-r" as"program" pick"ghg*/ghg" \
+  light-mode for @Songmu/ghg
+
+zinit wait'1' lucid \
+  from"gh-r" as'program' bpick'*linux_*.tar.gz' pick'gh*/**/gh' \
+  atload"source $ZRCDIR/configs/gh_atload.zsh" \
+  light-mode for @cli/cli
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" cp"hub-*/etc/hub.zsh_completion -> _hub" pick"hub-*/bin/hub" \
+  atload"source $ZRCDIR/configs/hub_atload.zsh" \
+  for @github/hub
+
+
+#==============================================================#
+# completion
+#==============================================================#
+zinit wait'2' lucid \
+  atload"zicompinit; zicdreplay" \
+  light-mode for "$ZRCDIR/plugins/auto_commands.zsh"

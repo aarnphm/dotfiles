@@ -98,6 +98,7 @@ cups-pk-helper
 darkhttpd
 dconf-editor
 ddrescue
+deno
 dex
 dhclient
 dialog
@@ -116,7 +117,6 @@ edk2-shell
 efibootmgr
 etcher-bin
 ethtool
-exa
 exfatprogs
 exo
 expac

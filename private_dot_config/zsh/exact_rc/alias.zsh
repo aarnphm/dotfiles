@@ -111,14 +111,7 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
 alias cs="cd $CS_PATH"
 
-# bentoml
-alias bentodir="cd $CS_PATH/BentoML"
-
-# vim config
-alias vdir="cd $CHEZMOI_DIR/private_dot_config/vim"
-alias vconf="$EDITOR $CHEZMOI_DIR/private_dot_config/vim/vimrc"
 # awesome config
-alias adir="cd $CHEZMOI_DIR/private_dot_config/exact_awesome"
 alias aconf="$EDITOR -p $CHEZMOI_DIR/private_dot_config/exact_awesome/*.lua"
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 

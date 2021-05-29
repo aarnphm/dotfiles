@@ -61,7 +61,8 @@ export VISUAL=$EDITOR
 
 {{- if .personal }}
 # npm config
-export NPM_PACKAGES="{{ .chezmoi.homeDir }}/.npm/npm-packages"
+# fallback if .npmrc decided not to be sourced
+export NPM_PACKAGES="{{ .chezmoi.homeDir }}/.config/npm"
 
 # defined go path
 export GOPATH="{{ .chezmoi.homeDir }}/go"
@@ -104,8 +105,8 @@ path=(
     {{ .chezmoi.homeDir }}/.poetry/bin(N-/)
     {{- end }}
     {{- if .personal }}
-    {{ .chezmoi.homeDir }}/.cargo/bin
-    # {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin
+    {{ .chezmoi.homeDir }}/.cargo/bin(N-/)
+    {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin(N-/)
     {{ .chezmoi.homeDir }}/.pyenv/shims(N-/)
     {{ .chezmoi.homeDir }}/.pyenv/bin(N-/)
     {{- if eq .chezmoi.os "darwin" }}
@@ -115,7 +116,6 @@ path=(
     /usr/local/sbin(N-/)
     $JAVA_HOME/bin(N-/)
     {{- end }}
-    $NPM_PACKAGES/bin(N-/)
     $GOPATH/bin(N-/)
     $GOPATH/src(N-/)
     {{- if joinPath "/opt/cuda" }}
@@ -144,7 +144,7 @@ fpath=(
 ###########################################################################
 
 export CHEZMOI_OPTS_DRY="--verbose --debug --color on --dry-run"
-export CHEZMOI_OPTS="--verbose --debug --color on"
+export CHEZMOI_OPTS="--verbose --debug --color on --force"
 
 {{- if .personal }}
 export NNN_OPTS="EDUHrxdeat"
