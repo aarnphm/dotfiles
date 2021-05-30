@@ -1,0 +1,5961 @@
+
+# Copyright 2017 The Kubernetes Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+__kubeadm_bash_source() {
+	alias shopt=':'
+	alias _expand=_bash_expand
+	alias _complete=_bash_comp
+	emulate -L sh
+	setopt kshglob noshglob braceexpand
+
+	source "$@"
+}
+
+__kubeadm_type() {
+	# -t is not supported by zsh
+	if [ "$1" == "-t" ]; then
+		shift
+
+		# fake Bash 4 to disable "complete -o nospace". Instead
+		# "compopt +-o nospace" is used in the code to toggle trailing
+		# spaces. We don't support that, but leave trailing spaces on
+		# all the time
+		if [ "$1" = "__kubeadm_compopt" ]; then
+			echo builtin
+			return 0
+		fi
+	fi
+	type "$@"
+}
+
+__kubeadm_compgen() {
+	local completions w
+	completions=( $(compgen "$@") ) || return $?
+
+	# filter by given word as prefix
+	while [[ "$1" = -* && "$1" != -- ]]; do
+		shift
+		shift
+	done
+	if [[ "$1" == -- ]]; then
+		shift
+	fi
+	for w in "${completions[@]}"; do
+		if [[ "${w}" = "$1"* ]]; then
+			echo "${w}"
+		fi
+	done
+}
+
+__kubeadm_compopt() {
+	true # don't do anything. Not supported by bashcompinit in zsh
+}
+
+__kubeadm_ltrim_colon_completions()
+{
+	if [[ "$1" == *:* && "$COMP_WORDBREAKS" == *:* ]]; then
+		# Remove colon-word prefix from COMPREPLY items
+		local colon_word=${1%${1##*:}}
+		local i=${#COMPREPLY[*]}
+		while [[ $((--i)) -ge 0 ]]; do
+			COMPREPLY[$i]=${COMPREPLY[$i]#"$colon_word"}
+		done
+	fi
+}
+
+__kubeadm_get_comp_words_by_ref() {
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[${COMP_CWORD}-1]}"
+	words=("${COMP_WORDS[@]}")
+	cword=("${COMP_CWORD[@]}")
+}
+
+__kubeadm_filedir() {
+	local RET OLD_IFS w qw
+
+	__kubectl_debug "_filedir $@ cur=$cur"
+	if [[ "$1" = \~* ]]; then
+		# somehow does not work. Maybe, zsh does not call this at all
+		eval echo "$1"
+		return 0
+	fi
+
+	OLD_IFS="$IFS"
+	IFS=$'\n'
+	if [ "$1" = "-d" ]; then
+		shift
+		RET=( $(compgen -d) )
+	else
+		RET=( $(compgen -f) )
+	fi
+	IFS="$OLD_IFS"
+
+	IFS="," __kubectl_debug "RET=${RET[@]} len=${#RET[@]}"
+
+	for w in ${RET[@]}; do
+		if [[ ! "${w}" = "${cur}"* ]]; then
+			continue
+		fi
+		if eval "[[ \"\${w}\" = *.$1 || -d \"\${w}\" ]]"; then
+			qw="$(__kubeadm_quote "${w}")"
+			if [ -d "${w}" ]; then
+				COMPREPLY+=("${qw}/")
+			else
+				COMPREPLY+=("${qw}")
+			fi
+		fi
+	done
+}
+
+__kubeadm_quote() {
+    if [[ $1 == \'* || $1 == \"* ]]; then
+        # Leave out first character
+        printf %q "${1:1}"
+    else
+    	printf %q "$1"
+    fi
+}
+
+autoload -U +X bashcompinit && bashcompinit
+
+# use word boundary patterns for BSD or GNU sed
+LWORD='[[:<:]]'
+RWORD='[[:>:]]'
+if sed --version 2>&1 | grep -q GNU; then
+	LWORD='\<'
+	RWORD='\>'
+fi
+
+__kubeadm_convert_bash_to_zsh() {
+	sed \
+	-e 's/declare -F/whence -w/' \
+	-e 's/local \([a-zA-Z0-9_]*\)=/local \1; \1=/' \
+	-e 's/flags+=("\(--.*\)=")/flags+=("\1"); two_word_flags+=("\1")/' \
+	-e 's/must_have_one_flag+=("\(--.*\)=")/must_have_one_flag+=("\1")/' \
+	-e "s/${LWORD}_filedir${RWORD}/__kubeadm_filedir/g" \
+	-e "s/${LWORD}_get_comp_words_by_ref${RWORD}/__kubeadm_get_comp_words_by_ref/g" \
+	-e "s/${LWORD}__ltrim_colon_completions${RWORD}/__kubeadm_ltrim_colon_completions/g" \
+	-e "s/${LWORD}compgen${RWORD}/__kubeadm_compgen/g" \
+	-e "s/${LWORD}compopt${RWORD}/__kubeadm_compopt/g" \
+	-e "s/${LWORD}declare${RWORD}/builtin declare/g" \
+	-e "s/\\\$(type${RWORD}/\$(__kubeadm_type/g" \
+	<<'BASH_COMPLETION_EOF'
+# bash completion for kubeadm                              -*- shell-script -*-
+
+__kubeadm_debug()
+{
+    if [[ -n ${BASH_COMP_DEBUG_FILE} ]]; then
+        echo "$*" >> "${BASH_COMP_DEBUG_FILE}"
+    fi
+}
+
+# Homebrew on Macs have version 1.3 of bash-completion which doesn't include
+# _init_completion. This is a very minimal version of that function.
+__kubeadm_init_completion()
+{
+    COMPREPLY=()
+    _get_comp_words_by_ref "$@" cur prev words cword
+}
+
+__kubeadm_index_of_word()
+{
+    local w word=$1
+    shift
+    index=0
+    for w in "$@"; do
+        [[ $w = "$word" ]] && return
+        index=$((index+1))
+    done
+    index=-1
+}
+
+__kubeadm_contains_word()
+{
+    local w word=$1; shift
+    for w in "$@"; do
+        [[ $w = "$word" ]] && return
+    done
+    return 1
+}
+
+__kubeadm_handle_go_custom_completion()
+{
+    __kubeadm_debug "${FUNCNAME[0]}: cur is ${cur}, words[*] is ${words[*]}, #words[@] is ${#words[@]}"
+
+    local shellCompDirectiveError=1
+    local shellCompDirectiveNoSpace=2
+    local shellCompDirectiveNoFileComp=4
+    local shellCompDirectiveFilterFileExt=8
+    local shellCompDirectiveFilterDirs=16
+
+    local out requestComp lastParam lastChar comp directive args
+
+    # Prepare the command to request completions for the program.
+    # Calling ${words[0]} instead of directly kubeadm allows to handle aliases
+    args=("${words[@]:1}")
+    requestComp="${words[0]} __completeNoDesc ${args[*]}"
+
+    lastParam=${words[$((${#words[@]}-1))]}
+    lastChar=${lastParam:$((${#lastParam}-1)):1}
+    __kubeadm_debug "${FUNCNAME[0]}: lastParam ${lastParam}, lastChar ${lastChar}"
+
+    if [ -z "${cur}" ] && [ "${lastChar}" != "=" ]; then
+        # If the last parameter is complete (there is a space following it)
+        # We add an extra empty parameter so we can indicate this to the go method.
+        __kubeadm_debug "${FUNCNAME[0]}: Adding extra empty parameter"
+        requestComp="${requestComp} \"\""
+    fi
+
+    __kubeadm_debug "${FUNCNAME[0]}: calling ${requestComp}"
+    # Use eval to handle any environment variables and such
+    out=$(eval "${requestComp}" 2>/dev/null)
+
+    # Extract the directive integer at the very end of the output following a colon (:)
+    directive=${out##*:}
+    # Remove the directive
+    out=${out%:*}
+    if [ "${directive}" = "${out}" ]; then
+        # There is not directive specified
+        directive=0
+    fi
+    __kubeadm_debug "${FUNCNAME[0]}: the completion directive is: ${directive}"
+    __kubeadm_debug "${FUNCNAME[0]}: the completions are: ${out[*]}"
+
+    if [ $((directive & shellCompDirectiveError)) -ne 0 ]; then
+        # Error code.  No completion.
+        __kubeadm_debug "${FUNCNAME[0]}: received error from custom completion go code"
+        return
+    else
+        if [ $((directive & shellCompDirectiveNoSpace)) -ne 0 ]; then
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                __kubeadm_debug "${FUNCNAME[0]}: activating no space"
+                compopt -o nospace
+            fi
+        fi
+        if [ $((directive & shellCompDirectiveNoFileComp)) -ne 0 ]; then
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                __kubeadm_debug "${FUNCNAME[0]}: activating no file completion"
+                compopt +o default
+            fi
+        fi
+    fi
+
+    if [ $((directive & shellCompDirectiveFilterFileExt)) -ne 0 ]; then
+        # File extension filtering
+        local fullFilter filter filteringCmd
+        # Do not use quotes around the $out variable or else newline
+        # characters will be kept.
+        for filter in ${out[*]}; do
+            fullFilter+="$filter|"
+        done
+
+        filteringCmd="_filedir $fullFilter"
+        __kubeadm_debug "File filtering command: $filteringCmd"
+        $filteringCmd
+    elif [ $((directive & shellCompDirectiveFilterDirs)) -ne 0 ]; then
+        # File completion for directories only
+        local subDir
+        # Use printf to strip any trailing newline
+        subdir=$(printf "%s" "${out[0]}")
+        if [ -n "$subdir" ]; then
+            __kubeadm_debug "Listing directories in $subdir"
+            __kubeadm_handle_subdirs_in_dir_flag "$subdir"
+        else
+            __kubeadm_debug "Listing directories in ."
+            _filedir -d
+        fi
+    else
+        while IFS='' read -r comp; do
+            COMPREPLY+=("$comp")
+        done < <(compgen -W "${out[*]}" -- "$cur")
+    fi
+}
+
+__kubeadm_handle_reply()
+{
+    __kubeadm_debug "${FUNCNAME[0]}"
+    local comp
+    case $cur in
+        -*)
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                compopt -o nospace
+            fi
+            local allflags
+            if [ ${#must_have_one_flag[@]} -ne 0 ]; then
+                allflags=("${must_have_one_flag[@]}")
+            else
+                allflags=("${flags[*]} ${two_word_flags[*]}")
+            fi
+            while IFS='' read -r comp; do
+                COMPREPLY+=("$comp")
+            done < <(compgen -W "${allflags[*]}" -- "$cur")
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                [[ "${COMPREPLY[0]}" == *= ]] || compopt +o nospace
+            fi
+
+            # complete after --flag=abc
+            if [[ $cur == *=* ]]; then
+                if [[ $(type -t compopt) = "builtin" ]]; then
+                    compopt +o nospace
+                fi
+
+                local index flag
+                flag="${cur%=*}"
+                __kubeadm_index_of_word "${flag}" "${flags_with_completion[@]}"
+                COMPREPLY=()
+                if [[ ${index} -ge 0 ]]; then
+                    PREFIX=""
+                    cur="${cur#*=}"
+                    ${flags_completion[${index}]}
+                    if [ -n "${ZSH_VERSION}" ]; then
+                        # zsh completion needs --flag= prefix
+                        eval "COMPREPLY=( \"\${COMPREPLY[@]/#/${flag}=}\" )"
+                    fi
+                fi
+            fi
+            return 0;
+            ;;
+    esac
+
+    # check if we are handling a flag with special work handling
+    local index
+    __kubeadm_index_of_word "${prev}" "${flags_with_completion[@]}"
+    if [[ ${index} -ge 0 ]]; then
+        ${flags_completion[${index}]}
+        return
+    fi
+
+    # we are parsing a flag and don't have a special handler, no completion
+    if [[ ${cur} != "${words[cword]}" ]]; then
+        return
+    fi
+
+    local completions
+    completions=("${commands[@]}")
+    if [[ ${#must_have_one_noun[@]} -ne 0 ]]; then
+        completions+=("${must_have_one_noun[@]}")
+    elif [[ -n "${has_completion_function}" ]]; then
+        # if a go completion function is provided, defer to that function
+        __kubeadm_handle_go_custom_completion
+    fi
+    if [[ ${#must_have_one_flag[@]} -ne 0 ]]; then
+        completions+=("${must_have_one_flag[@]}")
+    fi
+    while IFS='' read -r comp; do
+        COMPREPLY+=("$comp")
+    done < <(compgen -W "${completions[*]}" -- "$cur")
+
+    if [[ ${#COMPREPLY[@]} -eq 0 && ${#noun_aliases[@]} -gt 0 && ${#must_have_one_noun[@]} -ne 0 ]]; then
+        while IFS='' read -r comp; do
+            COMPREPLY+=("$comp")
+        done < <(compgen -W "${noun_aliases[*]}" -- "$cur")
+    fi
+
+    if [[ ${#COMPREPLY[@]} -eq 0 ]]; then
+		if declare -F __kubeadm_custom_func >/dev/null; then
+			# try command name qualified custom func
+			__kubeadm_custom_func
+		else
+			# otherwise fall back to unqualified for compatibility
+			declare -F __custom_func >/dev/null && __custom_func
+		fi
+    fi
+
+    # available in bash-completion >= 2, not always present on macOS
+    if declare -F __ltrim_colon_completions >/dev/null; then
+        __ltrim_colon_completions "$cur"
+    fi
+
+    # If there is only 1 completion and it is a flag with an = it will be completed
+    # but we don't want a space after the =
+    if [[ "${#COMPREPLY[@]}" -eq "1" ]] && [[ $(type -t compopt) = "builtin" ]] && [[ "${COMPREPLY[0]}" == --*= ]]; then
+       compopt -o nospace
+    fi
+}
+
+# The arguments should be in the form "ext1|ext2|extn"
+__kubeadm_handle_filename_extension_flag()
+{
+    local ext="$1"
+    _filedir "@(${ext})"
+}
+
+__kubeadm_handle_subdirs_in_dir_flag()
+{
+    local dir="$1"
+    pushd "${dir}" >/dev/null 2>&1 && _filedir -d && popd >/dev/null 2>&1 || return
+}
+
+__kubeadm_handle_flag()
+{
+    __kubeadm_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    # if a command required a flag, and we found it, unset must_have_one_flag()
+    local flagname=${words[c]}
+    local flagvalue
+    # if the word contained an =
+    if [[ ${words[c]} == *"="* ]]; then
+        flagvalue=${flagname#*=} # take in as flagvalue after the =
+        flagname=${flagname%=*} # strip everything after the =
+        flagname="${flagname}=" # but put the = back
+    fi
+    __kubeadm_debug "${FUNCNAME[0]}: looking for ${flagname}"
+    if __kubeadm_contains_word "${flagname}" "${must_have_one_flag[@]}"; then
+        must_have_one_flag=()
+    fi
+
+    # if you set a flag which only applies to this command, don't show subcommands
+    if __kubeadm_contains_word "${flagname}" "${local_nonpersistent_flags[@]}"; then
+      commands=()
+    fi
+
+    # keep flag value with flagname as flaghash
+    # flaghash variable is an associative array which is only supported in bash > 3.
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        if [ -n "${flagvalue}" ] ; then
+            flaghash[${flagname}]=${flagvalue}
+        elif [ -n "${words[ $((c+1)) ]}" ] ; then
+            flaghash[${flagname}]=${words[ $((c+1)) ]}
+        else
+            flaghash[${flagname}]="true" # pad "true" for bool flag
+        fi
+    fi
+
+    # skip the argument to a two word flag
+    if [[ ${words[c]} != *"="* ]] && __kubeadm_contains_word "${words[c]}" "${two_word_flags[@]}"; then
+			  __kubeadm_debug "${FUNCNAME[0]}: found a flag ${words[c]}, skip the next argument"
+        c=$((c+1))
+        # if we are looking for a flags value, don't show commands
+        if [[ $c -eq $cword ]]; then
+            commands=()
+        fi
+    fi
+
+    c=$((c+1))
+
+}
+
+__kubeadm_handle_noun()
+{
+    __kubeadm_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    if __kubeadm_contains_word "${words[c]}" "${must_have_one_noun[@]}"; then
+        must_have_one_noun=()
+    elif __kubeadm_contains_word "${words[c]}" "${noun_aliases[@]}"; then
+        must_have_one_noun=()
+    fi
+
+    nouns+=("${words[c]}")
+    c=$((c+1))
+}
+
+__kubeadm_handle_command()
+{
+    __kubeadm_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    local next_command
+    if [[ -n ${last_command} ]]; then
+        next_command="_${last_command}_${words[c]//:/__}"
+    else
+        if [[ $c -eq 0 ]]; then
+            next_command="_kubeadm_root_command"
+        else
+            next_command="_${words[c]//:/__}"
+        fi
+    fi
+    c=$((c+1))
+    __kubeadm_debug "${FUNCNAME[0]}: looking for ${next_command}"
+    declare -F "$next_command" >/dev/null && $next_command
+}
+
+__kubeadm_handle_word()
+{
+    if [[ $c -ge $cword ]]; then
+        __kubeadm_handle_reply
+        return
+    fi
+    __kubeadm_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+    if [[ "${words[c]}" == -* ]]; then
+        __kubeadm_handle_flag
+    elif __kubeadm_contains_word "${words[c]}" "${commands[@]}"; then
+        __kubeadm_handle_command
+    elif [[ $c -eq 0 ]]; then
+        __kubeadm_handle_command
+    elif __kubeadm_contains_word "${words[c]}" "${command_aliases[@]}"; then
+        # aliashash variable is an associative array which is only supported in bash > 3.
+        if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+            words[c]=${aliashash[${words[c]}]}
+            __kubeadm_handle_command
+        else
+            __kubeadm_handle_noun
+        fi
+    else
+        __kubeadm_handle_noun
+    fi
+    __kubeadm_handle_word
+}
+
+_kubeadm_certs_certificate-key()
+{
+    last_command="kubeadm_certs_certificate-key"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_check-expiration()
+{
+    last_command="kubeadm_certs_check-expiration"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_generate-csr()
+{
+    last_command="kubeadm_certs_generate-csr"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubeconfig-dir=")
+    two_word_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_admin.conf()
+{
+    last_command="kubeadm_certs_renew_admin.conf"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_all()
+{
+    last_command="kubeadm_certs_renew_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_apiserver()
+{
+    last_command="kubeadm_certs_renew_apiserver"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_apiserver-etcd-client()
+{
+    last_command="kubeadm_certs_renew_apiserver-etcd-client"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_apiserver-kubelet-client()
+{
+    last_command="kubeadm_certs_renew_apiserver-kubelet-client"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_controller-manager.conf()
+{
+    last_command="kubeadm_certs_renew_controller-manager.conf"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_etcd-healthcheck-client()
+{
+    last_command="kubeadm_certs_renew_etcd-healthcheck-client"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_etcd-peer()
+{
+    last_command="kubeadm_certs_renew_etcd-peer"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_etcd-server()
+{
+    last_command="kubeadm_certs_renew_etcd-server"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_front-proxy-client()
+{
+    last_command="kubeadm_certs_renew_front-proxy-client"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew_scheduler.conf()
+{
+    last_command="kubeadm_certs_renew_scheduler.conf"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--csr-dir=")
+    two_word_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir")
+    local_nonpersistent_flags+=("--csr-dir=")
+    flags+=("--csr-only")
+    local_nonpersistent_flags+=("--csr-only")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs_renew()
+{
+    last_command="kubeadm_certs_renew"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("admin.conf")
+    commands+=("all")
+    commands+=("apiserver")
+    commands+=("apiserver-etcd-client")
+    commands+=("apiserver-kubelet-client")
+    commands+=("controller-manager.conf")
+    commands+=("etcd-healthcheck-client")
+    commands+=("etcd-peer")
+    commands+=("etcd-server")
+    commands+=("front-proxy-client")
+    commands+=("scheduler.conf")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_certs()
+{
+    last_command="kubeadm_certs"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("certificate-key")
+    commands+=("check-expiration")
+    commands+=("generate-csr")
+    commands+=("renew")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_completion()
+{
+    last_command="kubeadm_completion"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("-h")
+    local_nonpersistent_flags+=("--help")
+    local_nonpersistent_flags+=("-h")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    must_have_one_noun+=("bash")
+    must_have_one_noun+=("zsh")
+    noun_aliases=()
+}
+
+_kubeadm_config_images_list()
+{
+    last_command="kubeadm_config_images_list"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--allow-missing-template-keys")
+    local_nonpersistent_flags+=("--allow-missing-template-keys")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--experimental-output=")
+    two_word_flags+=("--experimental-output")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--experimental-output")
+    local_nonpersistent_flags+=("--experimental-output=")
+    local_nonpersistent_flags+=("-o")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    flags+=("--show-managed-fields")
+    local_nonpersistent_flags+=("--show-managed-fields")
+    flags+=("--add-dir-header")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_config_images_pull()
+{
+    last_command="kubeadm_config_images_pull"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--cri-socket=")
+    two_word_flags+=("--cri-socket")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    flags+=("--add-dir-header")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_config_images()
+{
+    last_command="kubeadm_config_images"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("list")
+    commands+=("pull")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_config_migrate()
+{
+    last_command="kubeadm_config_migrate"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--new-config=")
+    two_word_flags+=("--new-config")
+    local_nonpersistent_flags+=("--new-config")
+    local_nonpersistent_flags+=("--new-config=")
+    flags+=("--old-config=")
+    two_word_flags+=("--old-config")
+    local_nonpersistent_flags+=("--old-config")
+    local_nonpersistent_flags+=("--old-config=")
+    flags+=("--add-dir-header")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_config_print_init-defaults()
+{
+    last_command="kubeadm_config_print_init-defaults"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--component-configs=")
+    two_word_flags+=("--component-configs")
+    local_nonpersistent_flags+=("--component-configs")
+    local_nonpersistent_flags+=("--component-configs=")
+    flags+=("--add-dir-header")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_config_print_join-defaults()
+{
+    last_command="kubeadm_config_print_join-defaults"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--component-configs=")
+    two_word_flags+=("--component-configs")
+    local_nonpersistent_flags+=("--component-configs")
+    local_nonpersistent_flags+=("--component-configs=")
+    flags+=("--add-dir-header")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_config_print()
+{
+    last_command="kubeadm_config_print"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("init-defaults")
+    commands+=("join-defaults")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_config()
+{
+    last_command="kubeadm_config"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("images")
+    commands+=("migrate")
+    commands+=("print")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_help()
+{
+    last_command="kubeadm_help"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    has_completion_function=1
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_addon_all()
+{
+    last_command="kubeadm_init_phase_addon_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--pod-network-cidr=")
+    two_word_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr=")
+    flags+=("--service-cidr=")
+    two_word_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr=")
+    flags+=("--service-dns-domain=")
+    two_word_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_addon_coredns()
+{
+    last_command="kubeadm_init_phase_addon_coredns"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--service-cidr=")
+    two_word_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr=")
+    flags+=("--service-dns-domain=")
+    two_word_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_addon_kube-proxy()
+{
+    last_command="kubeadm_init_phase_addon_kube-proxy"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--pod-network-cidr=")
+    two_word_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_addon()
+{
+    last_command="kubeadm_init_phase_addon"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("all")
+    commands+=("coredns")
+    commands+=("kube-proxy")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_bootstrap-token()
+{
+    last_command="kubeadm_init_phase_bootstrap-token"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--skip-token-print")
+    local_nonpersistent_flags+=("--skip-token-print")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_all()
+{
+    last_command="kubeadm_init_phase_certs_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-cert-extra-sans=")
+    two_word_flags+=("--apiserver-cert-extra-sans")
+    local_nonpersistent_flags+=("--apiserver-cert-extra-sans")
+    local_nonpersistent_flags+=("--apiserver-cert-extra-sans=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--service-cidr=")
+    two_word_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr=")
+    flags+=("--service-dns-domain=")
+    two_word_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_apiserver()
+{
+    last_command="kubeadm_init_phase_certs_apiserver"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-cert-extra-sans=")
+    two_word_flags+=("--apiserver-cert-extra-sans")
+    local_nonpersistent_flags+=("--apiserver-cert-extra-sans")
+    local_nonpersistent_flags+=("--apiserver-cert-extra-sans=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--service-cidr=")
+    two_word_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr=")
+    flags+=("--service-dns-domain=")
+    two_word_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_apiserver-etcd-client()
+{
+    last_command="kubeadm_init_phase_certs_apiserver-etcd-client"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_apiserver-kubelet-client()
+{
+    last_command="kubeadm_init_phase_certs_apiserver-kubelet-client"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_ca()
+{
+    last_command="kubeadm_init_phase_certs_ca"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_etcd-ca()
+{
+    last_command="kubeadm_init_phase_certs_etcd-ca"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_etcd-healthcheck-client()
+{
+    last_command="kubeadm_init_phase_certs_etcd-healthcheck-client"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_etcd-peer()
+{
+    last_command="kubeadm_init_phase_certs_etcd-peer"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_etcd-server()
+{
+    last_command="kubeadm_init_phase_certs_etcd-server"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_front-proxy-ca()
+{
+    last_command="kubeadm_init_phase_certs_front-proxy-ca"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_front-proxy-client()
+{
+    last_command="kubeadm_init_phase_certs_front-proxy-client"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs_sa()
+{
+    last_command="kubeadm_init_phase_certs_sa"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_certs()
+{
+    last_command="kubeadm_init_phase_certs"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("all")
+    commands+=("apiserver")
+    commands+=("apiserver-etcd-client")
+    commands+=("apiserver-kubelet-client")
+    commands+=("ca")
+    commands+=("etcd-ca")
+    commands+=("etcd-healthcheck-client")
+    commands+=("etcd-peer")
+    commands+=("etcd-server")
+    commands+=("front-proxy-ca")
+    commands+=("front-proxy-client")
+    commands+=("sa")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_control-plane_all()
+{
+    last_command="kubeadm_init_phase_control-plane_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--apiserver-extra-args=")
+    two_word_flags+=("--apiserver-extra-args")
+    local_nonpersistent_flags+=("--apiserver-extra-args")
+    local_nonpersistent_flags+=("--apiserver-extra-args=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--controller-manager-extra-args=")
+    two_word_flags+=("--controller-manager-extra-args")
+    local_nonpersistent_flags+=("--controller-manager-extra-args")
+    local_nonpersistent_flags+=("--controller-manager-extra-args=")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--pod-network-cidr=")
+    two_word_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr=")
+    flags+=("--scheduler-extra-args=")
+    two_word_flags+=("--scheduler-extra-args")
+    local_nonpersistent_flags+=("--scheduler-extra-args")
+    local_nonpersistent_flags+=("--scheduler-extra-args=")
+    flags+=("--service-cidr=")
+    two_word_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_control-plane_apiserver()
+{
+    last_command="kubeadm_init_phase_control-plane_apiserver"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--apiserver-extra-args=")
+    two_word_flags+=("--apiserver-extra-args")
+    local_nonpersistent_flags+=("--apiserver-extra-args")
+    local_nonpersistent_flags+=("--apiserver-extra-args=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--service-cidr=")
+    two_word_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_control-plane_controller-manager()
+{
+    last_command="kubeadm_init_phase_control-plane_controller-manager"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--controller-manager-extra-args=")
+    two_word_flags+=("--controller-manager-extra-args")
+    local_nonpersistent_flags+=("--controller-manager-extra-args")
+    local_nonpersistent_flags+=("--controller-manager-extra-args=")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--pod-network-cidr=")
+    two_word_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_control-plane_scheduler()
+{
+    last_command="kubeadm_init_phase_control-plane_scheduler"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--scheduler-extra-args=")
+    two_word_flags+=("--scheduler-extra-args")
+    local_nonpersistent_flags+=("--scheduler-extra-args")
+    local_nonpersistent_flags+=("--scheduler-extra-args=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_control-plane()
+{
+    last_command="kubeadm_init_phase_control-plane"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("all")
+    commands+=("apiserver")
+    commands+=("controller-manager")
+    commands+=("scheduler")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_etcd_local()
+{
+    last_command="kubeadm_init_phase_etcd_local"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_etcd()
+{
+    last_command="kubeadm_init_phase_etcd"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("local")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubeconfig_admin()
+{
+    last_command="kubeadm_init_phase_kubeconfig_admin"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--kubeconfig-dir=")
+    two_word_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubeconfig_all()
+{
+    last_command="kubeadm_init_phase_kubeconfig_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--kubeconfig-dir=")
+    two_word_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubeconfig_controller-manager()
+{
+    last_command="kubeadm_init_phase_kubeconfig_controller-manager"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--kubeconfig-dir=")
+    two_word_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubeconfig_kubelet()
+{
+    last_command="kubeadm_init_phase_kubeconfig_kubelet"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--kubeconfig-dir=")
+    two_word_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubeconfig_scheduler()
+{
+    last_command="kubeadm_init_phase_kubeconfig_scheduler"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--kubeconfig-dir=")
+    two_word_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir")
+    local_nonpersistent_flags+=("--kubeconfig-dir=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubeconfig()
+{
+    last_command="kubeadm_init_phase_kubeconfig"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("admin")
+    commands+=("all")
+    commands+=("controller-manager")
+    commands+=("kubelet")
+    commands+=("scheduler")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubelet-finalize_all()
+{
+    last_command="kubeadm_init_phase_kubelet-finalize_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubelet-finalize_experimental-cert-rotation()
+{
+    last_command="kubeadm_init_phase_kubelet-finalize_experimental-cert-rotation"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubelet-finalize()
+{
+    last_command="kubeadm_init_phase_kubelet-finalize"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("all")
+    commands+=("experimental-cert-rotation")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_kubelet-start()
+{
+    last_command="kubeadm_init_phase_kubelet-start"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--cri-socket=")
+    two_word_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_mark-control-plane()
+{
+    last_command="kubeadm_init_phase_mark-control-plane"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_preflight()
+{
+    last_command="kubeadm_init_phase_preflight"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_upload-certs()
+{
+    last_command="kubeadm_init_phase_upload-certs"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--certificate-key=")
+    two_word_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--skip-certificate-key-print")
+    local_nonpersistent_flags+=("--skip-certificate-key-print")
+    flags+=("--upload-certs")
+    local_nonpersistent_flags+=("--upload-certs")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_upload-config_all()
+{
+    last_command="kubeadm_init_phase_upload-config_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_upload-config_kubeadm()
+{
+    last_command="kubeadm_init_phase_upload-config_kubeadm"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_upload-config_kubelet()
+{
+    last_command="kubeadm_init_phase_upload-config_kubelet"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase_upload-config()
+{
+    last_command="kubeadm_init_phase_upload-config"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("all")
+    commands+=("kubeadm")
+    commands+=("kubelet")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init_phase()
+{
+    last_command="kubeadm_init_phase"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("addon")
+    commands+=("bootstrap-token")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("bootstraptoken")
+        aliashash["bootstraptoken"]="bootstrap-token"
+    fi
+    commands+=("certs")
+    commands+=("control-plane")
+    commands+=("etcd")
+    commands+=("kubeconfig")
+    commands+=("kubelet-finalize")
+    commands+=("kubelet-start")
+    commands+=("mark-control-plane")
+    commands+=("preflight")
+    commands+=("upload-certs")
+    commands+=("upload-config")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("uploadconfig")
+        aliashash["uploadconfig"]="upload-config"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_init()
+{
+    last_command="kubeadm_init"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("phase")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--apiserver-cert-extra-sans=")
+    two_word_flags+=("--apiserver-cert-extra-sans")
+    local_nonpersistent_flags+=("--apiserver-cert-extra-sans")
+    local_nonpersistent_flags+=("--apiserver-cert-extra-sans=")
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--certificate-key=")
+    two_word_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane-endpoint=")
+    two_word_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint")
+    local_nonpersistent_flags+=("--control-plane-endpoint=")
+    flags+=("--cri-socket=")
+    two_word_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket=")
+    flags+=("--dry-run")
+    local_nonpersistent_flags+=("--dry-run")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates=")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--image-repository=")
+    two_word_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository")
+    local_nonpersistent_flags+=("--image-repository=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--pod-network-cidr=")
+    two_word_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr")
+    local_nonpersistent_flags+=("--pod-network-cidr=")
+    flags+=("--service-cidr=")
+    two_word_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr")
+    local_nonpersistent_flags+=("--service-cidr=")
+    flags+=("--service-dns-domain=")
+    two_word_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain")
+    local_nonpersistent_flags+=("--service-dns-domain=")
+    flags+=("--skip-certificate-key-print")
+    local_nonpersistent_flags+=("--skip-certificate-key-print")
+    flags+=("--skip-phases=")
+    two_word_flags+=("--skip-phases")
+    local_nonpersistent_flags+=("--skip-phases")
+    local_nonpersistent_flags+=("--skip-phases=")
+    flags+=("--skip-token-print")
+    local_nonpersistent_flags+=("--skip-token-print")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--token-ttl=")
+    two_word_flags+=("--token-ttl")
+    local_nonpersistent_flags+=("--token-ttl")
+    local_nonpersistent_flags+=("--token-ttl=")
+    flags+=("--upload-certs")
+    local_nonpersistent_flags+=("--upload-certs")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-join_all()
+{
+    last_command="kubeadm_join_phase_control-plane-join_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-join_etcd()
+{
+    last_command="kubeadm_join_phase_control-plane-join_etcd"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-join_mark-control-plane()
+{
+    last_command="kubeadm_join_phase_control-plane-join_mark-control-plane"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-join_update-status()
+{
+    last_command="kubeadm_join_phase_control-plane-join_update-status"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-join()
+{
+    last_command="kubeadm_join_phase_control-plane-join"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("all")
+    commands+=("etcd")
+    commands+=("mark-control-plane")
+    commands+=("update-status")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-prepare_all()
+{
+    last_command="kubeadm_join_phase_control-plane-prepare_all"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--certificate-key=")
+    two_word_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--discovery-file=")
+    two_word_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file=")
+    flags+=("--discovery-token=")
+    two_word_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token=")
+    flags+=("--discovery-token-ca-cert-hash=")
+    two_word_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash=")
+    flags+=("--discovery-token-unsafe-skip-ca-verification")
+    local_nonpersistent_flags+=("--discovery-token-unsafe-skip-ca-verification")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--tls-bootstrap-token=")
+    two_word_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token=")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-prepare_certs()
+{
+    last_command="kubeadm_join_phase_control-plane-prepare_certs"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--discovery-file=")
+    two_word_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file=")
+    flags+=("--discovery-token=")
+    two_word_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token=")
+    flags+=("--discovery-token-ca-cert-hash=")
+    two_word_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash=")
+    flags+=("--discovery-token-unsafe-skip-ca-verification")
+    local_nonpersistent_flags+=("--discovery-token-unsafe-skip-ca-verification")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--tls-bootstrap-token=")
+    two_word_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token=")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-prepare_control-plane()
+{
+    last_command="kubeadm_join_phase_control-plane-prepare_control-plane"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-prepare_download-certs()
+{
+    last_command="kubeadm_join_phase_control-plane-prepare_download-certs"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--certificate-key=")
+    two_word_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--discovery-file=")
+    two_word_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file=")
+    flags+=("--discovery-token=")
+    two_word_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token=")
+    flags+=("--discovery-token-ca-cert-hash=")
+    two_word_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash=")
+    flags+=("--discovery-token-unsafe-skip-ca-verification")
+    local_nonpersistent_flags+=("--discovery-token-unsafe-skip-ca-verification")
+    flags+=("--tls-bootstrap-token=")
+    two_word_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token=")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-prepare_kubeconfig()
+{
+    last_command="kubeadm_join_phase_control-plane-prepare_kubeconfig"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--certificate-key=")
+    two_word_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--discovery-file=")
+    two_word_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file=")
+    flags+=("--discovery-token=")
+    two_word_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token=")
+    flags+=("--discovery-token-ca-cert-hash=")
+    two_word_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash=")
+    flags+=("--discovery-token-unsafe-skip-ca-verification")
+    local_nonpersistent_flags+=("--discovery-token-unsafe-skip-ca-verification")
+    flags+=("--tls-bootstrap-token=")
+    two_word_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token=")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_control-plane-prepare()
+{
+    last_command="kubeadm_join_phase_control-plane-prepare"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("all")
+    commands+=("certs")
+    commands+=("control-plane")
+    commands+=("download-certs")
+    commands+=("kubeconfig")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_kubelet-start()
+{
+    last_command="kubeadm_join_phase_kubelet-start"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--cri-socket=")
+    two_word_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket=")
+    flags+=("--discovery-file=")
+    two_word_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file=")
+    flags+=("--discovery-token=")
+    two_word_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token=")
+    flags+=("--discovery-token-ca-cert-hash=")
+    two_word_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash=")
+    flags+=("--discovery-token-unsafe-skip-ca-verification")
+    local_nonpersistent_flags+=("--discovery-token-unsafe-skip-ca-verification")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--tls-bootstrap-token=")
+    two_word_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token=")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase_preflight()
+{
+    last_command="kubeadm_join_phase_preflight"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--certificate-key=")
+    two_word_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--cri-socket=")
+    two_word_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket=")
+    flags+=("--discovery-file=")
+    two_word_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file=")
+    flags+=("--discovery-token=")
+    two_word_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token=")
+    flags+=("--discovery-token-ca-cert-hash=")
+    two_word_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash=")
+    flags+=("--discovery-token-unsafe-skip-ca-verification")
+    local_nonpersistent_flags+=("--discovery-token-unsafe-skip-ca-verification")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--tls-bootstrap-token=")
+    two_word_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token=")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join_phase()
+{
+    last_command="kubeadm_join_phase"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("control-plane-join")
+    commands+=("control-plane-prepare")
+    commands+=("kubelet-start")
+    commands+=("preflight")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_join()
+{
+    last_command="kubeadm_join"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("phase")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--apiserver-advertise-address=")
+    two_word_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address")
+    local_nonpersistent_flags+=("--apiserver-advertise-address=")
+    flags+=("--apiserver-bind-port=")
+    two_word_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port")
+    local_nonpersistent_flags+=("--apiserver-bind-port=")
+    flags+=("--certificate-key=")
+    two_word_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--control-plane")
+    local_nonpersistent_flags+=("--control-plane")
+    flags+=("--cri-socket=")
+    two_word_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket=")
+    flags+=("--discovery-file=")
+    two_word_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file")
+    local_nonpersistent_flags+=("--discovery-file=")
+    flags+=("--discovery-token=")
+    two_word_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token")
+    local_nonpersistent_flags+=("--discovery-token=")
+    flags+=("--discovery-token-ca-cert-hash=")
+    two_word_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash")
+    local_nonpersistent_flags+=("--discovery-token-ca-cert-hash=")
+    flags+=("--discovery-token-unsafe-skip-ca-verification")
+    local_nonpersistent_flags+=("--discovery-token-unsafe-skip-ca-verification")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--node-name=")
+    two_word_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name")
+    local_nonpersistent_flags+=("--node-name=")
+    flags+=("--skip-phases=")
+    two_word_flags+=("--skip-phases")
+    local_nonpersistent_flags+=("--skip-phases")
+    local_nonpersistent_flags+=("--skip-phases=")
+    flags+=("--tls-bootstrap-token=")
+    two_word_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token")
+    local_nonpersistent_flags+=("--tls-bootstrap-token=")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_kubeconfig_user()
+{
+    last_command="kubeadm_kubeconfig_user"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--client-name=")
+    two_word_flags+=("--client-name")
+    local_nonpersistent_flags+=("--client-name")
+    local_nonpersistent_flags+=("--client-name=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--org=")
+    two_word_flags+=("--org")
+    local_nonpersistent_flags+=("--org")
+    local_nonpersistent_flags+=("--org=")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_flag+=("--client-name=")
+    must_have_one_flag+=("--config=")
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_kubeconfig()
+{
+    last_command="kubeadm_kubeconfig"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("user")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_reset_phase_cleanup-node()
+{
+    last_command="kubeadm_reset_phase_cleanup-node"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--cri-socket=")
+    two_word_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_reset_phase_preflight()
+{
+    last_command="kubeadm_reset_phase_preflight"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--force")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--force")
+    local_nonpersistent_flags+=("-f")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_reset_phase_remove-etcd-member()
+{
+    last_command="kubeadm_reset_phase_remove-etcd-member"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_reset_phase_update-cluster-status()
+{
+    last_command="kubeadm_reset_phase_update-cluster-status"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_reset_phase()
+{
+    last_command="kubeadm_reset_phase"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cleanup-node")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("cleanupnode")
+        aliashash["cleanupnode"]="cleanup-node"
+    fi
+    commands+=("preflight")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("pre-flight")
+        aliashash["pre-flight"]="preflight"
+    fi
+    commands+=("remove-etcd-member")
+    commands+=("update-cluster-status")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_reset()
+{
+    last_command="kubeadm_reset"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("phase")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert-dir=")
+    two_word_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir")
+    local_nonpersistent_flags+=("--cert-dir=")
+    flags+=("--cri-socket=")
+    two_word_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket")
+    local_nonpersistent_flags+=("--cri-socket=")
+    flags+=("--force")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--force")
+    local_nonpersistent_flags+=("-f")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--skip-phases=")
+    two_word_flags+=("--skip-phases")
+    local_nonpersistent_flags+=("--skip-phases")
+    local_nonpersistent_flags+=("--skip-phases=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_token_create()
+{
+    last_command="kubeadm_token_create"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--certificate-key=")
+    two_word_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key")
+    local_nonpersistent_flags+=("--certificate-key=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--description=")
+    two_word_flags+=("--description")
+    local_nonpersistent_flags+=("--description")
+    local_nonpersistent_flags+=("--description=")
+    flags+=("--groups=")
+    two_word_flags+=("--groups")
+    local_nonpersistent_flags+=("--groups")
+    local_nonpersistent_flags+=("--groups=")
+    flags+=("--print-join-command")
+    local_nonpersistent_flags+=("--print-join-command")
+    flags+=("--ttl=")
+    two_word_flags+=("--ttl")
+    local_nonpersistent_flags+=("--ttl")
+    local_nonpersistent_flags+=("--ttl=")
+    flags+=("--usages=")
+    two_word_flags+=("--usages")
+    local_nonpersistent_flags+=("--usages")
+    local_nonpersistent_flags+=("--usages=")
+    flags+=("--add-dir-header")
+    flags+=("--dry-run")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_token_delete()
+{
+    last_command="kubeadm_token_delete"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--dry-run")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_token_generate()
+{
+    last_command="kubeadm_token_generate"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--dry-run")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_token_list()
+{
+    last_command="kubeadm_token_list"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--allow-missing-template-keys")
+    local_nonpersistent_flags+=("--allow-missing-template-keys")
+    flags+=("--experimental-output=")
+    two_word_flags+=("--experimental-output")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--experimental-output")
+    local_nonpersistent_flags+=("--experimental-output=")
+    local_nonpersistent_flags+=("-o")
+    flags+=("--show-managed-fields")
+    local_nonpersistent_flags+=("--show-managed-fields")
+    flags+=("--add-dir-header")
+    flags+=("--dry-run")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_token()
+{
+    last_command="kubeadm_token"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("create")
+    commands+=("delete")
+    commands+=("generate")
+    commands+=("list")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--dry-run")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade_apply()
+{
+    last_command="kubeadm_upgrade_apply"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--allow-experimental-upgrades")
+    local_nonpersistent_flags+=("--allow-experimental-upgrades")
+    flags+=("--allow-release-candidate-upgrades")
+    local_nonpersistent_flags+=("--allow-release-candidate-upgrades")
+    flags+=("--certificate-renewal")
+    local_nonpersistent_flags+=("--certificate-renewal")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--dry-run")
+    local_nonpersistent_flags+=("--dry-run")
+    flags+=("--etcd-upgrade")
+    local_nonpersistent_flags+=("--etcd-upgrade")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates=")
+    flags+=("--force")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--force")
+    local_nonpersistent_flags+=("-f")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--print-config")
+    local_nonpersistent_flags+=("--print-config")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    local_nonpersistent_flags+=("-y")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade_diff()
+{
+    last_command="kubeadm_upgrade_diff"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--api-server-manifest=")
+    two_word_flags+=("--api-server-manifest")
+    local_nonpersistent_flags+=("--api-server-manifest")
+    local_nonpersistent_flags+=("--api-server-manifest=")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--context-lines=")
+    two_word_flags+=("--context-lines")
+    two_word_flags+=("-c")
+    local_nonpersistent_flags+=("--context-lines")
+    local_nonpersistent_flags+=("--context-lines=")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--controller-manager-manifest=")
+    two_word_flags+=("--controller-manager-manifest")
+    local_nonpersistent_flags+=("--controller-manager-manifest")
+    local_nonpersistent_flags+=("--controller-manager-manifest=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--scheduler-manifest=")
+    two_word_flags+=("--scheduler-manifest")
+    local_nonpersistent_flags+=("--scheduler-manifest")
+    local_nonpersistent_flags+=("--scheduler-manifest=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade_node_phase_control-plane()
+{
+    last_command="kubeadm_upgrade_node_phase_control-plane"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--certificate-renewal")
+    local_nonpersistent_flags+=("--certificate-renewal")
+    flags+=("--dry-run")
+    local_nonpersistent_flags+=("--dry-run")
+    flags+=("--etcd-upgrade")
+    local_nonpersistent_flags+=("--etcd-upgrade")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade_node_phase_kubelet-config()
+{
+    last_command="kubeadm_upgrade_node_phase_kubelet-config"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--dry-run")
+    local_nonpersistent_flags+=("--dry-run")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade_node_phase_preflight()
+{
+    last_command="kubeadm_upgrade_node_phase_preflight"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade_node_phase()
+{
+    last_command="kubeadm_upgrade_node_phase"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("control-plane")
+    commands+=("kubelet-config")
+    commands+=("preflight")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade_node()
+{
+    last_command="kubeadm_upgrade_node"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("phase")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--certificate-renewal")
+    local_nonpersistent_flags+=("--certificate-renewal")
+    flags+=("--dry-run")
+    local_nonpersistent_flags+=("--dry-run")
+    flags+=("--etcd-upgrade")
+    local_nonpersistent_flags+=("--etcd-upgrade")
+    flags+=("--experimental-patches=")
+    two_word_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches")
+    local_nonpersistent_flags+=("--experimental-patches=")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--skip-phases=")
+    two_word_flags+=("--skip-phases")
+    local_nonpersistent_flags+=("--skip-phases")
+    local_nonpersistent_flags+=("--skip-phases=")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade_plan()
+{
+    last_command="kubeadm_upgrade_plan"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--allow-experimental-upgrades")
+    local_nonpersistent_flags+=("--allow-experimental-upgrades")
+    flags+=("--allow-release-candidate-upgrades")
+    local_nonpersistent_flags+=("--allow-release-candidate-upgrades")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    local_nonpersistent_flags+=("--config")
+    local_nonpersistent_flags+=("--config=")
+    flags+=("--feature-gates=")
+    two_word_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates")
+    local_nonpersistent_flags+=("--feature-gates=")
+    flags+=("--ignore-preflight-errors=")
+    two_word_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors")
+    local_nonpersistent_flags+=("--ignore-preflight-errors=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--print-config")
+    local_nonpersistent_flags+=("--print-config")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_upgrade()
+{
+    last_command="kubeadm_upgrade"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("apply")
+    commands+=("diff")
+    commands+=("node")
+    commands+=("plan")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_version()
+{
+    last_command="kubeadm_version"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--output")
+    local_nonpersistent_flags+=("--output=")
+    local_nonpersistent_flags+=("-o")
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kubeadm_root_command()
+{
+    last_command="kubeadm"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("certs")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("certificates")
+        aliashash["certificates"]="certs"
+    fi
+    commands+=("completion")
+    commands+=("config")
+    commands+=("help")
+    commands+=("init")
+    commands+=("join")
+    commands+=("kubeconfig")
+    commands+=("reset")
+    commands+=("token")
+    commands+=("upgrade")
+    commands+=("version")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add-dir-header")
+    flags+=("--log-file=")
+    two_word_flags+=("--log-file")
+    flags+=("--log-file-max-size=")
+    two_word_flags+=("--log-file-max-size")
+    flags+=("--one-output")
+    flags+=("--rootfs=")
+    two_word_flags+=("--rootfs")
+    flags+=("--skip-headers")
+    flags+=("--skip-log-headers")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+__start_kubeadm()
+{
+    local cur prev words cword
+    declare -A flaghash 2>/dev/null || :
+    declare -A aliashash 2>/dev/null || :
+    if declare -F _init_completion >/dev/null 2>&1; then
+        _init_completion -s || return
+    else
+        __kubeadm_init_completion -n "=" || return
+    fi
+
+    local c=0
+    local flags=()
+    local two_word_flags=()
+    local local_nonpersistent_flags=()
+    local flags_with_completion=()
+    local flags_completion=()
+    local commands=("kubeadm")
+    local must_have_one_flag=()
+    local must_have_one_noun=()
+    local has_completion_function
+    local last_command
+    local nouns=()
+
+    __kubeadm_handle_word
+}
+
+if [[ $(type -t compopt) = "builtin" ]]; then
+    complete -o default -F __start_kubeadm kubeadm
+else
+    complete -o default -o nospace -F __start_kubeadm kubeadm
+fi
+
+# ex: ts=4 sw=4 et filetype=sh
+
+BASH_COMPLETION_EOF
+}
+
+__kubeadm_bash_source <(__kubeadm_convert_bash_to_zsh)

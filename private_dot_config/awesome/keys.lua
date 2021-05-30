@@ -239,9 +239,15 @@ client.connect_signal("request::default_keybindings", function()
             -- ===================================================================
             -- Switch screens focus
             -- ===================================================================
-            awful.key({ctrl}, "\\",
+            awful.key({ctrl, altkey}, "l",
                 function()
                     awful.screen.focus_relative(1)
+                end,
+                {description = "focus the next screen", group = "screen"}
+                ),
+            awful.key({ctrl, altkey}, "h",
+                function()
+                    awful.screen.focus_relative(-1)
                 end,
                 {description = "focus the next screen", group = "screen"}
                 ),

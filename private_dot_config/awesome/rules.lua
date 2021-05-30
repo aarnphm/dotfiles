@@ -129,7 +129,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "zooms",
         rule_any = {class={"Zoom", "Microsoft Teams - Preview"}},
-        properties = {screen = screen.count()>1 and 2 or 1, tags = defaults.tags[1].names[5], switchtotag=true}
+        properties = {screen = get_screen(2), floating=true, tags = defaults.tags[1].names[5], switchtotag=true}
     }
 
     ruled.client.append_rule{
@@ -141,7 +141,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule{
         id = "obs",
         rule = {class = "obs"},
-        properties = {screen=screen.count()>1 and 2 or 1, tag=defaults.tags[1].names[2], switchtotag=true}
+        properties = {screen=get_screen(2), tag=defaults.tags[1].names[2], switchtotag=true}
     }
     -- Rofi
     ruled.client.append_rule{

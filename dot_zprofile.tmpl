@@ -16,9 +16,6 @@ export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_BIN_HOME="{{ .chezmoi.homeDir }}/.local/bin"
-{{- if joinPath "/etc/arch-release" }}
-source "$XDG_CONFIG_HOME/user-dirs.dirs"
-{{- end }}
 
 # ZSH defaults
 export ZDOTDIR="${ZDOTDIR:-$HOME}"
@@ -26,11 +23,10 @@ export ZHOMEDIR="${ZHOMEDIR:-$XDG_CONFIG_HOME/zsh}"
 export ZRCDIR="${ZRCDIR:-$ZHOMEDIR/rc}"
 export ZDATADIR="${ZDATADIR:-$XDG_DATA_HOME/zsh}"
 
-{{- if eq .hostname "archlinux" }}
-# Probably one of the most important directory
-export CS_PATH="${XDG_DOCUMENTS_DIR}/cs"
+
+{{- if joinPath "/etc/arch-release" }}
+source "$XDG_CONFIG_HOME/user-dirs.dirs"
 {{- end }}
-export CITY="{{ .city }}"
 
 ###########################################################################
 #                    source some local env                                #
@@ -43,6 +39,12 @@ export CITY="{{ .city }}"
 ###########################################################################
 #                            applications default                         #
 ###########################################################################
+
+{{- if eq .hostname "archlinux" }}
+# Probably one of the most important directory
+export CS_PATH="${XDG_DOCUMENTS_DIR}/cs"
+{{- end }}
+export CITY="{{ .city }}"
 
 # Don’t clear the screen after quitting a manual page.
 export MANPAGER='less -X';
@@ -78,6 +80,7 @@ export WINEARCH=win32
 export BROWSER=/usr/bin/firefox
 
 export PYENV_SHELL=zsh
+export PYENV_ROOT="$HOME/.pyenv"
 
 export LS_COLORS="${LS_COLORS}:ow=01;33:no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:"
 export GOOGLE_APPLICATION_CREDENTIALS="/mnt/Centralized/documents/txt/karlpol-backend-a8faccb72676.json"
@@ -101,14 +104,15 @@ typeset -xT SUDO_PATH sudo_path
 
 path=(
     {{ .chezmoi.homeDir }}/.local/bin(N-/)
+    $HOME/bin(N-/)
     {{- if joinPath .chezmoi.homeDir ".poetry" }}
     {{ .chezmoi.homeDir }}/.poetry/bin(N-/)
     {{- end }}
     {{- if .personal }}
     {{ .chezmoi.homeDir }}/.cargo/bin(N-/)
     {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin(N-/)
-    {{ .chezmoi.homeDir }}/.pyenv/shims(N-/)
-    {{ .chezmoi.homeDir }}/.pyenv/bin(N-/)
+    $PYENV_ROOT/shims
+    $PYENV_ROOT/bin
     {{- if eq .chezmoi.os "darwin" }}
     /usr/local/bin(N-/)
     /usr/sbin(N-/)
@@ -119,15 +123,19 @@ path=(
     $GOPATH/bin(N-/)
     $GOPATH/src(N-/)
     {{- if joinPath "/opt/cuda" }}
-    /opt/cuda/bin(N-/)
+    /opt/cuda/bin
     {{- end }}
-    $NPM_PACKAGES/bin
-    {{ .chezmoi.homeDir }}/google-cloud-sdk/bin(N-/)
-    {{ .chezmoi.homeDir }}/.config/nnn/plugins(N-/)
-    {{- end }}
-    $HOME/bin/(N-/)
     {{- if joinPath "/usr/local/cuda" }}
     /usr/local/cuda/bin
+    {{- end }}
+    {{- if joinPath "/opt/cni" }}
+    /opt/cni/bin
+    {{- end }}
+    $NPM_PACKAGES/bin
+    {{- if joinPath "$HOME/google-cloud-sdk" }}
+    {{ .chezmoi.homeDir }}/google-cloud-sdk/bin
+    {{- end }}
+    {{ .chezmoi.homeDir }}/.config/nnn/plugins(N-/)
     {{- end }}
     $path
 )

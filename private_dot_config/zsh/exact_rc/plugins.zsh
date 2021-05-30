@@ -21,23 +21,21 @@ autoload -Uz _zinit
 #==============================================================#
 ## Plugin load                                                ##
 #==============================================================#
-
-#--------------------------------#
-# zinit extension
-#--------------------------------#
 zinit light-mode for \
     @zinit-zsh/z-a-readurl \
     @zinit-zsh/z-a-bin-gem-node
 
-
-# PROMPT="%~"$'\n'"» "
-zinit wait'!0b' lucid depth=1 \
+zinit wait'!' lucid depth=1 \
   atload"source $ZRCDIR/configs/powerlevel10k_atload.zsh" \
   light-mode for @romkatv/powerlevel10k
 
-#--------------------------------#
+
+#==============================================================#
 # completion
-#--------------------------------#
+#==============================================================#
+zinit wait'0b' lucid \
+  atload"zicompinit; zicdreplay" \
+  light-mode for "$ZRCDIR/plugins/auto_commands.zsh"
 
 zinit wait'0b' lucid as"completion" \
   atload"source $ZRCDIR/configs/zsh-completions_atload.zsh" \
@@ -148,6 +146,12 @@ zinit wait'1' lucid \
 #--------------------------------#
 
 zinit wait'1' lucid \
+    atclone'PYENV_ROOT="$HOME/.pyenv" ./libexec/pyenv init - > zpyenv.zsh' \
+    atinit'export PYENV_ROOT="$HOME/.pyenv"' atpull"%atclone" \
+    as'command' pick'bin/pyenv' src"zpyenv.zsh" nocompile'!'\
+    light-mode for @pyenv/pyenv
+
+zinit wait'1' lucid \
   from"gh-r" as"program" pick"ghq*/ghq" \
   atload"source $ZRCDIR/configs/ghq_atload.zsh" \
   light-mode for @x-motemen/ghq
@@ -165,11 +169,3 @@ zinit wait'1' lucid \
   from"gh-r" as"program" cp"hub-*/etc/hub.zsh_completion -> _hub" pick"hub-*/bin/hub" \
   atload"source $ZRCDIR/configs/hub_atload.zsh" \
   for @github/hub
-
-
-#==============================================================#
-# completion
-#==============================================================#
-zinit wait'2' lucid \
-  atload"zicompinit; zicdreplay" \
-  light-mode for "$ZRCDIR/plugins/auto_commands.zsh"

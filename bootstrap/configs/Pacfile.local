@@ -87,6 +87,7 @@ chezmoi
 chromium
 clonezilla
 conky-lua-archers
+conntrack-tools
 crda
 cronie
 cryptsetup
@@ -193,6 +194,7 @@ inotify-tools
 intel-ucode
 intltool
 inxi
+iptables-nft
 ipw2100-fw
 ipw2200-fw
 irssi
@@ -338,7 +340,6 @@ pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
 pulseaudio-zeroconf
-pyenv
 python-pre-commit
 python-pyparted
 python-pywal
@@ -371,6 +372,7 @@ skypeforlinux-stable-bin
 sl
 slack-desktop
 smartmontools
+socat
 sof-firmware
 speedtest-cli-git
 splix

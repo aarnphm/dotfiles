@@ -19,7 +19,6 @@ alias -- -="cd -"
 
 # move to functions
 alias dots="cd $CHEZMOI_DIR"
-alias pretty=echo -e ${PATH//:/\\n}
 alias display=". $HOME/.config/screenlayout/display.sh"
 
 # editor
@@ -126,7 +125,7 @@ alias delay="ping google.com | grep -E --only-matching --color '[0-9\.]+ ms'"
 # IP addresses
 alias ip4="dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com"
 alias ip6="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com"
-alias dlisten="ss -lntu | grep $1"
+alias dlisten="ss -lntu | grep $@"
 alias freeport="sudo fuser -k $@"
 alias copy="xclip -sel clip"
 alias bwpass="[[ -f $HOME/bw.pass ]] && cat $HOME/bw.pass | sed -n 1p | xclip -sel clip"
@@ -226,10 +225,6 @@ elif [[ -f /etc/arch-release ]]; then
         alias afk="xsecurelock"
     fi
 fi
-
-# Print each PATH, FPATH entry on a separate line
-# alias path="echo -e ${PATH//:/\\n}"
-# alias fpath="echo -e ${FPATH//:/\\n}"
 
 # File Download
 if (( $+commands[curl] )); then

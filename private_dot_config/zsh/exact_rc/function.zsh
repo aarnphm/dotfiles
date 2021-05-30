@@ -14,6 +14,22 @@ function venv() {
     source venv/bin/activate
 }
 
+function path() {
+    if (($+PATH)); then
+      printf '%q\n' "$path[@]"
+    else
+      echo "PATH unset"
+    fi
+}
+
+function fpath() {
+    if (($+FPATH)); then
+      printf '%q\n' "$fpath[@]"
+    else
+      echo "PATH unset"
+    fi
+}
+
 function __exec_command_with_tmux() {
     local cmd="$@"
     if [[ "$(ps -p $(ps -p $$ -o ppid=) -o comm= 2> /dev/null)" =~ tmux ]]; then
