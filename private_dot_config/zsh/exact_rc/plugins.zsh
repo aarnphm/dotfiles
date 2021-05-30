@@ -29,6 +29,12 @@ zinit light-mode for \
     @zinit-zsh/z-a-readurl \
     @zinit-zsh/z-a-bin-gem-node
 
+
+# PROMPT="%~"$'\n'"» "
+zinit wait'!0b' lucid depth=1 \
+  atload"source $ZRCDIR/configs/powerlevel10k_atload.zsh" \
+  light-mode for @romkatv/powerlevel10k
+
 #--------------------------------#
 # completion
 #--------------------------------#
@@ -84,10 +90,6 @@ zinit snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
 zinit ice wait'0a' lucid as"program"
 zinit snippet https://github.com/junegunn/fzf/blob/master/bin/fzf-tmux
 
-# zinit wait'2' lucid \
-#   from"gh-r" as"program" \
-#   atload"source $ZRCDIR/configs/pmy_atload.zsh" \
-#   for @relastle/pmy
 
 zinit wait'2' lucid blockf depth"1" \
   atclone'deno cache --no-check ./bin/zeno' \
@@ -105,11 +107,6 @@ zinit wait'0' lucid \
 #--------------------------------#
 # enhanced command
 #--------------------------------#
-
-PROMPT="%~"$'\n'"» "
-zinit wait'!0b' lucid depth=1 \
-  atload"source $ZRCDIR/configs/powerlevel10k_atload.zsh" \
-  light-mode for @romkatv/powerlevel10k
 
 zinit wait'1' lucid \
   from"gh-r" as"program" pick"bin/exa" \

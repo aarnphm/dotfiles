@@ -18,43 +18,52 @@ fi
 
 {{- end }}
 
-ZRCDIR=$XDG_CONFIG_HOME/zsh/rc
+ZRCDIR="$XDG_CONFIG_HOME/zsh/rc"
 
 #--------------------------------------------------------------#
 ##          Base Configuration                                ##
 #--------------------------------------------------------------#
-source "$ZRCDIR/base.zsh"
+source-safe "$ZRCDIR/base.zsh"
 
 
 #--------------------------------------------------------------#
 ##          Aliases                                           ##
 #--------------------------------------------------------------#
-source "$ZRCDIR/alias.zsh"
+source-safe "$ZRCDIR/alias.zsh"
 
 
 #--------------------------------------------------------------#
 ##          Completion                                        ##
 #--------------------------------------------------------------#
-source "$ZRCDIR/completion.zsh"
+source-safe "$ZRCDIR/completion.zsh"
+
+
+#--------------------------------------------------------------#
+##          Plugins                                           ##
+#--------------------------------------------------------------#
+source-safe "$ZRCDIR/plugins.zsh"
 
 
 #--------------------------------------------------------------#
 ##          Key Bindings                                      ##
 #--------------------------------------------------------------#
-source "$ZRCDIR/bindkey.zsh"
+source-safe "$ZRCDIR/bindkey.zsh"
 
 
 #--------------------------------------------------------------#
 ##          Prompt Configuration                              ##
 #--------------------------------------------------------------#
 # functions
-source "$ZRCDIR/function.zsh"
-# plugins
-source "$ZRCDIR/plugins.zsh"
-# post
+source-safe "$ZRCDIR/function.zsh"
+
+
+#--------------------------------------------------------------#
+##          Prompt                                            ##
+#--------------------------------------------------------------#
 if ! builtin command -v zinit > /dev/null 2>&1; then
-	source "$ZRCDIR/post.zsh"
+	source-safe "$ZRCDIR/post.zsh"
 fi
+
 
 {{- if .personal }}
 if [[ $PROFILE_STARTUP == true ]]; then

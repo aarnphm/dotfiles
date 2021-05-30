@@ -2,13 +2,13 @@
 
 screen_setup="$HOME/.config/screenlayout"
 
-num_screen="$(xrandr -d :0 -q | grep -c ' connected')"
+screens="$(xrandr -d :0 -q | grep -c ' connected')"
 
 # shellcheck disable=SC2004
-if (( $num_screen > 1 )); then
+if (( $screens > 1 )); then
     edp="$(xrandr -d :0 -q | grep ' connected ' | sed -n 1p | grep 'eDP1' &>/dev/null)"
     if $edp; then 
-        num_screen=$(("$num_screen" - 1))
+        num_screen=$(($screens - 1))
     fi
 fi
 

@@ -12,7 +12,7 @@
 <h2 align="center">installation.</h2>
 
 ```sh 
-    $ chezmoi init github.com/aarnphm/dotfiles.git
+    $ sh -c "$(curl -fsLS git.io/chezmoi)" -- init --apply aarnphm 
 ```
 
 <h2 align="center">scripts.</h2>
