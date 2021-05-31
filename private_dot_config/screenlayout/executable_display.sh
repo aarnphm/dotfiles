@@ -20,6 +20,7 @@ else
 	dp="$screen_setup/one.sh"
 fi
 
+echo "running "$dp
 # shellcheck disable=SC1090
 [[ -x "$dp" ]] && . "$dp"
 

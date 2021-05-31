@@ -23,9 +23,7 @@ arch-install-scripts
 archiso
 archlinux-xdg-menu
 arcolinux-awesome-git
-arcolinux-bin-git
 arcolinux-config-all-desktops-git
-arcolinux-conky-collection-git
 arcolinux-dconf-all-desktops-git
 arcolinux-fonts-git
 arcolinux-grub-theme-vimix-git
@@ -46,7 +44,6 @@ arcolinux-qt5-git
 arcolinux-rofi-git
 arcolinux-rofi-themes-git
 arcolinux-root-git
-arcolinux-sddm-sugar-candy-git
 arcolinux-system-config-git
 arcolinux-systemd-services-git
 arcolinux-termite-themes-git
@@ -56,7 +53,6 @@ arcolinux-variety-git
 arcolinux-volumeicon-git
 arcolinux-wallpapers-git
 arcolinux-welcome-app-git
-arcolinux-xfce-git
 arcolinux-zsh-git
 asciinema
 autoconf
@@ -227,6 +223,7 @@ libudev0-shim
 libusb-compat
 libva-intel-driver
 libva-mesa-driver
+libva-utils
 libvoikko
 lightdm
 lightdm-gtk-greeter
@@ -435,8 +432,10 @@ usbmuxd
 usbutils
 v4l2loopback-dkms
 variety
+vdpauinfo
 vicious
 vim
+virtualbox
 visual-studio-code-bin
 vlc
 volumeicon

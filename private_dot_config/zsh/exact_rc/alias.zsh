@@ -19,7 +19,7 @@ alias -- -="cd -"
 
 # move to functions
 alias dots="cd $CHEZMOI_DIR"
-alias display=". $HOME/.config/screenlayout/display.sh"
+alias display="$HOME/.config/screenlayout/display.sh"
 
 # editor
 alias e="$CHEZMOI_BIN edit --apply"
