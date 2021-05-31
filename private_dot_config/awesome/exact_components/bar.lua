@@ -292,7 +292,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                         layout = wibox.container.margin
                     },
                     helpers.horizontal_pad(6),
-                    {id = 'text_role', widget = wibox.widget.textbox},
+                    -- {id = 'text_role', widget = wibox.widget.textbox},
                     layout = wibox.layout.fixed.horizontal
                 },
                 top = dpi(5),

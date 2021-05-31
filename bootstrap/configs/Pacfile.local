@@ -110,6 +110,7 @@ downgrade
 duf-bin
 easy-rsa
 edid-decode-git
+edk2-ovmf
 edk2-shell
 efibootmgr
 etcher-bin
@@ -224,6 +225,7 @@ libusb-compat
 libva-intel-driver
 libva-mesa-driver
 libva-utils
+libvirt
 libvoikko
 lightdm
 lightdm-gtk-greeter
@@ -297,6 +299,7 @@ nvidia-settings
 nvidia-utils
 nvme-cli
 oh-my-zsh-git
+open-iscsi
 openconnect
 openresolv
 openssh
@@ -341,11 +344,13 @@ python-pre-commit
 python-pyparted
 python-pywal
 python2-pyxdg
+qemu
 qopenvpn
 qt5-webkit
 qt5ct
 qt6-base
 r
+radvd
 redis
 redshift
 reflector
@@ -435,6 +440,7 @@ variety
 vdpauinfo
 vicious
 vim
+virt-manager
 virtualbox
 visual-studio-code-bin
 vlc
