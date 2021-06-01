@@ -7,8 +7,8 @@
 {{- if .personal }}
 {{- if eq .chezmoi.os "linux" }}
 # for some reason the cursor size doesnt change
-# xrandr --setprovideroutputsource modesetting NVIDIA-0
-# xrandr --auto
+
+xrandr --setprovideroutputsource NVIDIA-G0 Intel
 
 # start some nice programs
 
@@ -35,6 +35,7 @@ case $session in
     xmonad            ) exec xmonad;;
     *                 ) exec $1;;
 esac
+
 {{- end }}
 {{- end }}
 # vim: set ft=bash ts=4 sw=4 tw=0 et :

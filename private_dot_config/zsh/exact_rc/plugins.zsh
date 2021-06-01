@@ -25,7 +25,7 @@ zinit light-mode for \
     @zinit-zsh/z-a-readurl \
     @zinit-zsh/z-a-bin-gem-node
 
-zinit wait'!' lucid depth=1 \
+zinit wait'!' lucid \
   atload"source $ZRCDIR/configs/powerlevel10k_atload.zsh" \
   light-mode for @romkatv/powerlevel10k
 
