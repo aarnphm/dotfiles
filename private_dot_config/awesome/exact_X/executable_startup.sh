@@ -26,19 +26,19 @@ fi
 
 # background daemon
 # run playerctld daemon
+# run ibus-daemon -drx
 run redshift -v
-run ibus-daemon -drx
 run nitrogen --restore
 run unclutter -idle 1
 run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
 
 # tray apps
+# run kitty tmux
 run optimus-manager-qt
 run jetbrains-toolbox
 run pasystray
 run nm-applet
 run spotify-tray
 run blueman-applet
-run kitty tmux
 run discord
 # vim: set ft=sh ts=2 sw=2 tw=0 et :

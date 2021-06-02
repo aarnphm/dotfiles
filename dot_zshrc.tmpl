@@ -18,37 +18,635 @@ fi
 
 {{- end }}
 
-ZRCDIR="$XDG_CONFIG_HOME/zsh/rc"
+ZRCDIR="$HOME/.config/zsh/rc"
 
-
-#--------------------------------------------------------------#
-##          Plugins                                           ##
-#--------------------------------------------------------------#
-source-safe "$ZRCDIR/plugins.zsh"
-
-
-#--------------------------------------------------------------#
+#==============================================================#
 ##          Base Configuration                                ##
-#--------------------------------------------------------------#
-source-safe "$ZRCDIR/base.zsh"
+#==============================================================#
+
+[[ -f $ZDATADIR/zsh_history ]] && HISTFILE="${ZDATADIR}/zsh_history" || touch $ZDATADIR/zsh_history
+HISTSIZE=10000
+SAVEHIST=100000
+HISTORY_IGNORE="(ls|cd|pwd|zsh|exit|cd ..)"
+LISTMAX=1000
+KEYTIMEOUT=1
+WORDCHARS='*?_-.[]~&;!#$%^(){}<>|'
+
+# autoload
+autoload -Uz run-help
+autoload -Uz add-zsh-hook
+# autoload -Uz colors && colors
+autoload -Uz is-at-least
+
+# core
+ulimit -c unlimited
+
+umask 022
+
+export DISABLE_DEVICONS=false
+
+unsetopt clobber
+unsetopt hist_verify
+setopt prompt_subst
+
+setopt notify
+setopt correct
+setopt auto_menu
+setopt autocd
+setopt autopushd
+setopt multios
+setopt complete_in_word
+setopt pushd_ignore_dups
+setopt pushd_silent
+setopt pushd_to_home
+setopt cdable_vars
+setopt extendedglob
+setopt extended_history
+setopt append_history
+setopt share_history
+setopt hist_reduce_blanks
+setopt hist_save_no_dups
+setopt hist_no_store
+setopt hist_expand
+setopt hist_ignore_all_dups
+setopt inc_append_history
+
+#==============================================================#
+## Setup zinit                                                ##
+#==============================================================#
+if [ -z "$ZPLG_HOME" ]; then
+    ZPLG_HOME="$ZDATADIR/zinit"
+fi
+
+if ! test -d "$ZPLG_HOME"; then
+    mkdir -p "$ZPLG_HOME"
+    chmod g-rwX "$ZPLG_HOME"
+    git clone https://github.com/zdharma/zinit.git ${ZPLG_HOME}/bin
+fi
+
+typeset -gAH ZPLGM
+ZPLGM[HOME_DIR]="${ZPLG_HOME}"
+source "$ZPLG_HOME/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
 
-#--------------------------------------------------------------#
-##          Aliases                                           ##
-#--------------------------------------------------------------#
-source-safe "$ZRCDIR/alias.zsh"
+#==============================================================#
+## Plugin load                                                ##
+#==============================================================#
+zinit light-mode for \
+    @zinit-zsh/z-a-readurl \
+    @zinit-zsh/z-a-bin-gem-node
+
+zinit wait'!' lucid \
+  atload"source $ZRCDIR/configs/powerlevel10k_atload.zsh" \
+  light-mode for @romkatv/powerlevel10k
 
 
-#--------------------------------------------------------------#
-##          Completion                                        ##
-#--------------------------------------------------------------#
-source-safe "$ZRCDIR/completion.zsh"
+#==============================================================#
+# completion
+#==============================================================#
+zinit wait'0b' lucid \
+  atload"zicompinit; zicdreplay" \
+  light-mode for "$ZRCDIR/plugins/auto_commands.zsh"
+
+zinit wait'0b' lucid as"completion" \
+  atload"source $ZRCDIR/configs/zsh-completions_atload.zsh" \
+  light-mode for @zsh-users/zsh-completions
+
+zinit wait'0a' lucid \
+  if"(( ${ZSH_VERSION%%.*} > 4.4))" \
+  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+  light-mode for @zdharma/fast-syntax-highlighting
+
+zplugin ice wait"0a" lucid \
+  atinit"source $ZRCDIR/configs/zsh-autocomplete_atinit.zsh" \
+  light-mode for @zdharma/history-search-multi-word
+
+#--------------------------------#
+# history
+#--------------------------------#
+zinit wait'1' lucid \
+    if"(( ${ZSH_VERSION%%.*} > 4.4))" \
+        light-mode for @zsh-users/zsh-history-substring-search
+
+#--------------------------------#
+# improve cd
+#--------------------------------#
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"zoxide-*/zoxide" \
+  atload"source $ZRCDIR/configs/zoxide_atload.zsh" \
+  light-mode for @ajeetdsouza/zoxide
+
+zinit wait'1' lucid \
+  light-mode for @mollifier/cd-gitroot
+
+zinit wait'1' lucid \
+  light-mode for @peterhurford/up.zsh
+
+zinit wait'1' lucid \
+  light-mode for @Tarrasch/zsh-bd
+
+#--------------------------------#
+# fzf
+#--------------------------------#
+zinit wait'0b' lucid \
+  from"gh-r" as"program" \
+  atload"source $ZRCDIR/configs/fzf_atload.zsh" \
+  for @junegunn/fzf
+zinit ice wait'0a' lucid
+zinit snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
+zinit ice wait'1a' lucid atload"source $ZRCDIR/configs/fzf_completion_atload.zsh"
+zinit snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+zinit ice wait'0a' lucid as"program"
+zinit snippet https://github.com/junegunn/fzf/blob/master/bin/fzf-tmux
 
 
-#--------------------------------------------------------------#
+zinit wait'2' lucid blockf depth"1" \
+  atclone'deno cache --no-check ./bin/zeno' \
+  atpull'%atclone' \
+  atinit"source $ZRCDIR/configs/zeno_atinit.zsh" \
+  atload"source $ZRCDIR/configs/zeno_atload.zsh" \
+  for @yuki-yano/zeno.zsh
+
+#--------------------------------#
+# extension
+#--------------------------------#
+zinit wait'0' lucid \
+    light-mode for @mafredri/zsh-async
+
+#--------------------------------#
+# enhanced command
+#--------------------------------#
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"bin/exa" \
+  atload"source $ZRCDIR/configs/exa_atload.zsh" \
+  light-mode for @ogham/exa
+
+zinit wait'1' lucid blockf nocompletions \
+    from"gh-r" as'program' pick'ripgrep*/rg' \
+    atclone'chown -R $(id -nu):$(id -ng) .; zinit creinstall -q BurntSushi/ripgrep' \
+    atpull'%atclone' \
+    light-mode for @BurntSushi/ripgrep
+
+zinit wait'1' lucid blockf nocompletions \
+    from"gh-r" as'program' pick'fd*/fd' \
+    atclone'chown -R $(id -nu):$(id -ng) .; zinit creinstall -q sharkdp/fd' \
+    atpull'%atclone' \
+    light-mode for @sharkdp/fd
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" cp"bat/autocomplete/bat.zsh -> _bat" pick"bat*/bat" \
+  atload"export BAT_THEME='1337';alias cat=bat" \
+  light-mode for @sharkdp/bat
+
+zinit wait'1' lucid \
+    from"gh-r" as"program" pick"rip*/rip" \
+    atload"alias rm='rip --graveyard ~/.local/share/Trash'" \
+    light-mode for @nivekuil/rip
+
+zinit wait'1' lucid \
+    from"gh-r" as"program" bpick'*lnx*' \
+    light-mode for @dalance/procs
+
+zinit wait'1' lucid \
+    from"gh-r" as"program" pick"mmv*/mmv" \
+    light-mode for @itchyny/mmv
+
+#--------------------------------#
+# program
+#--------------------------------#
+
+zinit wait'1' lucid \
+    atclone'PYENV_ROOT="$HOME/.pyenv" ./libexec/pyenv init - > zpyenv.zsh' \
+    atinit'export PYENV_ROOT="$HOME/.pyenv"' atpull"%atclone" \
+    as'command' pick'bin/pyenv' src"zpyenv.zsh" nocompile'!'\
+    light-mode for @pyenv/pyenv
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"ghq*/ghq" \
+  atload"source $ZRCDIR/configs/ghq_atload.zsh" \
+  light-mode for @x-motemen/ghq
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"ghg*/ghg" \
+  light-mode for @Songmu/ghg
+
+zinit wait'1' lucid \
+  from"gh-r" as'program' bpick'*linux_*.tar.gz' pick'gh*/**/gh' \
+  atload"source $ZRCDIR/configs/gh_atload.zsh" \
+  light-mode for @cli/cli
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" cp"hub-*/etc/hub.zsh_completion -> _hub" pick"hub-*/bin/hub" \
+  atload"source $ZRCDIR/configs/hub_atload.zsh" \
+  for @github/hub
+
+
+#==============================================================#
+## Aliases
+#==============================================================#
+
+# Reload the shell (i.e. invoke as a login shell (-l))
+alias reload="exec -l ${SHELL}"
+# Easier navigation: .., ..., ...., ....., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias -- -="cd -"
+
+#==============================================================#
+## Chezmoi
+#==============================================================#
+
+# move to functions
+alias dots="cd $CHEZMOI_DIR"
+alias display="$HOME/.config/screenlayout/display.sh"
+
+# editor
+alias e="$CHEZMOI_BIN edit --apply"
+alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
+alias dca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
+alias sca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
+alias dsca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
+
+# Enable aliases to be sudo’ed
+alias sudo="nocorrect sudo"
+
+# git
+alias g="git"
+alias vig="e $XDG_CONFIG_HOME/git/gitignore"
+alias dm="$EDITOR $(dirname "$(git config --global --get include.path)")/dot-commit-msg"
+alias triple=". $HOME/.config/screenlayout/triple.sh"
+
+if (( $+commands[protonvpn] )); then
+    alias vpnconnect="sudo protonvpn connect --cc CA"
+    alias vpndisconnect="sudo protonvpn disconnect"
+    alias vpnstatus="sudo protonvpn status"
+fi
+
+# List all files colorized in long format
+if command -v virt-what &>/dev/null; then
+    alias la="\ls --color -rthla --group-directories-first"
+else
+    # exa as defaults
+    alias la="exa ${LS_OPTS} ${colorflag}"
+fi
+# nnn intensifies
+alias N="sudo -E nnn -dDH"
+alias l="n"
+alias lp="nnn -P p"
+
+# editors
+alias v="$EDITOR"
+alias av="$EDITOR -p"
+
+#chmod
+alias 644="chmod 644"
+alias 600="chmod 600"
+alias 755="chmod 755"
+alias 700="chmod 700"
+alias 777="chmod 777"
+alias cx="chmod +x"
+
+#==============================================================#
+## Global alias
+#==============================================================#
+
+alias -g G="| grep "  # e.x. dmesg lG CPU
+alias -g L="| $PAGER "
+alias -g W="| wc"
+alias -g H="| head"
+alias -g T="| tail"
+
+#==============================================================#
+## Suffix
+#==============================================================#
+
+alias -s {md,markdown,txt}="$EDITOR"
+alias -s {html,gif,mp4}="x-www-browser"
+alias -s rb="ruby"
+alias -s py="python"
+alias -s hs="runhaskell"
+alias -s php="php -f"
+alias -s {jpg,jpeg,png,bmp}="feh"
+alias -s mp3="mplayer"
+function extract() {
+    case $1 in
+        *.tar.gz|*.tgz) tar xzvf "$1";;
+        *.tar.xz) tar Jxvf "$1";;
+        *.zip) unzip "$1";;
+        *.lzh) lha e "$1";;
+        *.tar.bz2|*.tbz) tar xjvf "$1";;
+        *.tar.Z) tar zxvf "$1";;
+        *.gz) gzip -d "$1";;
+        *.bz2) bzip2 -dc "$1";;
+        *.Z) uncompress "$1";;
+        *.tar) tar xvf "$1";;
+        *.arj) unarj "$1";;
+    esac
+}
+alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
+
+alias cs="cd $CS_PATH"
+
+# awesome config
+alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
+
+#==============================================================#
+## App
+#==============================================================#
+
+# jupyter
+alias ipynb="jupyter notebook ${JUPYTER_OPTS}"
+
+# check internet
+alias speedtest="watch -n 1 ping -c 1 google.com"
+alias delay="ping google.com | grep -E --only-matching --color '[0-9\.]+ ms'"
+
+# IP addresses
+alias ip4="dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com"
+alias ip6="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com"
+alias dlisten="ss -lntu | grep $@"
+alias freeport="sudo fuser -k $@"
+alias copy="xclip -sel clip"
+alias bwpass="[[ -f $HOME/bw.pass ]] && cat $HOME/bw.pass | sed -n 1p | xclip -sel clip"
+
+# some curl ass shit
+alias cryptoprice="curl rate.sx"
+alias weather="curl wttr.in/$CITY"
+
+# docker and kubectl related
+alias dockerprune="docker system prune -a -f"
+alias kubesecret="kubectl get secret regcred --output=yaml"
+
+if (( $+commands[journalctl] )); then
+    alias failed="journalctl -p 3 -xb"
+fi
+
+#==============================================================#
+## Arch
+#==============================================================#
+if [ -f /etc/arch-release ] ;then
+    # urxvt
+    alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
+    # install
+    alias pacupdate="sudo pacman -Sy"
+    alias pacupgrade="sudo pacman -Syu"
+    alias pacupgradef="sudo pacman -Syyu"
+    alias pacinstall="sudo pacman -S"
+    alias pacremove="sudo pacman -Rs"
+    # search remote package
+    alias pacsearch="pacman -Ss"
+    alias packinfo="pacman -Si"
+    # search local package
+    alias pacinstalled="pacman -Qs"
+    alias pacinstalledinfo="pacman -Qi"
+    alias pacinstalledfiles="pacman -Ql"
+    # import: sudo pacman -S pkglist.txt
+    alias pacexport="pacman -Qqen"
+    alias pacunused="pacman -Qtdq"
+    alias pacsearchfrompath="pacman -Qqo"
+    alias pacsearchbyfilename="pkgfile"
+    # search package from filename
+    alias pacincludedfiles="pacman -Fl"
+    # log
+    alias paclog="cat /var/log/pacman.log | \grep "installed\|removed\|upgraded""
+    alias aurpack="pacman -Qm"
+    # etc
+    alias pacclean="sudo pacman -Sc"
+    # aur
+    if builtin command -v yay > /dev/null 2>&1; then
+        alias ylist="yay -Qm"
+        alias yclean="yay -Sc"
+        alias yupdate="yay -Syuu --noconfirm"
+    fi
+fi
+
+# systemctl related
+if (( $+commands[systemctl] )); then
+    alias sysrestart="sudo systemctl restart"
+    alias sysstart="sudo systemctl start"
+    alias sysstop="sudo systemctl stop"
+    alias sysenable="sudo systemctl enable"
+    alias sysdisable="sudo systemctl disable"
+    alias sysreload="sudo systemctl reload"
+    alias sysstatus="systemctl status"
+    alias sysshow="systemctl show"
+    alias syslu="systemctl list-units"
+    alias sysluf="systemctl list-unit-files"
+    alias syslt="systemctl list-timers"
+    alias syscat="systemctl cat"
+    alias sysie="systemctl is-enabled"
+fi
+
+alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
+
+alias keys="xev | grep -i key"
+
+# Intuitive map function
+# For example, to list all directories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map="xargs -n1"
+
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib.parse as ul; print(ul.quote(sys.argv[1]));"'
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+    alias "${method}"="lwp-request -m '${method}'"
+done
+
+#Lock the screen (when going AFK)
+if [[ $SYSTEM == "Darwin" ]]; then
+    alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+elif [[ -f /etc/arch-release ]]; then
+    if xset q | grep "DPMS is Enabled" &>/dev/null; then
+        alias afk="xset s activate"
+    else
+        alias afk="xsecurelock"
+    fi
+fi
+
+# File Download
+if (( $+commands[curl] )); then
+    alias get="curl --continue-at - --location --progress-bar --remote-name --remote-time"
+elif (( $+commands[wget] )); then
+    alias get="wget --continue --progress=bar --timestamping"
+fi
+
+#==============================================================#
+## safe opts
+#==============================================================#
+alias tmux="TERM=xterm-256color $(which tmux) ${TMUX_OPTS}"
+
+# Safe ops. Ask the user before doing anything destructive.
+alias rmi="/usr/bin/rm -i"
+alias mvi="${aliases[mv]:-mv} -i"
+alias cpi="${aliases[cp]:-cp} -i"
+alias lni="${aliases[ln]:-ln} -i"
+
+#==============================================================#
+## Hash
+#==============================================================#
+
+hash -d data=~/.local/share/
+
+
+##==============================================================#
+#          Completion                                          ##
+#===============================================================#
+
+# The next line enables shell command completion for gcloud.
+if [ -f '$HOME/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/google-cloud-sdk/completion.zsh.inc'; fi
+
+# complete . and .. special directories
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' special-dirs true
+
+# enable caching to make completion for commands such as dpkg and apt usable
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
+
+# group matches and describe
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*:matches' group yes
+zstyle ':completion:*:options' description yes
+zstyle ':completion:*:options' auto-description 'specify: %d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# rehash if command not found (possibly recently installed)
+zstyle ':completion:*' rehash true
+
+# fuzzy match mistyped completions
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
+# directories
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+zstyle ':completion:*' squeeze-slashes true
+
+# ignores unavailable commands
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec)|prompt_*)'
+
+# completion element sorting
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+# man
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+
+# make completion is slow
+zstyle ':completion:*:make:*:targets' call-command true
+zstyle ':completion:*:make::' tag-order targets:
+zstyle ':completion:*:*:*make:*:targets' command awk \''/^[a-zA-Z0-9][^\/\t=]+:/ {print $1}'\' \$file
+
+# history
+zstyle ':completion:*:history-words' stop yes
+zstyle ':completion:*:history-words' remove-all-dups yes
+zstyle ':completion:*:history-words' list false
+zstyle ':completion:*:history-words' menu yes
+
+# ignore multiple entries
+zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
+zstyle ':completion:*:rm:*' file-patterns '*:all-files'
+
+# ssh/scp/rsync
+zstyle ':completion:*:(ssh|scp|ftp|sftp):*' hosts $hosts
+zstyle ':completion:*:(ssh|scp|ftp|sftp):*' users $users
+
+#==============================================================#
 ##          Key Bindings                                      ##
-#--------------------------------------------------------------#
-source-safe "$ZRCDIR/bindkey.zsh"
+#==============================================================#
+
+# stty intr '^C'
+# stty susp '^Z'
+# stty stop undef
+bindkey -v     # vi 風
+
+## delete ##
+bindkey '^?'    backward-delete-char
+bindkey '^H'    backward-delete-char
+bindkey '^[[3~' delete-char
+bindkey '^[[3;5~' delete-word
+
+## jump ##
+bindkey  '^[[H' beginning-of-line
+bindkey  '^[[F' end-of-line
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[4~' end-of-line
+bindkey '^[[7~' beginning-of-line
+bindkey '^[[8~' end-of-line
+bindkey '^U' backward-kill-line
+bindkey '^[^?' delete-char-or-list
+
+## move ##
+bindkey '^[h' backward-char
+bindkey '^[j' down-line-or-history
+bindkey '^[k' up-line-or-history
+bindkey '^[l' forward-char
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+## history ##
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^[p" history-beginning-search-backward
+bindkey "^[n" history-beginning-search-forward
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
+autoload -Uz smart-insert-last-word
+zstyle :insert-last-word match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
+zle -N insert-last-word smart-insert-last-word
+function _insert-last-word() { smart-insert-last-word; ARG=-2 }
+zle -N _insert-last-word
+bindkey '^]' _insert-last-word
+function insert-next-word() { zle insert-last-word -- 1 -1; ARG=-2 }
+zle -N insert-next-word
+bindkey '^_' insert-next-word
+function zle-line-finish() { ARG=-2 }
+zle -N zle-line-finish
+function insert-prev-arg() { zle insert-last-word -- 0 ${ARG:-2}; ARG=$(($ARG-1)) }
+zle -N insert-prev-arg
+bindkey '^^' insert-prev-arg
+bindkey '\e#' pound-insert
+
+## completion ##
+# shift-tab
+zmodload zsh/complist
+bindkey '^[[Z' reverse-menu-complete
+bindkey -M menuselect '^[[Z' reverse-menu-complete
+
+## edit ##
+bindkey '^[u' undo
+bindkey '^[r' redo
+
+# edit command-line using editor (like fc command)
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
+
+## etc ##
+bindkey '^X*' expand-word
+# stack command
+zle -N show_buffer_stack
 
 
 #--------------------------------------------------------------#
@@ -61,7 +659,14 @@ source-safe "$ZRCDIR/function.zsh"
 ##          Post                                              ##
 #--------------------------------------------------------------#
 if ! builtin command -v zinit > /dev/null 2>&1; then
-	source-safe "$ZRCDIR/post.zsh"
+  if ! builtin command -v compinit > /dev/null 2>&1; then
+      autoload -Uz compinit
+      if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+          compinit
+      else
+          compinit -C
+      fi
+  fi
 fi
 
 

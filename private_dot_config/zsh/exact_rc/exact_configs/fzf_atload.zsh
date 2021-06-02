@@ -3,10 +3,10 @@
 # export FZF_DEFAULT_COMMAND='find . -type f -not -path "*/\.*" -printf "%T@\t%p\n" | sort -rn | cut -f 2-'
 export FZF_CTRL_T_COMMAND='fd --hidden --follow --exclude .git'
 
-export FZF_PREVIEW_OPTS='--preview "$ZRCDIR/plugins/fzf-preview.sh {}" --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up" --preview-window wrap'
+export FZF_PREVIEW_OPTS='--preview "$HOME/.config/zsh/rc/plugins/fzf-preview.sh {}" --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up" --preview-window wrap'
 export FZF_DEFAULT_OPTS='--no-mouse --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up"'
 export FZF_ALT_C_OPTS=""
-export FZF_CTRL_R_OPTS='--preview "$ZRCDIR/plugins/fzf-preview.sh {}" --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up" --preview-window up:10%:wrap --height 50%'
+export FZF_CTRL_R_OPTS='--preview "$HOME/.config/zsh/rc/plugins/fzf-preview.sh {}" --bind "?:toggle-preview,ctrl-a:select-all,ctrl-d:preview-page-down,ctrl-u:preview-page-up" --preview-window up:10%:wrap --height 50%'
 export FZF_CTRL_T_OPTS="--keep-right $FZF_PREVIEW_OPTS"
 export FZF_TMUX_OPTS="-p 90%"
 
@@ -27,11 +27,12 @@ zle -N fzf-cd-currect
 bindkey '^Xs' fzf-cd-currect
 
 function fzf-command-search-widget() {
-  LBUFFER="${LBUFFER}$(whence -pm '*' | xargs -i basename {} | FZF_DEFAULT_OPTS="--prompt 'SearchCommand> ' --height 40% --reverse $FZF_PREVIEW_OPTS" $(__fzfcmd))"
+  LBUFFER=${LBUFFER}$(whence -pm '*' | xargs -i basename {} | FZF_DEFAULT_OPTS="--prompt 'SearchCommand> ' --height 40% --reverse $FZF_PREVIEW_OPTS" $(__fzfcmd))
   local ret=$?
   zle reset-prompt
   return $ret
 }
+
 zle -N fzf-command-search-widget
 bindkey '^Xc' fzf-command-search-widget
 bindkey '^X^c' fzf-command-search-widget

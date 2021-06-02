@@ -5,6 +5,7 @@ bitwarden-cli
 cacheclean
 cef-minimal
 cuda11.1
+dive
 dmenu2
 dxvk-bin
 fabric-server
