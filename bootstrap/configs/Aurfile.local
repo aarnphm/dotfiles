@@ -28,7 +28,6 @@ ncurses5-compat-libs
 nnn-nerd
 nvidia-container-runtime
 nvidia-container-toolkit
-obs-studio-git
 python-qtconsole-git
 rainbow
 shell-color-scripts
