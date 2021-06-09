@@ -18,8 +18,6 @@ fi
 
 {{- end }}
 
-ZRCDIR="$HOME/.config/zsh/rc"
-
 #==============================================================#
 ##          Base Configuration                                ##
 #==============================================================#
@@ -85,10 +83,6 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias -- -="cd -"
 
-#==============================================================#
-## Chezmoi
-#==============================================================#
-
 # move to functions
 alias dots="cd $CHEZMOI_DIR"
 alias display="$HOME/.config/screenlayout/display.sh"
@@ -139,20 +133,14 @@ alias 700="chmod 700"
 alias 777="chmod 777"
 alias cx="chmod +x"
 
-#==============================================================#
 ## Global alias
-#==============================================================#
-
 alias -g G="| grep "  # e.x. dmesg lG CPU
 alias -g L="| $PAGER "
 alias -g W="| wc"
 alias -g H="| head"
 alias -g T="| tail"
 
-#==============================================================#
 ## Suffix
-#==============================================================#
-
 alias -s {md,markdown,txt}="$EDITOR"
 alias -s {html,gif,mp4}="x-www-browser"
 alias -s rb="ruby"
@@ -183,10 +171,7 @@ alias cs="cd $CS_PATH"
 # awesome config
 alias awet="awmtt start -C $XDG_CONFIG_HOME/awesome/rc.lua.test"
 
-#==============================================================#
 ## App
-#==============================================================#
-
 # jupyter
 alias ipynb="jupyter notebook ${JUPYTER_OPTS}"
 
@@ -214,9 +199,7 @@ if (( $+commands[journalctl] )); then
     alias failed="journalctl -p 3 -xb"
 fi
 
-#==============================================================#
 ## Arch
-#==============================================================#
 if [ -f /etc/arch-release ] ;then
     # urxvt
     alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
@@ -305,9 +288,7 @@ elif (( $+commands[wget] )); then
     alias get="wget --continue --progress=bar --timestamping"
 fi
 
-#==============================================================#
 ## safe opts
-#==============================================================#
 alias tmux="TERM=xterm-256color $(which tmux) ${TMUX_OPTS}"
 
 # Safe ops. Ask the user before doing anything destructive.
@@ -316,10 +297,7 @@ alias mvi="${aliases[mv]:-mv} -i"
 alias cpi="${aliases[cp]:-cp} -i"
 alias lni="${aliases[ln]:-ln} -i"
 
-#==============================================================#
 ## Hash
-#==============================================================#
-
 hash -d data=~/.local/share/
 
 
@@ -511,20 +489,19 @@ zinit light-mode for \
     @zinit-zsh/z-a-bin-gem-node
 
 zinit wait'!' lucid \
-  atload"source $ZRCDIR/configs/powerlevel10k_atload.zsh" \
+  atload"source $ZRCDIR/configs/p10k.zsh;_p9k_precmd" nocd \
   light-mode for @romkatv/powerlevel10k
 
 
-#==============================================================#
 # completion
-#==============================================================#
 zinit wait'0b' lucid \
   atload"zicompinit; zicdreplay" \
   light-mode for "$ZRCDIR/plugins/auto_commands.zsh"
 
-# zinit wait'0b' lucid as"completion" \
-#   atload"source $ZRCDIR/configs/zsh-completions_atload.zsh" \
-#   light-mode for @zsh-users/zsh-completions
+zinit wait'0b' lucid \
+  atinit"source $ZRCDIR/configs/zsh-completions_atinit.zsh" \
+  atload"source $ZRCDIR/configs/zsh-completions_atload.zsh" \
+  light-mode for @zsh-users/zsh-completions
 
 zinit wait'0a' lucid \
   if"(( ${ZSH_VERSION%%.*} > 4.4))" \
@@ -573,13 +550,6 @@ zinit snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
 zinit ice wait'0a' lucid as"program"
 zinit snippet https://github.com/junegunn/fzf/blob/master/bin/fzf-tmux
 
-
-zinit wait'2' lucid blockf depth"1" \
-  atclone'deno cache --no-check ./bin/zeno' \
-  atpull'%atclone' \
-  atinit"source $ZRCDIR/configs/zeno_atinit.zsh" \
-  atload"source $ZRCDIR/configs/zeno_atload.zsh" \
-  for @yuki-yano/zeno.zsh
 
 #--------------------------------#
 # extension

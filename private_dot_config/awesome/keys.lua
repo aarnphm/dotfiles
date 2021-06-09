@@ -257,11 +257,7 @@ client.connect_signal("request::default_keybindings", function()
             -- ===================================================================
             awful.key({modkey}, "r",
                 function()
-                    awful.spawn.easy_async_with_shell('rofi -show run', {
-                            stderr = function(line)
-                                naughty.notify { text = "error: " .. line }
-                            end,
-                        })
+                    awful.spawn('rofi -show run')
                 end,
                 {description = "run programs", group = "launcher"}
                 ),
@@ -281,7 +277,7 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "edit config files", group = "launcher"}
                 ),
-            awful.key({ctrl, altkey}, "t",
+            awful.key({shift, altkey}, "t",
                 function()
                     awful.spawn(defaults.terminal)
                 end,
@@ -293,7 +289,7 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "open termite", group = "launcher"}
                 ),
-            awful.key({altkey, shift}, "t",
+            awful.key({ctrl, altkey}, "t",
                 function()
                     awful.spawn("kitty -e tmux")
                 end,

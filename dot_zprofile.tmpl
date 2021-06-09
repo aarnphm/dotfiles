@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-
 ###########################################################################
 #                            Chezmoi                                      #
 ###########################################################################
@@ -15,13 +13,14 @@ export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_BIN_HOME="{{ .chezmoi.homeDir }}/.local/bin"
+export XDG_BIN_HOME="$HOME/.local/bin"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 # ZSH defaults
 export ZDOTDIR="${ZDOTDIR:-$HOME}"
-export ZHOMEDIR="${ZHOMEDIR:-$XDG_CONFIG_HOME/zsh}"
-export ZRCDIR="${ZRCDIR:-$ZHOMEDIR/rc}"
-export ZDATADIR="${ZDATADIR:-$XDG_DATA_HOME/zsh}"
+export ZHOMEDIR=$ZDOTDIR/.config/zsh
+export ZRCDIR=$ZHOMEDIR/rc
+export ZDATADIR=$XDG_DATA_HOME/zsh
 
 
 {{- if joinPath "/etc/arch-release" }}
@@ -99,7 +98,8 @@ export NNN_PLUG='f:finder;o:fzopen;m:mocplay;d:diffs;t:nmount;p:preview-tui'
 #                            PATH                                         #
 ###########################################################################
 
-typeset -U path PATH manpath sudo_path cdpath fpath
+setopt no_global_rcs
+typeset -U path PATH manpath sudo_path
 typeset -xT SUDO_PATH sudo_path
 
 path=(
@@ -141,7 +141,7 @@ path=(
 )
 
 fpath=(
-    $HOME/.config/zsh/completion(N-/)
+    $ZHOMEDIR/completion(N-/)
     /usr/local/share/zsh/site-functions
     /usr/share/zsh/site-functions
     $fpath
