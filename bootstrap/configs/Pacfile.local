@@ -22,7 +22,6 @@ arc-icon-theme
 arch-install-scripts
 archiso
 archlinux-xdg-menu
-arcolinux-awesome-git
 arcolinux-config-all-desktops-git
 arcolinux-dconf-all-desktops-git
 arcolinux-fonts-git
@@ -34,7 +33,6 @@ arcolinux-kvantum-git
 arcolinux-kvantum-theme-arc-git
 arcolinux-local-applications-git
 arcolinux-local-xfce4-git
-arcolinux-meta-logout
 arcolinux-mirrorlist-git
 arcolinux-neofetch-git
 arcolinux-nitrogen-git
