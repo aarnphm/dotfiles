@@ -13,13 +13,13 @@ Host *
 {{- end }}
 {{ if eq .hostname "APPL-AIR12" }}
 Host GGBBYAERO15W8
-    HostName 116.111.95.223
+    HostName 116.111.11.93
     Port 34689
     User {{ .chezmoi.username }}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
 
 Host HOME
-    HostName 192.168.1.117
+    HostName 192.168.11.93
     Port 34689
     User {{ .chezmoi.username }}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
