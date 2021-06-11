@@ -4,14 +4,14 @@ IFS=$'\n\t'
 
 # shellcheck disable=SC1009,SC1054,SC1073,SC1056,SC1072,SC1083,SC1036
 {{- if .personal }}
-{{- if and (joinPath "/etc/arch-release") (.personal) }}
+{{- if not (eq .chezmoi.os "darwin") }}
 # for debian we disable postgresql optimus-manager
-SERVICES=(docker sshd bluetooth lightdm acpid cronie acpid)
+SERVICES=(docker sshd bluetooth lightdm acpid cronie acpid optimus-manager)
 
 for services in "${SERVICES[@]}"; do
     sudo systemctl enable $services
 done
 
-crontab {{ .chezmoi.sourceDir }}/bootstrap/configs/private_cronfile
 {{- end }}
+crontab {{ .chezmoi.sourceDir }}/bootstrap/configs/private_cronfile
 {{- end }}

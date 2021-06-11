@@ -24,7 +24,11 @@ fi
 ## cargo completion
 #==============================================================#
 if exists cargo; then
+  {{- if eq .chezmoi.os "darwin" }}
+  d=$(readlink -n $HOME/.rustup/toolchains/*/share/zsh/site-functions)
+  {{- else }}
   d=$(readlink -f $HOME/.rustup/toolchains/*/share/zsh/site-functions)
+  {{- end }}
   if [ -d "$d" ]; then
     fpath=($d $fpath)
   fi
@@ -67,3 +71,4 @@ if exists fasd; then
   alias f='fasd -f'
   alias vf='f -e vim'
 fi
+# vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :
