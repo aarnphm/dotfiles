@@ -30,15 +30,16 @@ fi
 run redshift -v
 run nitrogen --restore
 run unclutter -idle 1
-run picom -f --experimental-backends --glx-no-stencil --show-all-xerrors
+run picom -f --experimental-backends --glx-no-stencil
 
 # tray apps
 # run kitty tmux
-run optimus-manager-qt
-run jetbrains-toolbox
+# run nm-applet
+# run jetbrains-toolbox
 run pasystray
-run nm-applet
-run spotify-tray
 run blueman-applet
+run spotify
+run slack
 run discord
+run optimus-manager-qt
 # vim: set ft=sh ts=2 sw=2 tw=0 et :
