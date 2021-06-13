@@ -17,9 +17,6 @@ fi
 if (builtin command -v /usr/bin/lxpolkit && ! pgrep lxpolkit); then
   /usr/bin/lxpolkit &
 fi
-# if ([[ -d /opt/cisco ]] && ! pgrep vpnagentd); then
-#     /opt/cisco/anyconnect/bin/vpnui &
-# fi
 if (builtin command -v xsecurelock && ! pgrep xss-lock); then
   . $HOME/.local/bin/auto-lock &
 fi
@@ -34,12 +31,12 @@ run picom -f --experimental-backends --glx-no-stencil
 
 # tray apps
 # run kitty tmux
-# run nm-applet
-# run jetbrains-toolbox
+# run slack
+# run discord
+run nm-applet
+run jetbrains-toolbox
 run pasystray
 run blueman-applet
-run spotify
-run slack
-run discord
 run optimus-manager-qt
+run spotify
 # vim: set ft=sh ts=2 sw=2 tw=0 et :

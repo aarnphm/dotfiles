@@ -69,7 +69,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "spotify",
         rule = {class = "Spotify"},
-        properties = {screen = get_screen(2), tag = defaults.tags[1].names[4], switchtotag = true}
+        properties = {screen = get_screen(3), tag = defaults.tags[1].names[4], switchtotag = true}
     }
 
     ruled.client.append_rule {

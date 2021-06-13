@@ -7,8 +7,10 @@
 {{- if .personal }}
 {{- if eq .chezmoi.os "linux" }}
 # for some reason the cursor size doesnt change
+xrandr &&
+# xrandr --setprovideroutputsource NVIDIA-G0 Intel
 
-xrandr --setprovideroutputsource NVIDIA-G0 Intel
+xset r rate 180 50
 
 # start some nice programs
 

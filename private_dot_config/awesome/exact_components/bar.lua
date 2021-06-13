@@ -231,9 +231,9 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.quake = lain.util.quake(
         {
             app = "termite",
-            height = 0.43,
-            width = 0.43,
-            horiz = "center",
+            -- height = 0.43,
+            -- width = 0.43,
+            -- horiz = "center",
             followtag = true,
             argname = "--name %s"
         }
