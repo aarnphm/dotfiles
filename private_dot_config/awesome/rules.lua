@@ -87,24 +87,18 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "steam",
         rule_any = {class = {"Steam", "dota2"}},
-        properties = {screen = get_screen(3), tag = defaults.tags[1].names[5], switchtotag = true}
-    }
-
-    ruled.client.append_rule {
-        id = "minecraft",
-        rule_any = {class = "Minecraft 1.16.5"},
-        properties = {screen = get_screen(3), tag = defaults.tags[1].names[3], switchtotag = true}
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[3], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "kitty",
         rule_any = {class = {"kitty"}},
-        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "jetbrains",
-        rule_any = {class = {"jetbrains-pycharm", "jetbrains-goland"}},
+        rule_any = {class = {"jetbrains-pycharm", "jetbrains-goland", "jetbrains-intellij"}},
         properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
@@ -117,13 +111,13 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "vmware",
         rule = {class = "vmware"},
-        properties = {screen = get_screen(1), tag=defaults.tags[1].names[2], switchtotag = true}
+        properties = {screen = get_screen(3), tag=defaults.tags[1].names[2], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "meeting",
         rule_any = {class={"Whatsapp-for-linux"}, instance = {"slack", "skype","caprine"}},
-        properties = {screen = 1, tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
+        properties = {screen = get_screen(3), tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule {
@@ -135,7 +129,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "zooms",
         rule_any = {class={"Zoom", "Microsoft Teams - Preview"}},
-        properties = {screen = get_screen(2), floating=true, tags = defaults.tags[1].names[5], switchtotag=true}
+        properties = {screen = get_screen(3), floating=true, tags = defaults.tags[1].names[5], switchtotag=true}
     }
 
     ruled.client.append_rule{
