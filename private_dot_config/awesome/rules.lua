@@ -75,7 +75,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "browser",
         rule_any = {class = {"Chromium", "Firefox"}},
-        properties = {screen = get_screen(2), tag = defaults.tags[1].names[2], switchtotag = true}
+        properties = {screen = awful.screen.focused(), tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -93,7 +93,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "kitty",
         rule_any = {class = {"kitty"}},
-        properties = {screen = get_screen(2), tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = get_screen(3), tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -129,7 +129,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "zooms",
         rule_any = {class={"Zoom", "Microsoft Teams - Preview"}},
-        properties = {screen = get_screen(3), floating=true, tags = defaults.tags[1].names[5], switchtotag=true}
+        properties = {screen = get_screen(3), floating=true, tags = defaults.tags[1].names[3], switchtotag=true}
     }
 
     ruled.client.append_rule{

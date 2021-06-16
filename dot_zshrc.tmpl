@@ -84,7 +84,8 @@ alias -- -="cd -"
 
 # move to functions
 alias dots="cd $CHEZMOI_DIR"
-alias display="$HOME/.config/screenlayout/display.sh"
+alias display="$HOME/.screenlayout/display.sh"
+alias triple=". $HOME/.screenlayout/triple.sh"
 
 # editor
 alias e="$CHEZMOI_BIN edit --apply"
@@ -100,7 +101,6 @@ alias sudo="nocorrect sudo"
 alias g="git"
 alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 alias dm="$EDITOR $(dirname "$(git config --global --get include.path)")/dot-commit-msg"
-alias triple=". $HOME/.config/screenlayout/triple.sh"
 alias dslr="sudo modprobe v4l2loopback && gphoto2 --stdout --capture-movie | ffmpeg -hwaccel nvdec -c:v mjpeg_cuvid -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video4"
 alias cdslr="sudo modprobe v4l2loopback && gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video4"
 
