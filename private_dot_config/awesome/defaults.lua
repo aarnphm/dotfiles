@@ -41,12 +41,12 @@ local defaults = {
         },
         {
             names  = { "", " ", " ", " ", " " },
-            layout = {layouts[4],layouts[4],layouts[4], layouts[10], layouts[10]},
+            layout = {layouts[2], layouts[2], layouts[8], layouts[10], layouts[10]},
         },
         {
             names  = { "", " ", " ", " ", " " },
-            layout = {layouts[2], layouts[2], layouts[8], layouts[10], layouts[10]},
-        }
+            layout = {layouts[4],layouts[4],layouts[4], layouts[10], layouts[10]},
+        },
     },
 }
 return defaults
