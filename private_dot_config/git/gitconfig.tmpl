@@ -45,10 +45,12 @@
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
     # Pull in remote changes for the current repository and all its submodules.
-    p = pull --recurse-submodules
+    pre = pull --recurse-submodules
+    p = pull
 
     # Clone a repository including all submodules.
-    c = clone --recursive
+    cre = clone --recursive
+    c = clone
 
     # Commit all changes.
     ca = !git add -A && git commit -av
@@ -60,6 +62,7 @@
     tags = tag -l
     branches = branch --all
     remotes = remote --verbose
+    reprune = remote prune
 
     # List aliases.
     aliases = config --get-regexp alias
