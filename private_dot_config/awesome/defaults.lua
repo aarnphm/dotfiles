@@ -17,7 +17,7 @@ local defaults = {
     -- ===================================================================
     -- default application
     -- ===================================================================
-    terminal     = "kitty",
+    terminal     = "alacritty",
     editor       = "nvim",
     fileviewer   = "firefox --new-window file:///home/aarnphm",
     filebrowser  = "termite -e nnn",
