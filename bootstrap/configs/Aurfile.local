@@ -29,7 +29,6 @@ nvidia-container-toolkit
 nvidia-docker
 obs-studio-git
 optimus-manager-qt
-paru-bin
 python-qtconsole-git
 rainbow
 shell-color-scripts
