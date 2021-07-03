@@ -299,8 +299,8 @@ alias cpi="${aliases[cp]:-cp} -i"
 alias lni="${aliases[ln]:-ln} -i"
 
 # BentoML related
-alias manager_dockerfiles="docker run --rm -u $(id -u):$(id -g) -v $(pwd):/bentoml bentoml-docker python3 manager.py "
-alias manager_images="docker run --rm -v $(pwd):/bentoml -v /var/run/docker.sock:/var/run/docker.sock bentoml-docker python3 manager.py "
+alias manager_dockerfiles="docker run --rm -u $(id -u):$(id -g) -v $CS_PATH/BentoML/docker:/bentoml bentoml-docker python3 manager.py "
+alias manager_images="docker run --rm -v $CS_PATH/BentoML/docker:/bentoml -v /var/run/docker.sock:/var/run/docker.sock bentoml-docker python3 manager.py "
 
 ## Hash
 hash -d data=~/.local/share/
@@ -653,3 +653,4 @@ if [[ $PROFILE_STARTUP == true ]]; then
 fi
 {{- end }}
 # vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 noet :
+# cool http regex: ((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)

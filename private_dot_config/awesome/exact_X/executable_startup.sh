@@ -24,7 +24,7 @@ fi
 # background daemon
 # run playerctld daemon
 # run ibus-daemon -drx
-run redshift-gtk -v
+run redshift -v
 run nitrogen --restore
 run unclutter -idle 1
 run picom -f --experimental-backends --glx-no-stencil

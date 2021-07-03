@@ -10,5 +10,5 @@ export BW_CLIENTSECRET=$bitwarden[3]
 export BW_SESSION="$(bw unlock $BW_MASTER 2>/dev/null | grep 'export' | sed -E 's/.*export BW_SESSION="(.*==)"$/\1/')"
 
 # docker PAT
-export DOCKER_PAT="{{ (bitwarden "item" "docker-access-token-ggbbyaero15w8").notes }}"
+# export DOCKER_PAT="{{ (bitwarden "item" "docker-access-token-ggbbyaero15w8").notes }}"
 # vim: set ft=zsh ts=4 sw=4 tw=0 et :
