@@ -2,7 +2,11 @@
 #                            Chezmoi                                      #
 ###########################################################################
 
+{{ if eq .chezmoi.os "darwin" -}}
+export CHEZMOI_BIN="$(/usr/bin/which chezmoi)"
+{{ else -}}
 export CHEZMOI_BIN="$(which chezmoi)"
+{{ end }}
 export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 
 ###########################################################################
