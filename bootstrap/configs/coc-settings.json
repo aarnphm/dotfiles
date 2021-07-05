@@ -1,9 +1,35 @@
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
+     "python.formatting.provider": "black",
+    "python.formatting.blackPath": "black",
+    "python.formatting.blackArgs": ["--skip-string-normalization"],
+    "coc.preferences.hoverTarget": "echo",
+    "signature.target": "echo",
+    "python.linting.pylintArgs": ["--disable=not-context-manager"],
+    "python.sortImports.args": [
+      "-m3",
+      "--tc",
+      "--force-grid-wrap=0",
+      "--use-parentheses",
+      "-l88",
+      "--ensure-newline-before-comments"
+    ],
+    "json.format.enable": true,
+    "explorer.file.showHiddenFiles": true,
+    "explorer.file.tabCD": false,
+    "explorer.keyMappings.global": {
+      "<cr>": ["expandable?", "expand", "open"]
+    },
+    "yaml.schemas": {
+      "kubernetes": "/*.yaml"
+    },
+    "explorer.icon.enableNerdfont": true,
+    "list.source.grep.command": "rg",
+    "list.source.files.args": ["--hidden", "--files"],
+    "list.interactiveDebounceTime": 300,
     "suggest.enablePreview": true,
     "tsserver.enable": true,
-    "json.format.enable":false,
     "lua.enable":true,
     "Lua.hint.enable": true,
     "Lua.completion.enable": true,
@@ -113,7 +139,8 @@
         "javascript",
         "javascriptreact",
         "typescript",
-        "typescriptreact"
+        "typescriptreact",
+        "json"
     ],
     "eslint.autoFixOnSave": true,
     "tsserver.formatOnType": true,

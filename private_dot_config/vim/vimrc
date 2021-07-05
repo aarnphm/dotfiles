@@ -2,9 +2,6 @@ set nocompatible
 
 filetype plugin indent on
 
-set background=dark
-colorscheme afterglow
-
 " use vim-plug because of its minimalistic
 "¯\_(ツ)_/¯
 let g:is_nvim=has('nvim')
@@ -37,6 +34,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
 
 " vscode like language server
+Plug 'tomasiser/vim-code-dark'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
@@ -81,6 +79,8 @@ let g:ssh = $SSH_CONNECTION
 let g:netrw_liststyle=3
 
 " Minimal
+colorscheme afterglow
+set background=dark
 set number
 set relativenumber
 
@@ -216,7 +216,6 @@ au! FileType zsh setlocal ts=2 sts=2 sw=2 expandtab
 au FileType md setlocal conceallevel=0
 au FileType vim setlocal foldmethod=marker
 au FileType java setlocal foldmethod=syntax
-au BufRead *.twig set syntax=html filetype=html
 
 " setup autofold
 autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v:val)'))

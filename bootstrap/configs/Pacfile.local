@@ -356,6 +356,7 @@ sed
 sg3_utils
 shadow
 shellcheck
+skopeo
 sl
 smartmontools
 socat
