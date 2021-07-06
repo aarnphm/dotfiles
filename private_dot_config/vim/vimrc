@@ -20,7 +20,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-apathy'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 
 " fzf with rg
@@ -37,28 +36,10 @@ Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
 Plug 'tomasiser/vim-code-dark'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-Plug 'Rykka/InstantRst'
-Plug 'jupyter-vim/jupyter-vim'
 
 " language packs
 Plug 'sheerun/vim-polyglot'
 Plug 'wakatime/vim-wakatime'
-" language syntax
-Plug 'lervag/vimtex', {'for':'tex'}
-Plug 'mrk21/yaml-vim', {'for': 'yaml'}
-Plug 'jparise/vim-graphql', {'for': 'graphql'}
-Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
-Plug 'plasticboy/vim-markdown', {'for': 'md'}
-Plug 'ekalinin/Dockerfile.vim', {'for': 'Dockerfile'}
-Plug 'vim-python/python-syntax', {'for': 'python'}
-Plug 'lifepillar/pgsql.vim', {'for': 'sql'}
-Plug 'pangloss/vim-javascript', {'for': 'js'}
-Plug 'maxmellon/vim-jsx-pretty', {'for': 'jsx'}
-Plug 'peitalin/vim-jsx-typescript', {'for': 'typescript'}
-Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
-Plug 'andrewstuart/vim-kubernetes'
-Plug 'styled-components/vim-styled-components'
 
 " UI related
 Plug 'preservim/tagbar', {'on':'TagbarToggle'}
@@ -69,12 +50,8 @@ Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 let mapleader=','
-let g:is_unix=has('unix')
-let g:has_job=has('job')
 let g:is_gui=has('gui_running')
-let g:has_term = has('terminal')
 let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
-let g:ssh = $SSH_CONNECTION
 " tree style file explorer
 let g:netrw_liststyle=3
 
@@ -123,13 +100,9 @@ set nowrap
 set showmode
 set hidden
 set clipboard=unnamed
-if g:ssh
-    set mouse=i
-else
-    set mouse=a
-endif
+set mouse=a
 set conceallevel=0
-set foldmethod=manual "indent-syntax-manual
+set foldmethod=indent "indent-syntax-manual
 set wildmode=longest:full,full
 set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
 set wildchar=<Tab>
@@ -203,27 +176,6 @@ endif
 " Filetype
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let python_highlight_all = 1
-
-autocmd FileType python setlocal foldmethod=indent
-au FileType python syn keyword pythonDecorator True None False self
-
-au BufNewFile,BufRead *.jinja set syntax=htmljinja
-au BufNewFile,BufRead *.mako set ft=mako
-
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
-au! FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-au! FileType zsh setlocal ts=2 sts=2 sw=2 expandtab
-au FileType md setlocal conceallevel=0
-au FileType vim setlocal foldmethod=marker
-au FileType java setlocal foldmethod=syntax
-
-" setup autofold
-autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v:val)'))
-
-" C/C++ specific settings
-autocmd FileType c,cpp,cc  set cindent comments=sr:/*,mb:*,el:*/,:// cino=>s,e0,n0,f0,{0,}0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30
-
-" autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path %
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mapping
@@ -412,7 +364,7 @@ if has('unix')
     if has('mac')
         let g:vimtex_view_method = "skim"
         let g:vimtex_view_general_viewer
-                \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+                    \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
         let g:vimtex_view_general_options = '-r @line @pdf @tex'
 
         " This adds a callback hook that updates Skim after compilation
@@ -424,14 +376,14 @@ if has('unix')
             let l:tex = expand('%:p')
             let l:cmd = [g:vimtex_view_general_viewer, '-r']
             if !empty(system('pgrep Skim'))
-            call extend(l:cmd, ['-g'])
+                call extend(l:cmd, ['-g'])
             endif
             if has('nvim')
-            call jobstart(l:cmd + [line('.'), l:out, l:tex])
+                call jobstart(l:cmd + [line('.'), l:out, l:tex])
             elseif has('job')
-            call job_start(l:cmd + [line('.'), l:out, l:tex])
+                call job_start(l:cmd + [line('.'), l:out, l:tex])
             else
-            call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+                call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
             endif
         endfunction
     else
@@ -484,7 +436,6 @@ nnoremap <Leader>sp :Obsession<CR>
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
-let g:instant_rst_port=5686
 
 " vim-go
 let g:go_fmt_command = "goimports"
@@ -551,7 +502,22 @@ nnoremap <F9> :Maps <CR>
 " coc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:coc_global_extensions = ['coc-texlab', 'coc-lua', 'coc-prettier', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
+" format python buffer on save
+function FormatPy()
+	:let clipboard_save = &clipboard
+	:let g:winview = winsaveview()
+	:noa w
+	:call CocAction('runCommand', 'editor.action.organizeImport')
+	exe 'sleep 1'
+	:noa w
+	:call CocAction('format')
+	:silent! %s#\($\n\s*\)\+\%$##  " remove tail new line
+	:let &clipboard = clipboard_save
+endfunction
+" autocmd BufWritePre *.py exec FormatPy()
+" autocmd BufWritePost *.py :call winrestview(g:winview)
+
+let g:coc_global_extensions = ['coc-texlab', 'coc-lua', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
     let g:coc_global_extensions += ['coc-prettier']
 endif

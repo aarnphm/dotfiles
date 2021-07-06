@@ -291,7 +291,7 @@ client.connect_signal("request::default_keybindings", function()
                 ),
             awful.key({ctrl, altkey}, "t",
                 function()
-                    awful.spawn("alacritty -e tmux")
+                    awful.spawn("kitty -e tmux")
                 end,
                 {description = "open tmux", group = "launcher"}
                 ),
