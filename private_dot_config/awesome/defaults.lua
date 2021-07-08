@@ -21,7 +21,7 @@ local defaults = {
     editor       = "nvim",
     fileviewer   = "firefox --new-window file:///home/aarnphm",
     filebrowser  = "termite -e nnn",
-    browser      = os.getenv("BROWSER") or "firefox",
+    browser      = os.getenv("BROWSER") or "brave",
     spotify      = "spotify-tray",
     launcher     = "rofi -modi drun -i -p -show drun -show-icons",
     -- lock options uses xss-lock and xsecurelock

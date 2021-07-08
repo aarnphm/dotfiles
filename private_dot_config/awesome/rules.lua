@@ -74,7 +74,7 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "browser",
-        rule_any = {class = {"Chromium", "Firefox"}},
+        rule_any = {class = {"Chromium", "Firefox", "Brave"}},
         properties = {screen = awful.screen.focused(), tag = defaults.tags[1].names[2], switchtotag = true}
     }
 

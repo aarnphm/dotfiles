@@ -102,7 +102,7 @@ set hidden
 set clipboard=unnamed
 set mouse=a
 set conceallevel=0
-set foldmethod=indent "indent-syntax-manual
+set foldmethod=syntax "indent-syntax-manual
 set wildmode=longest:full,full
 set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
 set wildchar=<Tab>
