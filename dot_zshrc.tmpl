@@ -104,6 +104,10 @@ alias dm="$EDITOR $(dirname "$(git config --global --get include.path)")/dot-com
 alias dslr="sudo modprobe v4l2loopback && gphoto2 --stdout --capture-movie | ffmpeg -hwaccel nvdec -c:v mjpeg_cuvid -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video4"
 alias cdslr="sudo modprobe v4l2loopback && gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video4"
 
+pyclean () {
+    find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
+}
+
 if (( $+commands[protonvpn] )); then
     alias vpnconnect="sudo protonvpn connect --cc CA"
     alias vpndisconnect="sudo protonvpn disconnect"
