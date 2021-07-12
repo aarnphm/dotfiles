@@ -16,6 +16,7 @@ appstream
 arandr
 arc-gtk-theme
 arch-install-scripts
+arch4edu-keyring
 asciinema
 autoconf
 automake
@@ -39,6 +40,7 @@ brave
 btrfs-progs
 bzip2
 ccls
+cef-minimal
 chezmoi
 chromium
 clonezilla
@@ -264,6 +266,7 @@ nano
 nbd
 ncdu
 ncmpcpp
+ncurses5-compat-libs
 ndisc6
 neofetch
 neovim
@@ -287,6 +290,8 @@ ntfs-3g
 ntp
 numlockx
 nuspell
+nvidia-container-runtime
+nvidia-container-toolkit
 nvidia-dkms
 nvidia-prime
 nvidia-utils
@@ -327,6 +332,7 @@ psmisc
 pulseaudio-bluetooth
 pulseaudio-ctl
 pulseaudio-zeroconf
+python-pip
 python-pre-commit
 python-pyparted
 python-pywal
@@ -531,6 +537,7 @@ zathura-pdf-mupdf
 zathura-ps
 zenity
 zensu
+zotero
 zsh
 zsh-completions
 zsh-syntax-highlighting

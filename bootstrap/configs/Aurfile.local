@@ -3,12 +3,10 @@ awesome-git
 awmtt
 bitwarden-cli
 cacheclean
-cef-minimal
 cuda-11.1
 dive
 dmenu2
 dxvk-bin
-fabric-server
 ffmpeg-compat-57
 figma-linux
 figma-linux-font-helper
@@ -22,15 +20,13 @@ light-git
 lightdm-mini-greeter
 mongodb-bin
 mongodb-tools-bin
-ncurses5-compat-libs
 nnn-nerd
-nvidia-container-runtime
-nvidia-container-toolkit
 nvidia-docker
 obs-studio-git
 optimus-manager-qt
 python-qtconsole-git
 rainbow
+ros-melodic-ros-base
 shell-color-scripts
 slack-desktop
 spotify-tray-git
@@ -43,4 +39,3 @@ winetricks-git
 xss-lock-git
 yay-git
 zoom
-zotero

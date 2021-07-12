@@ -38,5 +38,5 @@ run jetbrains-toolbox
 run pasystray
 run blueman-applet
 run optimus-manager-qt
-run spotify
+run spotify-tray
 # vim: set ft=sh ts=2 sw=2 tw=0 et :

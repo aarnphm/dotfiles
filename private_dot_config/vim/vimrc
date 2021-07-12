@@ -30,7 +30,7 @@ Plug 'lambdalisue/suda.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'thaerkh/vim-indentguides'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 
 " vscode like language server
 Plug 'tomasiser/vim-code-dark'
@@ -102,7 +102,7 @@ set hidden
 set clipboard=unnamed
 set mouse=a
 set conceallevel=0
-set foldmethod=syntax "indent-syntax-manual
+set foldmethod=indent "indent-syntax-manual
 set wildmode=longest:full,full
 set wildignore+=*.pyc,*.o,*.obj,*.swp,*.class,*.DS_Store,*.min.*
 set wildchar=<Tab>
