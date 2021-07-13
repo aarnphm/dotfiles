@@ -8,4 +8,6 @@ if ! builtin command -v compinit > /dev/null 2>&1; then
   fi
 fi
 
-source /opt/ros/melodic/setup.zsh
+if [[ -d /opt/ros/melodic ]]; then
+    source /opt/ros/melodic/setup.zsh
+fi
