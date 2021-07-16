@@ -190,7 +190,11 @@ alias ip6="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com"
 alias dlisten="ss -lntu | grep $@"
 alias freeport="sudo fuser -k $@"
 alias copy="xclip -sel clip"
+{{ if eq .chezmoi.os "darwin" }}
+alias bwpass="[[ -f $HOME/bw.pass ]] && cat $HOME/bw.pass | sed -n 1p | pbcopy"
+{{ else }}
 alias bwpass="[[ -f $HOME/bw.pass ]] && cat $HOME/bw.pass | sed -n 1p | xclip -sel clip"
+{{ end }}
 
 # some curl ass shit
 alias cryptoprice="curl rate.sx"
