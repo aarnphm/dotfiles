@@ -116,20 +116,14 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "meeting",
-        rule_any = {class={"Whatsapp-for-linux"}, instance = {"slack", "teams", "skype","caprine"}},
+        rule_any = {class={"Whatsapp-for-linux"}, instance = {"teams", "zoom", "skype","caprine"}},
         properties = {screen = get_screen(2), tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule {
         id = "discord",
-        rule_any = {instance = {"discord"}},
+        rule_any = {instance = {"discord", "slack"}},
         properties = {screen = get_screen(3), tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
-    }
-
-    ruled.client.append_rule {
-        id = "zooms",
-        rule_any = {class={"Zoom", "Microsoft Teams - Preview"}},
-        properties = {screen = get_screen(3), floating=true, tags = defaults.tags[1].names[3], switchtotag=true}
     }
 
     ruled.client.append_rule{
