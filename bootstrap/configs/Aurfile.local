@@ -2,6 +2,7 @@ autofs
 awesome-git
 awmtt
 bitwarden-cli
+brave
 cacheclean
 cuda-11.1
 dive
@@ -25,14 +26,19 @@ nnn-nerd
 nvidia-docker
 obs-studio-git
 optimus-manager-qt
+paru
 python-qtconsole-git
 rainbow
+ros-melodic-move-base
 ros-melodic-ros-base
+ros-melodic-stereo-image-proc
 shell-color-scripts
 slack-desktop
 spotify-tray-git
 tealdeer-git
 teams-for-linux
+termite
+termite-terminfo
 ttf-mononoki
 vim-language-server
 vmware-workstation
