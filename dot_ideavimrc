@@ -7,6 +7,7 @@ set idearefactormode=keep
 set ideajoin
 
 set surround
+set commentary
 set NERDTree
 
 set hlsearch
@@ -44,6 +45,15 @@ noremap <space>y "*y
 noremap <space>Y "*Y
 noremap <space>p "*p
 noremap <space>P "*P
+
+nnoremap \\ :let @/=''<CR>:noh<CR>
+nnoremap <silent> <leader>p :%s///g<CR>
+nnoremap <silent> <leader>i gg=G<CR>
+nnoremap <leader># :g/\v^(#\|$)/d_<CR>
+nnoremap <leader>b :ls<CR>:buffer<space>
+nnoremap <leader>d :w !diff % -<CR>
+nnoremap <leader>l :set list! list?<CR>
+nnoremap <leader>t :%s/\s\+$//e<CR>
 
 sethandler <C-Tab> a:vim
 sethandler <C-S-Tab> a:vim

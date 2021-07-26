@@ -1,9 +1,11 @@
+arch4edu-keyring
 autofs
 awesome-git
 awmtt
 bitwarden-cli
 brave
 cacheclean
+cef-minimal
 cuda-11.1
 dive
 dmenu2
@@ -22,7 +24,10 @@ lightdm-mini-greeter
 minecraft-launcher
 mongodb-bin
 mongodb-tools-bin
+ncurses5-compat-libs
 nnn-nerd
+nvidia-container-runtime
+nvidia-container-toolkit
 nvidia-docker
 obs-studio-git
 optimus-manager-qt
@@ -46,3 +51,4 @@ winetricks-git
 xss-lock-git
 yay-git
 zoom
+zotero

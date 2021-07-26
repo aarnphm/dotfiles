@@ -16,7 +16,6 @@ appstream
 arandr
 arc-gtk-theme
 arch-install-scripts
-arch4edu-keyring
 asciinema
 autoconf
 automake
@@ -39,7 +38,6 @@ bluez-utils
 btrfs-progs
 bzip2
 ccls
-cef-minimal
 chezmoi
 chromium
 clonezilla
@@ -169,6 +167,7 @@ ipw2200-fw
 irssi
 iwd
 jdk-openjdk
+jdk8-openjdk
 jfsutils
 jq
 jre8-openjdk-headless
@@ -265,7 +264,6 @@ nano
 nbd
 ncdu
 ncmpcpp
-ncurses5-compat-libs
 ndisc6
 neofetch
 neovim
@@ -290,13 +288,12 @@ ntfs-3g
 ntp
 numlockx
 nuspell
-nvidia-container-runtime
-nvidia-container-toolkit
 nvidia-dkms
 nvidia-prime
 nvidia-utils
 nvme-cli
 open-iscsi
+openjdk8-src
 openresolv
 openssh
 optimus-manager
@@ -535,7 +532,6 @@ zathura-pdf-mupdf
 zathura-ps
 zenity
 zensu
-zotero
 zsh
 zsh-completions
 zsh-syntax-highlighting

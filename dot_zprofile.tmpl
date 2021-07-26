@@ -74,6 +74,8 @@ export GOPATH="{{ .chezmoi.homeDir }}/go"
 export GOPROXY="https://proxy.golang.org/,direct"
 {{- if eq .chezmoi.os "darwin" }}
 export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home:$JAVA_HOME"
+{{- else }}
+export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 {{- end }}
 
 # wine prefix
