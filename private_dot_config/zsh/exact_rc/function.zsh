@@ -71,6 +71,8 @@ function ssh() {
 function which () {
     if [[ -f /etc/arch-release ]]; then
         (alias; declare -f) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot $@
+    else
+        /usr/bin/which $@
     fi
 }
 
