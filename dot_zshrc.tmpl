@@ -213,53 +213,47 @@ if [ -f /etc/arch-release ] ;then
     # urxvt
     alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
     # install
-    alias pacupdate="sudo pacman -Sy"
-    alias pacupgrade="sudo pacman -Syu"
-    alias pacupgradef="sudo pacman -Syyu"
-    alias pacinstall="sudo pacman -S"
-    alias pacremove="sudo pacman -Rs"
+    alias pac-update="sudo pacman -Sy"
+    alias pac-upgrade="sudo pacman -Syu"
+    alias pac-upgradef="sudo pacman -Syyu"
+    alias pac-install="sudo pacman -S"
+    alias pac-remove="sudo pacman -Rs"
     # search remote package
-    alias pacsearch="pacman -Ss"
-    alias packinfo="pacman -Si"
+    alias pac-search="pacman -Ss"
+    alias pac-kinfo="pacman -Si"
     # search local package
-    alias pacinstalled="pacman -Qs"
-    alias pacinstalledinfo="pacman -Qi"
-    alias pacinstalledfiles="pacman -Ql"
+    alias pac-installed="pacman -Qs"
+    alias pac-installedinfo="pacman -Qi"
+    alias pac-installedfiles="pacman -Ql"
     # import: sudo pacman -S pkglist.txt
-    alias pacexport="pacman -Qqen"
-    alias pacunused="pacman -Qtdq"
-    alias pacsearchfrompath="pacman -Qqo"
-    alias pacsearchbyfilename="pkgfile"
+    alias pac-export="pacman -Qqen"
+    alias pac-unused="pacman -Qtdq"
+    alias pac-search-from-path="pacman -Qqo"
+    alias pac-search-by-filename="pkgfile"
     # search package from filename
-    alias pacincludedfiles="pacman -Fl"
+    alias pac-included-files="pacman -Fl"
     # log
-    alias paclog="cat /var/log/pacman.log | \grep "installed\|removed\|upgraded""
-    alias aurpack="pacman -Qm"
+    alias pac-log="cat /var/log/pacman.log | \grep "installed\|removed\|upgraded""
+    alias aur-pack="pacman -Qm"
     # etc
-    alias pacclean="sudo pacman -Sc"
-    # aur
-    if builtin command -v yay > /dev/null 2>&1; then
-        alias ylist="yay -Qm"
-        alias yclean="yay -Sc"
-        alias yupdate="yay -Syuu --noconfirm"
-    fi
+    alias pac-clean="sudo pacman -Sc"
 fi
 
 # systemctl related
 if (( $+commands[systemctl] )); then
-    alias sysrestart="sudo systemctl restart"
-    alias sysstart="sudo systemctl start"
-    alias sysstop="sudo systemctl stop"
-    alias sysenable="sudo systemctl enable"
-    alias sysdisable="sudo systemctl disable"
-    alias sysreload="sudo systemctl reload"
-    alias sysstatus="systemctl status"
-    alias sysshow="systemctl show"
-    alias syslu="systemctl list-units"
-    alias sysluf="systemctl list-unit-files"
-    alias syslt="systemctl list-timers"
-    alias syscat="systemctl cat"
-    alias sysie="systemctl is-enabled"
+    alias sys-restart="sudo systemctl restart"
+    alias sys-start="sudo systemctl start"
+    alias sys-stop="sudo systemctl stop"
+    alias sys-enable="sudo systemctl enable"
+    alias sys-disable="sudo systemctl disable"
+    alias sys-reload="sudo systemctl reload"
+    alias sys-status="systemctl status"
+    alias sys-show="systemctl show"
+    alias sys-list-units="systemctl list-units"
+    alias sys-list-unit-files="systemctl list-unit-files"
+    alias sys-list-timers="systemctl list-timers"
+    alias sys-cat="systemctl cat"
+    alias sys-is-enabled="systemctl is-enabled"
 fi
 
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
@@ -429,21 +423,11 @@ bindkey "^[p" history-beginning-search-backward
 bindkey "^[n" history-beginning-search-forward
 bindkey '^R' history-incremental-pattern-search-backward
 bindkey '^S' history-incremental-pattern-search-forward
-autoload -Uz smart-insert-last-word
-zstyle :insert-last-word match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
-zle -N insert-last-word smart-insert-last-word
-function _insert-last-word() { smart-insert-last-word; ARG=-2 }
-zle -N _insert-last-word
-bindkey '^]' _insert-last-word
-function insert-next-word() { zle insert-last-word -- 1 -1; ARG=-2 }
-zle -N insert-next-word
-bindkey '^_' insert-next-word
-function zle-line-finish() { ARG=-2 }
-zle -N zle-line-finish
-function insert-prev-arg() { zle insert-last-word -- 0 ${ARG:-2}; ARG=$(($ARG-1)) }
-zle -N insert-prev-arg
-bindkey '^^' insert-prev-arg
-bindkey '\e#' pound-insert
+
+## edit ##
+bindkey '^[u' undo
+bindkey '^[r' redo
+bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 
 ## completion ##
 # shift-tab
@@ -451,16 +435,12 @@ zmodload zsh/complist
 bindkey '^[[Z' reverse-menu-complete
 bindkey -M menuselect '^[[Z' reverse-menu-complete
 
-## edit ##
-bindkey '^[u' undo
-bindkey '^[r' redo
 
 # edit command-line using editor (like fc command)
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
-bindkey -s "^T" "^[Isudo ^[A" # "t" for "toughguy"
 
 ## etc ##
 bindkey '^X*' expand-word

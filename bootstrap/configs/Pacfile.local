@@ -7,7 +7,6 @@ adobe-source-han-sans-kr-fonts
 adobe-source-han-sans-otc-fonts
 adobe-source-han-serif-otc-fonts
 adobe-source-sans-fonts
-alacritty
 alsa-firmware
 alsa-utils
 android-tools
@@ -30,7 +29,6 @@ biber
 bind
 binutils
 bison
-bitwarden
 bleachbit
 blender
 blueman
@@ -95,7 +93,6 @@ file
 file-roller
 filesystem
 findutils
-firefox
 flex
 fortune-mod
 freetype2
@@ -159,18 +156,14 @@ inotify-tools
 intel-ucode
 inxi
 iproute2
-ipscan
 iptables
 iputils
 ipw2100-fw
 ipw2200-fw
 irssi
 iwd
-jdk-openjdk
-jdk8-openjdk
 jfsutils
 jq
-jre8-openjdk-headless
 jsoncpp
 kitty
 kitty-terminfo
@@ -215,6 +208,7 @@ logrotate
 lsb-release
 lshw
 lsscsi
+lua-language-server
 luarocks
 lutris
 lvm2
@@ -293,7 +287,6 @@ nvidia-prime
 nvidia-utils
 nvme-cli
 open-iscsi
-openjdk8-src
 openresolv
 openssh
 optimus-manager

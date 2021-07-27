@@ -110,7 +110,6 @@ set shortmess+=Ic
 set pastetoggle=<F2>
 set expandtab
 set shiftwidth=4
-set expandtab
 set tabstop=4
 set softtabstop=4
 set nojoinspaces

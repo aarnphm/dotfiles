@@ -111,8 +111,8 @@ autopush_dots() {
   pprint "\nDumping installed packages to files..."
   {{- if stat "/etc/arch-release" }}
   # Check for new packages, and add it to both .local file
-  yay -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local
-  yay -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
+  paru -Qqen >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Pacfile.local
+  paru -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
   pprint "Done."
   {{- else if eq .chezmoi.os "darwin" }}
   brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile

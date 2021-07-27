@@ -115,9 +115,11 @@ path=(
     {{- if .personal }}
     {{ .chezmoi.homeDir }}/.cargo/bin(N-/)
     {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin(N-/)
+    /usr/lib/jvm/default/bin
     $PYENV_ROOT/shims
     $PYENV_ROOT/bin
     {{- if eq .chezmoi.os "darwin" }}
+    $JAVA_HOME/bin(N-/)
     /usr/local/bin(N-/)
     /usr/sbin(N-/)
     /sbin(N-/)
