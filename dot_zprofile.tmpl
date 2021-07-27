@@ -72,9 +72,9 @@ export NPM_PACKAGES="{{ .chezmoi.homeDir }}/.config/npm"
 # defined go path
 export GOPATH="{{ .chezmoi.homeDir }}/go"
 export GOPROXY="https://proxy.golang.org/,direct"
-# {{- if eq .chezmoi.os "darwin" }}
-# export JAVA_HOME="/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home:$JAVA_HOME"
-# {{- end }}
+{{- if eq .chezmoi.os "darwin" }}
+export JAVA_HOME="/usr/libexec/java_home"
+{{- end }}
 
 # wine prefix
 export WINEPREFIX="{{ .chezmoi.homeDir }}/.wine32"
