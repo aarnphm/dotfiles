@@ -96,11 +96,11 @@ ruled.client.connect_signal("request::rules", function()
         properties = {screen = get_screen(1), tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
-    ruled.client.append_rule {
-        id = "jetbrains",
-        rule_any = {class = {"jetbrains-pycharm", "jetbrains-goland", "jetbrains-intellij"}},
-        properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
-    }
+    -- ruled.client.append_rule {
+    --     id = "jetbrains",
+    --     rule_any = {class = {"jetbrains-pycharm", "jetbrains-goland", "jetbrains-intellij"}},
+    --     properties = {screen = 1, tag = defaults.tags[1].names[1], switchtotag = true}
+    -- }
 
     ruled.client.append_rule {
         id = "termite",
