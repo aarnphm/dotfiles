@@ -202,18 +202,6 @@ return packer.startup(
             cmd = "StartupTime"
         }
 
-        -- load autosave only if its globally enabled
-        use {
-            "Pocco81/AutoSave.nvim",
-            config = function()
-                require "plugins.autosave"
-            end,
-            cond = function()
-                return vim.g.auto_save == true
-            end
-        }
-
-
         use {
             "lukas-reineke/indent-blankline.nvim",
             event = "BufRead",
