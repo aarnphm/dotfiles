@@ -79,6 +79,13 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+        id = "sec",
+        rule_any = {class = {"satisfactory-mod-manager-gui", "steam_app_526870"}},
+        properties = {screen = awful.screen.focused(), floating=true, switchtotag = true}
+    }
+
+
+    ruled.client.append_rule {
         id = "terminal",
         rule_any = {class = {"St", "UXTerm", "XTerm"}},
         properties = {screen = get_screen(3), tag = defaults.tags[1].names[1], switchtotag = true}
