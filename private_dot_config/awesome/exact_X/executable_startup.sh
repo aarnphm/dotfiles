@@ -31,6 +31,7 @@ run picom -f --experimental-backends --glx-no-stencil
 
 # tray apps
 # run kitty tmux
+# run discord
 run nm-applet
 run pasystray
 run blueman-applet
@@ -38,6 +39,5 @@ run optimus-manager-qt
 run spotify-tray
 run slack
 run kdocker zotero
-run discord
 run jetbrains-toolbox
 # vim: set ft=sh ts=2 sw=2 tw=0 et :
