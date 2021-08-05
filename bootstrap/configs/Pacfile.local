@@ -15,6 +15,7 @@ appstream
 arandr
 arc-gtk-theme
 arch-install-scripts
+arch4edu-keyring
 asciinema
 autoconf
 automake
@@ -33,9 +34,11 @@ bleachbit
 blender
 blueman
 bluez-utils
+brave-browser
 btrfs-progs
 bzip2
 ccls
+cef-minimal
 chezmoi
 chromium
 clonezilla
@@ -257,6 +260,7 @@ nano
 nbd
 ncdu
 ncmpcpp
+ncurses5-compat-libs
 ndisc6
 neofetch
 neovim
@@ -281,6 +285,8 @@ ntfs-3g
 ntp
 numlockx
 nuspell
+nvidia-container-runtime
+nvidia-container-toolkit
 nvidia-dkms
 nvidia-prime
 nvidia-utils
@@ -422,6 +428,7 @@ vicious
 vim
 virt-manager
 virtualbox
+visual-studio-code-bin
 vlc
 volumeicon
 vulkan-intel
@@ -525,6 +532,7 @@ zathura-pdf-mupdf
 zathura-ps
 zenity
 zensu
+zotero
 zsh
 zsh-completions
 zsh-syntax-highlighting
