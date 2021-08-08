@@ -78,12 +78,6 @@ ruled.client.connect_signal("request::rules", function()
         properties = {screen = awful.screen.focused(), tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
-    ruled.client.append_rule {
-        id = "sec",
-        rule_any = {class = {"satisfactory-mod-manager-gui", "steam_app_526870"}},
-        properties = {screen = awful.screen.focused(), floating=true, switchtotag = true}
-    }
-
 
     ruled.client.append_rule {
         id = "terminal",
@@ -92,9 +86,15 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
+        id = "sec",
+        rule_any = {class = {"satisfactory-mod-manager-gui", "steam_app_526870"}},
+        properties = {screen = awful.screen.focused(), floating=true, switchtotag = true}
+    }
+
+    ruled.client.append_rule {
         id = "steam",
         rule_any = {class = {"Steam", "dota2"}},
-        properties = {screen = get_screen(2), tag = defaults.tags[1].names[3], switchtotag = true}
+        properties = {screen = get_screen(1), tag = defaults.tags[1].names[3], switchtotag = true}
     }
 
     ruled.client.append_rule {

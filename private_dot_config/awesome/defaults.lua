@@ -36,16 +36,16 @@ local defaults = {
     -- TODO: are there others way to do this without manual labour?
     tags = {
         {
-            names  = { "", " ", " ", " ", " " },
-            layout = {layouts[2], layouts[2], layouts[8], layouts[10], layouts[10]},
+            names  = { " ", " ", " ", " ", " " },
+            layout = {layouts[11], layouts[2], layouts[8], layouts[10], layouts[10]},
         },
         {
-            names  = { "", " ", " ", " ", " " },
-            layout = {layouts[2], layouts[2], layouts[8], layouts[10], layouts[10]},
+            names  = { " ", " ", " ", " ", " " },
+            layout = {layouts[11], layouts[2], layouts[8], layouts[10], layouts[10]},
         },
         {
-            names  = { "", " ", " ", " ", " " },
-            layout = {layouts[4],layouts[4],layouts[4], layouts[10], layouts[10]},
+            names  = { " ", " ", " ", " ", " " },
+            layout = {layouts[11], layouts[2], layouts[8], layouts[10], layouts[10]},
         },
     },
 }
