@@ -9,7 +9,10 @@ git config --global core.excludesFile ${XDG_CONFIG_HOME:-$HOME/.config}/git/giti
 # shellcheck disable=SC1009,SC1054,SC1073,SC1056,SC1072,SC1083
 {{- if .personal }}
 # bitwarden cli yarn and typescript
-if builtin command -v npm &>/dev/null; then
+if builtin command -v nvm &>/dev/null; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    nvm install 14.16.1
+    nvim alias default 14.16.1
     npm install -g yarn
 
     # install packages

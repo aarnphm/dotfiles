@@ -109,6 +109,7 @@ typeset -xT SUDO_PATH sudo_path
 path=(
     {{ .chezmoi.homeDir }}/.local/bin(N-/)
     $HOME/bin(N-/)
+    $HOME/.screenlayout(N-/)
     {{- if joinPath .chezmoi.homeDir ".poetry" }}
     {{ .chezmoi.homeDir }}/.poetry/bin(N-/)
     {{- end }}
