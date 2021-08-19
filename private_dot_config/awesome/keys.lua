@@ -261,12 +261,12 @@ client.connect_signal("request::default_keybindings", function()
                 end,
                 {description = "run programs", group = "launcher"}
                 ),
-            awful.key({modkey}, "z",
-                function()
-                    awful.screen.focused().quake:toggle()
-                end,
-                {description = "dropdown application", group = "launcher"}
-                ),
+            -- awful.key({modkey}, "z",
+            --     function()
+            --         awful.screen.focused().quake:toggle()
+            --     end,
+            --     {description = "dropdown application", group = "launcher"}
+            --     ),
             awful.key({modkey}, "e",
                 function()
                     awful.spawn.easy_async_with_shell('dmenu-edit-config', {

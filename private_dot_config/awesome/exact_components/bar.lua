@@ -228,16 +228,16 @@ local tasklist_buttons = gears.table.join(
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
-    s.quake = lain.util.quake(
-        {
-            app = "termite",
-            -- height = 0.43,
-            -- width = 0.43,
-            -- horiz = "center",
-            followtag = true,
-            argname = "--name %s"
-        }
-        )
+    -- s.quake = lain.util.quake(
+    --     {
+    --         app = "termite",
+    --         -- height = 0.43,
+    --         -- width = 0.43,
+    --         -- horiz = "center",
+    --         followtag = true,
+    --         argname = "--name %s"
+    --     }
+    --     )
     -- Create layoutbox widget
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(

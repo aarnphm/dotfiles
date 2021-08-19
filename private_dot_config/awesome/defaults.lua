@@ -20,7 +20,6 @@ local defaults = {
     terminal     = "kitty",
     editor       = "nvim",
     fileviewer   = "firefox --new-window file:///home/aarnphm",
-    filebrowser  = "termite -e nnn",
     browser      = os.getenv("BROWSER") or "brave",
     spotify      = "spotify-tray",
     launcher     = "rofi -modi drun -i -p -show drun -show-icons",
@@ -37,15 +36,15 @@ local defaults = {
     tags = {
         {
             names  = { " ", " ", " ", " ", " ", " ", " " },
-            layout = {layouts[11], layouts[2], layouts[2], layouts[2], layouts[8], layouts[10]},
+            layout = {layouts[11], layouts[10], layouts[2], layouts[2], layouts[8], layouts[10]},
         },
         {
             names  = { " ", " ", " ", " ", " ", " ", " " },
-            layout = {layouts[11], layouts[2], layouts[2], layouts[2], layouts[8], layouts[10]},
+            layout = {layouts[11], layouts[10], layouts[2], layouts[2], layouts[8], layouts[10]},
         },
         {
             names  = { " ", " ", " ", " ", " ", " ", " " },
-            layout = {layouts[11], layouts[2], layouts[2], layouts[2], layouts[8], layouts[10]},
+            layout = {layouts[11], layouts[10], layouts[2], layouts[2], layouts[8], layouts[10]},
         },
     },
 }
