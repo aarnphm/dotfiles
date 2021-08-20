@@ -30,8 +30,8 @@ run unclutter -idle 1
 run picom -f --experimental-backends --glx-no-stencil
 
 # tray apps
+# run discord
 run kitty tmux
-run discord
 run nm-applet
 run pasystray
 run blueman-applet
