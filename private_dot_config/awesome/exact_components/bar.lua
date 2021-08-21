@@ -33,70 +33,6 @@ local make_pill = function(w, c)
     return pill
 end
 
-
--- ===================================================================
---  Battery Bar Widget
--- ===================================================================
-
-local battery_text = wibox.widget {
-    font = beautiful.font,
-    align = "center",
-    valign = "center",
-    widget = wibox.widget.textbox
-}
-
-local battery_icon = wibox.widget {
-    font = beautiful.icon_font,
-    align = "center",
-    valign = "center",
-    widget = wibox.widget.textbox
-}
-
-local battery_pill = wibox.widget {
-    {
-        {battery_icon, top = dpi(1), widget = wibox.container.margin},
-        helpers.horizontal_pad(10),
-        {battery_text, top = dpi(1), widget = wibox.container.margin},
-        layout = wibox.layout.fixed.horizontal
-    },
-    left = dpi(10),
-    right = dpi(10),
-    widget = wibox.container.margin
-}
-
-awesome.connect_signal("daemon::battery", function(percentage, state)
-
-    local value = percentage
-
-    local bat_icon = ' '
-
-    if value >= 90 and value <= 100 then
-        bat_icon = ' '
-    elseif value >= 70 and value < 90 then
-        bat_icon = ' '
-    elseif value >= 60 and value < 70 then
-        bat_icon = ' '
-    elseif value >= 50 and value < 60 then
-        bat_icon = ' '
-    elseif value >= 30 and value < 50 then
-        bat_icon = ' '
-    elseif value >= 15 and value < 30 then
-        bat_icon = ' '
-    else
-        bat_icon = ' '
-    end
-
-     -- if charging
-    if state == 1 then bat_icon = "" end
-
-    -- if full
-    if state == 4 then bat_icon = "" end
-
-    battery_icon.markup = markup.fg.color(x.color12,bat_icon)
-    battery_text.markup = markup.fg.color(x.color12, string.format("%1d", value)..'%')
-
-end)
-
 -- ===================================================================
 -- Clock widget
 -- ===================================================================
@@ -334,7 +270,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     wrap_widget(awful.widget.only_on_screen(final_systray, screen[1])),
                     wrap_widget(make_pill(time_pill, x.color8 .. 00)),
                     wrap_widget(make_pill(date_pill, x.color8 .. 50)),
-                    wrap_widget(make_pill(battery_pill, x.color8 .. 73)),
                     wrap_widget(make_pill({
                             s.mylayoutbox,
                             top = dpi(7),

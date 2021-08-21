@@ -128,9 +128,15 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     ruled.client.append_rule {
-        id = "discord",
-        rule_any = {instance = {"discord", "slack"}},
+        id = "slack",
+        rule_any = {instance = {"slack"}},
         properties = {screen = get_screen(3), tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
+    }
+
+    ruled.client.append_rule {
+        id = "discord",
+        rule_any = {instance = {"discord"}},
+        properties = {screen = get_screen(3), tag = defaults.tags[1].names[6], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule{
