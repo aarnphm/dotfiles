@@ -30,10 +30,10 @@ session=${1:-{{ .wm }}}
 
 # No known session, try to run it as command
 case $session in
+    awesome           ) exec awesome;;
     i3|i3wm           ) exec i3;;
     kde               ) exec startplasma-x11;;
     xfce|xfce4        ) exec startxfce4;;
-    awesome           ) exec awesome;;
     xmonad            ) exec xmonad;;
     *                 ) exec $1;;
 esac

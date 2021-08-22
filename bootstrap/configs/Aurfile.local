@@ -1,6 +1,7 @@
 autofs
 awesome-git
 awmtt
+bbswitch-dkms-git
 bitwarden-cli
 cacheclean
 cuda-11.1
@@ -24,7 +25,7 @@ nnn-nerd
 notion-app-enhanced
 nvidia-docker
 obs-studio-git
-optimus-manager-qt
+optimus-manager-qt-git
 paru
 python-qtconsole-git
 rainbow
