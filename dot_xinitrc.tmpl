@@ -8,6 +8,7 @@
 {{- if eq .chezmoi.os "linux" }}
 # for some reason the cursor size doesnt change
 xrandr &&
+prime-offload &
 # xrandr --setprovideroutputsource NVIDIA-G0 Intel
 
 xset r rate 180 50

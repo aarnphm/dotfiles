@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-screen_setup="$HOME/.config/screenlayout"
+screen_setup="$HOME/.screenlayout"
 
 screens="$(xrandr -d :0 -q | grep -c ' connected')"
 
@@ -17,7 +17,7 @@ if [[ $num_screen == 3 ]]; then
 elif [[ $num_screen == 2 ]]; then
 	dp="$screen_setup/dual.sh"
 else
-	dp="$screen_setup/one.sh"
+	dp="$screen_setup/single.sh"
 fi
 
 echo "running "$dp

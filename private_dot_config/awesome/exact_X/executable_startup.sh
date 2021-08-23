@@ -23,7 +23,7 @@ fi
 
 # background daemon
 # run playerctld daemon
-# run ibus-daemon -drx
+run ibus-daemon -drx
 run redshift -v
 run nitrogen --restore
 run unclutter -idle 1
