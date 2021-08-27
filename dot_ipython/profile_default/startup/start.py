@@ -20,6 +20,7 @@ import transformers
 import jax
 import jax.numpy as jnp
 import flax
+import flax.linen as linen
 
 import seaborn as sns
 
