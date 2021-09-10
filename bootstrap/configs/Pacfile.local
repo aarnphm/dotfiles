@@ -163,6 +163,7 @@ iputils
 ipw2100-fw
 ipw2200-fw
 irssi
+iverilog
 iwd
 jfsutils
 jq
@@ -276,7 +277,6 @@ nginx
 nilfs-utils
 ninja
 nitrogen
-nodejs
 noto-fonts
 noto-fonts-emoji
 nss-mdns
