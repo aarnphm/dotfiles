@@ -102,6 +102,7 @@ alias vig="e $XDG_CONFIG_HOME/git/gitignore"
 alias dm="$EDITOR $(dirname "$(git config --global --get include.path)")/dot-commit-msg"
 alias dslr="sudo modprobe v4l2loopback && gphoto2 --stdout --capture-movie | ffmpeg -hwaccel nvdec -c:v mjpeg_cuvid -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video4"
 alias cdslr="sudo modprobe v4l2loopback && gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video4"
+alias 2xc3="ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c 3des-cbc phama10@moore.mcmaster.ca"
 
 pyclean () {
     find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
