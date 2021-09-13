@@ -49,8 +49,8 @@ client.connect_signal("manage", function(c)
         c.icon = new_icon._native
     end
     -- Give slack icon
-    if c.class == "Slack" then
-        local new_icon = "/usr/share/icons/Papirus/32x32/apps/slack.svg"
+    if c.class == "slack" then
+        local new_icon = gears.surface(gfs.get_configuration_dir() .. "decorations/icons/slack.png")
         c.icon = new_icon._native
     end
 end)
