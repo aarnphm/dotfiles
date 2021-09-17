@@ -19,6 +19,7 @@ arch4edu-keyring
 asciinema
 autoconf
 automake
+autorandr
 avahi
 awesome-terminal-fonts
 b43-fwcutter
@@ -38,7 +39,6 @@ brave-browser
 btrfs-progs
 bzip2
 ccls
-cef-minimal
 chezmoi
 chromium
 clonezilla
@@ -95,6 +95,7 @@ file
 file-roller
 filesystem
 findutils
+firefox
 flex
 fortune-mod
 freetype2
@@ -149,7 +150,6 @@ haveged
 hspell
 htop
 hunspell
-hw-probe
 i3-gaps
 i3status
 ibus-unikey
@@ -428,7 +428,6 @@ vicious
 vim
 virt-manager
 virtualbox
-visual-studio-code-bin
 vlc
 volumeicon
 vulkan-intel

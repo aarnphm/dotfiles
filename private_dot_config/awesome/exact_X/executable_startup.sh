@@ -36,7 +36,7 @@ run nm-applet
 run pasystray
 run blueman-applet
 run optimus-manager-qt
-run spotify-tray
+run spotify
 run slack
 run kdocker zotero
 run jetbrains-toolbox

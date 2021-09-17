@@ -13,6 +13,7 @@ figma-linux-font-helper
 fix-bt-a2dp
 gyazo
 heroku-cli-bin
+hw-probe
 ibus-bamboo
 jdk
 jre
@@ -25,7 +26,6 @@ nbfc
 nnn-nerd
 notion-app-enhanced
 nvidia-docker
-obs-studio-git
 optimus-manager-qt-git
 paru
 python-qtconsole-git
@@ -38,6 +38,7 @@ ros-melodic-ros-control
 ros-melodic-ros-controllers
 shell-color-scripts
 slack-desktop
+spotify-snap
 spotify-tray-git
 tealdeer-git
 teams
