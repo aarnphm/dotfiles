@@ -1,3 +1,4 @@
+apache-spark
 autofs
 awesome-git
 awmtt
@@ -15,8 +16,9 @@ gyazo
 heroku-cli-bin
 hw-probe
 ibus-bamboo
-jdk
-jre
+insomnia
+jdk8
+jre8
 kdocker
 light-git
 lightdm-mini-greeter

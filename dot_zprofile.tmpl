@@ -74,7 +74,10 @@ export GOPATH="{{ .chezmoi.homeDir }}/go"
 export GOPROXY="https://proxy.golang.org/,direct"
 {{- if eq .chezmoi.os "darwin" }}
 export JAVA_HOME="/usr/libexec/java_home"
+{{- else }}
+export JAVA_HOME="/usr/lib/jvm/default"
 {{- end }}
+export SPARK_HOME="/opt/apache-spark"
 
 # wine prefix
 export WINEPREFIX="{{ .chezmoi.homeDir }}/.wine32"
@@ -118,14 +121,17 @@ path=(
     {{- if joinPath .chezmoi.homeDir ".poetry" }}
     {{ .chezmoi.homeDir }}/.poetry/bin(N-/)
     {{- end }}
+    {{- if joinPath "/opt/apache-spark" }}
+    $SPARK_HOME/bin(N-/)
+    {{- end }}
     {{- if .personal }}
     {{ .chezmoi.homeDir }}/.cargo/bin(N-/)
     {{ .chezmoi.homeDir }}/.rustup/toolchains/*/bin(N-/)
     /usr/lib/jvm/default/bin
     $PYENV_ROOT/shims
     $PYENV_ROOT/bin
-    {{- if eq .chezmoi.os "darwin" }}
     $JAVA_HOME/bin(N-/)
+    {{- if eq .chezmoi.os "darwin" }}
     /usr/local/bin(N-/)
     /usr/sbin(N-/)
     /sbin(N-/)
