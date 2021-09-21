@@ -82,7 +82,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "terminal",
         rule_any = {class = {"St", "UXTerm", "XTerm"}},
-        properties = {screen = get_screen(3), tag = defaults.tags[1].names[1], switchtotag = true}
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[1], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -94,7 +94,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "steam",
         rule_any = {class = {"Steam", "dota2"}},
-        properties = {screen = get_screen(1), tag = defaults.tags[1].names[3], switchtotag = true}
+        properties = {screen = get_screen(1), tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -118,7 +118,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "vmware",
         rule = {class = "vmware"},
-        properties = {screen = get_screen(3), tag=defaults.tags[1].names[2], switchtotag = true}
+        properties = {screen = get_screen(2), tag=defaults.tags[1].names[2], switchtotag = true}
     }
 
     ruled.client.append_rule {
@@ -130,13 +130,13 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "slack",
         rule_any = {instance = {"slack"}},
-        properties = {screen = get_screen(3), tag = defaults.tags[1].names[6], switchtotag = true, maximized=true}
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[6], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule {
         id = "discord",
         rule_any = {instance = {"discord"}},
-        properties = {screen = get_screen(3), tag = defaults.tags[1].names[7], switchtotag = true, maximized=true}
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[6], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule{
