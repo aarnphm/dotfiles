@@ -116,6 +116,9 @@ path=(
     $HOME/bin(N-/)
     $HOME/.yarn/bin(N-/)
     $HOME/intelFPGA/17.1/quartus/bin(N-/)
+    {{- if joinPath .chezmoi.homeDir "/documents/schools/mcmaster" }}
+    $HOME/documents/schools/mcmaster/anyconnect-linux64-4.9.04043/vpn(N-/)
+    {{- end }}
     $CS_PATH/onnx-mlir/build/Debug/bin(N-/)
     $CS_PATH/onnx-mlir/build/Debug/lib(N-/)
     $HOME/.screenlayout(N-/)
