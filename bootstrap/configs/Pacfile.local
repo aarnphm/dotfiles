@@ -293,6 +293,7 @@ nvidia-dkms
 nvidia-prime
 nvidia-utils
 nvme-cli
+obs-studio
 open-iscsi
 openresolv
 openssh
