@@ -20,6 +20,7 @@ insomnia
 jdk8
 jre8
 kdocker
+lib32-ncurses5-compat-libs
 light-git
 lightdm-mini-greeter
 mongodb-bin
