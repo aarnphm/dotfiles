@@ -309,9 +309,9 @@ client.connect_signal("request::default_keybindings", function()
                 ),
             awful.key({modkey, shift}, "b",
                 function()
-                    awful.spawn("chromium")
+                    awful.spawn("brave")
                 end,
-                {description = "open chromium", group = "launcher"}
+                {description = "open brave", group = "launcher"}
                 ),
             awful.key({modkey}, "b",
                 function()

@@ -28,16 +28,16 @@ run redshift -v
 run nitrogen --restore
 run unclutter -idle 1
 run picom -f --experimental-backends --glx-no-stencil
-
-# tray apps
-# run discord
-run kitty tmux
 run nm-applet
 run pasystray
-run blueman-applet
 run optimus-manager-qt
 run spotify-tray
+
+# tray apps
+# run jetbrains-toolbox
+run discord
+run kitty tmux
+run blueman-applet
 run slack
 run kdocker zotero
-run jetbrains-toolbox
 # vim: set ft=sh ts=2 sw=2 tw=0 et :

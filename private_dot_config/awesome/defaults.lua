@@ -20,7 +20,7 @@ local defaults = {
     terminal     = "kitty",
     editor       = "nvim",
     fileviewer   = "firefox --new-window file:///home/aarnphm",
-    browser      = os.getenv("BROWSER") or "brave",
+    browser      = os.getenv("BROWSER") or "chromium", -- or brave or firefox
     spotify      = "spotify-tray",
     launcher     = "rofi -modi drun -i -p -show drun -show-icons",
     -- lock options uses xss-lock and xsecurelock

@@ -67,6 +67,7 @@ dhcpcd
 dialog
 diffutils
 discord
+djview
 dmidecode
 dmraid
 dnsmasq
