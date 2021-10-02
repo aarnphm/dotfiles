@@ -11,6 +11,9 @@ Host *
 {{- if stat (joinPath .chezmoi.homeDir ".ssh/id_ed25519" )}}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_ed25519
 {{- end }}
+{{- if stat (joinPath .chezmoi.homeDir ".ssh/ssh_rsa" )}}
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/ssh_rsa
+{{- end }}
 {{ if eq .hostname "APPL-AIR12" }}
 Host GGBBYAERO15W8
     HostName 116.111.11.93
