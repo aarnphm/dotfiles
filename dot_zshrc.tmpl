@@ -281,10 +281,12 @@ done
 if [[ $SYSTEM == "Darwin" ]]; then
     alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 elif [[ -f /etc/arch-release ]]; then
-    if xset q | grep "DPMS is Enabled" &>/dev/null; then
-        alias afk="xset s activate"
-    else
-        alias afk="xsecurelock"
+    if [[ "$DISPLAY" ]]; then
+        if xset q | grep "DPMS is Enabled" &>/dev/null; then
+            alias afk="xset s activate"
+        else
+            alias afk="xsecurelock"
+        fi
     fi
 fi
 

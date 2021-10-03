@@ -327,7 +327,6 @@ postgresql
 powertop
 procps-ng
 psmisc
-pulseaudio-bluetooth
 pulseaudio-ctl
 pulseaudio-zeroconf
 python-pip

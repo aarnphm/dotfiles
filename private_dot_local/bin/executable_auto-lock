@@ -13,9 +13,11 @@ configure() {
     xset dpms $((timeout * 2)) $((timeout * 22 / 10)) $((timeout * 24 / 10))
 }
 
-echo "xss-lock: Running xss-lock daemon..." >&2
-configure
-export XSECURELOCK_SAVER=saver_blank
-playerctl -a pause
-exec xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock
+if [[ "$DISPLAY" ]]; then
+    echo "xss-lock: Running xss-lock daemon..." >&2
+    configure
+    export XSECURELOCK_SAVER=saver_blank
+    playerctl -a pause
+    exec xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock
+fi
 #vim: set ft=sh ts=4 sw=4 tw=0 et :
