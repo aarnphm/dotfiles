@@ -29,6 +29,7 @@ baobab
 base
 bash-completion
 bat
+bazel
 biber
 bind
 binutils
