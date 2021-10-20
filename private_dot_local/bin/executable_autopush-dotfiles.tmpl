@@ -133,7 +133,7 @@ autopush_dots() {
 
   # execute scripts
   pprint "\nPushing to remote directory..."
-  git add -f -v . && git commit -am "$COMMITMSG" && git push --all
+  git add -f -v . && git commit -S -sam "$COMMITMSG" && git push --all
 }
 
 autopush_dots "$@"
