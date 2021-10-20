@@ -1,7 +1,7 @@
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-     "python.formatting.provider": "black",
+    "python.formatting.provider": "black",
     "python.formatting.blackPath": "black",
     "python.formatting.blackArgs": ["--skip-string-normalization"],
     "coc.preferences.hoverTarget": "echo",
@@ -15,6 +15,8 @@
       "-l88",
       "--ensure-newline-before-comments"
     ],
+    "pyright.enable": true,
+
     "json.format.enable": true,
     "explorer.file.showHiddenFiles": true,
     "explorer.file.tabCD": false,

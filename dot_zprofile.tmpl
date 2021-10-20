@@ -78,6 +78,7 @@ export JAVA_HOME="/usr/libexec/java_home"
 export JAVA_HOME="/usr/lib/jvm/default"
 {{- end }}
 export SPARK_HOME="/opt/apache-spark"
+export GPG_TTY=$(tty)
 
 # wine prefix
 export WINEPREFIX="{{ .chezmoi.homeDir }}/.wine32"
@@ -103,6 +104,13 @@ export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
 export NNN_PLUG='f:finder;o:fzopen;m:mocplay;d:diffs;t:nmount;p:preview-tui'
 {{- end }}
 
+export AWS_ACCESS_KEY_ID={{(bitwarden "item" "AWS_ACCESS_KEY_ID").notes}}
+
+export AWS_SECRET_ACCESS_KEY={{(bitwarden "item" "AWS_SECRET_ACCESS_KEY").notes}}
+
+
+export BENTOML_HOME=$HOME/bentoml
+
 ###########################################################################
 #                            PATH                                         #
 ###########################################################################
@@ -119,6 +127,9 @@ path=(
     {{- if joinPath .chezmoi.homeDir "/documents/schools/mcmaster" }}
     $HOME/documents/schools/mcmaster/anyconnect-linux64-4.9.04043/vpn(N-/)
     {{- end }}
+    # {{- if joinPath .chezmoi.homeDir "/miniconda3" }}
+    # $HOME/miniconda3/bin(N-/)
+    # {{- end }}
     $CS_PATH/onnx-mlir/build/Debug/bin(N-/)
     $CS_PATH/onnx-mlir/build/Debug/lib(N-/)
     $HOME/.screenlayout(N-/)

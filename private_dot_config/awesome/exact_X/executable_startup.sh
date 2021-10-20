@@ -2,8 +2,8 @@
 
 ## run (only once) processes which spawn with the same name
 function run {
-  if (builtin command -v $1 && ! pgrep $1); then
-    $@ &
+  if (builtin command -v "$1" && ! pgrep "$1"); then
+    "$@" &
   fi
 }
 
@@ -18,7 +18,7 @@ if (builtin command -v /usr/bin/lxpolkit && ! pgrep lxpolkit); then
   /usr/bin/lxpolkit &
 fi
 if (builtin command -v xsecurelock && ! pgrep xss-lock); then
-  . $HOME/.local/bin/auto-lock &
+  "$HOME"/.local/bin/auto-lock &
 fi
 
 # background daemon
@@ -35,8 +35,8 @@ run spotify-tray
 
 # tray apps
 # run jetbrains-toolbox
+# run kitty tmux
 run discord
-run kitty tmux
 run blueman-applet
 run slack
 run kdocker zotero

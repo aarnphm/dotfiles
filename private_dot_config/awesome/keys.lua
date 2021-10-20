@@ -279,7 +279,7 @@ client.connect_signal("request::default_keybindings", function()
                 ),
             awful.key({shift, altkey}, "t",
                 function()
-                    awful.spawn(defaults.terminal)
+                    awful.spawn("alacritty")
                 end,
                 {description = "open kitty", group = "launcher"}
                 ),
@@ -291,7 +291,8 @@ client.connect_signal("request::default_keybindings", function()
                 ),
             awful.key({ctrl, altkey}, "t",
                 function()
-                    awful.spawn("kitty -e tmux")
+                    -- awful.spawn("kitty -e tmux")
+                    awful.spawn("alacritty -e tmux")
                 end,
                 {description = "open tmux", group = "launcher"}
                 ),

@@ -3,11 +3,12 @@ import sys
 import collections
 import json
 import typing as t
+from pathlib import Path
 
 import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
+import numpy as np
 import sklearn
 
 import tensorflow as tf
@@ -23,6 +24,8 @@ import flax
 import flax.linen as linen
 
 import seaborn as sns
+
+import bentoml
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

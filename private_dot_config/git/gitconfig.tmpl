@@ -49,13 +49,14 @@
     # Pull in remote changes for the current repository and all its submodules.
     pre = pull --recurse-submodules
     p = pull
+    pa = pull --all --signoff --gpg-sign
 
     # Clone a repository including all submodules.
     cre = clone --recursive
     c = clone
 
     # Commit all changes.
-    ca = !git add -A && git commit -av
+    ca = !git add -A && git commit -S -sav
 
     # Switch to a branch, creating it if necessary.
     go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
@@ -70,13 +71,13 @@
     aliases = config --get-regexp alias
 
     # quick push 
-    pushall = "!p() { git add . && git commit -m \"$1\" && git push; }; p"
+    pushall = "!p() { git add . && git commit -S -sm \"$1\" && git push; }; p"
 
     # Amend the currently staged files to the latest commit.
     amend = commit --amend --reuse-message=HEAD
 
     # Credit an author on the latest commit.
-    credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+    credit = "!f() { git commit -S -s --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
     # Interactive rebase with the given number of latest commits.
     reb = "!r() { git rebase -i HEAD~$1; }; r"

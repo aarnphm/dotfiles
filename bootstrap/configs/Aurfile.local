@@ -2,6 +2,7 @@ apache-spark
 autofs
 awesome-git
 awmtt
+balena-etcher
 bbswitch-dkms-git
 betterdiscord-git
 betterdiscordctl-git
@@ -37,12 +38,6 @@ pulseaudio-bt-auto-enable-a2dp
 pulseaudio-modules-bt
 python-qtconsole-git
 rainbow
-ros-melodic-image-proc
-ros-melodic-move-base
-ros-melodic-robot-state-publisher
-ros-melodic-ros-base
-ros-melodic-ros-control
-ros-melodic-ros-controllers
 shell-color-scripts
 slack-desktop
 slack-term
