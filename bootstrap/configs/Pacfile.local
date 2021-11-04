@@ -38,6 +38,7 @@ bleachbit
 blender
 blueman
 bluez-utils
+boost
 brave-browser
 btrfs-progs
 bzip2
@@ -46,6 +47,7 @@ cheese
 chezmoi
 chromium
 clonezilla
+cmake
 conntrack-tools
 coreutils
 cpupower

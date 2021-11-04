@@ -31,13 +31,13 @@ run picom -f --experimental-backends --glx-no-stencil
 run nm-applet
 run pasystray
 run optimus-manager-qt
-run spotify-tray
 
 # tray apps
 # run jetbrains-toolbox
 # run kitty tmux
-run discord
+# run discord
+# run spotify-tray
 run blueman-applet
 run slack
-run kdocker zotero
+# run kdocker zotero
 # vim: set ft=sh ts=2 sw=2 tw=0 et :

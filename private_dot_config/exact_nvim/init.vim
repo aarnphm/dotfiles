@@ -50,6 +50,7 @@ Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 let mapleader=','
+let g:loaded_python_provider = 1
 let g:is_gui=has('gui_running')
 let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
 " tree style file explorer
@@ -349,7 +350,7 @@ let g:suda#prompt = 'Mot de passe: '
 
 let g:UltiSnipsExpandTrigger='<HOME>'
 let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetDirectories=[$CHEZMOI_DIR . "/private_dot_config/vim/ultisnips"]
+let g:UltiSnipsSnippetDirectories=[$CHEZMOI_DIR . "/private_dot_config/exact_nvim/ultisnips"]
 
 " Write all buffers before navigating from Vim to tmux pane
 let g:tmux_navigator_save_on_switch = 2
@@ -466,7 +467,6 @@ let g:fzf_action = {
 " Default fzf layout
 " - down / up / left / right
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-let g:fzf_layout = { 'right': '43%' }
 
 " Customize fzf colors to match your color scheme
 " - fzf#wrap translates this to a set of `--color` options
@@ -618,7 +618,7 @@ let g:NERDTreeWinSize=35
 nnoremap <F4> :NERDTreeToggle<cr>
 " Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " Start NERDTree when Vim starts with a directory argument.
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " Exit Vim if NERDTree is the only window left.

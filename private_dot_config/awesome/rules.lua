@@ -69,12 +69,12 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id = "spotify",
         rule = {class = "Spotify"},
-        properties = {screen = get_screen(2), tag = defaults.tags[1].names[4], switchtotag = true}
+        properties = {screen = get_screen(1), tag = defaults.tags[1].names[4], switchtotag = true}
     }
 
     ruled.client.append_rule {
         id = "browser",
-        rule_any = {class = {"Chromium", "Firefox", "Brave"}},
+        rule_any = {class = {"Firefox", "Brave"}},
         properties = {screen = awful.screen.focused(), tag = defaults.tags[1].names[2], switchtotag = true}
     }
 
@@ -123,20 +123,26 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "meeting",
-        rule_any = {class={"Whatsapp-for-linux", "Zoom", "Teams"}, instance = {"teams", "zoom", "skype","caprine"}},
-        properties = {screen = get_screen(2), tag = defaults.tags[1].names[6], switchtotag = true, maximized=true}
+        rule_any = {class={"Whatsapp-for-linux", "Zoom"}, instance = {"zoom","caprine"}},
+        properties = {screen = get_screen(1), tag = defaults.tags[1].names[7], switchtotag = true, maximized=true}
+    }
+
+    ruled.client.append_rule {
+        id = "teams",
+        rule_any = {class={"Teams"}, instance = {"teams", "skype"}},
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule {
         id = "slack",
         rule_any = {instance = {"slack", "browser-window"}, class={"Slack"}},
-        properties = {screen = get_screen(2), tag = defaults.tags[1].names[5], switchtotag = true, maximized=true}
+        properties = {screen = get_screen(2), tag = defaults.tags[1].names[6], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule {
         id = "discord",
         rule_any = {instance = {"discord"}},
-        properties = {screen = get_screen(2), tag = defaults.tags[1].names[6], switchtotag = true, maximized=true}
+        properties = {screen = get_screen(1), tag = defaults.tags[1].names[6], switchtotag = true, maximized=true}
     }
 
     ruled.client.append_rule{
