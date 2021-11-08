@@ -307,8 +307,8 @@ alias cpi="${aliases[cp]:-cp} -i"
 alias lni="${aliases[ln]:-ln} -i"
 
 # BentoML related
-alias manager_dockerfiles="docker run --rm -u $(id -u):$(id -g) -v $CS_PATH/atalaya/BentoML/docker:/bentoml bentoml-docker python3 manager.py "
-alias manager_images="docker run --rm -v $CS_PATH/atalaya/BentoML/docker:/bentoml -v /var/run/docker.sock:/var/run/docker.sock bentoml-docker python3 manager.py "
+alias manager_dockerfiles="docker run --rm -u $(id -u):$(id -g) -v $CS_PATH/atalaya/bt/aarnphm_fork/docker:/bentoml bentoml-docker python3 manager.py "
+alias manager_images="docker run --rm -v $CS_PATH/atalaya/bt/aarnphm_fork/docker:/bentoml -v /var/run/docker.sock:/var/run/docker.sock bentoml-docker python3 manager.py "
 
 ## Hash
 hash -d data=~/.local/share/

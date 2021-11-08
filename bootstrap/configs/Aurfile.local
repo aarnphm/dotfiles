@@ -8,12 +8,12 @@ betterdiscord-git
 betterdiscordctl-git
 cacheclean
 cuda-11.1
+deckmaster
 dive
 dmenu2
 dxvk-bin
 ffmpeg-compat-57
-figma-linux
-figma-linux-font-helper
+ffmpeg-full
 fix-bt-a2dp
 gyazo
 heroku-cli-bin
@@ -30,7 +30,6 @@ mongodb-bin
 mongodb-tools-bin
 nbfc
 nnn-nerd
-notion-app-enhanced
 nvidia-docker
 optimus-manager-qt-git
 paru
@@ -44,6 +43,7 @@ slack-term
 spicetify-cli
 spotify
 spotify-tray-git
+streamdeck
 tealdeer-git
 teams
 ttf-mononoki

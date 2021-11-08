@@ -1,163 +1,156 @@
 {
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "python.formatting.provider": "black",
-    "python.formatting.blackPath": "black",
-    "python.formatting.blackArgs": ["--skip-string-normalization"],
-    "coc.preferences.hoverTarget": "echo",
-    "signature.target": "echo",
-    "python.linting.pylintArgs": ["--disable=not-context-manager"],
-    "python.sortImports.args": [
-      "-m3",
-      "--tc",
-      "--force-grid-wrap=0",
-      "--use-parentheses",
-      "-l88",
-      "--ensure-newline-before-comments"
-    ],
-    "pyright.enable": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "black",
+  "python.formatting.blackArgs": ["--skip-string-normalization"],
+  "coc.preferences.hoverTarget": "echo",
+  "signature.target": "echo",
+  "python.linting.pylintArgs": ["--disable=not-context-manager"],
+  "python.sortImports.args": [
+    "-m3",
+    "--tc",
+    "--force-grid-wrap=0",
+    "--use-parentheses",
+    "-l88",
+    "--ensure-newline-before-comments"
+  ],
+  "pyright.enable": true,
 
-    "json.format.enable": true,
-    "explorer.file.showHiddenFiles": true,
-    "explorer.file.tabCD": false,
-    "explorer.keyMappings.global": {
-      "<cr>": ["expandable?", "expand", "open"]
-    },
-    "yaml.schemas": {
-      "kubernetes": "/*.yaml"
-    },
-    "explorer.icon.enableNerdfont": true,
-    "list.source.grep.command": "rg",
-    "list.source.files.args": ["--hidden", "--files"],
-    "list.interactiveDebounceTime": 300,
-    "suggest.enablePreview": true,
-    "tsserver.enable": true,
-    "lua.enable":true,
-    "Lua.hint.enable": true,
-    "Lua.completion.enable": true,
-    "Lua.workspace.library": {"awesome": "/usr/share/awesome/lib"},
-    "r.lsp.path":"/usr/bin/R",
-    "languageserver": {
-        "dls": {
-            "command": "diagnostic-languageserver",
-            "args": ["--stdio"],
-            "filetypes": ["sh"],
-            "initializationOptions": {
-                "_comment1": "start of config for shellcheck",
-                "filetypes": {
-                    "_comment": "lint `sh` (includes `bash`) files",
-                    "sh": "shellcheck"
-                },
-                "linters": {
-                    "_comment": "set up `shellcheck`, this lifted directly from example on README",
-                    "shellcheck": {
-                        "command": "shellcheck",
-                        "debounce": 100,
-                        "args": ["--format=gcc", "-"],
-                        "offsetLine": 0,
-                        "offsetColumn": 0,
-                        "sourceName": "shellcheck",
-                        "formatLines": 1,
-                        "formatPattern": [
-                            "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
-                            {
-                                "line": 1,
-                                "column": 2,
-                                "message": 4,
-                                "security": 3
-                            }
-                        ],
-                        "securities": {
-                            "error": "error",
-                            "warning": "warning",
-                            "note": "info"
-                        }
-                    }
-                },
-                "_comment2":"start of config for shfmt",
-                "formatFiletypes": {
-                    "_comment":"format `sh` (includes `bash`) files using formatter defined below",
-                    "sh": "shfmt"
-                },
-                "formatters": {
-                    "_comment": "define our formatter so that we can reference it from `formatFiletypes`",
-                    "shfmt": {
-                        "command": "shfmt",
-                        "args": ["-i", "2", "-bn", "-ci", "-sr"]
-                    }
-                }
+  "json.format.enable": true,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.file.tabCD": false,
+  "explorer.keyMappings.global": {
+    "<cr>": ["expandable?", "expand", "open"]
+  },
+  "yaml.schemas": {
+    "kubernetes": "/*.yaml"
+  },
+  "explorer.icon.enableNerdfont": true,
+  "list.source.grep.command": "rg",
+  "list.source.files.args": ["--hidden", "--files"],
+  "list.interactiveDebounceTime": 300,
+  "suggest.enablePreview": true,
+  "tsserver.enable": true,
+  "lua.enable": true,
+  "Lua.hint.enable": true,
+  "Lua.completion.enable": true,
+  "Lua.workspace.library": { "awesome": "/usr/share/awesome/lib" },
+  "r.lsp.path": "/usr/bin/R",
+  "languageserver": {
+    "dls": {
+      "command": "diagnostic-languageserver",
+      "args": ["--stdio"],
+      "filetypes": ["sh"],
+      "initializationOptions": {
+        "_comment1": "start of config for shellcheck",
+        "filetypes": {
+          "_comment": "lint `sh` (includes `bash`) files",
+          "sh": "shellcheck"
+        },
+        "linters": {
+          "_comment": "set up `shellcheck`, this lifted directly from example on README",
+          "shellcheck": {
+            "command": "shellcheck",
+            "debounce": 100,
+            "args": ["--format=gcc", "-"],
+            "offsetLine": 0,
+            "offsetColumn": 0,
+            "sourceName": "shellcheck",
+            "formatLines": 1,
+            "formatPattern": [
+              "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
+              {
+                "line": 1,
+                "column": 2,
+                "message": 4,
+                "security": 3
+              }
+            ],
+            "securities": {
+              "error": "error",
+              "warning": "warning",
+              "note": "info"
             }
-        }, 
-        "vimls": {
-            "command": "vim-language-server",
-            "args": ["--stdio"],
-            "initializationOptions": {
-                "isNeovim": true,
-                "iskeyword": "@,48-57,_,192-255,-#",
-                "vimruntime": "",
-                "runtimepath": "",
-                "diagnostic": {
-                    "enable": true
-                },
-                "indexes": {
-                    "runtimepath": true,
-                    "gap": 100,
-                    "count": 3,
-                    "projectRootPatterns" : ["strange-root-pattern", ".git", "autoload", "plugin"]
-                },
-                "suggest": {
-                    "fromVimruntime": true,
-                    "fromRuntimepath": false
-                }
-            },
-            "filetypes": [ "vim" ]
+          }
         },
-        "golang": {
-            "command": "$HOME/go/bin/gopls",
-            "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-            "filetypes": ["go"]
+        "_comment2": "start of config for shfmt",
+        "formatFiletypes": {
+          "_comment": "format `sh` (includes `bash`) files using formatter defined below",
+          "sh": "shfmt"
         },
-        "ccls": {
-            "command": "ccls",
-            "filetypes": [
-                "c",
-                "cpp",
-                "objc",
-                "objcpp"
-            ],
-            "rootPatterns": [
-                ".ccls",
-                "compile_commands.json",
-                ".vim/",
-                ".git/",
-                ".hg/"
-            ]
-        },
-         "hdlChecker": {
-            "command": "hdl_checker",
-            "args": [
-                "--lsp"
-            ],
-            "filetypes": [
-                "vhdl",
-                "verilog",
-                "systemverilog"
-            ]
+        "formatters": {
+          "_comment": "define our formatter so that we can reference it from `formatFiletypes`",
+          "shfmt": {
+            "command": "shfmt",
+            "args": ["-i", "2", "-bn", "-ci", "-sr"]
+          }
         }
+      }
     },
-    "coc.preferences.extensionUpdateCheck": "daily",
-    "typescript.suggest.autoImports":true,
-    "typescript.suggest.paths": true,
-    "coc.preferences.formatOnSaveFiletypes": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "json"
-    ],
-    "eslint.autoFixOnSave": true,
-    "tsserver.formatOnType": true,
-    "coc.preferences.formatOnType": true,
-    "prettier.disableSuccessMessage": true
-
+    "vimls": {
+      "command": "vim-language-server",
+      "args": ["--stdio"],
+      "initializationOptions": {
+        "isNeovim": true,
+        "iskeyword": "@,48-57,_,192-255,-#",
+        "vimruntime": "",
+        "runtimepath": "",
+        "diagnostic": {
+          "enable": true
+        },
+        "indexes": {
+          "runtimepath": true,
+          "gap": 100,
+          "count": 3,
+          "projectRootPatterns": [
+            "strange-root-pattern",
+            ".git",
+            "autoload",
+            "plugin"
+          ]
+        },
+        "suggest": {
+          "fromVimruntime": true,
+          "fromRuntimepath": false
+        }
+      },
+      "filetypes": ["vim"]
+    },
+    "golang": {
+      "command": "$HOME/go/bin/gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    },
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [
+        ".ccls",
+        "compile_commands.json",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ]
+    },
+    "hdlChecker": {
+      "command": "hdl_checker",
+      "args": ["--lsp"],
+      "filetypes": ["vhdl", "verilog", "systemverilog"]
+    }
+  },
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "typescript.suggest.autoImports": true,
+  "typescript.suggest.paths": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json"
+  ],
+  "eslint.autoFixOnSave": true,
+  "tsserver.formatOnType": true,
+  "coc.preferences.formatOnType": true,
+  "prettier.disableSuccessMessage": true
 }

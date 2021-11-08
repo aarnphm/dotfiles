@@ -95,7 +95,6 @@ f2fs-tools
 fakeroot
 fatresize
 feh
-ffmpeg
 ffmpegthumbnailer
 figlet
 file
@@ -343,7 +342,12 @@ python2-pyxdg
 qemu
 qopenvpn
 qpdfview
+qt5-3d
+qt5-script
+qt5-speech
+qt5-webengine
 qt5-webkit
+qt5-websockets
 qt6-base
 r
 radvd
@@ -361,6 +365,7 @@ s-nail
 samba
 scala
 screenfetch
+screenkey
 scrot
 sdparm
 seahorse

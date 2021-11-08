@@ -39,5 +39,6 @@ run optimus-manager-qt
 # run spotify-tray
 run blueman-applet
 run slack
+run streamdeck
 # run kdocker zotero
 # vim: set ft=sh ts=2 sw=2 tw=0 et :

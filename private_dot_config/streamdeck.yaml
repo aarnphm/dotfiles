@@ -1,0 +1,44 @@
+# Automatically reload on config changes
+auto_reload: true
+
+# Optional: int, how much border to give captions in px
+caption_border: 5
+# Optional: array of int, RGBA color values (4 values, each 0-255)
+caption_color: [0xff, 0xff, 0xff, 0xff]
+# Font to use when rendering captions on buttons (must be a local path to a TTF file!)
+caption_font: /home/aarnphm/.local/share/fonts/InconsolataGo-Bold.ttf
+# Optional: float, font size to use on captions
+caption_font_size: 10.0
+# Optional: string, where to place captions (bottom / top)
+caption_position: bottom
+
+# Brightness to set on start (0-100)
+default_brightness: 20
+# Page to display on start
+default_page: default
+# Optional: Time to display off (0s or leave out for no timeout)
+display_off_time: 5m
+# Font to use when rendering buttons with text (must be a local path to a TTF file!)
+render_font: /home/aarnphm/.local/share/fonts/InconsolataGo-Regular.ttf
+
+pages:
+  default:
+    keys:
+      0: # Number of the key (0 = first, 31 = last on a XL, 14 = last on an Original)
+        display:
+          type: text
+          attributes:
+            text: 'alacritty'
+        actions:
+          - type: exec
+            attributes:
+              command: ["/usr/bin/bash", "-c", "alacritty -e tmux"]
+      4: # Number of the key (0 = first, 31 = last on a XL, 14 = last on an Original)
+        display:
+          type: text
+          attributes:
+            text: 'volume up'
+        actions:
+          - type: exec
+            attributes:
+              command: ["amixer", "set", "Master", "5%+"]
