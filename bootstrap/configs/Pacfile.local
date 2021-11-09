@@ -88,6 +88,7 @@ edk2-shell
 efibootmgr
 engrampa
 ethtool
+evtest
 exfat-utils
 exo
 expac
@@ -155,6 +156,7 @@ gzip
 handbrake
 hardinfo
 haveged
+helix
 hspell
 htop
 hunspell
