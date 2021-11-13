@@ -36,7 +36,7 @@ run optimus-manager-qt
 # run jetbrains-toolbox
 # run kitty tmux
 # run discord
-# run spotify-tray
+run spotify-tray
 run blueman-applet
 run slack
 run streamdeck

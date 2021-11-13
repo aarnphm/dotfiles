@@ -49,6 +49,7 @@
     # Pull in remote changes for the current repository and all its submodules.
     pre = pull --recurse-submodules
     p = pull
+    pp = "!f() { git fetch \"$1\" \"$2\" && git pull \"$1\" \"$2\" && git remote prune \"$1\"; }; f"
     pa = pull --all --signoff --gpg-sign
 
     # Clone a repository including all submodules.
