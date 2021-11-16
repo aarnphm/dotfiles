@@ -65,6 +65,35 @@ pages:
           - type: exec
             attributes:
               command: ["/usr/bin/spotify-tray"]
+
+      10:
+        display:
+          type: text
+          attributes:
+            text: 'next client'
+        actions:
+          - type: key_press
+            attributes:
+              delay: 1s
+              key_codes: [35]
+              mod_alt: false
+              mod_ctrl: true
+              mod_shift: false
+              mod_meta: true
+      11:
+        display:
+          type: text
+          attributes:
+            text: 'prev client'
+        actions:
+          - type: key_press
+            attributes:
+              delay: 1s
+              key_codes: [38]
+              mod_alt: false
+              mod_ctrl: true
+              mod_shift: false
+              mod_meta: true
       13:
         display:
           type: text
