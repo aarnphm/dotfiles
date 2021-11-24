@@ -130,8 +130,15 @@ alias lp="nnn -P p"
 alias vi="vim $@"
 alias v="$EDITOR"
 alias av="$EDITOR -p"
-function ob(){
-    $1 &
+function ob() { $1 &}
+function v() {
+  if [ "${#@}" -lt 1 ]; then
+    $EDITOR -p "$@";
+  elif [ -d $@ ]; then
+    $EDITOR -p <(ls -I "__pycache__" -I "*.py[cod]")
+  else
+    $EDITOR $@;
+  fi
 }
 
 #chmod
