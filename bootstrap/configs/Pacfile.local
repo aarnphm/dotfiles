@@ -16,13 +16,13 @@ appstream
 arandr
 arc-gtk-theme
 arch-install-scripts
-arch4edu-keyring
 asciinema
 audacity
 autoconf
 automake
 autorandr
 avahi
+avisynthplus
 awesome-terminal-fonts
 b43-fwcutter
 baobab
@@ -35,7 +35,6 @@ bind
 binutils
 bison
 bleachbit
-blender
 blueman
 bluez-utils
 boost
@@ -45,7 +44,6 @@ bzip2
 ccls
 cheese
 chezmoi
-chromium
 clonezilla
 cmake
 conntrack-tools
@@ -96,7 +94,6 @@ f2fs-tools
 fakeroot
 fatresize
 feh
-ffmpegthumbnailer
 figlet
 file
 file-roller
@@ -135,7 +132,6 @@ grep
 grub
 grub-theme-manjaro
 gsfonts
-gst-libav
 gst-plugins-bad
 gst-plugins-base
 gst-plugins-good
@@ -145,7 +141,6 @@ gtkhash-thunar
 gtop
 gufw
 gutenprint
-guvcview
 gvfs
 gvfs-afc
 gvfs-gphoto2
@@ -166,6 +161,7 @@ ibus-unikey
 inetutils
 inkscape
 inotify-tools
+intel-media-sdk
 intel-ucode
 inxi
 iproute2
@@ -182,6 +178,7 @@ jsoncpp
 kitty
 kitty-terminfo
 kvantum-theme-materia
+ladspa
 laptop-detect
 less
 lib32-libappindicator-gtk2
@@ -263,8 +260,6 @@ mobile-broadband-provider-info
 modemmanager
 mousepad
 mpc
-mpd
-mpv
 mtools
 mtpfs
 mugshot
@@ -272,7 +267,6 @@ nano
 nbd
 ncdu
 ncmpcpp
-ncurses5-compat-libs
 ndisc6
 neofetch
 neovim
@@ -295,13 +289,10 @@ ntfs-3g
 ntp
 numlockx
 nuspell
-nvidia-container-runtime
-nvidia-container-toolkit
 nvidia-dkms
 nvidia-prime
 nvidia-utils
 nvme-cli
-obs-studio
 open-iscsi
 openresolv
 openssh
@@ -323,7 +314,6 @@ pciutils
 pcmanfm
 perl
 perl-file-mimeinfo
-pgadmin4
 picom
 pipewire-alsa
 pipewire-media-session
@@ -352,7 +342,6 @@ qt5-script
 qt5-scxml
 qt5-serialport
 qt5-speech
-qt5-webengine
 qt5-webkit
 qt5-websockets
 qt6-base
@@ -450,15 +439,11 @@ vicious
 vim
 virt-manager
 virtualbox
-visual-studio-code-bin
-vlc
 volumeicon
 vulkan-intel
 w3m
 wget
-whatsapp-for-linux
 which
-wine-staging
 wireless_tools
 wmctrl
 wpa_supplicant
@@ -467,7 +452,7 @@ xapp
 xclip
 xcursor-simpleandsoft
 xcursor-vanilla-dmz-aa
-xdg-desktop-portal-gtk
+xdg-desktop-portal-gnome
 xdg-user-dirs
 xdg-utils
 xdo
@@ -555,7 +540,6 @@ zathura-pdf-mupdf
 zathura-ps
 zenity
 zensu
-zotero
 zsh
 zsh-completions
 zsh-syntax-highlighting
