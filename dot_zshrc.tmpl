@@ -181,6 +181,12 @@ function extract() {
     esac
 }
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
+function diffsize() {
+    fbranch=$1
+    sbranch=$2
+    excl=$3
+    git diff --stat "$fbranch" "$sbranch" | grep -v '$3/' | awk -F"|" '{ print $2 }' | awk '{ print $1 }' | sed '/^$/d' | paste -sd+ - | bc
+}
 
 alias cs="cd $CS_PATH"
 

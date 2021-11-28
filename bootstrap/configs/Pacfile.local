@@ -44,6 +44,7 @@ bzip2
 ccls
 cheese
 chezmoi
+chromium
 clonezilla
 cmake
 conntrack-tools
@@ -53,6 +54,7 @@ crda
 cronie
 cryptsetup
 ctags
+cuda-tools
 cudnn
 cups
 cups-filters
