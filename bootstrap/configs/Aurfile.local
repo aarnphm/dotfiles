@@ -30,6 +30,7 @@ nnn-nerd
 nvidia-container-runtime
 nvidia-container-toolkit
 nvidia-docker
+obs-linuxbrowser-bin
 optimus-manager-qt-git
 paru
 pulseaudio-bt-auto-enable-a2dp
