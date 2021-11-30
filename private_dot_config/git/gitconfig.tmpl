@@ -82,10 +82,10 @@
     credit = "!f() { git commit -S -s --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
     # Interactive rebase with the given number of latest commits.
-    reb = "!r() { git rebase -i HEAD~$1; }; r"
+    reb = "!r() { git rebase -i --signoff HEAD~$1; }; r"
     ra = rebase --abort
-	rc = rebase --continue
-	ri = rebase --interactive
+	rc = rebase --continue --signoff
+	ri = rebase --interactive --signoff
 
     # Remove the old tag with this name and tag the latest commit with it.
     retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
