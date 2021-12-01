@@ -2,6 +2,8 @@ set nocompatible
 
 filetype plugin indent on
 
+syntax on
+
 " use vim-plug because of its minimalistic
 "¯\_(ツ)_/¯
 let g:is_nvim=has('nvim')
@@ -25,12 +27,10 @@ Plug 'tpope/vim-obsession'
 " fzf with rg
 Plug 'rking/ag.vim'
 Plug 'junegunn/fzf.vim'
-Plug 'SirVer/ultisnips'
 Plug 'lambdalisue/suda.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'thaerkh/vim-indentguides'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 
 " vscode like language server
 Plug 'tomasiser/vim-code-dark'
@@ -38,7 +38,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " language packs
-Plug 'sheerun/vim-polyglot'
 Plug 'wakatime/vim-wakatime'
 
 " UI related
@@ -50,14 +49,13 @@ Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 let mapleader=','
-let g:loaded_python_provider = 1
 let g:is_gui=has('gui_running')
 let g:is_termguicolors = has('termguicolors') && !g:is_gui && $COLORTERM isnot# 'xterm-256color'
 " tree style file explorer
 let g:netrw_liststyle=3
 
 " Minimal
-colorscheme afterglow
+colorscheme codedark
 set background=dark
 set number
 set relativenumber
@@ -348,83 +346,10 @@ let g:indentguides_ignorelist = ['text']
 let g:suda_smart_edit = 1
 let g:suda#prompt = 'Mot de passe: '
 
-let g:UltiSnipsExpandTrigger='<HOME>'
-let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetDirectories=[$CHEZMOI_DIR . "/private_dot_config/exact_nvim/ultisnips"]
-
 " Write all buffers before navigating from Vim to tmux pane
 let g:tmux_navigator_save_on_switch = 2
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
-
-let g:tex_flavor='latex'
-let g:vimtex_quickfix_mode=0
-" let g:tex_conceal='abdmg'
-if has('unix')
-    if has('mac')
-        let g:vimtex_view_method = "skim"
-        let g:vimtex_view_general_viewer
-                    \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-        let g:vimtex_view_general_options = '-r @line @pdf @tex'
-
-        " This adds a callback hook that updates Skim after compilation
-        let g:vimtex_compiler_callback_hooks = ['UpdateSkim']
-        function! UpdateSkim(status)
-            if !a:status | return | endif
-
-            let l:out = b:vimtex.out()
-            let l:tex = expand('%:p')
-            let l:cmd = [g:vimtex_view_general_viewer, '-r']
-            if !empty(system('pgrep Skim'))
-                call extend(l:cmd, ['-g'])
-            endif
-            if has('nvim')
-                call jobstart(l:cmd + [line('.'), l:out, l:tex])
-            elseif has('job')
-                call job_start(l:cmd + [line('.'), l:out, l:tex])
-            else
-                call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-            endif
-        endfunction
-    else
-        let g:latex_view_general_viewer = "zathura"
-        let g:vimtex_view_method = "zathura"
-    endif
-elseif has('win32')
-
-endif
-
-let g:vimtex_quickfix_open_on_warning = 0
-if has('nvim')
-    let g:vimtex_compiler_progname = 'nvr'
-endif
-
-" One of the neosnippet plugins will conceal symbols in LaTeX which is
-" confusing
-let g:tex_conceal = ""
-
-" Can hide specifc warning messages from the quickfix window
-" Quickfix with Neovim is broken or something
-" https://github.com/lervag/vimtex/issues/773
-let g:vimtex_quickfix_latexlog = {
-            \ 'default' : 1,
-            \ 'fix_paths' : 0,
-            \ 'general' : 1,
-            \ 'references' : 1,
-            \ 'overfull' : 1,
-            \ 'underfull' : 1,
-            \ 'font' : 1,
-            \ 'packages' : {
-            \   'default' : 1,
-            \   'natbib' : 1,
-            \   'biblatex' : 1,
-            \   'babel' : 1,
-            \   'hyperref' : 1,
-            \   'scrreprt' : 1,
-            \   'fixltx2e' : 1,
-            \   'titlesec' : 1,
-            \ },
-            \}
 
 " obsession
 let g:session_dir='~/.config/vim/sessions'
@@ -516,7 +441,7 @@ endfunction
 " autocmd BufWritePre *.py exec FormatPy()
 " autocmd BufWritePost *.py :call winrestview(g:winview)
 
-let g:coc_global_extensions = ['coc-texlab', 'coc-lua', 'coc-json', 'coc-pyright', 'coc-java', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-pyright', 'coc-tsserver']
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
     let g:coc_global_extensions += ['coc-prettier']
 endif
@@ -524,12 +449,6 @@ endif
 if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
     let g:coc_global_extensions += ['coc-eslint']
 endif
-
-if isdirectory("$HOME/R")
-    let g:coc_global_extensions += ['coc-r-lsp']
-endif
-
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 function! s:check_back_space() abort
     let col = col('.') - 1
@@ -616,14 +535,10 @@ let g:NERDTreeWinPos = "right"
 let NERDTreeIgnore = ['node_modules','\dist','\build','\.pyc$', '__pycache__','\.class$','\.egg_info$','.git']
 let g:NERDTreeWinSize=35
 nnoremap <F4> :NERDTreeToggle<cr>
-" Start NERDTree. If a file is specified, move the cursor to its window.
-autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " Start NERDTree when Vim starts with a directory argument.
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) || &buftype == 'quickfix' | q | endif
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 | let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 "vim: set ft=vim et sw=2 tw=2:
