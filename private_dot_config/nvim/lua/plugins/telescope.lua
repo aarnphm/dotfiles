@@ -10,7 +10,6 @@ M.plugin = {
       { "n", "<Leader>f" },
    },
    wants = {
-      "sqlite.lua",
       "popup.nvim",
       "plenary.nvim",
       "telescope-fzf-native.nvim",
@@ -145,9 +144,8 @@ M.config = function()
             devicons_disabled = true,
             ignore_patterns = { "*.git/*", "*/tmp/*" },
             workspaces = {
-               ["nvim"] = "/home/elianiva/.config/nvim",
-               ["awesome"] = "/home/elianiva/.config/awesome",
-               ["scratch"] = "/home/elianiva/Dev/scratch",
+               ["nvim"] = "/home/aarnphm/.config/nvim",
+               ["awesome"] = "/home/aarnphm/.config/awesome",
             },
          },
       },
@@ -164,7 +162,6 @@ M.config = function()
    M.frecency = function()
       telescope.extensions.frecency.frecency(M.no_preview())
    end
-
 
    M.project = function()
       telescope.extensions.project.project(M.no_preview { display_type = "full" })

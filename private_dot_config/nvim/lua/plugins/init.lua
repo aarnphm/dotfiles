@@ -15,19 +15,22 @@ return packer.startup {
 
       { "wakatime/vim-wakatime" },
 
-      { "AndrewRadev/splitjoin.vim", keys = "gS" },
-
-      { "machakann/vim-sandwich", keys = "s" },
-
-      { "gpanders/editorconfig.nvim" },
-
+      { "tpope/vim-surround" },
+      { "tpope/vim-commentary" },
+      { "tpope/vim-vinegar" },
+      { "tpope/vim-apathy" },
+      { "tpope/vim-sleuth" },
+      { "tpope/vim-fugitive" },
+      { "thaerkh/vim-indentguides" },
       {
-         "vuki656/package-info.nvim",
-         requires = "MunifTanjim/nui.nvim",
+         "christoomey/vim-tmux-navigator",
          config = function()
-            require("package-info").setup()
+            vim.g.tmux_navigator_save_on_switch = 2
+            vim.g.tmux_navigator_disable_when_zoomed = 1
          end,
       },
+
+      { "tami5/sqlite.lua" },
 
       {
          "luukvbaal/stabilize.nvim",
@@ -44,26 +47,8 @@ return packer.startup {
          end,
       },
 
-      {
-         "tami5/sqlite.lua",
-         setup = function()
-            vim.g.sqlite_clib_path = "/lib64/libsqlite3.so.0.8.6"
-         end,
-      },
-
       require("plugins.telescope").plugin,
 
-      {
-         "numToStr/Comment.nvim",
-         keys = "gc",
-         config = function()
-            require("Comment").setup {
-               pre_hook = function()
-                  return require("ts_context_commentstring.internal").calculate_commentstring()
-               end,
-            }
-         end,
-      },
       {
          "https://gitlab.com/yorickpeterse/nvim-pqf",
          config = function()
@@ -90,10 +75,9 @@ return packer.startup {
             },
             "nvim-treesitter/nvim-treesitter-textobjects",
             "windwp/nvim-ts-autotag",
-            {
-               "JoosepAlviste/nvim-ts-context-commentstring",
-               module_pattern = "ts_context_commentstring.*",
-            },
+            "tree-sitter/tree-sitter-python",
+            "tree-sitter/tree-sitter-go",
+            "tree-sitter/tree-sitter-typescript",
          },
       },
 
@@ -105,27 +89,19 @@ return packer.startup {
          keys = "<Plug>(EasyAlign)",
       },
 
+      { "kyazdani42/nvim-web-devicons", module = "nvim-web-devicons" },
+
       {
-         "mhinz/vim-sayonara",
-         cmd = "Sayonara",
-         setup = function()
-            vim.cmd [[
-          nnoremap <silent> <A-j> <CMD>Sayonara!<CR>
-          nnoremap <silent> <A-k> <CMD>Sayonara<CR>
-        ]]
+         "romgrk/barbar.nvim",
+         requires = { "kyazdani42/nvim-web-devicons" },
+         config = function()
+            require "plugins.barbar"
          end,
       },
-
       {
          "rktjmp/shipwright.nvim",
          cmd = "Shipwright",
          module_pattern = { "shipwright", "shipwright.*" },
-      },
-
-      {
-         "rktjmp/lush.nvim",
-         cmd = "Lushify",
-         module_pattern = { "lush", "lush.*" },
       },
 
       {
@@ -156,37 +132,20 @@ return packer.startup {
          requires = {
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-path",
-            "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-vsnip",
             {
                "hrsh7th/vim-vsnip",
                setup = function()
                   vim.cmd [[
               " Jump forward or backward
-              imap <expr> <C-j> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
-              smap <expr> <C-j> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-j>'
-              imap <expr> <C-k> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
-              smap <expr> <C-k> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-k>'
+              imap <expr> <C-n> vsnip#numpable(1)  ? '<Plug>(vsnip-nump-next)' : '<C-n>'
+              smap <expr> <C-n> vsnip#numpable(1)  ? '<Plug>(vsnip-nump-next)' : '<C-n>'
+              imap <expr> <C-m> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-m>'
+              smap <expr> <C-m> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-m>'
             ]]
                end,
             },
          },
-      },
-
-      {
-         "lewis6991/gitsigns.nvim",
-         wants = { "plenary.nvim" },
-         event = "BufEnter", -- don't need this on scratch buffer
-         config = function()
-            require "plugins.gitsigns"
-         end,
-      },
-
-      {
-         "akinsho/nvim-bufferline.lua",
-         config = function()
-            require "plugins.nvim-bufferline"
-         end,
       },
 
       {
@@ -200,14 +159,12 @@ return packer.startup {
          },
       },
 
-          {
-      "rmehri01/onenord.nvim",
-      config = function()
-        vim.cmd [[ colorscheme onenord ]]
-      end,
-    },
-
-      { "kyazdani42/nvim-web-devicons", module = "nvim-web-devicons" },
+      {
+         "rmehri01/onenord.nvim",
+         config = function()
+            vim.cmd [[ colorscheme onenord ]]
+         end,
+      },
 
       {
          "phaazon/hop.nvim",
@@ -221,34 +178,13 @@ return packer.startup {
       },
 
       {
-         "folke/zen-mode.nvim",
-         cmd = "ZenMode",
+         "lewis6991/gitsigns.nvim",
+         wants = { "plenary.nvim" },
+         event = "BufEnter", -- don't need this on scratch buffer
          config = function()
-            require("zen-mode").setup {
-               window = {
-                  backdrop = 1,
-                  width = 80,
-                  height = 32,
-                  linebreak = true,
-                  wrap = true,
-               },
-               plugins = {
-                  options = {
-                     enabled = true,
-                     ruler = false,
-                     showcmd = false,
-                  },
-                  gitsigns = { enabled = true }, -- disables git signs
-                  tmux = { enabled = false }, -- disables the tmux statusline
-               },
-               on_open = function(win)
-                  vim.api.nvim_win_set_option(win, "wrap", true)
-                  vim.api.nvim_win_set_option(win, "linebreak", true)
-               end,
-            }
+            require "plugins.gitsigns"
          end,
       },
-
       {
          "plasticboy/vim-markdown",
          filetype = "markdown",
@@ -299,25 +235,6 @@ return packer.startup {
             require "plugins.vim-test"
          end,
       },
-
-      -- not writing any latex atm
-      -- {
-      --   "lervag/vimtex",
-      --   ft = "latex",
-      --   setup = function()
-      --     vim.g.vimtex_quickfix_enabled = false
-      --     vim.g.vimtex_view_method = "zathura"
-      --     vim.g.vimtex_compiler_latexmk = {
-      --       options = {
-      --         "--shell-escape",
-      --         "-verbose",
-      --         "-file-line-error",
-      --         "-synctex=1",
-      --         "-interaction=nonstopmode",
-      --       },
-      --     }
-      --   end,
-      -- },
 
       {
          "norcalli/nvim-colorizer.lua",

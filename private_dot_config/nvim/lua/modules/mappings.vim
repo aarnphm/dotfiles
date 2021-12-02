@@ -2,7 +2,7 @@
 " See http://stevelosh.com/blog/2010/09/coming-home-to-vim
 
 nnoremap ; :
-imap jj <Esc>
+inoremap jj <Esc>
 
 nnoremap / /\v
 vnoremap / /\v
@@ -49,10 +49,10 @@ vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " this is for transient
 " better movement between windows
-nnoremap <C-h> <C-w><C-h>
-nnoremap <C-j> <C-w><C-j>
-nnoremap <C-k> <C-w><C-k>
-nnoremap <C-l> <C-w><C-l>
+" nnoremap <C-h> <C-w><C-h>
+" nnoremap <C-j> <C-w><C-j>
+" nnoremap <C-k> <C-w><C-k>
+" nnoremap <C-l> <C-w><C-l>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
