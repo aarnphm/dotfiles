@@ -185,14 +185,6 @@ return packer.startup {
             require "plugins.gitsigns"
          end,
       },
-      {
-         "plasticboy/vim-markdown",
-         filetype = "markdown",
-         setup = function()
-            vim.g.vim_markdown_folding_disabled = 1
-            vim.g.vim_markdown_frontmatter = 1
-         end,
-      },
 
       {
          "andymass/vim-matchup",
