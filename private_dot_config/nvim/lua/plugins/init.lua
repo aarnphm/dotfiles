@@ -46,6 +46,7 @@ return packer.startup {
             require("gitlinker").setup()
          end,
       },
+      {"jiangmiao/auto-pairs"},
 
       require("plugins.telescope").plugin,
 
@@ -185,6 +186,10 @@ return packer.startup {
             require "plugins.gitsigns"
          end,
       },
+      {
+         "plasticboy/vim-markdown",
+         filetype = "markdown",
+      },
 
       {
          "andymass/vim-matchup",
@@ -244,8 +249,6 @@ return packer.startup {
             }
          end,
       },
-
-      { "mfussenegger/nvim-jdtls" },
 
       {
          "simrat39/rust-tools.nvim",
