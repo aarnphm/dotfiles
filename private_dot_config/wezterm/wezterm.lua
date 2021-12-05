@@ -33,7 +33,7 @@ local cfg_misc = {
         },
         {intensity = "Half", font = font_with_fallback("Inconsolata")}
     },
-    font_size = 18.0,
+    font_size = 21.0,
     font_shaper = "Harfbuzz",
     line_height = 1.0,
     freetype_load_target = "HorizontalLcd",
