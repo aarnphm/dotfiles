@@ -111,7 +111,7 @@ pyclean () {
 }
 
 # List all files colorized in long format
-if (( $+commands[exa] )); then
+if builtin command -v exa &>/dev/null; then
     # exa as defaults
     alias la="exa ${LS_OPTS} ${colorflag}"
 else
@@ -496,7 +496,7 @@ zinit wait'1' lucid \
     as'command' pick'bin/pyenv' src"zpyenv.zsh" nocompile'!'\
     light-mode for @pyenv/pyenv
 
-{{ if eq .chezmoi.os "linux" }}
+{{ if not (eq .hostname "mbp16") }}
 #--------------------------------#
 # improve cd
 #--------------------------------#
@@ -505,13 +505,17 @@ zinit wait'1' lucid \
   atload"source $ZRCDIR/configs/zoxide_atload.zsh" \
   light-mode for @ajeetdsouza/zoxide
 
+{{ end }}
+
 #--------------------------------#
 # fzf
 #--------------------------------#
+{{ if not (eq .hostname "mbp16") }}
 zinit wait'0b' lucid \
   from"gh-r" as"program" \
   atload"source $ZRCDIR/configs/fzf_atload.zsh" \
   for @junegunn/fzf
+{{ end }}
 zinit ice wait'0a' lucid
 zinit snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
 zinit ice wait'1a' lucid atload"source $ZRCDIR/configs/fzf_completion_atload.zsh"
@@ -523,12 +527,6 @@ zinit snippet https://github.com/junegunn/fzf/blob/master/bin/fzf-tmux
 #--------------------------------#
 # enhanced command
 #--------------------------------#
-
-zinit wait'1' lucid \
-  from"gh-r" as"program" pick"bin/exa" \
-  atload"source $ZRCDIR/configs/exa_atload.zsh" \
-  light-mode for @ogham/exa
-
 zinit wait'1' lucid blockf nocompletions \
     from"gh-r" as'program' pick'ripgrep*/rg' \
     atclone'chown -R $(id -nu):$(id -ng) .; zinit creinstall -q BurntSushi/ripgrep' \
@@ -547,17 +545,22 @@ zinit wait'1' lucid \
   light-mode for @sharkdp/bat
 
 zinit wait'1' lucid \
-    from"gh-r" as"program" pick"rip*/rip" \
-    atload"alias rm='rip --graveyard ~/.local/share/Trash'" \
-    light-mode for @nivekuil/rip
-
-zinit wait'1' lucid \
     from"gh-r" as"program" bpick'*lnx*' \
     light-mode for @dalance/procs
 
 zinit wait'1' lucid \
     from"gh-r" as"program" pick"mmv*/mmv" \
     light-mode for @itchyny/mmv
+
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"bin/exa" \
+  atload"source $ZRCDIR/configs/exa_atload.zsh" \
+  light-mode for @ogham/exa
+
+zinit wait'1' lucid \
+    from"gh-r" as"program" pick"rip*/rip" \
+    atload"alias rm='rip --graveyard ~/.local/share/Trash'" \
+    light-mode for @nivekuil/rip
 
 #--------------------------------#
 # program
@@ -581,8 +584,6 @@ zinit wait'1' lucid \
   from"gh-r" as"program" cp"hub-*/etc/hub.zsh_completion -> _hub" pick"hub-*/bin/hub" \
   atload"source $ZRCDIR/configs/hub_atload.zsh" \
   for @github/hub
-
-{{ end }}
 
 #--------------------------------------------------------------#
 ##          Post                                              ##

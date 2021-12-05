@@ -3,9 +3,9 @@
 ###########################################################################
 
 {{ if eq .chezmoi.os "darwin" -}}
-export CHEZMOI_BIN="$(/usr/bin/which chezmoi)"
+export CHEZMOI_BIN=$(/usr/bin/which chezmoi)
 {{ else -}}
-export CHEZMOI_BIN="$(which chezmoi)"
+export CHEZMOI_BIN=$(which chezmoi)
 {{ end }}
 export CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 
@@ -43,10 +43,7 @@ source "$XDG_CONFIG_HOME/user-dirs.dirs"
 #                            applications default                         #
 ###########################################################################
 
-{{- if eq .hostname "archlinux" }}
-# Probably one of the most important directory
-export CS_PATH="${XDG_DOCUMENTS_DIR}/cs"
-{{- end }}
+export CS_PATH="${XDG_DOCUMENTS_DIR:-$HOME/Documents}/cs"
 export CITY="{{ .city }}"
 
 # Don’t clear the screen after quitting a manual page.
@@ -204,5 +201,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 [ -d /opt/homebrew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+[ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
 {{- end }}
 # vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :

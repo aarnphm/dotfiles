@@ -13,8 +13,6 @@ return packer.startup {
 
       { "nathom/filetype.nvim" },
 
-      { "wakatime/vim-wakatime" },
-
       { "tpope/vim-surround" },
       { "tpope/vim-commentary" },
       { "tpope/vim-vinegar" },
