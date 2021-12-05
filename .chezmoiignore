@@ -47,6 +47,7 @@ scripts
 .config/screenlayout
 .config/mimeapps.list
 .config/user-dirs.dirs
+.config/BetterDiscord
 .screenlayout
 .Xresources
 .xprofile
