@@ -83,15 +83,17 @@ alias .....="cd ../../../.."
 alias -- -="cd -"
 
 # move to functions
+alias python=python3
+alias pip=pip3
 alias dots="cd $CHEZMOI_DIR"
 alias display="$HOME/.screenlayout/display.sh"
 
 # editor
 alias e="$CHEZMOI_BIN edit --apply"
-alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
+alias ca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS[@]}"
 alias dca="$CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
-alias sca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS}"
-alias dsca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY}"
+alias sca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS[@]}"
+alias dsca="source $ZDOTDIR/.zshenv.local && $CHEZMOI_BIN apply ${CHEZMOI_OPTS_DRY[@]}"
 
 # Enable aliases to be sudo’ed
 alias sudo="nocorrect sudo"
@@ -108,18 +110,12 @@ pyclean () {
     find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
 }
 
-if (( $+commands[protonvpn] )); then
-    alias vpnconnect="sudo protonvpn connect --cc CA"
-    alias vpndisconnect="sudo protonvpn disconnect"
-    alias vpnstatus="sudo protonvpn status"
-fi
-
 # List all files colorized in long format
-if command -v virt-what &>/dev/null; then
-    alias la="\ls --color -rthla --group-directories-first"
-else
+if (( $+commands[exa] )); then
     # exa as defaults
     alias la="exa ${LS_OPTS} ${colorflag}"
+else
+    alias la="\ls --color -rthla"
 fi
 # nnn intensifies
 alias N="sudo -E nnn -dDH"
@@ -131,9 +127,9 @@ alias h="hx $@"
 alias vi="vim $@"
 alias v="$EDITOR"
 alias av="$EDITOR -p"
-function ob() { $1 &}
+function ob() { $1 &; }
 function v() {
-  if [ "${#@}" -lt 1 ]; then
+  if [ "${#@}" -gt 1 ]; then
     $EDITOR -p "$@";
   elif [ -d $@ ]; then
     $EDITOR -p <(ls -I "__pycache__" -I "*.py[cod]")
@@ -226,54 +222,6 @@ if (( $+commands[journalctl] )); then
     alias failed="journalctl -p 3 -xb"
 fi
 
-## Arch
-if [ -f /etc/arch-release ] ;then
-    # urxvt
-    alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
-    # install
-    alias pac-update="sudo pacman -Sy"
-    alias pac-upgrade="sudo pacman -Syu"
-    alias pac-upgradef="sudo pacman -Syyu"
-    alias pac-install="sudo pacman -S"
-    alias pac-remove="sudo pacman -Rs"
-    # search remote package
-    alias pac-search="pacman -Ss"
-    alias pac-kinfo="pacman -Si"
-    # search local package
-    alias pac-installed="pacman -Qs"
-    alias pac-installedinfo="pacman -Qi"
-    alias pac-installedfiles="pacman -Ql"
-    # import: sudo pacman -S pkglist.txt
-    alias pac-export="pacman -Qqen"
-    alias pac-unused="pacman -Qtdq"
-    alias pac-search-from-path="pacman -Qqo"
-    alias pac-search-by-filename="pkgfile"
-    # search package from filename
-    alias pac-included-files="pacman -Fl"
-    # log
-    alias pac-log="cat /var/log/pacman.log | \grep "installed\|removed\|upgraded""
-    alias aur-pack="pacman -Qm"
-    # etc
-    alias pac-clean="sudo pacman -Sc"
-fi
-
-# systemctl related
-if (( $+commands[systemctl] )); then
-    alias sys-restart="sudo systemctl restart"
-    alias sys-start="sudo systemctl start"
-    alias sys-stop="sudo systemctl stop"
-    alias sys-enable="sudo systemctl enable"
-    alias sys-disable="sudo systemctl disable"
-    alias sys-reload="sudo systemctl reload"
-    alias sys-status="systemctl status"
-    alias sys-show="systemctl show"
-    alias sys-list-units="systemctl list-units"
-    alias sys-list-unit-files="systemctl list-unit-files"
-    alias sys-list-timers="systemctl list-timers"
-    alias sys-cat="systemctl cat"
-    alias sys-is-enabled="systemctl is-enabled"
-fi
-
 alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
 
 alias keys="xev | grep -i key"
@@ -282,9 +230,6 @@ alias keys="xev | grep -i key"
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
 alias map="xargs -n1"
-
-# URL-encode strings
-alias urlencode='python -c "import sys, urllib.parse as ul; print(ul.quote(sys.argv[1]));"'
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
@@ -484,7 +429,7 @@ fi
 if ! test -d "$ZPLG_HOME"; then
     mkdir -p "$ZPLG_HOME"
     chmod g-rwX "$ZPLG_HOME"
-    git clone https://github.com/zdharma/zinit.git ${ZPLG_HOME}/bin
+    git clone git@github.com:zdharma-continuum/zinit.git ${ZPLG_HOME}/bin
 fi
 
 typeset -gAH ZPLGM
@@ -497,9 +442,6 @@ autoload -Uz _zinit
 #==============================================================#
 ## Plugin load                                                ##
 #==============================================================#
-zinit light-mode for \
-    @zinit-zsh/z-a-readurl \
-    @zinit-zsh/z-a-bin-gem-node
 
 zinit wait'!' lucid \
   atload"source $ZRCDIR/configs/p10k.zsh;_p9k_precmd" nocd \
@@ -516,10 +458,11 @@ zinit wait'0b' lucid \
   atload"source $ZRCDIR/configs/zsh-completions_atload.zsh" \
   light-mode for @zsh-users/zsh-completions
 
-zinit wait'0a' lucid \
-  if"(( ${ZSH_VERSION%%.*} > 4.4))" \
-  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
-  light-mode for @zdharma/fast-syntax-highlighting
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions
 
 zplugin ice wait"0a" lucid \
   atinit"source $ZRCDIR/configs/zsh-autocomplete_atinit.zsh" \
@@ -532,14 +475,6 @@ zinit wait'1' lucid \
     if"(( ${ZSH_VERSION%%.*} > 4.4))" \
         light-mode for @zsh-users/zsh-history-substring-search
 
-#--------------------------------#
-# improve cd
-#--------------------------------#
-zinit wait'1' lucid \
-  from"gh-r" as"program" pick"zoxide-*/zoxide" \
-  atload"source $ZRCDIR/configs/zoxide_atload.zsh" \
-  light-mode for @ajeetdsouza/zoxide
-
 zinit wait'1' lucid \
   light-mode for @mollifier/cd-gitroot
 
@@ -548,6 +483,27 @@ zinit wait'1' lucid \
 
 zinit wait'1' lucid \
   light-mode for @Tarrasch/zsh-bd
+
+#--------------------------------#
+# extension
+#--------------------------------#
+zinit wait'0' lucid \
+    light-mode for @mafredri/zsh-async
+
+zinit wait'1' lucid \
+    atclone'PYENV_ROOT="$HOME/.pyenv" ./libexec/pyenv init - > zpyenv.zsh' \
+    atinit'export PYENV_ROOT="$HOME/.pyenv"' atpull"%atclone" \
+    as'command' pick'bin/pyenv' src"zpyenv.zsh" nocompile'!'\
+    light-mode for @pyenv/pyenv
+
+{{ if eq .chezmoi.os "linux" }}
+#--------------------------------#
+# improve cd
+#--------------------------------#
+zinit wait'1' lucid \
+  from"gh-r" as"program" pick"zoxide-*/zoxide" \
+  atload"source $ZRCDIR/configs/zoxide_atload.zsh" \
+  light-mode for @ajeetdsouza/zoxide
 
 #--------------------------------#
 # fzf
@@ -563,12 +519,6 @@ zinit snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
 zinit ice wait'0a' lucid as"program"
 zinit snippet https://github.com/junegunn/fzf/blob/master/bin/fzf-tmux
 
-
-#--------------------------------#
-# extension
-#--------------------------------#
-zinit wait'0' lucid \
-    light-mode for @mafredri/zsh-async
 
 #--------------------------------#
 # enhanced command
@@ -614,12 +564,6 @@ zinit wait'1' lucid \
 #--------------------------------#
 
 zinit wait'1' lucid \
-    atclone'PYENV_ROOT="$HOME/.pyenv" ./libexec/pyenv init - > zpyenv.zsh' \
-    atinit'export PYENV_ROOT="$HOME/.pyenv"' atpull"%atclone" \
-    as'command' pick'bin/pyenv' src"zpyenv.zsh" nocompile'!'\
-    light-mode for @pyenv/pyenv
-
-zinit wait'1' lucid \
   from"gh-r" as"program" pick"ghq*/ghq" \
   atload"source $ZRCDIR/configs/ghq_atload.zsh" \
   light-mode for @x-motemen/ghq
@@ -638,6 +582,7 @@ zinit wait'1' lucid \
   atload"source $ZRCDIR/configs/hub_atload.zsh" \
   for @github/hub
 
+{{ end }}
 
 #--------------------------------------------------------------#
 ##          Post                                              ##

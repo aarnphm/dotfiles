@@ -8,6 +8,7 @@ git config --global core.excludesFile ${XDG_CONFIG_HOME:-$HOME/.config}/git/giti
 
 # shellcheck disable=SC1009,SC1054,SC1073,SC1056,SC1072,SC1083
 {{- if .personal }}
+{{- if not (eq .chezmoi.os "darwin") }}
 # bitwarden cli yarn and typescript
 if builtin command -v nvm &>/dev/null; then
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -43,5 +44,10 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
 if ! builtin command -v docker-compose &>/dev/null; then
     sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
 fi
+{{- else }}
+if builtin command -v brew &>/dev/null; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+{{- end }}
 {{- end }}
 {{- end }}

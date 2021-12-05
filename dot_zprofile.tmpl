@@ -27,7 +27,7 @@ export ZRCDIR=$ZHOMEDIR/rc
 export ZDATADIR=$XDG_DATA_HOME/zsh
 
 
-{{- if joinPath "/etc/arch-release" }}
+{{- if eq .chezmoi.os "linux" }}
 source "$XDG_CONFIG_HOME/user-dirs.dirs"
 {{- end }}
 
@@ -56,7 +56,9 @@ export PAGER=less
 export LESS_TERMCAP_md="${yellow}";
 export LESS='--no-init -R --shift 4 --LONG-PROMPT --quit-if-one-screen'
 # add cuda lib
+{{ if (joinPath "opt" "cuda") }}
 export LD_LIBRARY_PATH="/usr/local/cuda-11.3/lib64:/opt/cuda/lib64:/usr/lib32:/usr/lib"
+{{ end }}
 {{- if not .transient }}
 export EDITOR=nvim
 {{- else }}
@@ -124,20 +126,20 @@ path=(
     {{ .chezmoi.homeDir }}/.local/bin(N-/)
     $HOME/bin(N-/)
     $HOME/.yarn/bin(N-/)
+    {{- if (joinPath .chezmoi.homeDir "documents" "schools" "mcmaster") }}
     $HOME/intelFPGA/17.1/quartus/bin(N-/)
-    {{- if joinPath .chezmoi.homeDir "/documents/schools/mcmaster" }}
     $HOME/documents/schools/mcmaster/anyconnect-linux64-4.9.04043/vpn(N-/)
     {{- end }}
-    # {{- if joinPath .chezmoi.homeDir "/miniconda3" }}
-    # $HOME/miniconda3/bin(N-/)
-    # {{- end }}
+    {{- if (joinPath .chezmoi.homeDir "miniconda3") }}
+    $HOME/miniconda3/bin(N-/)
+    {{- end }}
     $CS_PATH/onnx-mlir/build/Debug/bin(N-/)
     $CS_PATH/onnx-mlir/build/Debug/lib(N-/)
     $HOME/.screenlayout(N-/)
-    {{- if joinPath .chezmoi.homeDir ".poetry" }}
+    {{- if (joinPath .chezmoi.homeDir ".poetry") }}
     {{ .chezmoi.homeDir }}/.poetry/bin(N-/)
     {{- end }}
-    {{- if joinPath "/opt/apache-spark" }}
+    {{- if (joinPath "opt" "apache-spark") }}
     $SPARK_HOME/bin(N-/)
     {{- end }}
     {{- if .personal }}
@@ -155,21 +157,24 @@ path=(
     {{- end }}
     $GOPATH/bin(N-/)
     $GOPATH/src(N-/)
-    {{- if joinPath "/opt/cuda" }}
+    {{- if (joinPath "opt" "cuda") }}
     /opt/cuda/bin
     {{- end }}
-    {{- if joinPath "/opt/Typora-linux-x64" }}
+    {{- if joinPath "opt" "Typora-linux-x64" }}
     /opt/Typora-linux-x64
     {{- end }}
-    {{- if joinPath "/usr/local/cuda" }}
+    {{- if joinPath "usr" "local" "cuda" }}
     /usr/local/cuda/bin
     {{- end }}
-    {{- if joinPath "/opt/cni" }}
+    {{- if joinPath "opt" "cni" }}
     /opt/cni/bin
     {{- end }}
     $NPM_PACKAGES/bin
-    {{- if joinPath "$HOME/google-cloud-sdk" }}
+    {{- if joinPath .chezmoi.homeDir "google-cloud-sdk" }}
     {{ .chezmoi.homeDir }}/google-cloud-sdk/bin
+    {{- end }}
+    {{- if (joinPath "opt" "homebrew") }}
+    /opt/homebrew/opt/coreutils/libexec/gnubin(N-/)
     {{- end }}
     {{ .chezmoi.homeDir }}/.config/nnn/plugins(N-/)
     {{- end }}
@@ -195,8 +200,9 @@ export TMUX_OPTS="-2uf $XDG_CONFIG_HOME/tmux/tmux.conf"
 export LS_OPTS="-laFh --group-directories-first --color=always"
 export ODOO_OPTS="--addons-path=$CS_PATH/odoo/addons --dev=reload,all,pdb"
 export JUPYTER_OPTS="--autoreload --debug"
-export NVM_DIR="$HOME/.config/nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -d /opt/homebrew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 {{- end }}
 # vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :

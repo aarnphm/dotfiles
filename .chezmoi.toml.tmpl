@@ -14,6 +14,8 @@
 {{- $serialNumberSHA256Sum := index ioreg "IORegistryEntryChildren" 0 "IOPlatformSerialNumber" | sha256sum -}}
 {{- if eq $serialNumberSHA256Sum "21bc2b3dba08a4f53732b42ac8b041ac2a83ebe95b73dfc2b5c251b4767463d8" -}}
 {{- $hostname = "APPL-AIR12" -}}
+{{- else if (eq $serialNumberSHA256Sum "f08cc1331a88f9607b6a04cdac88fee48ae0170c9207d09bc78c3949efd9c4cb") -}}
+{{- $hostname = "mbp16" -}}
 {{- end -}}
 {{- end -}}
 {{- if not $transient -}}
@@ -23,6 +25,8 @@
 {{- if eq $hostname "archlinux" -}}
 {{- $personal = true -}}
 {{- else if eq $hostname "APPL-AIR12" -}}
+{{- $personal = true -}}
+{{- else if eq $hostname "mbp16" -}}
 {{- $personal = true -}}
 {{- else -}}
 {{- $personal = promptBool "personal" -}}
