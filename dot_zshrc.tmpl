@@ -111,12 +111,11 @@ pyclean () {
 }
 
 # List all files colorized in long format
-if builtin command -v exa &>/dev/null; then
-    # exa as defaults
-    alias la="exa ${LS_OPTS} ${colorflag}"
-else
-    alias la="\ls --color -rthla"
-fi
+{{ if .personal }}
+alias la="exa ${LS_OPTS[@]} ${colorflag[@]}"
+{{ else }}
+alias la="\ls --color -rthla"
+{{ end }}
 # nnn intensifies
 alias N="sudo -E nnn -dDH"
 alias l="n"
@@ -454,6 +453,11 @@ zinit wait'0b' lucid \
   light-mode for "$ZRCDIR/plugins/auto_commands.zsh"
 
 zinit wait'0b' lucid \
+  atload"zicompinit; zicdreplay" \
+	atload"prompt_nix_shell_setup" \
+  light-mode for "$ZRCDIR/plugins/nix-completions.zsh"
+
+zinit wait'0b' lucid \
   atinit"source $ZRCDIR/configs/zsh-completions_atinit.zsh" \
   atload"source $ZRCDIR/configs/zsh-completions_atload.zsh" \
   light-mode for @zsh-users/zsh-completions
@@ -496,7 +500,6 @@ zinit wait'1' lucid \
     as'command' pick'bin/pyenv' src"zpyenv.zsh" nocompile'!'\
     light-mode for @pyenv/pyenv
 
-{{ if not (eq .hostname "mbp16") }}
 #--------------------------------#
 # improve cd
 #--------------------------------#
@@ -504,8 +507,6 @@ zinit wait'1' lucid \
   from"gh-r" as"program" pick"zoxide-*/zoxide" \
   atload"source $ZRCDIR/configs/zoxide_atload.zsh" \
   light-mode for @ajeetdsouza/zoxide
-
-{{ end }}
 
 #--------------------------------#
 # fzf
@@ -516,13 +517,11 @@ zinit wait'0b' lucid \
   atload"source $ZRCDIR/configs/fzf_atload.zsh" \
   for @junegunn/fzf
 {{ end }}
-zinit ice wait'0a' lucid
 zinit snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
 zinit ice wait'1a' lucid atload"source $ZRCDIR/configs/fzf_completion_atload.zsh"
 zinit snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
 zinit ice wait'0a' lucid as"program"
 zinit snippet https://github.com/junegunn/fzf/blob/master/bin/fzf-tmux
-
 
 #--------------------------------#
 # enhanced command

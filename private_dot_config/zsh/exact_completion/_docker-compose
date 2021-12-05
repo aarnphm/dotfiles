@@ -418,6 +418,4 @@ _docker-compose() {
     return ret
 }
 
-if [[ "$(basename -- ${(%):-%x})" != "_docker-compose" ]]; then
-  compdef _docker-compose docker-compose
-fi
+_docker-compose "$@"

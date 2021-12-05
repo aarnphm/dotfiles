@@ -33,7 +33,7 @@ local cfg_misc = {
         },
         {intensity = "Half", font = font_with_fallback("Inconsolata")}
     },
-    font_size = 21.0,
+    font_size = 18.0,
     font_shaper = "Harfbuzz",
     line_height = 1.0,
     freetype_load_target = "HorizontalLcd",
@@ -53,11 +53,14 @@ local cfg_misc = {
 
     -- Padding
     -- Top is offsetted for titlebar
-    window_padding = {left = 50, right = 50, top = 50, bottom = 50},
+    initial_rows=50,
+    initial_cols=120,
+
+    -- default apps to tmux
+    default_prog = {"/bin/zsh", "-l", "-c", "tmux"},
 
     -- No opacity
     inactive_pane_hsb = {saturation = 1.0, brightness = 1.0},
-    default_prog = {"/bin/zsh", "-c", "tmux"},
 }
 
 -- Colors

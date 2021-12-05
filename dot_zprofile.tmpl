@@ -179,6 +179,7 @@ path=(
 )
 fpath=(
     $ZHOMEDIR/completion(N-/)
+    $ZHOMEDIR/rc/plugins/nix-completions.zsh(N-/)
     /usr/local/share/zsh/site-functions
     /usr/share/zsh/site-functions
     $fpath
@@ -203,5 +204,10 @@ export NVM_DIR="$HOME/.nvm"
 [ -d /opt/homebrew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
+# {{- if eq .chezmoi.os "darwin" }}
+# if [ -f $(brew --prefix)/etc/bash_completion ]; then
+# . $(brew --prefix)/etc/bash_completion
+# fi
+# {{- end }}
 {{- end }}
 # vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :

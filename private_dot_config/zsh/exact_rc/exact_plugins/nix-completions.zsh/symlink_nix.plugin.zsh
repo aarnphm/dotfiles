@@ -1,0 +1,1 @@
+nix-completions.plugin.zsh
