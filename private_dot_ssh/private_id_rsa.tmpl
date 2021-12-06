@@ -1,6 +1,8 @@
 {{- if .personal -}}
 {{- if eq .hostname "APPL-AIR12" }}
 {{- (bitwarden "item" "priv_appl_air12_ssh").notes -}}
+{{- else if eq .hostname "mbp16" }}
+{{- (bitwarden "item" "priv_appl_mbp16_ssh").notes -}}
 {{- else if eq .hostname "archlinux" }}
 {{- (bitwarden "item" "priv_ggbbyaero15w8_bitbucket_rsa").notes }}
 {{- end -}}

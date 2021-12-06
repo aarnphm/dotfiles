@@ -16,22 +16,22 @@ local cfg_misc = {
     check_for_updates = false,
 
     -- Font Stuff
-    font = font_with_fallback("Inconsolata"),
+    font = font_with_fallback("Hack Nerd Font Mono"),
     font_rules = {
         {
             italic = true,
-            font = font_with_fallback("Inconsolata", {italic = true})
+            font = font_with_fallback("Hack Nerd Font Mono", {italic = true})
         }, {
             italic = true,
             intensity = "Bold",
-            font = font_with_fallback("Inconsolata",
+            font = font_with_fallback("Hack Nerd Font Mono",
                                       {bold = true, italic = true})
         },
         {
             intensity = "Bold",
-            font = font_with_fallback("Inconsolata", {bold = true})
+            font = font_with_fallback("Hack Nerd Font Mono", {bold = true})
         },
-        {intensity = "Half", font = font_with_fallback("Inconsolata")}
+        {intensity = "Half", font = font_with_fallback("Hack Nerd Font Mono")}
     },
     font_size = 18.0,
     font_shaper = "Harfbuzz",

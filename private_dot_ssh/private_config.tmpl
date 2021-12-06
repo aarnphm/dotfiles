@@ -27,4 +27,17 @@ Host HOME
     User {{ .chezmoi.username }}
     IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
 {{- end }}
+{{ if eq .hostname "mbp16" }}
+Host GGBBYAERO15W8
+    HostName 24.141.32.93
+    Port 22
+    User {{ .chezmoi.username }}
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
+
+Host HOME
+    HostName 192.168.0.22
+    Port 22
+    User {{ .chezmoi.username }}
+    IdentityFile {{ .chezmoi.homeDir }}/.ssh/id_rsa
+{{- end }}
 {{- end }}

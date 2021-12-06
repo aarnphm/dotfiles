@@ -3,7 +3,7 @@
 ###########################################################################
 
 {{ if eq .chezmoi.os "darwin" -}}
-export CHEZMOI_BIN=$(/usr/bin/which chezmoi)
+export CHEZMOI_BIN="$(\which chezmoi)"
 {{ else -}}
 export CHEZMOI_BIN=$(which chezmoi)
 {{ end }}
@@ -92,7 +92,6 @@ export ONNX_MLIR_HOME=$CS_PATH/onnx-mlir/build/Debug
 export PYTHONPATH=$PYTHONPATH:$ONNX_MLIR_HOME/lib
 
 export LS_COLORS="${LS_COLORS}:ow=01;33:no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:"
-export GOOGLE_APPLICATION_CREDENTIALS="/mnt/Centralized/documents/txt/karlpol-backend-a8faccb72676.json"
 
 export NNN_OPENER=nuke
 export NNN_COLORS="2134"
@@ -104,9 +103,9 @@ export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
 export NNN_PLUG='f:finder;o:fzopen;m:mocplay;d:diffs;t:nmount;p:preview-tui'
 {{- end }}
 
-export AWS_ACCESS_KEY_ID={{(bitwarden "item" "AWS_ACCESS_KEY_ID").notes}}
+export AWS_ACCESS_KEY_ID={{ (bitwarden "item" "AWS_ACCESS_KEY_ID").notes }}
 
-export AWS_SECRET_ACCESS_KEY={{(bitwarden "item" "AWS_SECRET_ACCESS_KEY").notes}}
+export AWS_SECRET_ACCESS_KEY={{ (bitwarden "item" "AWS_SECRET_ACCESS_KEY").notes }}
 
 
 export BENTOML_HOME=$HOME/bentoml
@@ -204,10 +203,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -d /opt/homebrew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
-# {{- if eq .chezmoi.os "darwin" }}
-# if [ -f $(brew --prefix)/etc/bash_completion ]; then
-# . $(brew --prefix)/etc/bash_completion
-# fi
-# {{- end }}
 {{- end }}
 # vim: set ft=zsh.gohtmltmpl ts=2 sw=2 tw=0 et :

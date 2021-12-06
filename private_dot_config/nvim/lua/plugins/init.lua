@@ -72,8 +72,6 @@ return packer.startup {
                "nvim-treesitter/playground",
                cmd = { "TSHighlightCapturesUnderCursor", "TSPlaygroundToggle" },
             },
-            "nvim-treesitter/nvim-treesitter-textobjects",
-            "windwp/nvim-ts-autotag",
             "tree-sitter/tree-sitter-python",
             "tree-sitter/tree-sitter-go",
             "tree-sitter/tree-sitter-typescript",
