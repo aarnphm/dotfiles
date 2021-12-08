@@ -20,13 +20,8 @@ return packer.startup {
       { "tpope/vim-sleuth" },
       { "tpope/vim-fugitive" },
       { "thaerkh/vim-indentguides" },
-      {
-         "christoomey/vim-tmux-navigator",
-         config = function()
-            vim.g.tmux_navigator_save_on_switch = 2
-            vim.g.tmux_navigator_disable_when_zoomed = 1
-         end,
-      },
+      { 'alexghergh/nvim-tmux-navigation' },
+
 
       { "tami5/sqlite.lua" },
 
@@ -157,13 +152,17 @@ return packer.startup {
          },
       },
 
-      {
-         "rmehri01/onenord.nvim",
+      { "rmehri01/onenord.nvim" },
+      {"mcchrish/zenbones.nvim",
+         requires = "rktjmp/lush.nvim",
          config = function()
-            vim.cmd [[ colorscheme onenord ]]
+            vim.cmd [[
+                set termguicolors
+                set background=dark
+                colorscheme forestbones
+        ]]
          end,
       },
-
       {
          "phaazon/hop.nvim",
          cmd = "HopWord",

@@ -16,8 +16,8 @@ let g:did_load_filetypes = 1
 " order matters
 runtime! lua/modules/keymap.lua
 runtime! lua/modules/options.lua
-runtime! lua/modules/util.lua
 runtime! lua/modules/mappings.vim
+runtime! lua/modules/util.lua
 runtime! lua/modules/statusline.lua
 
 " packer commands

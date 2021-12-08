@@ -103,10 +103,12 @@ autopush_dots() {
   # this will check whether task is running by cron or user
   check_interactive
 
+  {{ if not (eq .hostname "mbp16") }}
   # backup
   pprint "Backup dotfiles to $BACKUP_DIR..."
   pprint "Repository: $GITREPO"
   backup_dotfiles $BACKUP_DIR
+  {{ end }}
 
   pprint "\nDumping installed packages to files..."
   {{- if stat "/etc/arch-release" }}
@@ -115,7 +117,7 @@ autopush_dots() {
   paru -Qqem >| {{ .chezmoi.sourceDir }}/bootstrap/configs/Aurfile.local
   pprint "Done."
   {{- else if eq .chezmoi.os "darwin" }}
-  brew bundle dump --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile
+  brew bundle dump -f --file={{ .chezmoi.sourceDir }}/bootstrap/configs/Brewfile
   {{- end }}
 
   # Check if upstream, else not pull

@@ -75,3 +75,9 @@ nnoremap <silent> <leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 
 " nvimtree
 nnoremap <F3> <CMD>NvimTreeToggle<CR>
+
+nnoremap <silent> <C-h> :lua require'nvim-tmux-navigation'.NvimTmuxNavigateLeft()<cr>
+nnoremap <silent> <C-j> :lua require'nvim-tmux-navigation'.NvimTmuxNavigateDown()<cr>
+nnoremap <silent> <C-k> :lua require'nvim-tmux-navigation'.NvimTmuxNavigateUp()<cr>
+nnoremap <silent> <C-l> :lua require'nvim-tmux-navigation'.NvimTmuxNavigateRight()<cr>
+
