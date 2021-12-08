@@ -20,7 +20,14 @@ return packer.startup {
       { "tpope/vim-sleuth" },
       { "tpope/vim-fugitive" },
       { "thaerkh/vim-indentguides" },
-      { 'alexghergh/nvim-tmux-navigation' },
+      { 'alexghergh/nvim-tmux-navigation',
+        config = function()
+           vim.api.nvim_set_keymap('n', "<C-h>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateLeft()<cr>", { noremap = true, silent = true })
+           vim.api.nvim_set_keymap('n', "<C-j>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateDown()<cr>", { noremap = true, silent = true })
+           vim.api.nvim_set_keymap('n', "<C-k>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateUp()<cr>", { noremap = true, silent = true })
+           vim.api.nvim_set_keymap('n', "<C-l>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateRight()<cr>", { noremap = true, silent = true })
+        end,
+      },
 
 
       { "tami5/sqlite.lua" },
@@ -91,11 +98,6 @@ return packer.startup {
             require "plugins.barbar"
          end,
       },
-      {
-         "rktjmp/shipwright.nvim",
-         cmd = "Shipwright",
-         module_pattern = { "shipwright", "shipwright.*" },
-      },
 
       {
          "folke/which-key.nvim",
@@ -130,7 +132,6 @@ return packer.startup {
                "hrsh7th/vim-vsnip",
                setup = function()
                   vim.cmd [[
-              " Jump forward or backward
               imap <expr> <C-n> vsnip#numpable(1)  ? '<Plug>(vsnip-nump-next)' : '<C-n>'
               smap <expr> <C-n> vsnip#numpable(1)  ? '<Plug>(vsnip-nump-next)' : '<C-n>'
               imap <expr> <C-m> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-m>'
@@ -155,13 +156,24 @@ return packer.startup {
       { "rmehri01/onenord.nvim" },
       {"mcchrish/zenbones.nvim",
          requires = "rktjmp/lush.nvim",
-         config = function()
+         -- config = function()
+         --    vim.cmd [[
+         --        set background=dark
+         --        colorscheme zenburned
+        -- ]]
+        -- vim.g.zenbones_solid_line_nr = true
+        -- vim.g.zenbones_darken_comments = 45
+         -- end,
+      },
+      {"rakr/vim-two-firewatch",
+        config = function()
             vim.cmd [[
                 set termguicolors
                 set background=dark
-                colorscheme forestbones
+                colorscheme two-firewatch
         ]]
-         end,
+        vim.g.two_firewatch_italics=1
+        end,
       },
       {
          "phaazon/hop.nvim",
