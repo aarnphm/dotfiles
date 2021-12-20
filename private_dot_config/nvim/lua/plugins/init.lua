@@ -89,7 +89,7 @@ return packer.startup {
       },
 
       { "kyazdani42/nvim-web-devicons", module = "nvim-web-devicons" },
-      {'neoclide/coc.nvim', branch = 'master', run = 'yarn install --frozen-lockfile'},
+      -- {'neoclide/coc.nvim', branch = 'master', run = 'yarn install --frozen-lockfile'},
 
       {
          "romgrk/barbar.nvim",
@@ -193,10 +193,6 @@ return packer.startup {
          config = function()
             require "plugins.gitsigns"
          end,
-      },
-      {
-         "plasticboy/vim-markdown",
-         filetype = "markdown",
       },
 
       {
