@@ -1,17 +1,14 @@
 [user]
-    email = 29749331+aarnphm@users.noreply.github.com
-    signingkey = 515D7B4AC3D35969
+  email = phama10@mcmaster.ca
+  signingkey = 9F77306B875B2BE3
 
 [submodule]
     recurse = true
-
-{{- if "$(git lfs &>/dev/null)" }}
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
-{{- end }}
 
 [alias]
     # quick commit
@@ -49,8 +46,8 @@
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
     # Pull in remote changes for the current repository and all its submodules.
-    pre = pull --recurse-submodules
-    p = pull
+    pre = pull --signoff --recurse-submodules
+    p = pull --signoff --gpg-sign --rebase
     pp = "!f() { git fetch \"$1\" \"$2\" && git pull \"$1\" \"$2\" && git remote prune \"$1\"; }; f"
     pa = pull --all --signoff --gpg-sign
 
@@ -84,7 +81,7 @@
     credit = "!f() { git commit -S -s --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
     # Interactive rebase with the given number of latest commits.
-    reb = "!r() { git rebase -i --signoff HEAD~$1; }; r"
+    reb = "!r() { git rebase -i -S --signoff HEAD~$1; }; r"
     ra = rebase --abort
 	rc = rebase --continue --signoff
 	ri = rebase --interactive --signoff
@@ -118,7 +115,6 @@
     rebase = false
 
 [core]
-    {{- if eq .chezmoi.os "darwin" }}
     # Treat spaces before tabs and all kinds of trailing whitespace as an error.
     # [default] trailing-space: looks for spaces at the end of a line
     # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
@@ -131,15 +127,10 @@
     # Prevent showing files whose names contain non-ASCII symbols as unversioned.
     # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
     precomposeunicode = false
-    {{- end }}
     # Speed up commands involving untracked files such as `git status`.
     # https://git-scm.com/docs/git-update-index#_untracked_cache
     untrackedCache = true
-    {{- if eq (env "EDITOR") "nvim" }}
-    editor = nvim
-    {{- else }}
     editor = vim
-    {{- end }}
 
 [color]
     ui = auto

@@ -1,0 +1,11 @@
+[include]
+	path = {{ .chezmoi.homeDir }}/.config/git/gitconfig
+
+[includeIf "gitdir:**/gitlab/**/.git"]
+  path = {{ .chezmoi.homeDir }}/.config/git/mac
+
+[core]
+	excludesFile = {{ .chezmoi.homeDir }}/.config/git/gitignore
+
+[commit]
+	gpgsign = true
